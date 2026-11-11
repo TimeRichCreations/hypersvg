@@ -1,0 +1,11 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "layout-fixture",
+  "about": { "title": "Layout fixture: one ad in four sizes" },
+  "axes": [
+    { "axis": "shape", "select": "space",
+      "sizes": { "300x250": "must", "160x600": "must", "728x90": "must", "320x50": "should" } }
+  ],
+  "story": { "start": "ad", "scenes": { "ad": "scenes/ad/scene.json" }, "ends": ["ad"] }
+}

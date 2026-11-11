@@ -1,0 +1,162 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "harbour",
+  "about": {
+    "title": "Harbour day"
+  },
+  "shell": "shell.json",
+  "blocks": {
+    "crate": "crate/component.json"
+  },
+  "roles": {
+    "flag": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "dial": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "light": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "switch": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "boat": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "wheel": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "bird": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "trail": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "rope": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "curtain": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "handle": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "card": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "parcel": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "basket": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "bin": {
+      "appliesTo": [
+        "part"
+      ]
+    },
+    "crate": {
+      "appliesTo": [
+        "component"
+      ]
+    },
+    "lid": {
+      "appliesTo": [
+        "part"
+      ]
+    }
+  },
+  "inputs": {
+    "title": {
+      "kind": "content",
+      "type": "string",
+      "maxLength": 40,
+      "initial": "Harbour day"
+    },
+    "pace": {
+      "kind": "knob",
+      "type": "number",
+      "initial": 2,
+      "minimum": 1,
+      "maximum": 5
+    },
+    "shopLink": {
+      "kind": "content",
+      "type": "string",
+      "contentType": "url",
+      "maxLength": 80,
+      "initial": "https://example.org/harbour"
+    }
+  },
+  "grants": {
+    "openUrl": true
+  },
+  "values": {
+    "best": {
+      "type": "number",
+      "initial": 0,
+      "minimum": 0,
+      "maximum": 99,
+      "lifetime": "saved"
+    }
+  },
+  "audioSynths": {
+    "bell": {
+      "wave": "sine",
+      "from": 880,
+      "to": 660,
+      "durationMs": 120,
+      "gain": 0.4
+    }
+  },
+  "story": {
+    "start": "gate",
+    "scenes": {
+      "gate": "gate.json",
+      "harbour": "harbour.json"
+    },
+    "links": [
+      {
+        "id": "in",
+        "from": "gate",
+        "on": "start",
+        "to": "harbour",
+        "transition": "fade",
+        "transitionMs": 300
+      }
+    ],
+    "ends": [
+      "harbour"
+    ]
+  }
+}

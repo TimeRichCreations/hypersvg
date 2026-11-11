@@ -1,0 +1,23 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "one",
+  "drawing": "one.svg",
+  "values": {
+    "presses": {"type": "number", "minimum": 0, "maximum": 999, "initial": 0},
+    "picks": {"type": "number", "minimum": 0, "maximum": 999, "initial": 0},
+    "pick": {"type": "number", "minimum": 1, "maximum": 3, "initial": 1}
+  },
+  "on": {
+    "pressed": [{"actions": [{"set": "presses", "to": "presses + 1"}]}],
+    "picked": [{"actions": [{"set": "picks", "to": "picks + 1"}]}]
+  },
+  "controls": {
+    "go": {"kind": "button", "target": "go", "event": "pressed", "label": "Go"},
+    "pick": {"kind": "choice", "value": "pick", "event": "picked", "label": "Size", "options": {
+      "a": {"target": "pick-a", "value": "1", "label": "Small"},
+      "b": {"target": "pick-b", "value": "2", "label": "Medium"},
+      "c": {"target": "pick-c", "value": "3", "label": "Large"}
+    }}
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "page-helper",
+  "story": {
+    "start": "helper",
+    "scenes": {
+      "helper": "scenes/helper/scene.json"
+    }
+  },
+  "needs": [
+    "page"
+  ],
+  "addons": {
+    "page": {
+      "hooks": {
+        "signup": {
+          "kind": "target"
+        }
+      }
+    }
+  }
+}

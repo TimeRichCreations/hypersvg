@@ -1,0 +1,12 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "apple-catch",
+  "about": {"title": "Catch the apples"},
+  "values": {"score": {"type": "number", "initial": 0, "minimum": 0, "maximum": 99}},
+  "story": {
+    "start": "orchard",
+    "scenes": {"orchard": "scenes/orchard/scene.json", "result": "scenes/result/scene.json"},
+    "links": [{"from": "orchard", "on": "timeUp", "to": "result"}]
+  }
+}

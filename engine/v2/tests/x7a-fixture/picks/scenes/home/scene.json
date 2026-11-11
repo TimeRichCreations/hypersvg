@@ -1,0 +1,12 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "home",
+  "drawing": "home.svg",
+  "uses": [
+    {"id": "star", "use": "icon-star", "into": "star-slot", "with": {"label": "'Favourite'"}},
+    {"id": "go-button", "use": "button", "into": "go-slot", "with": {"label": "'Start the quiz'"}}
+  ],
+  "outputs": {"go": {"kind": "event"}},
+  "on": {"go-button.pressed": [{"id": "leave", "actions": [{"id": "emit-go", "emit": "go"}]}]}
+}

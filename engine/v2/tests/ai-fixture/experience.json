@@ -1,0 +1,119 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "ai-fixture",
+  "about": {
+    "title": "AI seat fixture",
+    "description": "One character seat, two written questions, two intents and a dialog form. Plays offline."
+  },
+  "language": "en",
+  "needs": [
+    "widgets",
+    "ai"
+  ],
+  "shell": "shell/frame.json",
+  "grants": {
+    "ai": {
+      "test-ai": "ask"
+    },
+    "optional": [
+      "ai"
+    ]
+  },
+  "inputs": {
+    "askText": {
+      "kind": "content",
+      "type": "string",
+      "contentType": "freeText",
+      "maxLength": 200,
+      "required": false,
+      "initial": ""
+    },
+    "askGuide": {
+      "kind": "trigger"
+    }
+  },
+  "values": {
+    "topic": {
+      "type": "string",
+      "maxLength": 40,
+      "initial": "bicycles"
+    }
+  },
+  "addons": {
+    "ai": {
+      "seats": {
+        "guide": {
+          "label": "Guide",
+          "persona": "A kind craft guide. Short answers for children. Never asks personal questions.",
+          "view": [
+            "topic"
+          ],
+          "answerType": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "steer": "ask",
+          "limits": {
+            "perMinute": 4
+          },
+          "questions": [
+            {
+              "id": "oil",
+              "text": "Why oil the chain?",
+              "answer": "Oil keeps the chain smooth and quiet."
+            },
+            {
+              "id": "tyres",
+              "text": "How hard should tyres be?",
+              "answer": "Press the tyre: it should feel firm, like an apple."
+            }
+          ],
+          "intents": [
+            {
+              "id": "brakes",
+              "examples": [
+                "how do brakes work",
+                "my brakes squeak"
+              ],
+              "answers": [
+                {
+                  "text": "Brakes squeeze the wheel to slow it."
+                },
+                {
+                  "text": "Check the pads are not worn.",
+                  "when": "topic === 'bicycles'"
+                }
+              ]
+            },
+            {
+              "id": "hello",
+              "examples": [
+                "hello",
+                "hi there"
+              ],
+              "answers": [
+                {
+                  "text": "Hello! Ask me about bikes."
+                }
+              ]
+            }
+          ],
+          "quickReplies": [
+            "oil",
+            "tyres"
+          ]
+        }
+      }
+    }
+  },
+  "story": {
+    "start": "desk",
+    "scenes": {
+      "desk": "scenes/desk/scene.json"
+    },
+    "ends": [
+      "desk"
+    ]
+  }
+}

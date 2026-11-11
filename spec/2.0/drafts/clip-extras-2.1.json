@@ -1,0 +1,72 @@
+{
+  "format": "hsvg/2.1-draft",
+  "kind": "grammar-draft",
+  "id": "clip-extras",
+  "about": {
+    "title": "Clip extras",
+    "description": "A 2.1 draft, outside the 2.0 registry (D31): a clip's timeRemap, frameRate, holdFrames and blendMs, and a track's wiggle and composite. No engine code played them and no file used them. 2.0 refuses them with E-DRAFT.",
+    "version": "2.1.0-draft"
+  },
+  "grammar": {
+    "clip properties": {
+      "blendMs": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 10000
+      },
+      "frameRate": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 240
+      },
+      "holdFrames": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 120
+      },
+      "timeRemap": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "track properties": {
+      "composite": {
+        "enum": [
+          "replace",
+          "add"
+        ]
+      },
+      "wiggle": {
+        "type": "object",
+        "required": [
+          "amplitude",
+          "periodMs",
+          "seed"
+        ],
+        "properties": {
+          "amplitude": {
+            "type": "number",
+            "minimum": 0
+          },
+          "periodMs": {
+            "type": "number",
+            "minimum": 16,
+            "maximum": 60000
+          },
+          "seed": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

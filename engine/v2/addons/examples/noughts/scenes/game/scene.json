@@ -1,0 +1,1212 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "game",
+  "layouts": [
+    {
+      "id": "wide",
+      "shape": "wide",
+      "drawing": "game.svg"
+    },
+    {
+      "id": "tall",
+      "shape": "tall",
+      "drawing": "game.tall.svg"
+    }
+  ],
+  "presets": [
+    {
+      "use": "example.shake@1.0.0",
+      "as": "nope",
+      "with": {
+        "target": "board",
+        "distance": 10
+      }
+    }
+  ],
+  "addons": {
+    "example.glow": {
+      "part": "board",
+      "color": "#ffb800",
+      "level": "glow"
+    }
+  },
+  "outputs": {
+    "changeLevel": {
+      "kind": "event"
+    }
+  },
+  "values": {
+    "board": {
+      "type": "array",
+      "maxItems": 9,
+      "items": {
+        "type": "string",
+        "enum": [
+          "",
+          "X",
+          "O"
+        ],
+        "maxLength": 1
+      },
+      "initial": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "cell": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 8,
+      "initial": 0
+    },
+    "winner": {
+      "type": "string",
+      "enum": [
+        "",
+        "X",
+        "O",
+        "draw"
+      ],
+      "initial": "",
+      "maxLength": 4
+    },
+    "reply": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 8,
+      "initial": -1
+    },
+    "seed": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99999,
+      "initial": 17
+    },
+    "glow": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "initial": 0
+    },
+    "cheered": {
+      "type": "boolean",
+      "initial": false
+    }
+  },
+  "computed": {
+    "lineRows": "filter(data.lines, at(board, item.a, '') !== '' && at(board, item.a, '') === at(board, item.b, '') && at(board, item.a, '') === at(board, item.c, ''))",
+    "winLine": "length(lineRows) > 0 ? at(lineRows, 0, data.lines[0]).id : ''",
+    "thinkingNow": "active('thinking') || active('reaching') || active('inking')",
+    "reachCell": "(active('reaching') || active('inking')) ? reply : -1",
+    "reachAngle": "at([0, -28.1, -46.9, 0, -19.2, -34.9, 0, -14.5, -27.3], reachCell, 28)",
+    "reachSlide": "at([101, 122.5, 175.6, 187, 201.5, 241, 273, 283.9, 314.8], reachCell, 60)",
+    "mood": "active('over') ? (winner === 'X' ? 'dizzy' : (winner === 'O' ? 'happy' : 'shrug')) : (active('inking') ? 'determined' : ((active('thinking') || active('reaching')) ? 'thinking' : (level === 1 ? 'sleepy' : (level === 3 ? 'determined' : 'idle'))))"
+  },
+  "controls": {
+    "cells": {
+      "kind": "choice",
+      "value": "cell",
+      "event": "picked",
+      "enabled": "active('your-turn')",
+      "label": "{{ words.board }}",
+      "options": {
+        "c0": {
+          "target": "cell-0",
+          "value": "0",
+          "keys": [
+            "Digit1"
+          ],
+          "label": "{{ words.cell }} 1, {{ at(board, 0, '') === 'X' ? words.markX : (at(board, 0, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c1": {
+          "target": "cell-1",
+          "value": "1",
+          "keys": [
+            "Digit2"
+          ],
+          "label": "{{ words.cell }} 2, {{ at(board, 1, '') === 'X' ? words.markX : (at(board, 1, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c2": {
+          "target": "cell-2",
+          "value": "2",
+          "keys": [
+            "Digit3"
+          ],
+          "label": "{{ words.cell }} 3, {{ at(board, 2, '') === 'X' ? words.markX : (at(board, 2, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c3": {
+          "target": "cell-3",
+          "value": "3",
+          "keys": [
+            "Digit4"
+          ],
+          "label": "{{ words.cell }} 4, {{ at(board, 3, '') === 'X' ? words.markX : (at(board, 3, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c4": {
+          "target": "cell-4",
+          "value": "4",
+          "keys": [
+            "Digit5"
+          ],
+          "label": "{{ words.cell }} 5, {{ at(board, 4, '') === 'X' ? words.markX : (at(board, 4, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c5": {
+          "target": "cell-5",
+          "value": "5",
+          "keys": [
+            "Digit6"
+          ],
+          "label": "{{ words.cell }} 6, {{ at(board, 5, '') === 'X' ? words.markX : (at(board, 5, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c6": {
+          "target": "cell-6",
+          "value": "6",
+          "keys": [
+            "Digit7"
+          ],
+          "label": "{{ words.cell }} 7, {{ at(board, 6, '') === 'X' ? words.markX : (at(board, 6, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c7": {
+          "target": "cell-7",
+          "value": "7",
+          "keys": [
+            "Digit8"
+          ],
+          "label": "{{ words.cell }} 8, {{ at(board, 7, '') === 'X' ? words.markX : (at(board, 7, '') === 'O' ? words.markO : words.markEmpty) }}"
+        },
+        "c8": {
+          "target": "cell-8",
+          "value": "8",
+          "keys": [
+            "Digit9"
+          ],
+          "label": "{{ words.cell }} 9, {{ at(board, 8, '') === 'X' ? words.markX : (at(board, 8, '') === 'O' ? words.markO : words.markEmpty) }}"
+        }
+      }
+    },
+    "again": {
+      "kind": "button",
+      "target": "again",
+      "event": "again",
+      "enabled": "active('your-turn') || active('over')",
+      "label": "{{ words.newGame }}"
+    },
+    "change-level": {
+      "kind": "button",
+      "target": "change-level",
+      "event": "changeLevel",
+      "enabled": "active('your-turn') || active('over')",
+      "label": "{{ words.changeLevel }}"
+    }
+  },
+  "on": {
+    "example.glow:faded": [
+      {
+        "id": "cheer",
+        "actions": [
+          {
+            "id": "cheered",
+            "set": "cheered",
+            "to": "true"
+          }
+        ]
+      }
+    ]
+  },
+  "entry": [
+    {
+      "id": "draw-grid",
+      "play": "grid-in"
+    },
+    {
+      "id": "bulb-on",
+      "play": "bulb"
+    },
+    {
+      "id": "breathe-on",
+      "play": "breathe"
+    },
+    {
+      "id": "blink-on",
+      "play": "blink"
+    },
+    {
+      "id": "sway-on",
+      "play": "sway"
+    },
+    {
+      "id": "dots-on",
+      "play": "dots"
+    },
+    {
+      "id": "twinkle-on",
+      "play": "twinkle"
+    }
+  ],
+  "machines": [
+    {
+      "id": "round",
+      "initial": "your-turn",
+      "states": {
+        "your-turn": {
+          "on": {
+            "picked": [
+              {
+                "id": "cell-taken",
+                "guard": "at(board, cell, '') !== ''",
+                "actions": [
+                  {
+                    "id": "shake",
+                    "play": "nope"
+                  },
+                  {
+                    "id": "buzz",
+                    "play": "'nope'", "as": "sound",
+                    "group": "sounds"
+                  }
+                ]
+              },
+              {
+                "id": "place-x",
+                "actions": [
+                  {
+                    "id": "turn",
+                    "call": "example.noughts.turn",
+                    "with": {
+                      "board": "board",
+                      "cell": "cell",
+                      "level": "level"
+                    },
+                    "to": {
+                      "board": "board",
+                      "winner": "winner",
+                      "reply": "reply"
+                    }
+                  },
+                  {
+                    "id": "new-seed",
+                    "set": "seed",
+                    "to": "(seed * 7 + 3) % 100000"
+                  },
+                  {
+                    "id": "scratch-x",
+                    "play": "'inkX'", "as": "sound",
+                    "group": "sounds"
+                  },
+                  {
+                    "id": "moved",
+                    "emit": "moved"
+                  }
+                ]
+              }
+            ],
+            "moved": [
+              {
+                "id": "bolt-replies",
+                "guard": "reply >= 0",
+                "target": "thinking"
+              },
+              {
+                "id": "game-ends",
+                "target": "over"
+              }
+            ],
+            "again": [
+              {
+                "id": "rub-out",
+                "target": "erasing"
+              }
+            ]
+          }
+        },
+        "thinking": {
+          "entry": [
+            {
+              "id": "hum-hm",
+              "play": "'hum'", "as": "sound",
+              "group": "sounds"
+            }
+          ],
+          "after": [
+            {
+              "id": "bolt-decides",
+              "delayMs": "random(550, 1150, seed)",
+              "target": "reaching"
+            }
+          ]
+        },
+        "reaching": {
+          "after": [
+            {
+              "id": "arm-arrives",
+              "delayMs": 660,
+              "target": "inking"
+            }
+          ]
+        },
+        "inking": {
+          "entry": [
+            {
+              "id": "scratch-o",
+              "play": "'inkO'", "as": "sound",
+              "group": "sounds"
+            }
+          ],
+          "after": [
+            {
+              "id": "o-done-over",
+              "delayMs": 560,
+              "guard": "winner !== ''",
+              "target": "over"
+            },
+            {
+              "id": "o-done-play-on",
+              "delayMs": 560,
+              "guard": "winner === ''",
+              "target": "your-turn"
+            }
+          ]
+        },
+        "over": {
+          "entry": [
+            {
+              "id": "you-won",
+              "if": "winner === 'X'",
+              "then": [
+                {
+                  "id": "count-win",
+                  "set": "wins",
+                  "to": "min(99, wins + 1)"
+                },
+                {
+                  "id": "pop-wins",
+                  "play": "pop-you"
+                },
+                {
+                  "id": "win-chime",
+                  "play": "'win'", "as": "sound",
+                  "group": "sounds"
+                },
+                {
+                  "id": "dizzy-bolt",
+                  "play": "dizzy"
+                },
+                {
+                  "id": "glow",
+                  "call": "example.glow.pulse",
+                  "with": {
+                    "times": "3"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "bolt-won",
+              "if": "winner === 'O'",
+              "then": [
+                {
+                  "id": "count-loss",
+                  "set": "losses",
+                  "to": "min(99, losses + 1)"
+                },
+                {
+                  "id": "pop-losses",
+                  "play": "pop-bolt"
+                },
+                {
+                  "id": "lose-note",
+                  "play": "'lose'", "as": "sound",
+                  "group": "sounds"
+                },
+                {
+                  "id": "bolt-dances",
+                  "play": "dance"
+                }
+              ]
+            },
+            {
+              "id": "nobody-won",
+              "if": "winner === 'draw'",
+              "then": [
+                {
+                  "id": "count-draw",
+                  "set": "draws",
+                  "to": "min(99, draws + 1)"
+                },
+                {
+                  "id": "pop-draws",
+                  "play": "pop-draw"
+                },
+                {
+                  "id": "even-note",
+                  "play": "'even'", "as": "sound",
+                  "group": "sounds"
+                },
+                {
+                  "id": "bolt-shrugs",
+                  "play": "shrug"
+                }
+              ]
+            }
+          ],
+          "on": {
+            "again": [
+              {
+                "id": "rub-out-again",
+                "target": "erasing"
+              }
+            ]
+          }
+        },
+        "erasing": {
+          "entry": [
+            {
+              "id": "sweep-starts",
+              "play": "sweep"
+            },
+            {
+              "id": "sweep-sound",
+              "play": "'sweep'", "as": "sound",
+              "group": "sounds"
+            }
+          ],
+          "after": [
+            {
+              "id": "paper-clean",
+              "delayMs": 1100,
+              "target": "your-turn",
+              "actions": [
+                {
+                  "id": "clear",
+                  "set": "board",
+                  "to": "['', '', '', '', '', '', '', '', '']"
+                },
+                {
+                  "id": "no-winner",
+                  "set": "winner",
+                  "to": "''"
+                },
+                {
+                  "id": "no-reply",
+                  "set": "reply",
+                  "to": "-1"
+                },
+                {
+                  "id": "no-cheer",
+                  "set": "cheered",
+                  "to": "false"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "clips": {
+    "grid-in": {
+      "durationMs": 1100,
+      "tracks": [
+        {
+          "id": "grid-draws",
+          "target": "grid-1",
+          "channel": "draw",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              520,
+              1,
+              "ease-out"
+            ]
+          ],
+          "stagger": {
+            "targets": [
+              "grid-2",
+              "grid-3",
+              "grid-4"
+            ],
+            "eachMs": 160
+          }
+        }
+      ]
+    },
+    "sweep": {
+      "durationMs": 1100,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "eraser-travels",
+          "target": "eraser",
+          "channel": "move", "axis": "route",
+          "route": "eraser-route",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              1100,
+              1,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "dance": {
+      "durationMs": 1200,
+      "loop": 2,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "dance-body",
+          "target": "bolt",
+          "channel": "move", "axis": "y",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              150,
+              -14,
+              "ease-out"
+            ],
+            [
+              300,
+              0,
+              "ease-in"
+            ],
+            [
+              450,
+              -14,
+              "ease-out"
+            ],
+            [
+              600,
+              0,
+              "ease-in"
+            ],
+            [
+              750,
+              -14,
+              "ease-out"
+            ],
+            [
+              900,
+              0,
+              "ease-in"
+            ],
+            [
+              1200,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "dance-arm",
+          "target": "arm",
+          "channel": "move", "axis": "y",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              150,
+              -14,
+              "ease-out"
+            ],
+            [
+              300,
+              0,
+              "ease-in"
+            ],
+            [
+              450,
+              -14,
+              "ease-out"
+            ],
+            [
+              600,
+              0,
+              "ease-in"
+            ],
+            [
+              750,
+              -14,
+              "ease-out"
+            ],
+            [
+              900,
+              0,
+              "ease-in"
+            ],
+            [
+              1200,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "dance-head",
+          "target": "bolt-head-bob",
+          "channel": "rotate",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              300,
+              -8,
+              "ease-in-out"
+            ],
+            [
+              600,
+              8,
+              "ease-in-out"
+            ],
+            [
+              900,
+              -8,
+              "ease-in-out"
+            ],
+            [
+              1200,
+              0,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "dizzy": {
+      "durationMs": 1500,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "dizzy-head",
+          "target": "bolt-head-bob",
+          "channel": "rotate",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              220,
+              -10,
+              "ease-in-out"
+            ],
+            [
+              520,
+              9,
+              "ease-in-out"
+            ],
+            [
+              820,
+              -6,
+              "ease-in-out"
+            ],
+            [
+              1120,
+              3,
+              "ease-in-out"
+            ],
+            [
+              1500,
+              0,
+              "ease-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "shrug": {
+      "durationMs": 1000,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "shrug-body",
+          "target": "bolt",
+          "channel": "move", "axis": "y",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              100,
+              2,
+              "ease-in"
+            ],
+            [
+              280,
+              -8,
+              "ease-out"
+            ],
+            [
+              760,
+              -8
+            ],
+            [
+              1000,
+              0,
+              "ease-in-out"
+            ]
+          ]
+        },
+        {
+          "id": "shrug-arm",
+          "target": "arm",
+          "channel": "move", "axis": "y",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              100,
+              2,
+              "ease-in"
+            ],
+            [
+              280,
+              -8,
+              "ease-out"
+            ],
+            [
+              760,
+              -8
+            ],
+            [
+              1000,
+              0,
+              "ease-in-out"
+            ]
+          ]
+        },
+        {
+          "id": "shrug-head",
+          "target": "bolt-head-bob",
+          "channel": "rotate",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              280,
+              8,
+              "ease-in-out"
+            ],
+            [
+              760,
+              8
+            ],
+            [
+              1000,
+              0,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "bulb": {
+      "durationMs": 1500,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "bulb-grows",
+          "target": "bolt-bulb",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              1500,
+              1.2,
+              "ease-in-out"
+            ]
+          ]
+        },
+        {
+          "id": "bulb-glows",
+          "target": "bolt-bulb",
+          "channel": "opacity",
+          "keys": [
+            [
+              0,
+              0.6
+            ],
+            [
+              1500,
+              1,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "breathe": {
+      "durationMs": 2400,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "chest-swells",
+          "target": "bolt-chest",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              2400,
+              1.05,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "blink": {
+      "durationMs": 3800,
+      "loop": true,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "eyes-blink",
+          "target": "bolt-eyes",
+          "channel": "scale", "axis": "y",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              3500,
+              1
+            ],
+            [
+              3580,
+              0.1,
+              "ease-in"
+            ],
+            [
+              3700,
+              1,
+              "ease-out"
+            ],
+            [
+              3800,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "sway": {
+      "durationMs": 2600,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "head-bobs",
+          "target": "bolt-head-bob",
+          "channel": "move", "axis": "y",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              2600,
+              -3,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "dots": {
+      "durationMs": 1500,
+      "loop": true,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "dot-1-blinks",
+          "target": "bolt-dot-1",
+          "channel": "opacity",
+          "keys": [
+            [
+              0,
+              0.25
+            ],
+            [
+              250,
+              1,
+              "ease-out"
+            ],
+            [
+              600,
+              0.25,
+              "ease-in"
+            ],
+            [
+              1000,
+              0.25
+            ]
+          ],
+          "stagger": {
+            "targets": [
+              "bolt-dot-2",
+              "bolt-dot-3"
+            ],
+            "eachMs": 220
+          }
+        }
+      ]
+    },
+    "twinkle": {
+      "durationMs": 1400,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "sparkles-twinkle",
+          "target": "sparkles-spin",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              0.94
+            ],
+            [
+              1400,
+              1.06,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "pop-you": {
+      "durationMs": 520,
+      "tracks": [
+        {
+          "id": "you-count-pops",
+          "target": "tally-you-count",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              160,
+              1.35,
+              "ease-out"
+            ],
+            [
+              520,
+              1,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "pop-bolt": {
+      "durationMs": 520,
+      "tracks": [
+        {
+          "id": "bolt-count-pops",
+          "target": "tally-bolt-count",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              160,
+              1.35,
+              "ease-out"
+            ],
+            [
+              520,
+              1,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "pop-draw": {
+      "durationMs": 520,
+      "tracks": [
+        {
+          "id": "draw-count-pops",
+          "target": "tally-draw-count",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              160,
+              1.35,
+              "ease-out"
+            ],
+            [
+              520,
+              1,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {"id": "x-0-draws", "target": "x-0", "draw": "at(board, 0, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-0-draws", "target": "o-0", "draw": "at(board, 0, '') === 'O' && !(reply === 0 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-1-draws", "target": "x-1", "draw": "at(board, 1, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-1-draws", "target": "o-1", "draw": "at(board, 1, '') === 'O' && !(reply === 1 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-2-draws", "target": "x-2", "draw": "at(board, 2, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-2-draws", "target": "o-2", "draw": "at(board, 2, '') === 'O' && !(reply === 2 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-3-draws", "target": "x-3", "draw": "at(board, 3, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-3-draws", "target": "o-3", "draw": "at(board, 3, '') === 'O' && !(reply === 3 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-4-draws", "target": "x-4", "draw": "at(board, 4, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-4-draws", "target": "o-4", "draw": "at(board, 4, '') === 'O' && !(reply === 4 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-5-draws", "target": "x-5", "draw": "at(board, 5, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-5-draws", "target": "o-5", "draw": "at(board, 5, '') === 'O' && !(reply === 5 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-6-draws", "target": "x-6", "draw": "at(board, 6, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-6-draws", "target": "o-6", "draw": "at(board, 6, '') === 'O' && !(reply === 6 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-7-draws", "target": "x-7", "draw": "at(board, 7, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-7-draws", "target": "o-7", "draw": "at(board, 7, '') === 'O' && !(reply === 7 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "x-8-draws", "target": "x-8", "draw": "at(board, 8, '') === 'X' ? 1 : 0", "glide": {"durationMs": 320, "easing": "ease-out"}},
+    {"id": "o-8-draws", "target": "o-8", "draw": "at(board, 8, '') === 'O' && !(reply === 8 && (active('thinking') || active('reaching'))) ? 1 : 0", "glide": {"durationMs": 480, "easing": "ease-in-out"}},
+    {"id": "win-row1-draws", "target": "win-row1", "draw": "active('over') && winLine === 'row1' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-row2-draws", "target": "win-row2", "draw": "active('over') && winLine === 'row2' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-row3-draws", "target": "win-row3", "draw": "active('over') && winLine === 'row3' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-col1-draws", "target": "win-col1", "draw": "active('over') && winLine === 'col1' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-col2-draws", "target": "win-col2", "draw": "active('over') && winLine === 'col2' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-col3-draws", "target": "win-col3", "draw": "active('over') && winLine === 'col3' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-diag1-draws", "target": "win-diag1", "draw": "active('over') && winLine === 'diag1' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "win-diag2-draws", "target": "win-diag2", "draw": "active('over') && winLine === 'diag2' ? 1 : 0", "glide": {"durationMs": 520, "easing": "ease-in-out"}},
+    {"id": "marks-fade", "target": "marks", "opacity": "active('erasing') ? 0 : 1", "glide": {"durationMs": 700, "easing": "ease-in-out"}},
+    {"id": "arm-turns", "target": "arm", "rotate": "reachAngle", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "hand-slides", "target": "arm-hand", "move": "reachSlide", "axis": "y", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-tube-edge-draws", "target": "arm-tube-edge", "draw": "(reachSlide + 24) / 440", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-tube-draws", "target": "arm-tube", "draw": "(reachSlide + 24) / 440", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-tube-shade-draws", "target": "arm-tube-shade", "draw": "(reachSlide + 24) / 440", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-tube-shine-draws", "target": "arm-tube-shine", "draw": "(reachSlide + 24) / 440", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-ring-1-slides", "target": "arm-ring-1", "move": "(reachSlide + 24) * 0.2", "axis": "y", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-ring-2-slides", "target": "arm-ring-2", "move": "(reachSlide + 24) * 0.4", "axis": "y", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-ring-3-slides", "target": "arm-ring-3", "move": "(reachSlide + 24) * 0.6000000000000001", "axis": "y", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "arm-ring-4-slides", "target": "arm-ring-4", "move": "(reachSlide + 24) * 0.8", "axis": "y", "glide": {"durationMs": 640, "easing": "ease-in-out"}},
+    {"id": "head-tilts", "target": "bolt-head", "rotate": "active('thinking') ? -8 : (active('reaching') ? -3 : (active('inking') ? 4 : 0))", "glide": {"durationMs": 420, "easing": "ease-in-out"}},
+    {"id": "eyes-mood", "target": "bolt-eyes", "variant": "mood"},
+    {"id": "mouth-mood", "target": "bolt-mouth", "variant": "mood"},
+    {"id": "eyes-glance-x", "target": "bolt-eyes", "move": "clamp(reachCell >= 0 ? (reachCell % 3 - 1) * 4 : 0, -6, 6)", "axis": "x", "glide": {"durationMs": 300, "easing": "ease-in-out"}},
+    {"id": "eyes-glance-y", "target": "bolt-eyes", "move": "clamp(reachCell >= 0 ? 3 : 0, -5, 5)", "axis": "y", "glide": {"durationMs": 300, "easing": "ease-in-out"}},
+    {"id": "dots-show", "target": "bolt-dots", "opacity": "active('thinking') ? 1 : 0", "glide": {"durationMs": 200, "easing": "ease-out"}},
+    {"id": "sparkles-show", "target": "sparkles", "opacity": "cheered && !active('erasing') ? 1 : 0", "glide": {"durationMs": 400, "easing": "ease-out"}},
+    {
+      "id": "status-win-shows",
+      "target": "status-win",
+      "visible": "active('over') && winner === 'X'"
+    },
+    {
+      "id": "status-lose-shows",
+      "target": "status-lose",
+      "visible": "active('over') && winner === 'O'"
+    },
+    {"id": "halo-pulses", "target": "paper-halo", "opacity": "glow"},
+    {"id": "status-text", "target": "status", "text": "{{ thinkingNow ? words.thinking : (active('over') ? (winner === 'X' ? words.youWin : (winner === 'O' ? words.boltWins : words.aDraw)) : (active('erasing') ? words.clearing : words.yourMove)) }}", "fit": {"box": "status-box", "minFontPx": 18, "maxLines": 2}},
+    {
+      "id": "level-text",
+      "target": "level-name",
+      "text": "{{ words.level }}: {{ level === 1 ? words.easy : (level === 2 ? words.fair : words.hard) }}"
+    },
+    {
+      "id": "again-text",
+      "target": "again-label",
+      "text": "{{ words.newGame }}"
+    },
+    {
+      "id": "change-text",
+      "target": "change-label",
+      "text": "{{ words.changeLevel }}"
+    },
+    {
+      "id": "tally-you-label-text",
+      "target": "tally-you-label",
+      "text": "{{ words.you }}"
+    },
+    {
+      "id": "tally-you-count-text",
+      "target": "tally-you-count",
+      "text": "{{ wins }}"
+    },
+    {"id": "tally-you-m1-draws", "target": "tally-you-m1", "draw": "wins >= 1 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-you-m2-draws", "target": "tally-you-m2", "draw": "wins >= 2 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-you-m3-draws", "target": "tally-you-m3", "draw": "wins >= 3 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-you-m4-draws", "target": "tally-you-m4", "draw": "wins >= 4 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-you-m5-draws", "target": "tally-you-m5", "draw": "wins >= 5 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {
+      "id": "tally-bolt-label-text",
+      "target": "tally-bolt-label",
+      "text": "{{ words.bolt }}"
+    },
+    {
+      "id": "tally-bolt-count-text",
+      "target": "tally-bolt-count",
+      "text": "{{ losses }}"
+    },
+    {"id": "tally-bolt-m1-draws", "target": "tally-bolt-m1", "draw": "losses >= 1 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-bolt-m2-draws", "target": "tally-bolt-m2", "draw": "losses >= 2 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-bolt-m3-draws", "target": "tally-bolt-m3", "draw": "losses >= 3 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-bolt-m4-draws", "target": "tally-bolt-m4", "draw": "losses >= 4 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-bolt-m5-draws", "target": "tally-bolt-m5", "draw": "losses >= 5 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {
+      "id": "tally-draw-label-text",
+      "target": "tally-draw-label",
+      "text": "{{ words.draws }}"
+    },
+    {
+      "id": "tally-draw-count-text",
+      "target": "tally-draw-count",
+      "text": "{{ draws }}"
+    },
+    {"id": "tally-draw-m1-draws", "target": "tally-draw-m1", "draw": "draws >= 1 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-draw-m2-draws", "target": "tally-draw-m2", "draw": "draws >= 2 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-draw-m3-draws", "target": "tally-draw-m3", "draw": "draws >= 3 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-draw-m4-draws", "target": "tally-draw-m4", "draw": "draws >= 4 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}},
+    {"id": "tally-draw-m5-draws", "target": "tally-draw-m5", "draw": "draws >= 5 ? 1 : 0", "glide": {"durationMs": 260, "easing": "ease-out"}}
+  ]
+}

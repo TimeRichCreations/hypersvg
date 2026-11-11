@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Home</title>
+  <g id="sky" data-hsvg-layer="backdrop">
+    <rect x="0" y="0" width="960" height="600" fill="#1c2740"/>
+  </g>
+  <g id="content" data-hsvg-layer="content">
+    <text id="heading" data-hsvg-kind="part" x="480" y="140" text-anchor="middle" font-family="sans-serif" font-size="40" fill="#fbf4e4">Two picked items</text>
+    <rect id="star-slot" data-hsvg-kind="part" data-hsvg-slot="star-slot" x="432" y="220" width="96" height="96" fill="none"/>
+    <rect id="go-slot" data-hsvg-kind="part" data-hsvg-slot="go-slot" x="360" y="400" width="240" height="72" fill="none"/>
+  </g>
+</svg>

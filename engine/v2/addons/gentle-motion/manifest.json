@@ -1,0 +1,29 @@
+{
+  "door": 1,
+  "id": "gentle-motion",
+  "version": "1.0.0",
+  "kind": "preset",
+  "title": "Gentle motion",
+  "description": "A theme whose motion is slow and soft (a sine curve), for engine controls and transitions. Use it in the experience and select it with \"theme\": \"<as>\".",
+  "adds": {
+    "inputs": {
+      "durationMs": {
+        "type": "integer",
+        "minimum": 150,
+        "maximum": 1200,
+        "initial": 420,
+        "description": "how long a transition takes"
+      }
+    },
+    "provides": {
+      "themes": {
+        "{{as}}": {
+          "motion": {
+            "durationMs": "{{durationMs}}",
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          }
+        }
+      }
+    }
+  }
+}

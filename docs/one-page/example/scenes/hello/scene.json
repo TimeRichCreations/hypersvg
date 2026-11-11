@@ -1,0 +1,25 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "hello",
+  "drawing": "hello.svg",
+  "values": {
+    "stars": {"type": "number", "initial": 0, "minimum": 0, "maximum": 99}
+  },
+  "controls": {
+    "add": {"kind": "button", "target": "button", "event": "added"}
+  },
+  "on": {
+    "added": [{"actions": [
+      {"set": "stars", "to": "min(99, stars + 1)"},
+      {"play": "pop"}
+    ]}]
+  },
+  "clips": {
+    "pop": {"durationMs": 400, "reducedMotion": "rest",
+      "tracks": [{"target": "star", "channel": "scale", "keys": [[0, 1], [150, 1.2, "ease-out"], [400, 1]]}]}
+  },
+  "bindings": [
+    {"target": "count", "text": "{{ stars }} stars"}
+  ]
+}

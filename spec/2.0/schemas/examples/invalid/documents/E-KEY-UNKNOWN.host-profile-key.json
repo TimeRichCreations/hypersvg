@@ -1,0 +1,7 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "host-profile",
+  "id": "a",
+  "capabilities": ["shell", "motion"],
+  "theme": "dark"
+}

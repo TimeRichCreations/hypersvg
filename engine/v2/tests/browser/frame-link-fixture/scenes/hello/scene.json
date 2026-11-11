@@ -1,0 +1,25 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "hello",
+  "drawing": "hello.svg",
+  "values": {
+    "presses": {"type": "number", "initial": 0, "minimum": 0, "maximum": 99}
+  },
+  "controls": {
+    "press": {"kind": "button", "target": "press-button", "event": "pressed", "keys": ["KeyP"], "label": "Press"},
+    "reset": {"kind": "button", "target": "reset-button", "event": "reset", "enabled": "presses > 0",
+              "label": "Reset", "disabledLabel": "Nothing to reset yet"}
+  },
+  "on": {
+    "pressed": [{"id": "count", "actions": [{"id": "add-one", "set": "presses", "to": "min(99, presses + 1)"}]}],
+    "reset": [{"id": "clear", "actions": [{"id": "back-to-zero", "set": "presses", "to": 0}]}],
+    "start": [{"id": "count-start", "actions": [
+      {"id": "add-start", "set": "starts", "to": "min(99, starts + 1)"},
+      {"id": "tell", "emit": "started"}
+    ]}]
+  },
+  "bindings": [
+    {"id": "count-text", "target": "count", "text": "Pressed {{ presses }} times"}
+  ]
+}

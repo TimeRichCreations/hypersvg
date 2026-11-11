@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="50" viewBox="0 0 320 50" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Bakery ad 320x50</title>
+<rect width="320" height="50" fill="#fff4d8" data-hsvg-layer="backdrop"/>
+<g id="logo" data-hsvg-kind="part">
+<circle cx="25" cy="25" r="20" fill="#0f6f72"/>
+<g id="sparkle" data-hsvg-kind="part" data-hsvg-layer="decoration"><circle cx="37" cy="13" r="3" fill="#e6af42"/></g>
+<rect id="brand-box" data-hsvg-kind="part" data-hsvg-fit="" x="48" y="15" width="40" height="20" fill="none"/>
+<text id="brand" data-hsvg-kind="part" x="48" y="29" font-family="sans-serif" font-size="16" fill="#153b4b">Harbour Bakery</text>
+</g>
+<rect id="headline-box" data-hsvg-kind="part" data-hsvg-fit="" x="95" y="8" width="150" height="34" fill="none"/>
+<text id="headline" data-hsvg-kind="part" x="95" y="32" font-family="sans-serif" font-size="28" fill="#153b4b">Headline</text>
+<rect id="legal-box" data-hsvg-kind="part" data-hsvg-fit="" x="250" y="10" width="60" height="30" fill="none"/>
+<text id="legal" data-hsvg-kind="part" x="250" y="22" font-family="sans-serif" font-size="14" fill="#4f6b73">Legal</text>
+</svg>

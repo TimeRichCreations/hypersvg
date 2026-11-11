@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "bike",
+  "drawing": "bike.svg",
+  "places": { "basket-point": { "kind": "slot" } },
+  "inputs": { "ride": { "kind": "knob", "type": "number", "minimum": 0, "maximum": 100, "initial": 0 } },
+  "bindings": [{ "id": "go", "target": "frame", "move": "ride", "axis": "x" }]
+}

@@ -1,0 +1,93 @@
+{
+  "about": "How check-schemas.mjs reads each example. as: the path the document has in its folder (for E-ID-FILE); needs: capabilities inherited from the experience or kit; addons: add-ons whose drawing rules apply; expect: the warning codes a valid example must give. An invalid example must fail with the code its file name starts with.",
+  "examples": {
+    "valid/documents/experience.json": {
+      "as": "harbour-ad/experience.json"
+    },
+    "valid/documents/experience-kit.json": {
+      "as": "round-harbour/experience.json"
+    },
+    "invalid/documents/E-DRAFT.nested-experience.json": {
+      "as": "robins-rounds/experience.json"
+    },
+    "valid/documents/experience-page.json": {
+      "as": "page-helper/experience.json"
+    },
+    "valid/documents/experience-seats.json": {
+      "as": "chess-game/experience.json"
+    },
+    "valid/documents/experience-synth.json": {
+      "as": "synth-demo/experience.json"
+    },
+    "valid/documents/scene.json": {
+      "as": "scenes/stop-harbour/scene.json"
+    },
+    "valid/documents/scene-flat.json": {
+      "as": "scenes/hook.json"
+    },
+    "valid/documents/scene-physics.json": {
+      "as": "scenes/toss/scene.json"
+    },
+    "valid/documents/scene-inherited-needs.json": {
+      "as": "scenes/toss-two/scene.json",
+      "needs": [
+        "physics"
+      ]
+    },
+    "valid/documents/shell.json": {
+      "as": "shell/robin-screen.json",
+      "needs": [
+        "shell"
+      ]
+    },
+    "valid/documents/component.json": {
+      "as": "components/cta/component.json"
+    },
+    "valid/documents/component-compound.json": {
+      "as": "components/offer-box/component.json"
+    },
+    "invalid/documents/E-DRAFT.logical-block.json": {
+      "as": "blocks/ride-road.json"
+    },
+    "valid/documents/kit.json": {
+      "as": "robin-delivery/kit.json"
+    },
+    "valid/documents/rule-pack.json": {
+      "as": "rules/harbour-brand.json"
+    },
+    "valid/documents/package.json": {
+      "as": "package.json"
+    },
+    "valid/documents/capability.json": {
+      "as": "capabilities/physics.json"
+    },
+    "invalid/documents/E-ID-FILE.folder.json": {
+      "as": "scenes/stop-harbour/scene.json"
+    },
+    "invalid/documents/E-ID-FILE.flat.json": {
+      "as": "scenes/hook-two.json"
+    },
+    "valid/drawings/W-MARK-ALIAS.look-alias.svg": {
+      "addons": [
+        13
+      ],
+      "expect": [
+        "W-MARK-ALIAS"
+      ]
+    },
+    "valid/drawings/W-KIND-MISSING.role-without-kind.svg": {
+      "expect": [
+        "W-KIND-MISSING"
+      ]
+    },
+    "invalid/documents/E-DRAFT.split-screen-shell.json": {
+      "as": "shell/lesson-screen.json",
+      "needs": [
+        "shell"
+      ]
+    },
+    "invalid/documents/E-DRAFT.split-screen-start.json": {
+      "as": "lesson/experience.json"
+    }
+  }
+}

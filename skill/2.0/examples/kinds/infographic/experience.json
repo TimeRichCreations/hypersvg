@@ -1,0 +1,17 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "infographic",
+  "about": {"title": "Fruit we picked", "preset": "data-story"},
+  "resources": {
+    "fruit": {"kind": "data", "file": "data/fruit.json", "digest": "sha256:30cef2cda1b1a57f48d5bb7919e8a656a155f576cff7e8ac7e4b140c5c96af70"}
+  },
+  "data": {
+    "fruit": {"resource": "fruit", "key": "id", "maxRows": 4,
+              "columns": {"id": {"type": "string", "maxLength": 16},
+                          "name": {"type": "string", "maxLength": 24},
+                          "share": {"type": "number", "minimum": 0, "maximum": 1}}}
+  },
+  "blocks": {"bar": "components/bar/component.json"},
+  "story": {"start": "chart", "scenes": {"chart": "scenes/chart/scene.json"}, "ends": ["chart"]}
+}

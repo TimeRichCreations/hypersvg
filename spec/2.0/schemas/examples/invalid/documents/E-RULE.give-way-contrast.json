@@ -1,0 +1,1 @@
+{"format": "hsvg/2.0", "kind": "experience", "id": "x", "story": {"start": "a", "scenes": {"a": "scenes/a/scene.json"}}, "rules": [{"id": "r", "kind": "contrast", "subject": "color:text", "strength": "give-way", "steps": ["shrink"], "floor": {"keep": true}}]}

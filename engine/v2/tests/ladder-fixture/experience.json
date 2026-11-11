@@ -1,0 +1,85 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "ladder-fixture",
+  "about": {
+    "title": "Ladder fixture: tiers and give-way steps in four sizes"
+  },
+  "needs": [
+    "fit",
+    "ladder"
+  ],
+  "axes": [
+    {
+      "axis": "shape",
+      "select": "space",
+      "sizes": {
+        "970x250": "must",
+        "728x90": "must",
+        "300x250": "must",
+        "320x50": "should"
+      }
+    },
+    {
+      "axis": "content",
+      "select": "space",
+      "tiers": [
+        {
+          "tier": "short",
+          "shape": {
+            "maxHeight": 100
+          }
+        },
+        {
+          "tier": "medium",
+          "shape": {
+            "maxPixels": 100000
+          }
+        },
+        {
+          "tier": "rich"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "headline": {
+      "kind": "content",
+      "contentType": "text",
+      "type": "string",
+      "maxLength": 80,
+      "initial": {
+        "rich": "Fresh sourdough, baked at dawn and delivered warm",
+        "medium": "Fresh sourdough, delivered warm",
+        "short": "Fresh sourdough"
+      }
+    },
+    "legal": {
+      "kind": "content",
+      "contentType": "text",
+      "type": "string",
+      "maxLength": 120,
+      "required": false,
+      "initial": {
+        "rich": "Offer ends Sunday. One loaf per order while stocks last. Terms at the counter.",
+        "short": "Terms apply."
+      }
+    },
+    "brand": {
+      "kind": "content",
+      "contentType": "text",
+      "type": "string",
+      "maxLength": 24,
+      "initial": "Harbour Bakery"
+    }
+  },
+  "story": {
+    "start": "ad",
+    "scenes": {
+      "ad": "scenes/ad/scene.json"
+    },
+    "ends": [
+      "ad"
+    ]
+  }
+}

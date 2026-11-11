@@ -1,0 +1,27 @@
+name: Checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node .github/workflows/checks.mjs
+  browser-consumer:
+    # Playwright's Chromium needs a supported Ubuntu; ubuntu-latest (26.04) has none yet.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --prefix "$RUNNER_TEMP/hsvg-browser" playwright@1.58.2
+      # The runner already has Google Chrome; using it needs no browser download and no system packages.
+      - run: PW_PATH="$RUNNER_TEMP/hsvg-browser" PW_EXECUTABLE_PATH="$(command -v google-chrome)" node release/browser-smoke.mjs

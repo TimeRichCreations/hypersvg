@@ -1,0 +1,61 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "harbour",
+  "about": {
+    "title": "Harbour"
+  },
+  "layouts": [
+    {
+      "id": "wide",
+      "shape": "wide",
+      "drawing": "harbour-wide.svg"
+    },
+    {
+      "id": "square",
+      "shape": "square",
+      "drawing": "harbour-square.svg"
+    },
+    {
+      "id": "tall",
+      "shape": "tall",
+      "drawing": "harbour-tall.svg"
+    }
+  ],
+  "values": {
+    "taps": {
+      "type": "number",
+      "initial": 0,
+      "minimum": 0,
+      "maximum": 1000
+    }
+  },
+  "controls": {
+    "tap": {
+      "kind": "button",
+      "target": "button",
+      "label": "Tap"
+    }
+  },
+  "on": {
+    "press:button": [
+      {
+        "id": "count",
+        "actions": [
+          {
+            "id": "add",
+            "set": "taps",
+            "to": "taps + 1"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "id": "count-text",
+      "target": "count",
+      "text": "{{ taps }}"
+    }
+  ]
+}

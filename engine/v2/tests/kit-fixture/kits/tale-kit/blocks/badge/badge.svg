@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" width="120" height="40" data-hsvg-version="2.0">
+<title>Page badge</title>
+<g id="badge" data-hsvg-kind="component">
+<rect id="badge__card" data-hsvg-kind="part" data-hsvg-color="accent" x="2" y="2" width="116" height="36" rx="8" fill="#f2b84b"/>
+<text id="badge__label" data-hsvg-kind="part" data-hsvg-color="on-accent" x="44" y="26" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#2b2a4c">Page</text>
+<text id="badge__count" data-hsvg-kind="part" data-hsvg-role="page-number" data-hsvg-color="on-accent" x="92" y="26" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#2b2a4c">1</text>
+</g>
+</svg>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 800" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Harbour Row</title>
+  <defs><filter id="soft"><feGaussianBlur stdDeviation="4"/></filter><symbol id="gull"><path d="M0 0l5 3l5-3"/></symbol></defs>
+  <g id="sky" data-hsvg-layer="backdrop">
+    <rect x="-400" y="-200" width="2000" height="1200" fill="#bfe4de"/>
+    <use href="#gull" x="300" y="80"/><use xlink:href="#gull" x="340" y="90" filter="url(#soft)"/>
+  </g>
+  <g id="world" data-hsvg-layer="content">
+    <path id="road" data-hsvg-kind="part" data-hsvg-route="surface" d="M-400 690H1600" fill="none"/>
+    <path id="tram-line" data-hsvg-kind="part" data-hsvg-route="track" d="M0 600H1200" fill="none"/>
+    <g id="robin-mount" data-hsvg-kind="part" data-hsvg-slot="robin" transform="translate(140 420) scale(0.4)"/>
+    <rect id="bruno-face" data-hsvg-kind="part" data-hsvg-role="keep-inside keep-clear" x="820" y="300" width="160" height="150" fill="none"/>
+    <rect id="caption-box" data-hsvg-kind="part" data-hsvg-fit="" x="60" y="40" width="520" height="96" fill="none"/>
+    <g id="answers" data-hsvg-kind="part" data-hsvg-repeat=""/>
+    <text id="caption" data-hsvg-kind="part" data-hsvg-color="ink" x="60" y="80" fill="#153b4b" font-family="Nunito, sans-serif" font-size="32">Bruno &amp; the parcel.</text>
+    <image id="photo" data-hsvg-kind="part" x="0" y="0" width="10" height="10" href="../../resources/images/harbour.png" data-tool-note="kept"/>
+    <g id="sign" data-hsvg-kind="component" data-hsvg-role="info"><rect id="sign-board" data-hsvg-kind="part" width="40" height="20"/></g>
+  </g>
+  <g id="controls" data-hsvg-layer="overlay">
+    <g id="onward" data-hsvg-kind="part" data-hsvg-role="next" data-hsvg-label="Onward">
+      <rect x="1040" y="680" width="120" height="80" rx="40" fill="#e6af42" data-hsvg-color="accent"/>
+    </g>
+  </g>
+</svg>

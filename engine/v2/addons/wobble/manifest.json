@@ -1,0 +1,76 @@
+{
+  "door": 1,
+  "id": "wobble",
+  "version": "1.0.0",
+  "kind": "preset",
+  "title": "Wobble",
+  "description": "A clip that rocks a part side to side and settles. Play it with {\"play\": \"<as>\"}. The part needs a rotate motion range of at least the amount.",
+  "adds": {
+    "inputs": {
+      "target": {
+        "type": "part",
+        "description": "the part that wobbles"
+      },
+      "amount": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 45,
+        "initial": 8,
+        "description": "the largest turn, in degrees"
+      },
+      "durationMs": {
+        "type": "integer",
+        "minimum": 200,
+        "maximum": 5000,
+        "initial": 700,
+        "description": "how long one wobble takes"
+      }
+    },
+    "provides": {
+      "clips": {
+        "{{as}}": {
+          "durationMs": 1000,
+          "speed": "1000 / {{durationMs}}",
+          "tracks": [
+            {
+              "id": "{{as}}-turn",
+              "target": "{{target}}",
+              "channel": "rotate",
+              "keys": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  150,
+                  "{{amount}}",
+                  "ease-out"
+                ],
+                [
+                  350,
+                  "-{{amount}} * 0.7",
+                  "ease-in-out"
+                ],
+                [
+                  550,
+                  "{{amount}} * 0.4",
+                  "ease-in-out"
+                ],
+                [
+                  750,
+                  "-{{amount}} * 0.15",
+                  "ease-in-out"
+                ],
+                [
+                  1000,
+                  0,
+                  "ease-out"
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

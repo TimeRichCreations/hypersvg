@@ -1,0 +1,2210 @@
+{
+  "about": "HyperSVG 2.0 diagnostic codes (10.12). Generated from the spec; keep in step.",
+  "codes": [
+    {
+      "code": "E-SVG-PARSE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing is not well-formed UTF-8 XML, or it holds a DOCTYPE, an entity declaration or a processing instruction.",
+      "fix": "Save the drawing as plain UTF-8 XML and remove any DOCTYPE, entity declaration or processing instruction."
+    },
+    {
+      "code": "E-SVG-ROOT",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.10",
+        "6.6",
+        "A13.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing has no root `<svg>` with a finite positive `viewBox` and `data-hsvg-version=\"2.0\"`, or its root uses `preserveAspectRatio` with `slice`, or its `data-hsvg-version` is not a version this spec knows.",
+      "fix": "Give the root `<svg>` a finite positive `viewBox` and `data-hsvg-version=\"2.0\"`, and do not use `slice`. For an earlier drawing, run the upgrade tool (A13.3) on a copy."
+    },
+    {
+      "code": "E-SVG-UNSAFE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing uses an SVG element, attribute, address or CSS rule outside the closed subset that 2.0 allows.",
+      "fix": "Remove it, or replace it with something from the allowed SVG subset in 2.11."
+    },
+    {
+      "code": "E-SVG-LIMIT",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing is over a workload limit, such as too many elements, too many nested `<use>` references, too many filter primitives or a filter radius out of range.",
+      "fix": "Simplify the drawing until it is inside every limit in 2.11; nothing is clamped for you."
+    },
+    {
+      "code": "E-KIND",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.10",
+        "4.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A `data-hsvg-kind` value is not `part`, `component`, `compound` or `screen`, or a component drawing breaks its shape (not one top-level `component` or `compound` `<g>` with no `transform`, or a component inside another).",
+      "fix": "Use one of the four kinds, keep one root `<g>` with no `transform` in a component drawing, and use a slot and a use instead of nesting a component."
+    },
+    {
+      "code": "W-KIND-MISSING",
+      "severity": "warning",
+      "section": "4",
+      "where": [
+        "4.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An element has a job but no `data-hsvg-kind`, so the reader treats it as a part.",
+      "fix": "Write `data-hsvg-kind=\"part\"` on the element."
+    },
+    {
+      "code": "E-DRAWING-OWNER",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.10"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Two block documents name the same drawing file.",
+      "fix": "Let one block document own the drawing, and reuse it with a use instead of a shared file."
+    },
+    {
+      "code": "E-MARK-UNKNOWN",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing carries a `data-hsvg-*` attribute that is not in the list of 2.0 marks and is not an accepted earlier alias (a page hook is never a drawing mark).",
+      "fix": "Remove the attribute or use the 2.0 mark that does the job."
+    },
+    {
+      "code": "E-MARK-VALUE",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A known mark has a value that is not well formed, such as a pivot or a motion range.",
+      "fix": "Rewrite the value in the form that 6.1 gives for that mark."
+    },
+    {
+      "code": "W-MARK-ALIAS",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing uses an earlier mark that a reader with the upgrade add-on (A13) accepts only as an alias (the earlier variant marks and the page marks).",
+      "fix": "Write the 2.0 mark instead, for example `data-hsvg-variant` for `data-hsvg-state-name`; writers never write aliases."
+    },
+    {
+      "code": "E-ID-SHAPE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.12",
+        "4.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An id in a component drawing is not `<namespace>__<local>` with a local part in the id grammar, or the double underscore is used anywhere else.",
+      "fix": "Rename the id to the component's namespace, two underscores and a local name in the id grammar, such as `robin-hero__near-wing`."
+    },
+    {
+      "code": "E-PIVOT",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A part that rotates, scales or skews has no pivot.",
+      "fix": "Add a pivot mark to the part."
+    },
+    {
+      "code": "E-MOVER-TRANSFORM",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A part with `data-hsvg-motion`, or the target of a channel, carries a `transform` attribute.",
+      "fix": "Remove the `transform` and put static offsets on an inner `<g>`."
+    },
+    {
+      "code": "E-FOLLOWS",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The leader named by `data-hsvg-follow` is not a part (or a screen-drawing component root) of the same drawing, is an ancestor or a descendant, or makes a loop through leaders or real parents. (The code keeps its earlier name.)",
+      "fix": "Name a part of the same drawing that is neither an ancestor nor a descendant, and remove the loop."
+    },
+    {
+      "code": "E-LOOK",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A part with variants (`data-hsvg-variant`) is badly formed: it has fewer than two variants, repeated or badly named variants, a rest variant that is not one of them, a variant child with a pivot, motion or transform, or the wrong `display` fallback. (The code keeps its earlier name: a look is now a variant, D33.)",
+      "fix": "Give the part at least two uniquely named variants, name one as the rest variant, show only the rest variant, and keep pivot, motion and transform on the part."
+    },
+    {
+      "code": "E-PLACE",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.3",
+        "5.10",
+        "7.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A place is drawn on the wrong kind of SVG element, or a `<rect>` place is transformed or painted, or a slot `<g>` is not empty.",
+      "fix": "Draw the place on the element its kind needs, with `fill=\"none\"`, no stroke and no `transform`, and keep slots empty."
+    },
+    {
+      "code": "E-COLOR-ROLE",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A colour mark (`data-hsvg-color`) is not well formed (an empty value, a target other than `fill` or `stroke`, a repeated target, or bare and `fill:`/`stroke:` forms mixed), or it names a role no theme of the experience defines.",
+      "fix": "Write the mark as a bare role or as `fill:<role>` and `stroke:<role>`, and use only roles the experience's themes define."
+    },
+    {
+      "code": "W-COLOR-ROLE-THEME",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.2.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Checked alone, a colour role is outside the core roles, or a type role is something other than `display` and `text`.",
+      "fix": "Use a core role, or check the drawing together with the kit whose themes define the role."
+    },
+    {
+      "code": "E-PAINT",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Painted content (a fill, stroke or filter) reaches beyond the viewBox in a layer (`data-hsvg-layer`) other than `backdrop`. (The code keeps its earlier name.)",
+      "fix": "Keep painted extent inside the viewBox, or mark the bleed as `backdrop`."
+    },
+    {
+      "code": "W-PAINT-OVER",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.4"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "Content sits in front of an overlay, or an overlay covers a control or a `keep-clear` safe area at rest.",
+      "fix": "Reorder the layers or move the overlay so it does not cover the content, the control or the `keep-clear` area."
+    },
+    {
+      "code": "W-SOUND-UNPLAYABLE",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.10"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A sound file could not be fetched or decoded by the browser, so it stays silent.",
+      "fix": "Use a format every target browser decodes (WAV, OGG or MP3), and check the file is whole."
+    },
+    {
+      "code": "E-ROLE-KIT",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A kit's `roles` map redefines a core role or alias.",
+      "fix": "Give the kit role a new word that is not a core role or alias."
+    },
+    {
+      "code": "W-ROLE-UNKNOWN",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A role word is in neither the core registry nor the kit's registry.",
+      "fix": "Use a known role word, or add the role to the kit's `roles` map."
+    },
+    {
+      "code": "E-ROLE-SCHEMA",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A component whose role has a role schema does not declare the schema's fields as `<role>.<field>` content fields, or does not bind the required fields in every layout.",
+      "fix": "Declare the schema's fields on the component and bind its required fields in every layout."
+    },
+    {
+      "code": "E-A11Y-NAME",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A control has no accessible name: no `label`, no target `data-hsvg-label` and no text from its only `<text>`.",
+      "fix": "Give the control a `label`, a `data-hsvg-label` on its target, or visible text."
+    },
+    {
+      "code": "E-A11Y-OWNED",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing carries an authored `role`, `tabindex` or `aria-*` attribute, which the player owns.",
+      "fix": "Remove the attribute; the engine gives the accessible structure from the marks."
+    },
+    {
+      "code": "W-ADDON-ABSENT",
+      "severity": "warning",
+      "section": "10",
+      "where": [
+        "10.11",
+        "12.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "`needs` names a known built-in add-on that this release does not hold (it comes with the hypersvg-addons release). Its calls, events and settings are checked by name only, and the packer refuses the experience.",
+      "fix": "Keep the need: check, pack and play the experience with the hypersvg-addons release."
+    },
+    {
+      "code": "W-A11Y-TITLE",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The drawing has no root `<title>` to serve as its accessible name (recommended, and required for library-ready).",
+      "fix": "Add a plain-text `<title>` as a child of the root `<svg>`."
+    },
+    {
+      "code": "E-JSON",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The file is not one UTF-8 JSON object, or it repeats a key, holds a number that is not finite, or uses the key `__proto__`, `prototype` or `constructor`.",
+      "fix": "Write one valid JSON object with no repeated keys, finite numbers and none of the refused keys."
+    },
+    {
+      "code": "E-KEY-UNKNOWN",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.1",
+        "4.2",
+        "4.9",
+        "10.10"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A key is neither defined by the spec nor by the manifest of a capability that the document's `needs` names.",
+      "fix": "Remove the key, or name its capability in `needs`; keep tool data in the tool's own sidecar outside the format."
+    },
+    {
+      "code": "E-WORD-RENAMED",
+      "severity": "error",
+      "section": "11",
+      "where": [
+        "11.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The document uses an old word (D33), such as `\"kind\": \"press\"`, or a common wrong guess at a word, such as `\"type\": \"button\"` on a control or `\"kind\": \"knob\"`. A drawing uses an old mark or motion channel, such as `data-hsvg-look` (now `data-hsvg-variant`) or `translate-y` (now `move-y`), or a wrong guess such as `data-hsvg-name` (now `data-hsvg-label`). The player reads only the final words and marks.",
+      "fix": "Write the final form the message names, such as `\"kind\": \"button\"`."
+    },
+    {
+      "code": "W-TEXT-LITERAL",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.6.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A `text` or `label` binding shows two quote marks (`''`), a bare name of the block's own (`score`), or words that name a value after a colon or an equals sign (`Score: score`) or a name no word is spelt like (`bestScore`), as written: words a person reads are plain words with `{{ }}` around a formula (D36).",
+      "fix": "Write `\"\"` for no text, or the words the message gives, such as `Score: {{ score }}`, to show the value."
+    },
+    {
+      "code": "E-KEY-CONFLICT",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.2",
+        "4.2",
+        "5.11",
+        "7.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Two keys that cannot appear together are both present, such as `on` and `afterMs` on one link, or `visit` with `return`.",
+      "fix": "Keep one of the two keys."
+    },
+    {
+      "code": "E-HEADER",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.2",
+        "2.3",
+        "A13.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A document's `format` is not `hsvg/2.0`, or its `kind` is not one of the document kinds.",
+      "fix": "Set `format` to `hsvg/2.0` and `kind` to a listed kind, or run an earlier file through the upgrade tool (A13.3) on a copy."
+    },
+    {
+      "code": "E-DRAFT",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.2",
+        "spec/2.0/drafts"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The file uses grammar that is not in 2.0 but is a 2.1 draft: a page action `goSpot`, `grab`, `carryTo` or `giveBack`; an effect kind other than `particles`; a logical block; nested experiences; split screen; content options or the `seed` selector; the export adapters' `report`, `clickArea` and `endHoldMs`; a scene's `choiceRegion` and `choicesAtMs`; a clip's `timeRemap`, `frameRate`, `holdFrames` and `blendMs`, and a track's `wiggle` and `composite`.",
+      "fix": "Remove it, or keep the file for a 2.1 engine. The message names the draft in `spec/2.0/drafts/`."
+    },
+    {
+      "code": "E-VERSION-NEWER",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A document's `format` (`hsvg/2.1`) or a drawing's `data-hsvg-version` (`2.1`) names a later minor version than this engine reads.",
+      "fix": "Play or check the file with an engine of that version, or keep to the features of 2.0 and write `hsvg/2.0`."
+    },
+    {
+      "code": "E-ID-FILE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A document's `id` does not match its folder name (for a main file) or its file's base name (for a flat file).",
+      "fix": "Rename the document or change its `id` so the two match."
+    },
+    {
+      "code": "E-ID-DUPLICATE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.1",
+        "2.9",
+        "2.12",
+        "3.1",
+        "3.12",
+        "4.5",
+        "5.3",
+        "10.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "An id or name is used twice where it must be unique, such as in one drawing, one list, one block's values and inputs, or the ids of a block's behaviour.",
+      "fix": "Give each one its own id or name."
+    },
+    {
+      "code": "E-PATH",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.1",
+        "10.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A path to a file is not a portable relative path that stays inside the folder of the experience or kit, for example it leaves the folder with `..`, or has a backslash, a URL, an absolute path or a name that collides with another.",
+      "fix": "Use a relative path with forward slashes that stays inside the folder and follows the portable names of 10.8."
+    },
+    {
+      "code": "E-FILE-MISSING",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A path names no file.",
+      "fix": "Add the file or correct the path."
+    },
+    {
+      "code": "E-REF-UNKNOWN",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.6",
+        "2.8",
+        "3.3",
+        "3.6",
+        "3.9",
+        "3.12",
+        "4.3",
+        "4.9",
+        "5.3.1",
+        "5.6.7",
+        "5.11",
+        "5.12",
+        "6.8",
+        "6.9",
+        "6.11",
+        "7.4",
+        "7.7",
+        "8.1",
+        "8.3",
+        "10.6",
+        "A2.1",
+        "A9.2",
+        "A10.1",
+        "A4.1",
+        "10.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A name points at something that does not exist where it is looked up, such as a drawn part (a control's target or a drag's drop), a block, a word id, a resource or an event producer.",
+      "fix": "Correct the name, or add the missing thing in every place it must exist. The message names a drawn id one or two letters away, if there is one."
+    },
+    {
+      "code": "E-CYCLE",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "2.7",
+        "4.3",
+        "4.9",
+        "5.2",
+        "5.7",
+        "6.9"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "Definitions, computed values, words or anchors refer back to themselves, directly or through others.",
+      "fix": "Break the loop so that nothing depends on itself."
+    },
+    {
+      "code": "E-KIT-BODY",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.2",
+        "4.8",
+        "4.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A kit experience (an experience made from a kit) brings its own definitions, values, behaviour or drawings, or weakens a kit rule.",
+      "fix": "Keep the kit experience to content, knobs, choices from the kit, its own story graph, words, resources and stricter rules, or make the change as a new kit version."
+    },
+    {
+      "code": "E-RESOURCE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.6",
+        "A2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A resource file is missing, its signature does not match its suffix, its bytes do not match its `digest`, or it is over its limits.",
+      "fix": "Fix the file or its declaration so the file exists, matches its suffix and digest, and is within the limits."
+    },
+    {
+      "code": "E-RESOURCE-TWICE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.6"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "One file is declared by more than one resource, as two declarations of one path or of equal digests in one document.",
+      "fix": "Declare each file once and use its id everywhere else."
+    },
+    {
+      "code": "E-WORDS",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A words file breaks the format (a byte order mark, bad quoting, a header other than `id,text`, or a repeated word id), or the default language does not hold every word id.",
+      "fix": "Save the file as UTF-8 without a byte order mark with the header `id,text` and unique ids, and add the missing words to the default language."
+    },
+    {
+      "code": "E-WORDS-UNKNOWN",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A translation adds a word id that the default language does not have.",
+      "fix": "Remove the extra id from the translation, or add the word to the default language."
+    },
+    {
+      "code": "W-WORDS-MISSING",
+      "severity": "warning",
+      "section": "2",
+      "where": [
+        "2.7",
+        "7.8"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A translation lacks a word the default language has, so the default word is shown.",
+      "fix": "Add the translated word to the language's words file."
+    },
+    {
+      "code": "E-DATA",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A data table file does not match its declared columns: a header that is not exactly the columns, a cell of the wrong type, or an empty cell in a column that is not a string.",
+      "fix": "Correct the file so it has every declared column and each cell has the declared type."
+    },
+    {
+      "code": "W-FILE-UNUSED",
+      "severity": "warning",
+      "section": "2",
+      "where": [
+        "2.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A file in a folder is named by no document or drawing.",
+      "fix": "Name the file in a document or drawing, or remove it."
+    },
+    {
+      "code": "E-NAME-SHAPE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.8",
+        "5.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A value, table or column name does not match `^[a-z][a-zA-Z0-9]*$` or has more than 48 characters.",
+      "fix": "Rename it in camelCase, starting with a lower-case letter, in 48 characters or fewer."
+    },
+    {
+      "code": "E-NAME-RESERVED",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.1",
+        "5.9",
+        "5.16"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A reserved name (a keyword, `hsvg`, a root name such as `data` or `words`, a built-in experience output or an unsafe name) is declared as a value, computed value, input or output.",
+      "fix": "Choose a name that is not reserved."
+    },
+    {
+      "code": "E-NAME-SHADOW",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.6",
+        "2.9",
+        "3.2",
+        "3.3",
+        "4.3",
+        "5.1.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A name hides another visible name, such as a scene value that reuses an experience value's name, or a definition, resource or event name defined at two levels.",
+      "fix": "Give each a different name."
+    },
+    {
+      "code": "W-NAME-HIDES",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.5",
+        "5.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A value, computed value or input has the name of a built-in value (an ambient input, or a row name such as `item`). Inside its scope the bare name reads the author's value; `hsvg.<name>` still reads the built-in, and `changed:hsvg.<name>` hears its change.",
+      "fix": "Nothing is wrong. Rename the value if you meant the built-in, or write `hsvg.<name>` where you need it."
+    },
+    {
+      "code": "W-SLIDER-EQUALS",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A value that a slider without `positions` writes is compared with `===` or `!==`. Without `positions` the value can be any number between its bounds (an arrow moves a tenth of the range), so the comparison rarely holds.",
+      "fix": "Give the slider `positions` (for example `\"positions\": 3` for three stops), or compare with `<` and `>`."
+    },
+    {
+      "code": "W-CONTROL-STILL",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "No binding of a slider's or dial's part reads its value: a `rotate` binding for a dial, a `move` binding (with the slider's `axis`) for a slider. The part follows the pointer while held, then goes back to where it is drawn, so it does not show its value at rest.",
+      "fix": "Bind the part to the value, for example `{\"target\": \"pointer\", \"rotate\": \"-135 + (heat - 50) / 200 * 270\"}` for a dial, or `{\"target\": \"handle\", \"move\": \"speed\", \"axis\": \"x\"}` for a slider."
+    },
+    {
+      "code": "W-CONTROL-DRAWN",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A drawn part looks like a button (its role is `button`, `close` or a word of the action group such as `action` or `next`, or its `data-hsvg-label` says \"button\"), but no control acts on it, on a part around it, on a part inside it, or on a hit part that follows it. A person sees a button that nothing presses.",
+      "fix": "Add a control, such as `\"controls\": {\"next\": {\"kind\": \"button\", \"target\": \"next\", \"event\": \"next\"}}`, or drop the role or label if the part is only a picture."
+    },
+    {
+      "code": "W-COLOR-UNMARKED",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.2.3",
+        "7.7",
+        "A8.6"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "With two or more themes, a drawn `fill` is exactly a colour of the theme in use, but no colour mark on the shape or a group around it names its role. A change of theme leaves it as drawn: a hard-coded colour. White, black and a role every theme paints alike are left out. Reported by `check.mjs --review` and by `test.mjs`.",
+      "fix": "Add the colour mark the message names, such as `data-hsvg-color=\"accent\"`, or pick a colour that is not the theme's if it must stay."
+    },
+    {
+      "code": "W-LABEL-HAS-VALUE",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A slider's `label` reads the slider's own `value`, directly or through a computed value. The value is already spoken as the slider's value (and as its `valueText`), so a screen reader says it twice: \"Current, 2.0 amperes, 2\".",
+      "fix": "Let the label name the slider only (`\"label\": \"Current\"`) and say the value in `valueText` (`\"valueText\": \"{{ numberText(current, 1) }} amperes\"`)."
+    },
+    {
+      "code": "W-NAME-HIDES-LABEL",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A button, a toggle or a choice's option shows words in its target that its spoken name (its `label`) does not contain. A person who says what they see (voice control) or reads along with a screen reader does not find the control (WCAG 2.5.3). The checker compares only plain words and word lookups; the browser test (`engine/v2/tools/test.mjs`) compares every name. Reported by `check.mjs --review` and by `test.mjs`.",
+      "fix": "Start the label with the visible words and put any extra words after them: \"Restart: the coil lies along the field\", not \"Start again: ...\"."
+    },
+    {
+      "code": "W-TEXT-SMALL",
+      "severity": "warning",
+      "section": "7",
+      "where": [
+        "7.3",
+        "8.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A text is drawn under the readable floor (12 px, or the experience's `readable` rule) where its layout is shown: its font size times the frame's scale at a declared size of the shape axes, or, with none declared, at 1280 x 800 or on a 390 x 844 phone. A tall layout drawn at 600 x 960 shows at 65 % on a phone. Reported by `check.mjs --review` and by `test.mjs`.",
+      "fix": "Draw a layout for that size (a phone layout at 390 x 844 units, so one unit is one CSS pixel), or give the text a larger size there."
+    },
+    {
+      "code": "E-KEY-REQUIRED",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.2",
+        "4.2",
+        "5.1",
+        "5.3",
+        "7.4",
+        "8.1"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A required key is missing, such as a value's `type` or `initial`, or an input without `initial` that a use or link does not supply.",
+      "fix": "Add the key, or supply the input in the use's `with` or the link's `carry`."
+    },
+    {
+      "code": "E-TYPE",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.2",
+        "4.3",
+        "4.8",
+        "4.9",
+        "5.1",
+        "5.3.1",
+        "5.3.3",
+        "5.4",
+        "5.6.7",
+        "5.12",
+        "7.5",
+        "A4.1",
+        "A9.2",
+        "A10.1",
+        "6.7",
+        "10.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A value or formula does not have the declared type, such as a `type` that does not match its `contentType`, a `url` that is not an absolute `https:` address, or a formula that does not fit its field, or a `freeText` field with a `maxLength` above 500, or a binding or `set` that would copy a `freeText` value into a `saved` or `session` value.",
+      "fix": "Use a value or formula of the declared type."
+    },
+    {
+      "code": "E-RANGE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.9",
+        "3.2",
+        "3.4",
+        "3.5",
+        "4.8",
+        "4.9",
+        "5.1",
+        "5.1.2",
+        "5.2",
+        "5.3.2",
+        "5.4",
+        "5.6.6",
+        "5.6.7",
+        "5.16",
+        "6.11",
+        "7.2",
+        "7.5",
+        "10.6",
+        "10.12",
+        "A2.1",
+        "A9.2",
+        "A10.1",
+        "5.6.4",
+        "6.7",
+        "10.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A value is outside its declared bounds or off its step lattice, or a limit such as a row count or a formula ceiling is passed, or a reported score's `maximum` is not above its `minimum`. Also: a host profile `retention` below 1 or not an integer; a partition id that is not 1 to 128 characters of `A-Z a-z 0-9 . _ -`; a `mediaSeek` `atMs` outside the largest `durationMs` of the videos its binding can show; a video marker past its video's `durationMs`; a `set ... to` or choice option `value` whose every result is outside the value's bounds or longer than its `maxLength`, so the write always faults.",
+      "fix": "Use a value inside the declared bounds, or ask for a kit version with a wider range."
+    },
+    {
+      "code": "E-FORMULA",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.6.2",
+        "5.6.3",
+        "5.6.4",
+        "5.6.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A formula is not valid: it uses syntax outside the formula language, calls a function that is not in the closed list, or fails when it runs (for example division by zero, a missing member or a non-finite result).",
+      "fix": "Rewrite the formula with only the allowed syntax and functions, and guard the cases that could fail."
+    },
+    {
+      "code": "E-REF-PRIVATE",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.1.3",
+        "5.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A formula or parent reads a value it may not see, such as something outside a component or compound, or a value of a used block that is not a declared output.",
+      "fix": "Pass the value in as an input, or read only declared outputs."
+    },
+    {
+      "code": "E-WRITE-INPUT",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.1.3",
+        "5.3",
+        "5.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A block writes a value that only its source may write: an input, a computed value, an output value or an ambient input.",
+      "fix": "Write only the block's own values: declare one under `values` and `set` that. Change an input at its source; a control may write a knob directly with `\"value\"`."
+    },
+    {
+      "code": "E-SETTING",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.3.2",
+        "9.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The settings name an unknown group or knob, lists a knob in more than one item, or gives `when: \"make\"` without a non-empty `editableBy`.",
+      "fix": "Name only declared knobs, list each knob once, and give every `when: \"make\"` knob an `editableBy`."
+    },
+    {
+      "code": "E-WORDS-PATH",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.7"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A translation reads a name that its default-language word does not read.",
+      "fix": "Make the translation read only the names the default word reads."
+    },
+    {
+      "code": "E-WORDS-DECIDE",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.5",
+        "5.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Text a person reads (a word, template result, label, `about` field or similar presentation source) can decide behaviour through a guard, condition, link, rule, output or saved value.",
+      "fix": "Decide on a stable id, a choice field, a data column of ids or a knob, never on display text."
+    },
+    {
+      "code": "E-MACHINE-INITIAL",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.14"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A machine node with children has no `initial` naming a direct child, or a leaf node has an `initial`.",
+      "fix": "Name a direct child as `initial` on a node with children, and leave `initial` off a leaf."
+    },
+    {
+      "code": "E-MACHINE-TARGET",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.14"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A transition `target` does not name a state of the same machine.",
+      "fix": "Target a state of the same machine, or emit an event that the other machine hears."
+    },
+    {
+      "code": "E-EVENT-LOOP",
+      "severity": "error",
+      "section": "9",
+      "where": [
+        "9.2",
+        "9.8"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "One transaction goes over an engine limit: more than 100 events, 4096 actions, 1,000,000 evaluation steps, 1,000 deadlines due at one millisecond or 100 deliveries.",
+      "fix": "Break the chain of events so that one transaction stays inside the limits."
+    },
+    {
+      "code": "E-MOUNT-LIMIT",
+      "severity": "error",
+      "section": "9",
+      "where": [
+        "9.2",
+        "9.8"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "Mounting goes over an aggregate limit: 2,048 live block uses, 200,000 SVG elements across all mounted drawings, a mount depth of 16, 16 megapixels in one decoded image or 64 in total, a filter surface (the sum of the filter regions of all filtered elements, in player-box pixels) of more than 4 times the player box area, or stored data (UTF-8 bytes of the stored JSON per partition) of more than 1 MiB `saved` or 4 MiB `session`. While playing, the transaction that mounts the new art faults with the same code, and so does a transaction whose `saved` or `session` values would pass the stored-data limit; this is checked in compute, before commit. Restored data over the limit is not this error: it is ignored with `save:invalid`.",
+      "fix": "Mount fewer uses or lighter drawings, use smaller images, or keep less stored data."
+    },
+    {
+      "code": "W-MOUNT-LIMIT",
+      "severity": "warning",
+      "section": "9",
+      "where": [
+        "9.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The checker estimates that a drawing's filter surface (the sum of the filter regions of its filtered elements, at a declared size) is over the mount limit of 4 times the player box, so play would refuse it with `E-MOUNT-LIMIT`.",
+      "fix": "Give the filter a smaller region, filter fewer or smaller elements, or draw the effect without a filter."
+    },
+    {
+      "code": "E-NAVIGATION",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.3",
+        "5.13"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An outcome is emitted from an exit action list.",
+      "fix": "Report the outcome before the exit."
+    },
+    {
+      "code": "E-WRITER",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.11",
+        "6.2.4",
+        "6.7",
+        "9.3"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "Two writers own one channel, such as two `replace` tracks on one channel, or a `variant` binding or clip track competing with a control that owns the part's variants.",
+      "fix": "Keep one writer for the channel, or make the extra track an `add` track where that is allowed."
+    },
+    {
+      "code": "E-MOTION-RANGE",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.1",
+        "6.7"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A clip key, binding, effect, slider or drag moves a part outside its motion range.",
+      "fix": "Keep every key, overshoot and wiggle inside the part's motion range, or widen the drawn range after testing it."
+    },
+    {
+      "code": "E-LOOK-NOT-DRAWN",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.4",
+        "6.8",
+        "A13.5"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A variant that the JSON names is not drawn in every frame and layout. (The code keeps its earlier name: a look is now a variant, D33.)",
+      "fix": "Draw the variant in every frame and layout, or stop naming it."
+    },
+    {
+      "code": "E-REPEAT-CAPACITY",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.5",
+        "4.5",
+        "5.10"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A repeat group (`data-hsvg-repeat`) has fewer child slots than the list's `maxItems` or the number of choice links.",
+      "fix": "Draw more slots in every frame, or lower `maxItems`."
+    },
+    {
+      "code": "E-REPEAT-NESTED",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A repeated use sits inside a repeated block.",
+      "fix": "Keep repeated uses flat."
+    },
+    {
+      "code": "E-HUMAN-ONLY",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.13",
+        "5.15.4",
+        "10.5",
+        "A4.1"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A timer, link, marker, host message, AI answer, or an agent or program through a seat, reaches an action that only a person's trusted input may start.",
+      "fix": "Let the person act: start the action from a real press, key or pointer gesture."
+    },
+    {
+      "code": "W-HUMAN-ONLY-PATH",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.15.4",
+        "10.5",
+        "A4.1"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "The checker found a path from a source other than a person, such as a seat input, that can reach a human-only action.",
+      "fix": "Cut the path so that only the person's own input leads to the action."
+    },
+    {
+      "code": "E-MODULE-CALL",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.7"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A module call does not match the export: `with` is not exactly the export's inputs, or `to` is not exactly its outputs mapped to distinct writable values.",
+      "fix": "Supply exactly the export's inputs, and map exactly its outputs to distinct writable values."
+    },
+    {
+      "code": "E-MODULE-RESULT",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.7",
+        "10.11"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A module call fails or returns results that do not pass the checks made before any write, or goes over its step budget (`budgetSteps`, 10.7), so the transaction faults with no partial output.",
+      "fix": "Make the module return results that pass the checks within its declared time budget of at most 1000 ms."
+    },
+    {
+      "code": "E-STORY-UNREACHABLE",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A scene that no start or link reaches.",
+      "fix": "Link to the scene or remove it."
+    },
+    {
+      "code": "E-STORY-DEAD-END",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A scene has no way on and is not an ending.",
+      "fix": "Add a link, or list the scene in `ends`."
+    },
+    {
+      "code": "E-STORY-NO-END",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The story has no ending, or a scene cannot reach one without bounded links.",
+      "fix": "Add a path to an ending, or declare `endless`."
+    },
+    {
+      "code": "E-STORY-LOOP",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A cycle made only of timed links (`afterMs`, `afterLine`) has no `max`.",
+      "fix": "Put `max` on one link of the cycle."
+    },
+    {
+      "code": "E-STORY-FALLBACK",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.2",
+        "3.8",
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The last link among the links that share one `from` and one `on` has a `when` or a `max`.",
+      "fix": "Add an unconditional last link."
+    },
+    {
+      "code": "E-STORY-CHOICE-FALLBACK",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.5",
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A scene with choice links has no way on when no choice is eligible.",
+      "fix": "Add an unconditional choice link, or a timed or event link from that scene."
+    },
+    {
+      "code": "E-STORY-CHOICE-PLACE",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A scene with choice links has no shell choices widget to offer them (`choiceRegion` is a 2.1 draft).",
+      "fix": "Add a choices widget to the shell."
+    },
+    {
+      "code": "E-STORY-RETURN",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.7",
+        "3.9"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A return link has no fallback link from the same scene and event, and some way into its scene is not a visit.",
+      "fix": "Add a fallback link beside the return link, or make every way into the scene a visit."
+    },
+    {
+      "code": "E-STORY-VISIT-CYCLE",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.7",
+        "3.9"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "Visit links make a cycle, or a chain of visit links is longer than 16.",
+      "fix": "Break the cycle with a plain link, and keep visit chains to 16 or fewer."
+    },
+    {
+      "code": "E-RETURN",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.7",
+        "3.9"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A return is made with an empty visit stack, or a visit would make 17 suspended scenes in one stage slot.",
+      "fix": "Give each return link a fallback link; keep at most 16 visits open (3.7)."
+    },
+    {
+      "code": "E-CLOCK-SPEED",
+      "severity": "error",
+      "section": "3",
+      "where": [
+        "3.10"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A clock's speed has a proven range that leaves 0.01 to 100.",
+      "fix": "Clamp the speed formula or bound its inputs so it stays between 0.01 and 100."
+    },
+    {
+      "code": "E-KIT-PIN",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.8",
+        "4.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A kit experience's kit pin does not resolve: the kit or version is missing, or the digest does not match.",
+      "fix": "Pin an existing kit version, and give the digest that version really has."
+    },
+    {
+      "code": "E-CATALOGUE",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A kit's catalogue is missing or broken: an item without a known type, title, tags, one line or a preview that exists, or an item that does not name exactly one thing of the kit that fits its type.",
+      "fix": "Give each item a type, a title, 1 to 8 tags, one line and a preview image in the kit, and name one block, resource, theme, preset or rule pack of the kit that fits its type."
+    },
+    {
+      "code": "E-SHELL-SLOT",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.10",
+        "10.1",
+        "10.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A shell slot is missing from a frame, or a slot has no kind.",
+      "fix": "Draw the slot in every frame and give its kind."
+    },
+    {
+      "code": "E-WIDGET-PAINT",
+      "severity": "error",
+      "section": "A6",
+      "where": [
+        "A6.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An overlay slot later in document order crosses a declared HTML widget's slot.",
+      "fix": "Move one of the two slots."
+    },
+    {
+      "code": "E-GRANT",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.15.2",
+        "10.5",
+        "10.6",
+        "A9.2",
+        "A10.1"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "Content uses a signal, page action, hook, request or widget that it does not ask for, or the host refused a grant that is not optional, or a page message names something the experience was not granted.",
+      "fix": "Ask for the grant by name, list it in `optional` with a fallback, or choose another host."
+    },
+    {
+      "code": "E-HOST-CLOSED",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.6"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A host call reached a player after `destroy` or a fatal stop.",
+      "fix": "Mount the experience again."
+    },
+    {
+      "code": "E-HOST-CALL",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.6"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A frame link message names a call that is not one of the host API's verbs, or its envelope version is not 1.",
+      "fix": "Send one of the calls 10.6 lists, with `v: 1`."
+    },
+    {
+      "code": "E-HOST-LIMIT",
+      "severity": "error",
+      "section": "9",
+      "where": [
+        "9.8.1",
+        "A10.1"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "The experience raises a capacity limit (its `limits`) further than the host profile allows, or the host has no profile and the experience raises any limit.",
+      "fix": "Play it on a host whose profile allows these limits, or lower the experience's `limits` and make its content fit."
+    },
+    {
+      "code": "E-HOST-RUNS",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.4",
+        "A10.1"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "The package needs a capability that the host profile's `capabilities` list leaves out.",
+      "fix": "Mount it on a host that runs the capability, or take out the content that needs it."
+    },
+    {
+      "code": "E-HOST-PRIVATE",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.1.4",
+        "5.3.1",
+        "10.6",
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "The host API, or a play-time reach, names a body value, which cannot be read, or reads a `freeText` field (5.3.1), which a host `read` refuses.",
+      "fix": "Expose the value as an input or output."
+    },
+    {
+      "code": "E-HOST-PICTURE",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.6"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A picture a host hands in with `player.picture` (D40) is refused: its type is not `image/png`, `image/jpeg` or `image/webp` (never SVG or code), its bytes do not show that type or give no size, it is over `imageBytesEach` bytes or `imagePixelsEach` decoded pixels, or it is not bytes. Nothing changes.",
+      "fix": "Hand in a PNG, JPEG or WebP as a Uint8Array, with the type its bytes show, within the limits."
+    },
+    {
+      "code": "E-HOOK-MARK",
+      "severity": "error",
+      "section": "A3",
+      "where": [
+        "A3.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A `data-hsvg-hook` token is bad.",
+      "fix": "Write the token as `kind:name` with a known kind."
+    },
+    {
+      "code": "W-HOOK-MISSING",
+      "severity": "warning",
+      "section": "A3",
+      "where": [
+        "A3.1"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A hook is missing or ambiguous on the host page.",
+      "fix": "Mark exactly one element for the hook; the actor docks meanwhile."
+    },
+    {
+      "code": "E-SEAT-INPUT",
+      "severity": "error",
+      "section": "A4",
+      "where": [
+        "A4.1",
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A seat input is not a trigger, a control or a choice link; or the agent door refuses it (a taken seat, an identity that already holds a seat, another seat's view).",
+      "fix": "Send a declared trigger."
+    },
+    {
+      "code": "E-AI-FLOW",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.3.1",
+        "5.8",
+        "5.15.2",
+        "10.7",
+        "A5.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An AI answer, or a value derived from it, can reach a `session` or `saved` value, an output, a record, the host API, a link, a use's input, a page action or a request, or a visitor's free text (`freeText`, 5.3.1) is read anywhere but as an `ask` action's `with` value.",
+      "fix": "Keep the answer in bindings and `moment` values; read free text only in `ask`."
+    },
+    {
+      "code": "E-RULE",
+      "severity": "error",
+      "section": "8",
+      "where": [
+        "6.11",
+        "8.1",
+        "8.4",
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A `must` rule is broken, so the save, publish, export or change is refused. The same code refuses a rule written with an unknown kind, strength, proof kind, step or budget measure, or with a proof kind or step its type cannot use.",
+      "fix": "Change the content so the rule holds, or add a waiver the rule allows."
+    },
+    {
+      "code": "E-RULE-SUBJECT",
+      "severity": "error",
+      "section": "8",
+      "where": [
+        "8.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A rule's subject matches nothing in its document or in any block used inside it.",
+      "fix": "Point the rule at something that exists, or remove the rule."
+    },
+    {
+      "code": "E-RULE-CONFLICT",
+      "severity": "error",
+      "section": "8",
+      "where": [
+        "8.6"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Two rules that apply cannot both hold, such as fonts with nothing in common or a minimum above a maximum. Both fail; each report names the other.",
+      "fix": "Change one of the rules, or add a waiver."
+    },
+    {
+      "code": "E-WAIVER-REASON",
+      "severity": "error",
+      "section": "8",
+      "where": [
+        "8.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A waiver has no `reason`, or an empty one.",
+      "fix": "Write the reason for the waiver."
+    },
+    {
+      "code": "E-AXIS-INPUT",
+      "severity": "error",
+      "section": "7",
+      "where": [
+        "7.1",
+        "10.6",
+        "A10.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An `input` selector names a value whose choices are not exactly the axis's options.",
+      "fix": "Make the value's choices exactly the axis's options."
+    },
+    {
+      "code": "E-LAYOUT-MISSING",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.6",
+        "7.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A part, place, slot, variant, motion channel or colour role that the JSON names is missing from one frame or layout of a block.",
+      "fix": "Draw the missing name in that frame so every frame of the block has the same names."
+    },
+    {
+      "code": "E-DRAWN-MISSING",
+      "severity": "error",
+      "section": "7",
+      "where": [
+        "7.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A layout's root place does not exist in a frame where the layout applies.",
+      "fix": "Draw the root place in that frame."
+    },
+    {
+      "code": "E-OVERLAP",
+      "severity": "error",
+      "section": "7",
+      "where": [
+        "7.5"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Two items of a layout plan overlap at a `must` size, and no `relation` rule allows `overlay`; neither is painted as `backdrop` or `decoration`.",
+      "fix": "Give the items their own cells, or add a `relation` rule with `\"is\": \"overlay\"` for the two."
+    },
+    {
+      "code": "W-PLAN-SCALE",
+      "severity": "warning",
+      "section": "7",
+      "where": [
+        "7.5",
+        "7.6"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A layout plan scales a frame so that its text falls below the readable floor at a declared size: the text's type size times the frame's design scale at that size is under the floor.",
+      "fix": "Draw a frame for that shape at its own size (a strip or a tower has its own drawing), or give the text a larger size there."
+    },
+    {
+      "code": "E-CONTENT-REQUIRED",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.3.1",
+        "7.9",
+        "A8.4"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A required content field is empty, or a required field has an empty wording.",
+      "fix": "Give the field content, or make the field optional."
+    },
+    {
+      "code": "E-THEME-ROLES",
+      "severity": "error",
+      "section": "6",
+      "where": [
+        "6.2.3",
+        "6.8",
+        "7.1",
+        "7.7"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A theme of a kit lacks a colour role or type role that the kit uses.",
+      "fix": "Add the missing role to every theme of the kit."
+    },
+    {
+      "code": "E-SEAL",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.3",
+        "4.6",
+        "4.7",
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A use or change reaches inside a sealed block, for example an address to an inner input or to a sealed body instead of an exposed input.",
+      "fix": "Address the exposed or promoted input at the container, never the inner path."
+    },
+    {
+      "code": "E-SEAL-LEAK",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.6",
+        "5.1.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A sealed body reads or writes outside the block other than through its inputs, places, outputs, granted actions, the ambient inputs or its kit's words, data and resources.",
+      "fix": "Pass the outside value in as an input, or remove the reference."
+    },
+    {
+      "code": "E-SEAL-DIGEST",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.6",
+        "A9.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A sealed definition in a candidate or accepted kit has a missing or wrong digest.",
+      "fix": "Run `hsvg seal <file>` to check the definition and record its digest."
+    },
+    {
+      "code": "E-PROMOTE",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.7",
+        "A9.2"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A promoted name collides with the container's own inputs or another promoted name, or a promoted input is also given in the use's `with`.",
+      "fix": "Rename the promoted input, and give each promoted input from one source only."
+    },
+    {
+      "code": "E-RIGHTS",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.7",
+        "4.8",
+        "4.9",
+        "8.5",
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A change, a `with` value or a waiver is outside the editor's rights: the rights table does not let that right edit the address, or the right is not in the rule's `waivableBy` (a rule without `waivableBy` cannot be waived).",
+      "fix": "Make the change under a right that may edit that address, or make a kit change under `changeKit`."
+    },
+    {
+      "code": "E-RIGHTS-UNKNOWN",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.7"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An `editableBy` list names a right that the container's kit does not declare.",
+      "fix": "Name only rights declared in the kit, and rewrite a list copied from another kit."
+    },
+    {
+      "code": "W-RIGHTS-WIDEN",
+      "severity": "warning",
+      "section": "4",
+      "where": [
+        "4.7"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A promotion's `editableBy` adds a right that the inner declaration of the same kit did not name.",
+      "fix": "Remove the added right unless you mean to widen who may edit the input."
+    },
+    {
+      "code": "E-CHANGE-SHAPE",
+      "severity": "error",
+      "section": "A9",
+      "where": [
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A change request is not well formed or is over its limits, or an id that was already used is sent again with different content.",
+      "fix": "Send a well formed request inside the limits, with a new id for new content."
+    },
+    {
+      "code": "E-CHANGE-STALE",
+      "severity": "error",
+      "section": "A4",
+      "where": [
+        "A4.1",
+        "A9.2"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A change is based on an old state: `expected` is not the current digest or revision, or an `old` value is not the current value, or a remote seat's legal-list key is used or stale (single-use, and tied to the view, the occupant and the turn).",
+      "fix": "Read the current state and send the change again from it."
+    },
+    {
+      "code": "E-KIT-VERSION",
+      "severity": "error",
+      "section": "4",
+      "where": [
+        "4.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A new kit version is not the right class (patch, minor or major) for what changed.",
+      "fix": "Raise the version to the class the change needs, or undo the part of the change that does not fit the class."
+    },
+    {
+      "code": "E-TRUST-REVIEW",
+      "severity": "error",
+      "section": "A9",
+      "where": [
+        "A9.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An `accepted` review was made by an agent, and only a person may accept.",
+      "fix": "Have a person review it; an agent may set only `candidate` or `blocked`, under a right with `review`."
+    },
+    {
+      "code": "E-MODULE-REVIEW",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.7",
+        "A4.1",
+        "A9.3"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A logic module is not named in `needs`, not pinned by digest, or not in the host's reviewed lock; or `needs` names a module that no package or lock carries (refused at mount).",
+      "fix": "Name the module in `needs`, pin its digest, and have the host add it to its reviewed lock."
+    },
+    {
+      "code": "E-MODULE-CONFINEMENT",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.7",
+        "A9.3"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "The host does not run the module in a confined executor, which allows no network, storage, page or clock access and only its declared inputs and outputs.",
+      "fix": "Run the module on a host that confines it."
+    },
+    {
+      "code": "E-PACKAGE-MEMBER",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A file other than `package.json` is missing from `members`, is extra, or is listed more than once.",
+      "fix": "List every file in `members` exactly once."
+    },
+    {
+      "code": "E-ASSET",
+      "severity": "error",
+      "section": "2",
+      "where": [
+        "2.13",
+        "10.14"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "A HyperSVG (D45) is refused: it has no asset record right after its <svg> start tag, the record is not well formed or holds other keys, or the asset holds what an asset cannot hold (a kit, a need, a file that is not text, a drawing with its own tool record, more than dataBytesEach bytes). Nothing plays.",
+      "fix": "Pack the asset folder again with pack --asset; make it an experience if it needs add-ons or pictures."
+    },
+    {
+      "code": "E-PACKAGE-DIGEST",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.8",
+        "10.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A member's digest does not match the exact bytes of its file.",
+      "fix": "Rebuild the package so each digest matches its file."
+    },
+    {
+      "code": "E-PACKAGE-DESCRIPTOR",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.8"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A package's `experience`, `kits`, `needs` or `inputs` does not match what the checker recomputes from its files.",
+      "fix": "Let the packer write `package.json` again from the files."
+    },
+    {
+      "code": "E-NEEDS-MISSING",
+      "severity": "error",
+      "section": "5",
+      "where": [
+        "5.15.3",
+        "10.11",
+        "A2.1",
+        "10.7"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "Content uses grammar that a capability owns, but `needs` does not name that capability.",
+      "fix": "Add the capability to `needs`."
+    },
+    {
+      "code": "E-NEEDS-UNKNOWN",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "`needs` names a capability that is not known.",
+      "fix": "Use a capability name from the capability registry."
+    },
+    {
+      "code": "W-NEEDS-UNUSED",
+      "severity": "warning",
+      "section": "10",
+      "where": [
+        "10.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "`needs` names a capability that the content does not use.",
+      "fix": "Remove the capability from `needs`."
+    },
+    {
+      "code": "W-PLACE-UNUSED",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.10",
+        "6.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A drawn route place (`data-hsvg-route`) or video box (`data-hsvg-fit=\"video\"`) is named by nothing in the content, so the engine ignores it.",
+      "fix": "Name it (a route key of a track or binding, a video binding's target, the block's `places`) or remove the mark."
+    },
+    {
+      "code": "W-PIVOT-OUTSIDE",
+      "severity": "warning",
+      "section": "6",
+      "where": [
+        "6.2.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A part that turns or grows (a limited rotate, lean or scale range) has its data-hsvg-pivot outside what it draws, by more than its box's longer side and more than 5% of the drawing's viewBox. It would swing around a point away from it: often the art moved and the pivot was left behind. A pivot several parts share is a centre on purpose and is not judged.",
+      "fix": "Move data-hsvg-pivot onto the part (its hinge or centre), or check that the art did not move without it."
+    },
+    {
+      "code": "W-STORY-UNHEARD",
+      "severity": "warning",
+      "section": "3",
+      "where": [
+        "3.9"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A story with no `ends` treats every scene with no way out as an ending; this one sends an event that no link and no reaction hears, which is likely a missing link.",
+      "fix": "Add a story link from the scene that hears the event, or list the endings in `story.ends`."
+    },
+    {
+      "code": "E-ENGINE-SIZE",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.11"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An engine bundle is over its size limit: the core player over `coreBundleBytes`, or a capability's runtime bundle or a logic module over `capabilityBundleBytes` (gzip level 9, measured on the built bundle).",
+      "fix": "Make the bundle smaller, or move the feature into a capability that only content that needs it pays for."
+    },
+    {
+      "code": "E-CAPABILITY-FORMAT",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.11",
+        "12"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An add-on's manifest is written for another add-on door (`door` is not 1), or a capability manifest is for another format.",
+      "fix": "Write `\"door\": 1` in the add-on's manifest, or use an engine that opens its door."
+    },
+    {
+      "code": "E-CAPABILITY-GRAMMAR",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.11",
+        "12"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "An add-on takes a name or grammar that is not its own: an outside add-on with a bare name (bare names are the engine's), a preset that provides a key presets cannot add, or a manifest key its kind does not have.",
+      "fix": "Name an outside add-on owner.name, and give each kind only what chapter 12 lists for it."
+    },
+    {
+      "code": "E-ADDON",
+      "severity": "error",
+      "section": "12",
+      "where": [
+        "12"
+      ],
+      "proof": [
+        "files",
+        "playing"
+      ],
+      "reason": "An add-on cannot be used: its folder or manifest is missing or wrong, it is not pinned or its files do not match the pin, its code reaches outside its door, it is over the size limit, a use of it conflicts with the document, or the host has not allowed a capability add-on.",
+      "fix": "Do what the message says: it names the file, the key and the change. `node engine/v2/tools/addon.mjs digest <folder>` prints the pin."
+    },
+    {
+      "code": "E-ADDON-INPUT",
+      "severity": "error",
+      "section": "12",
+      "where": [
+        "12"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A preset use gives an input the preset does not have, leaves out one it needs, or gives a value of the wrong type or outside its range.",
+      "fix": "Give each input the preset's manifest declares, of its type and inside its minimum and maximum."
+    },
+    {
+      "code": "E-PRIVATE-LEAK",
+      "severity": "error",
+      "section": "A10",
+      "where": [
+        "A10.1",
+        "A12.1"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A file about to be published or exported holds a private term or a link to a file in the private folder, or a resource has a private licence (`LicenseRef-Private`).",
+      "fix": "Remove the term, link or private-licence resource that the report names, then publish or export again."
+    },
+    {
+      "code": "E-UPGRADE-SOURCE",
+      "severity": "error",
+      "section": "A13",
+      "where": [
+        "A13.3"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "The source file fails the checks of its own version.",
+      "fix": "Fix the source in its own version first, then upgrade it."
+    }
+  ]
+}

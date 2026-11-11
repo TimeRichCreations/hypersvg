@@ -1,0 +1,20 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "lamp",
+  "about": {"title": "Lamp", "description": "A small HyperSVG asset for the engine's tests (D45): a lamp with three knobs."},
+  "language": "en",
+  "inputs": {
+    "on": {"kind": "knob", "type": "boolean", "initial": false},
+    "bright": {"kind": "knob", "type": "number", "minimum": 0, "maximum": 1, "initial": 0.5},
+    "shade": {"kind": "knob", "type": "string", "enum": ["sun", "sky"], "maxLength": 3, "initial": "sun"}
+  },
+  "outputs": {"clicked": {"kind": "event"}},
+  "theme": "lamp",
+  "themes": {
+    "lamp": {
+      "colorRoles": {"surface": "#f3f4f6", "ink": "#111827", "accent": "#2563eb", "sun": "#f59e0b", "sky": "#38bdf8"}
+    }
+  },
+  "story": {"start": "lamp", "scenes": {"lamp": "scenes/lamp/scene.json"}, "endless": true}
+}

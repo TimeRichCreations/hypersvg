@@ -1,0 +1,27 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "room",
+  "drawing": "room.svg",
+  "inputs": {
+    "shade": {"kind": "content", "type": "string", "contentType": "example.tint.shade", "maxLength": 7, "initial": "#ffcc33"}
+  },
+  "values": {
+    "lit": {"type": "boolean", "initial": false}
+  },
+  "computed": {
+    "bulbColor": "lit ? shade : '#3a3a48'"
+  },
+  "controls": {
+    "switch": {"kind": "button", "target": "button", "event": "switched", "label": "Switch the lamp"}
+  },
+  "on": {
+    "switched": [{"actions": [{"set": "lit", "to": "!lit"}]}]
+  },
+  "addons": {
+    "example.tint": {"fadeMs": 300}
+  },
+  "bindings": [
+    {"target": "bulb", "example.tint": {"color": "bulbColor"}}
+  ]
+}

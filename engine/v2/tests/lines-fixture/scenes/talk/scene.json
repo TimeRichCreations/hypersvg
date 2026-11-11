@@ -1,0 +1,19 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "talk",
+  "drawing": "talk.svg",
+  "uses": [{ "id": "polly", "use": "parrot", "into": "perch" }],
+  "controls": {
+    "hello": { "kind": "button", "target": "hello-btn", "event": "askHello", "label": "Say hello" },
+    "bye": { "kind": "button", "target": "bye-btn", "event": "askBye", "label": "Say goodbye" },
+    "hush": { "kind": "button", "target": "hush-btn", "event": "hush", "label": "Hush" }
+  },
+  "values": { "stresses": { "type": "number", "initial": 0, "minimum": 0, "maximum": 100 } },
+  "on": {
+    "askHello": [{ "id": "ask-hello", "actions": [{ "id": "fire-hello", "emit": "polly.say", "as": "trigger", "with": { "line": "'hello'" } }] }],
+    "askBye": [{ "id": "ask-bye", "actions": [{ "id": "fire-bye", "emit": "polly.say", "as": "trigger", "with": { "line": "'bye'" } }] }],
+    "hush": [{ "id": "do-hush", "actions": [{ "id": "fire-hush", "emit": "polly.say", "as": "trigger", "with": { "line": "'bye'" } }] }],
+    "polly.stressed": [{ "id": "count", "actions": [{"id": "add-one", "set": "stresses", "to": "stresses + 1"}] }]
+  }
+}

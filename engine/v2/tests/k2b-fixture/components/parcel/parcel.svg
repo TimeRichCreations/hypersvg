@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" data-hsvg-version="2.0">
+<title>Parcel</title>
+<g id="parcel" data-hsvg-kind="component" data-hsvg-role="prop" data-hsvg-pivot="10 20">
+  <rect id="parcel__box" data-hsvg-kind="part" x="0" y="0" width="20" height="20" fill="#e6af42"/>
+</g>
+</svg>

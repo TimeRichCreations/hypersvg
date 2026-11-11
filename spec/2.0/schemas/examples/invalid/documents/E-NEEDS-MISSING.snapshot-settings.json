@@ -1,0 +1,17 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "a",
+  "drawing": "a.svg",
+  "addons": {
+    "snapshot": {
+      "saves": {
+        "card": {
+          "picture": "card",
+          "filename": "card.png",
+          "pixelWidth": 600
+        }
+      }
+    }
+  }
+}

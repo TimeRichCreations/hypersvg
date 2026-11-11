@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <title>The starter lamp, switched off</title>
+  <rect width="400" height="300" fill="#1d2b36"/>
+  <circle cx="200" cy="110" r="50" fill="#555555"/>
+  <rect x="185" y="160" width="30" height="20" fill="#8d6e63"/>
+  <rect x="140" y="220" width="120" height="50" rx="25" fill="#d84315"/>
+  <text x="200" y="252" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">Turn on</text>
+</svg>

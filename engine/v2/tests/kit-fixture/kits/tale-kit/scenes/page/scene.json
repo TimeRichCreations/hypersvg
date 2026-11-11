@@ -1,0 +1,36 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "page",
+  "about": {"title": "A story page"},
+  "layouts": [
+    {"id": "page", "size": "400x300", "drawing": "page.svg"}
+  ],
+  "inputs": {
+    "tellerName": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 24, "initial": "A storyteller",
+                   "editableBy": ["copywriter"]},
+    "heading": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 40, "initial": "Once upon a time",
+                "editableBy": ["copywriter"]},
+    "pageLabel": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 12, "initial": "Page",
+                  "editableBy": ["copywriter"]},
+    "pageNumber": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 4, "initial": "1",
+                   "editableBy": ["publisher"]},
+    "turn": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 16, "initial": "Turn the page",
+             "editableBy": ["copywriter"]},
+    "step": {"kind": "knob", "type": "number", "minimum": 1, "maximum": 2, "step": 1, "initial": 1,
+             "editableBy": ["designer"]}
+  },
+  "outputs": {"turned": {"kind": "event"}},
+  "uses": [
+    {"id": "title-use", "use": "title", "into": "title-slot", "with": {"text": "heading"}},
+    {"id": "badge-use", "use": "badge", "into": "badge-slot", "with": {"label": "pageLabel", "count": "pageNumber"}},
+    {"id": "next-use", "use": "button", "into": "next-slot", "with": {"label": "turn"}}
+  ],
+  "on": {
+    "next-use.pressed": [{"id": "turn-page", "actions": [{"id": "report-turn", "emit": "turned"}]}]
+  },
+  "bindings": [
+    {"id": "teller-text", "target": "teller", "text": "{{ tellerName }}"},
+    {"id": "next-shows", "target": "next-area", "visible": "step < 2"}
+  ]
+}

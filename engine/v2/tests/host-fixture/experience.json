@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "host-fixture",
+  "about": { "title": "Host outputs fixture" },
+  "grants": { "openUrl": true },
+  "inputs": {
+    "clickUrl": { "kind": "content", "type": "string", "contentType": "url", "maxLength": 200, "initial": "https://example.com/order" }
+  },
+  "outputs": {
+    "orders": { "kind": "record", "maxRows": 8, "row": { "type": "object", "properties": { "item": { "type": "string", "maxLength": 16 } }, "required": ["item"], "additionalProperties": false } }
+  },
+  "story": { "start": "one", "scenes": { "one": "scenes/one/scene.json" }, "ends": ["one"] }
+}

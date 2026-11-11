@@ -1,0 +1,152 @@
+{
+  "format": "hsvg/2.1-draft",
+  "kind": "grammar-draft",
+  "id": "delivery",
+  "about": {
+    "title": "Export adapters' words",
+    "description": "A 2.1 draft, outside the 2.0 registry (D31): report and clickArea on an experience and endHoldMs on a scene, for the export adapters, which are not built. 2.0 refuses them with E-DRAFT. Their grammar as 2.0 had it.",
+    "version": "2.1.0-draft"
+  },
+  "grammar": {
+    "experience.keys": {
+      "clickArea": {
+        "type": "$ref:click-area",
+        "required": false,
+        "section": "10.4",
+        "owner": "core"
+      },
+      "report": {
+        "type": "$ref:report",
+        "required": false,
+        "section": "A10.1",
+        "owner": "core"
+      }
+    },
+    "scene.keys": {
+      "endHoldMs": {
+        "type": "number",
+        "required": false,
+        "section": "A10.1",
+        "owner": "core"
+      }
+    },
+    "structures": {
+      "click-area": {
+        "type": "string|object",
+        "section": "10.4",
+        "keys": [
+          "clickArea"
+        ],
+        "grammar": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$",
+              "maxLength": 97
+            },
+            {
+              "type": "object",
+              "required": [
+                "field"
+              ],
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$",
+                  "maxLength": 97
+                },
+                "with": {
+                  "type": "object",
+                  "maxProperties": 8,
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "number",
+                      "boolean"
+                    ]
+                  },
+                  "x-hsvg-limit": "clickAreaWith"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "report": {
+        "type": "object",
+        "section": "A10.1",
+        "keys": [
+          "report"
+        ],
+        "grammar": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "string",
+              "pattern": "^[a-z][a-zA-Z0-9]*$",
+              "maxLength": 48
+            },
+            "passed": {
+              "type": "string",
+              "pattern": "^[a-z][a-zA-Z0-9]*$",
+              "maxLength": 48
+            },
+            "score": {
+              "type": "string",
+              "pattern": "^[a-z][a-zA-Z0-9]*$",
+              "maxLength": 48
+            },
+            "interactions": {
+              "type": "object",
+              "required": [
+                "record",
+                "id",
+                "response",
+                "correct"
+              ],
+              "properties": {
+                "record": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-zA-Z0-9]*$",
+                  "maxLength": 48
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-zA-Z0-9]*$",
+                  "maxLength": 48
+                },
+                "response": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-zA-Z0-9]*$",
+                  "maxLength": 48
+                },
+                "correct": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-zA-Z0-9]*$",
+                  "maxLength": 48
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "limits": {
+      "clickAreaWith": {
+        "value": 8,
+        "unit": "values",
+        "class": "safety",
+        "section": "10.4",
+        "says": "Values a click area adds to the address it opens.",
+        "why": "Only a few named values ever leave the experience in an address.",
+        "whyRecorded": false,
+        "checkedBy": [
+          "schema"
+        ]
+      }
+    }
+  }
+}

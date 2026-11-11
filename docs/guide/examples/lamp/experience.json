@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "lamp",
+  "language": "en",
+  "about": {"title": "Lamp", "description": "A lamp with a switch. Knobs: lit and height. It sends switched."},
+  "inputs": {
+    "lit":    {"kind": "knob", "type": "boolean", "initial": false},
+    "height": {"kind": "knob", "type": "number", "minimum": 0.5, "maximum": 1.5, "initial": 1}
+  },
+  "outputs": {"switched": {"kind": "event"}},
+  "roles": {"lamp": {"appliesTo": ["part"]}},
+  "story": {"start": "lamp", "scenes": {"lamp": "lamp.json"}, "endless": true}
+}

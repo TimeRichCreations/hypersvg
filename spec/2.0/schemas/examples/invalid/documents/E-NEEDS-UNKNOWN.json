@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "a",
+  "story": {},
+  "needs": [
+    "telepathy"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "shell",
+  "id": "lesson-screen",
+  "drawing": "lesson-screen.svg",
+  "slots": {
+    "stage-left": {
+      "kind": "stage"
+    },
+    "stage-right": {
+      "kind": "stage",
+      "label": "Diagram"
+    }
+  }
+}

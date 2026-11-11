@@ -1,0 +1,641 @@
+{
+  "format": "hsvg/2.0",
+  "registry": "limits",
+  "description": "Every format limit of HyperSVG 2.0, in one place (9.8). Each limit has its value, its unit, its class, the section that states it and its reason. A capacity limit with upTo may be raised: a host profile's limits say how far that host lets content go, and an experience's limits say how far it needs to go (9.8.1). A safety limit never changes. Budgets (A10.3) may still be stricter than any of these. The grammars mark each limited node with x-hsvg-limit and the limit id; check-limits.mjs proves that every marked node, every svgLimits value and every text phrase says the value written here. To change a value: the person decides, DECISIONS.md records it, then set-limit.mjs writes it everywhere. why gives the reason; whyRecorded is true when the spec or a ruling states it, false when it is the most likely reason, written down on 7 November 2026 for the person to confirm. checkedBy says what enforces it today: schema (the generated schemas), drawing-check, checker (engine/v2/check), engine (while playing).",
+  "classes": {
+    "capacity": "How big or rich an experience may be. Raisable when upTo is given; otherwise fixed, and why says why.",
+    "safety": "Stops runaway content (loops, runaway formulas, deep nesting). Never raised."
+  },
+  "limits": {
+    "soundBytesEach": {
+      "value": 200000, "unit": "bytes", "class": "capacity", "upTo": 16777216, "section": "2.6",
+      "says": "One sound resource.",
+      "why": "Sounds are decoded into memory before they play; small sounds keep a page light on phones.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "| WAV, OGG, MP3 | {,} bytes each"}]
+    },
+    "soundBytesAll": {
+      "value": 2000000, "unit": "bytes", "class": "capacity", "upTo": 67108864, "section": "2.6",
+      "says": "All sound resources of one package together.",
+      "why": "The same as soundBytesEach, for the whole package.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "bytes each; {,} bytes for all sounds"}]
+    },
+    "soundMsEach": {
+      "value": 30000, "unit": "ms", "class": "capacity", "upTo": 1800000, "section": "2.6",
+      "says": "The decoded length of one sound.",
+      "why": "A decoded sound takes about 10 MB a minute in memory; long music belongs in a video or a host stream.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "at most {} s decoded", "divide": 1000}]
+    },
+    "imageBytesEach": {
+      "value": 8388608, "unit": "bytes", "class": "capacity", "upTo": 33554432, "section": "2.6",
+      "says": "One image resource.",
+      "why": "Keeps a package small enough to load quickly; decoded size is bounded separately (imagePixelsEach).", "whyRecorded": false,
+      "checkedBy": ["checker", "engine"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "SVG checked by the rules of 2.11 | {} MiB each", "divide": 1048576}]
+    },
+    "fontBytesEach": {
+      "value": 524288, "unit": "bytes", "class": "capacity", "upTo": 4194304, "section": "2.6",
+      "says": "One font resource.",
+      "why": "A subset WOFF2 font is well under this; a larger one is usually a whole font family by mistake.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "| WOFF2 | {} KiB each", "divide": 1024}]
+    },
+    "fontBytesAll": {
+      "value": 1048576, "unit": "bytes", "class": "capacity", "upTo": 16777216, "section": "2.6",
+      "says": "All font resources of one package together.",
+      "why": "The same as fontBytesEach, for the whole package.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "KiB each; {} MiB for all fonts", "divide": 1048576}]
+    },
+    "videoBytesEach": {
+      "value": 67108864, "unit": "bytes", "class": "capacity", "upTo": 1073741824, "section": "2.6",
+      "says": "One video resource.",
+      "why": "Packages travel as one file; a bigger video belongs on a host's media server.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "Played by the `media` add-on | {} MiB each", "divide": 1048576}]
+    },
+    "dataBytesEach": {
+      "value": 8388608, "unit": "bytes", "class": "capacity", "upTo": 33554432, "section": "2.6",
+      "says": "One data, words or captions resource.",
+      "why": "Text files this size hold far more than an experience can show.", "whyRecorded": false,
+      "checkedBy": ["checker"]
+    },
+    "iconSetBytesEach": {
+      "value": 1048576, "unit": "bytes", "class": "capacity", "upTo": 8388608, "section": "2.6",
+      "says": "One icon set.",
+      "why": "An icon set is mounted whole; this keeps it small.", "whyRecorded": false,
+      "checkedBy": ["checker"]
+    },
+    "linePoints": {
+      "value": 512, "unit": "points", "class": "capacity", "upTo": 1024, "section": "6.8",
+      "says": "Points one points binding draws.",
+      "why": "A line redrawn on every change stays cheap; a formula reads at most 1,024 items (November 2026).", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "06-drawing.md", "phrase": "a formula giving 2 to {} (`linePoints`) numbers"}]
+    },
+    "dataTableRows": {
+      "value": 1024, "unit": "rows", "class": "capacity", "section": "2.8",
+      "says": "Rows of one data table, a record output and a table widget.",
+      "why": "Fixed: formulas read a whole table, and a formula reads at most formulaArrayItems (1,024) items. Raising one needs the other.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "| `maxRows` | Required: 1 to {,} |"}]
+    },
+    "listItems": {
+      "value": 1024, "unit": "items", "class": "capacity", "section": "5.1.1",
+      "says": "The largest maxItems of a list value, input or output.",
+      "why": "Fixed for the same reason as dataTableRows: formulas read whole lists.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "`maxItems` is 1..{}."}]
+    },
+    "elementsPerDrawing": {
+      "value": 30000, "unit": "elements", "class": "capacity", "upTo": 100000, "section": "2.11", "svgLimit": "elementsPerDrawing",
+      "says": "SVG elements in one drawing file.",
+      "why": "Keeps one drawing quick to parse and check on a phone.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "At most {,} SVG elements"}]
+    },
+    "charactersPerDrawing": {
+      "value": 4000000, "unit": "characters", "class": "capacity", "upTo": 16000000, "section": "2.11", "svgLimit": "charactersPerDrawing",
+      "says": "Characters in one drawing file.",
+      "why": "The same as elementsPerDrawing, for long path data.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "SVG elements and {,} characters per drawing"}]
+    },
+    "expandedElements": {
+      "value": 100000, "unit": "elements", "class": "capacity", "upTo": 400000, "section": "2.11", "svgLimit": "expandedElements",
+      "says": "Elements of one drawing once every <use> is expanded.",
+      "why": "A few <use> references can multiply a small file into a huge one.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "at most {,} elements once every `<use>` is expanded"}]
+    },
+    "useNesting": {
+      "value": 8, "unit": "levels", "class": "safety", "section": "2.11", "svgLimit": "useNesting",
+      "says": "Nested <use> references.",
+      "why": "Deep nesting is how a small file expands without bound.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "at most {} nested `<use>` references"}]
+    },
+    "filterPrimitives": {
+      "value": 32, "unit": "primitives", "class": "safety", "section": "2.11", "svgLimit": "filterPrimitives",
+      "says": "Primitives in one filter.",
+      "why": "Filters run on every frame; a long chain can stall the page.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "at most {} primitives per filter"}]
+    },
+    "filterOrMaskApplications": {
+      "value": 64, "unit": "uses", "class": "capacity", "upTo": 256, "section": "2.11", "svgLimit": "filterOrMaskApplications",
+      "says": "Filter or mask applications in one drawing.",
+      "why": "Each filtered element costs drawing time; the filter surface limit bounds the area.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "primitives per filter and {} filter or"}]
+    },
+    "styleUnits": {
+      "value": 65536, "unit": "UTF-16 units", "class": "capacity", "upTo": 262144, "section": "2.11", "svgLimit": "styleUnits",
+      "says": "style attribute text in one drawing.",
+      "why": "Presentation belongs in attributes and themes; long style text is usually exported cruft.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"],
+      "text": [{"file": "02-files-and-names.md", "phrase": "At most {,} UTF-16 units of `style` text"}]
+    },
+    "dataUriDepth": {
+      "value": 4, "unit": "levels", "class": "safety", "section": "2.11", "svgLimit": "dataUriDepth",
+      "says": "SVG images inside SVG data: URIs, nested.",
+      "why": "The same as useNesting, for embedded images.", "whyRecorded": false,
+      "checkedBy": ["drawing-check"]
+    },
+    "mountedElements": {
+      "value": 200000, "unit": "elements", "class": "capacity", "upTo": 1000000, "section": "9.8",
+      "says": "SVG elements across all mounted drawings.",
+      "why": "What a mid-range phone can draw and animate smoothly.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| SVG elements across all mounted drawings | {,} |"}, {"file": "errors.json", "phrase": "uses, {,} SVG elements across"}]
+    },
+    "liveBlockUses": {
+      "value": 2048, "unit": "uses", "class": "capacity", "upTo": 16384, "section": "9.8",
+      "says": "Live block uses per experience.",
+      "why": "Each use has its own state and bindings; this bounds memory and update time.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Live block uses per experience | {,} |"}, {"file": "errors.json", "phrase": "aggregate limit: {,} live block uses"}]
+    },
+    "liveRepeatedUses": {
+      "value": 256, "unit": "uses", "class": "capacity", "upTo": 4096, "section": "4.5, 9.8",
+      "says": "Live repeated uses in one block.",
+      "why": "A repeat makes one use per item; this keeps one list from filling the page.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Live repeated uses per block | {} |"}, {"file": "04-blocks.md", "phrase": "at most {} live repeated uses"}]
+    },
+    "particleCopiesPerBlock": {
+      "value": 256, "unit": "copies", "class": "capacity", "upTo": 4096, "section": "9.8",
+      "says": "Live particle copies in one block, all its particles effects together.",
+      "why": "Each copy is a drawn element moved every frame. The engine had this limit before the spec did (7 November 2026).", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "09-engine.md", "phrase": "| Live particle copies per block, all its particles effects together | {} |"}]
+    },
+    "mountDepth": {
+      "value": 16, "unit": "levels", "class": "safety", "section": "9.8",
+      "says": "A use inside a use, nested.",
+      "why": "Bounds recursion when blocks are mounted.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Mount depth (a use inside a use) | {} |"}, {"file": "errors.json", "phrase": "a mount depth of {}"}]
+    },
+    "imagePixelsEach": {
+      "value": 16777216, "unit": "pixels", "class": "capacity", "upTo": 67108864, "section": "9.8",
+      "says": "Decoded pixels of one image.",
+      "why": "A decoded image takes 4 bytes a pixel: 16 megapixels is 64 MB.", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "09-engine.md", "phrase": "| Decoded image pixels | {} megapixels per image", "divide": 1048576}, {"file": "errors.json", "phrase": "{} megapixels in one decoded image", "divide": 1048576}]
+    },
+    "imagePixelsAll": {
+      "value": 67108864, "unit": "pixels", "class": "capacity", "upTo": 268435456, "section": "9.8",
+      "says": "Decoded pixels of all mounted images.",
+      "why": "The same as imagePixelsEach, for everything mounted at once.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Decoded image pixels | 16 megapixels per image, {} in total |", "divide": 1048576}, {"file": "errors.json", "phrase": "decoded image or {} in total", "divide": 1048576}]
+    },
+    "filterSurface": {
+      "value": 4, "unit": "times the player box area", "class": "capacity", "upTo": 16, "section": "9.8",
+      "says": "The filter regions of all filtered elements together.",
+      "why": "Filters cost per pixel on every frame.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "at most {} times the player box area |"}, {"file": "errors.json", "phrase": "of more than {} times the player box area"}]
+    },
+    "savedBytes": {
+      "value": 1048576, "unit": "UTF-8 bytes", "class": "capacity", "upTo": 16777216, "section": "9.8, 5.1.2",
+      "says": "Stored saved values, per partition.",
+      "why": "Browser storage is small and shared by the whole site.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "per partition: {} MiB `saved`", "divide": 1048576}, {"file": "errors.json", "phrase": "more than {} MiB `saved`", "divide": 1048576}]
+    },
+    "sessionBytes": {
+      "value": 4194304, "unit": "UTF-8 bytes", "class": "capacity", "upTo": 67108864, "section": "9.8, 5.1.2",
+      "says": "Stored session values, per partition.",
+      "why": "The same as savedBytes, for session storage.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "`saved`, {} MiB `session`", "divide": 1048576}, {"file": "errors.json", "phrase": "or {} MiB `session`", "divide": 1048576}]
+    },
+    "effectsPerBlock": {
+      "value": 16, "unit": "effects", "class": "capacity", "upTo": 64, "section": "9.8, A1",
+      "says": "Effects in one block.",
+      "why": "Each running effect is worked out every frame.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Effects per block | {} |"}, {"file": "capabilities/effects.md", "phrase": "At most {} effects per block"}]
+    },
+    "liveTimers": {
+      "value": 1024, "unit": "timers", "class": "safety", "section": "9.8",
+      "says": "Live timers and timed links per experience; one more faults with E-EVENT-LOOP.",
+      "why": "A timer that starts timers is a loop.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "(one more faults with `E-EVENT-LOOP`) | {,} |"}]
+    },
+    "eventsPerTransaction": {
+      "value": 100, "unit": "events", "class": "safety", "section": "9.8",
+      "says": "Events in one transaction.",
+      "why": "Events that raise events without end are a loop.", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "09-engine.md", "phrase": "| Events per transaction | {} |"}, {"file": "errors.json", "phrase": "more than {} events, "}]
+    },
+    "actionsPerTransaction": {
+      "value": 4096, "unit": "actions", "class": "safety", "section": "9.8",
+      "says": "Actions in one transaction.",
+      "why": "The same as eventsPerTransaction.", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "09-engine.md", "phrase": "| Actions per transaction | {} |"}, {"file": "errors.json", "phrase": "events, {} actions"}]
+    },
+    "deliveriesPerTransaction": {
+      "value": 100, "unit": "deliveries", "class": "safety", "section": "9.8",
+      "says": "Deliveries in one transaction.",
+      "why": "The same as eventsPerTransaction.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Deliveries per transaction | {} |"}, {"file": "errors.json", "phrase": "one millisecond or {} deliveries"}]
+    },
+    "markerCrossingsPerMs": {
+      "value": 100, "unit": "crossings", "class": "safety", "section": "9.8",
+      "says": "Crossings of one clip's markers at one engine millisecond; one more is E-EVENT-LOOP.",
+      "why": "Only a runaway clip (a very high speed on a short loop) crosses this many; markers are deadlines, so step size never changes them (6.7).", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Marker crossings of one clip at one engine millisecond | {} |"}]
+    },
+    "formulaStepsPerTransaction": {
+      "value": 1000000, "unit": "steps", "class": "safety", "section": "9.8",
+      "says": "Formula evaluation steps in one transaction, all formulas together.",
+      "why": "Bounds the work of one transaction so the page never hangs.", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "09-engine.md", "phrase": "all formulas together | {,} |"}, {"file": "errors.json", "phrase": "actions, {,} evaluation steps"}]
+    },
+    "deadlinesPerMs": {
+      "value": 1000, "unit": "deadlines", "class": "safety", "section": "9.8",
+      "says": "Deadlines run at one engine millisecond.",
+      "why": "The same as eventsPerTransaction, for time.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "09-engine.md", "phrase": "| Deadlines run at one engine millisecond | {,} |"}, {"file": "errors.json", "phrase": "{,} deadlines due at one millisecond"}]
+    },
+    "formulaSource": {
+      "value": 4096, "unit": "UTF-16 units", "class": "safety", "section": "5.6.6",
+      "says": "The source of one formula or template.",
+      "why": "The format's ceilings for formulas: they hold everywhere (5.6.6).", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "| Formula source | {} UTF-16 units |"}]
+    },
+    "formulaTokens": {
+      "value": 1024, "unit": "tokens", "class": "safety", "section": "5.6.6",
+      "says": "Tokens in one formula.",
+      "why": "As formulaSource.", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "| Tokens | {} |"}]
+    },
+    "formulaDepth": {
+      "value": 32, "unit": "levels", "class": "safety", "section": "5.6.6",
+      "says": "Nesting depth of one formula.",
+      "why": "As formulaSource.", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "| Nesting depth | {} |"}]
+    },
+    "formulaSteps": {
+      "value": 65536, "unit": "steps", "class": "safety", "section": "5.6.6",
+      "says": "Work steps of one evaluation (5.6.6): nodes evaluated, rows visited, items sorted or compared, and every 16 items or characters copied or read.",
+      "why": "Bounds the work of one formula, so no formula can freeze or exhaust the page; 65536 is 64 steps for each of 1024 rows, so a row formula reads the largest table. Measured: at most about 100 ns a step, so one evaluation stays under about 7 ms.", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "(row formulas included) | {} |"}]
+    },
+    "formulaArrayItems": {
+      "value": 1024, "unit": "items", "class": "safety", "section": "5.6.6",
+      "says": "Items in any array a function reads or returns.",
+      "why": "As formulaSource.", "whyRecorded": true,
+      "checkedBy": ["engine"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "| Items in any array a function reads or returns | {} |"}]
+    },
+    "formulaResultUnits": {
+      "value": 65536, "unit": "UTF-16 units", "class": "safety", "section": "5.6.6",
+      "says": "The serialized size of one formula result.",
+      "why": "As formulaSource.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "| Result size, serialized | {,} UTF-16 units |"}]
+    },
+    "dataDepth": {
+      "value": 16, "unit": "levels", "class": "safety", "section": "5.1.1",
+      "says": "Nesting depth of data.",
+      "why": "Bounds recursion when values are copied, compared and stored.", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "Nested data is at most {} levels deep."}]
+    },
+    "computedPerBlock": {
+      "value": 256, "unit": "computed values", "class": "capacity", "upTo": 1024, "section": "5.2",
+      "says": "Computed values in one block.",
+      "why": "The checker proves their graph acyclic and their ranges; this bounds that proof.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "05-faces-and-body.md", "phrase": "Computed values form an acyclic graph, at most {} per block."}]
+    },
+    "attachActionsPerBlock": {
+      "value": 256, "unit": "actions", "class": "capacity", "upTo": 1024, "section": "6.9",
+      "says": "player.attach calls in one block.",
+      "why": "The checker proves every attach reachable and safe; this bounds that proof.", "whyRecorded": false,
+      "checkedBy": [],
+      "text": [{"file": "06-drawing.md", "phrase": "At most {} `player.attach` calls per block."}]
+    },
+    "visitStack": {
+      "value": 16, "unit": "scenes", "class": "safety", "section": "3.7",
+      "says": "Suspended scenes in one stage slot's visit stack, and the longest chain of visit links.",
+      "why": "Each suspended scene keeps all its state; a deep stack is almost always a missing return.", "whyRecorded": false,
+      "checkedBy": ["engine", "checker"],
+      "text": [{"file": "03-story.md", "phrase": "its own visit stack of at most **{}** suspended scenes"}, {"file": "01-model.md", "phrase": "through a stack of at most {}."}]
+    },
+    "choiceLinksPerScene": {
+      "value": 16, "unit": "links", "class": "capacity", "upTo": 64, "section": "3.5",
+      "says": "Choice links from one scene.",
+      "why": "A choice is shown as a list a person reads and picks from.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": [{"file": "03-story.md", "phrase": "a scene has at most {} choice links"}]
+    },
+    "chapterScenes": {
+      "value": 64, "unit": "scenes", "class": "capacity", "upTo": 1024, "section": "3.12",
+      "says": "Scenes in one chapter.",
+      "why": "A chapter is an ordered list of steps a person goes through with Next and Back.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "clipTracks": {
+      "value": 1024, "unit": "tracks", "class": "capacity", "upTo": 8192, "section": "6.6",
+      "says": "Tracks in one clip.",
+      "why": "Every track is sampled on every frame while the clip plays.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "trackKeys": {
+      "value": 4096, "unit": "keys", "class": "capacity", "upTo": 65536, "section": "6.6",
+      "says": "Keys in one track.",
+      "why": "Bounds the size of one clip file; frame-by-frame imports need the most.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "markers": {
+      "value": 256, "unit": "markers", "class": "capacity", "upTo": 4096, "section": "6.6, A2",
+      "says": "Markers in one clip or on one video binding.",
+      "why": "Each marker can raise an event; this bounds events from one clip.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/media.md", "phrase": "at most {} per binding"}]
+    },
+    "particlesPerEffect": {
+      "value": 64, "unit": "copies", "class": "capacity", "upTo": 512, "section": "A1",
+      "says": "The count of one particles effect.",
+      "why": "Each copy is a drawn element moved every frame.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "physicsBodies": {
+      "value": 32, "unit": "bodies", "class": "capacity", "upTo": 256, "section": "10.7",
+      "says": "Bodies in one scene's physics.",
+      "why": "Contacts grow with the square of the bodies; 32 stays fast on a phone.", "whyRecorded": false,
+      "checkedBy": ["schema", "engine"],
+      "text": [{"file": "capabilities/physics.md", "phrase": "at most {} bodies."}]
+    },
+    "physicsContacts": {
+      "value": 32, "unit": "bodies", "class": "capacity", "upTo": 256, "section": "10.7",
+      "says": "Bodies one body lists as contacts.",
+      "why": "As physicsBodies.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "audioSynths": {
+      "value": 64, "unit": "synths", "class": "capacity", "upTo": 256, "section": "6.10",
+      "says": "Synthesised sounds an experience declares.",
+      "why": "Each synth is built once at start.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "soundCopies": {
+      "value": 4, "unit": "copies", "class": "capacity", "upTo": 16, "section": "6.10",
+      "says": "Copies of one sound playing at once.",
+      "why": "More copies of one sound only get louder and muddier.", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "06-drawing.md", "phrase": "At most four copies of one sound"}]
+    },
+    "oneShotSounds": {
+      "value": 16, "unit": "sounds", "class": "capacity", "upTo": 64, "section": "6.10",
+      "says": "One-shot sounds playing at once.",
+      "why": "Phones mix a limited number of voices.", "whyRecorded": false,
+      "checkedBy": ["engine"],
+      "text": [{"file": "06-drawing.md", "phrase": "and {} one-shot sounds play at once"}]
+    },
+    "seats": {
+      "value": 16, "unit": "seats", "class": "capacity", "upTo": 64, "section": "A4.1",
+      "says": "Seats of one experience.",
+      "why": "Turn order, views and legal moves are worked out per seat.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "seatQuestions": {
+      "value": 64, "unit": "questions", "class": "capacity", "upTo": 256, "section": "A5.1",
+      "says": "Built-in questions with written answers on one character seat.",
+      "why": "Decided 7 November 2026: like intents. The number of buttons shown is quickReplies.", "whyRecorded": true,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "(at most {} picked `questions`"}]
+    },
+    "quickReplies": {
+      "value": 6, "unit": "buttons", "class": "capacity", "upTo": 12, "section": "A5.2",
+      "says": "Question buttons a place offers at once.",
+      "why": "A short list a person can scan and pick from on a small screen; a host may offer more, up to 12 (7 November 2026).", "whyRecorded": true,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "shows at most {} at once (`quickReplies`"}, {"file": "capabilities/ai.md", "phrase": "`quickReplies` (at most {}\nquestion ids)"}]
+    },
+    "intents": {
+      "value": 64, "unit": "intents", "class": "capacity", "upTo": 512, "section": "A5.2",
+      "says": "Scripted intents on one character seat.",
+      "why": "Bounds the matcher's work for each typed question.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "(the seat's `intents`: at most {}"}]
+    },
+    "intentExamples": {
+      "value": 16, "unit": "examples", "class": "capacity", "upTo": 64, "section": "A5.2",
+      "says": "Examples of one intent.",
+      "why": "As intents.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "most {} examples of at most"}]
+    },
+    "intentAnswers": {
+      "value": 8, "unit": "answers", "class": "capacity", "upTo": 32, "section": "A5.2",
+      "says": "Answers of one intent, used in turn.",
+      "why": "A handful of variations is enough to keep answers from repeating.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "characters and {} answers `{text, when?}`"}]
+    },
+    "personaChars": {
+      "value": 1200, "unit": "characters", "class": "capacity", "upTo": 4000, "section": "A5.1",
+      "says": "The fixed persona text of one character seat.",
+      "why": "A persona is a short description; long creator text is harder to review for safety.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "characterView": {
+      "value": 16, "unit": "values", "class": "capacity", "upTo": 64, "section": "A5.1",
+      "says": "Values a character seat's view names.",
+      "why": "Facts sent to an AI are kept few and reviewable.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "answerChars": {
+      "value": 500, "unit": "characters", "class": "safety", "section": "A5.1",
+      "says": "One answer: an AI answer's maxLength, a written question answer, an intent answer.",
+      "why": "Answers are checked before any write and shown to children; short answers can be checked.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "`answerType.maxLength` (at most {})"}]
+    },
+    "answerOptions": {
+      "value": 32, "unit": "options", "class": "safety", "section": "A5.1",
+      "says": "Declared option ids an AI answer may pick from.",
+      "why": "As answerChars.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "one of at most {} declared option ids"}]
+    },
+    "aiPerMinute": {
+      "value": 20, "unit": "requests a minute", "class": "safety", "section": "A5.1",
+      "says": "The largest limits.perMinute of a seat with an AI source.",
+      "why": "Bounds cost and abuse of a host's AI service.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/ai.md", "phrase": "`limits.perMinute` (1..{})"}]
+    },
+    "aiTimeoutMs": {
+      "value": 30000, "unit": "ms", "class": "safety", "section": "A5.1",
+      "says": "The longest timeoutMs of an ask action.",
+      "why": "A child should not wait longer than this for an answer; the fallback answers instead.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "gameMoves": {
+      "value": 4096, "unit": "moves", "class": "capacity", "upTo": 65536, "section": "A4.1",
+      "says": "The largest maxMoves of a game, and the accepted inputs a seat keeps.",
+      "why": "Bounds the move log a game keeps and replays.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/seats.md", "phrase": "accepted inputs (at most {})"}]
+    },
+    "shellSlots": {
+      "value": 16, "unit": "slots", "class": "capacity", "upTo": 64, "section": "10.1",
+      "says": "Slots of one shell, and the slots one scene hides.",
+      "why": "A shell is a small frame: a stage, a few bars and dialogs.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "formEntries": {
+      "value": 64, "unit": "entries", "class": "capacity", "upTo": 256, "section": "A6.1",
+      "says": "Entries of one declared form.",
+      "why": "A form a person can fill in on a phone.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "tableColumns": {
+      "value": 32, "unit": "columns", "class": "capacity", "upTo": 128, "section": "A6.1",
+      "says": "Columns of one declared table.",
+      "why": "A table a person can read.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "pageHooks": {
+      "value": 64, "unit": "hooks", "class": "capacity", "upTo": 256, "section": "A3.1",
+      "says": "Page hooks of one experience.",
+      "why": "Each hook is watched on the host page.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "picksLibraries": {
+      "value": 16, "unit": "libraries", "class": "capacity", "section": "4.8",
+      "says": "Libraries one experience picks items from.",
+      "why": "Fixed: each picked library is a pinned kit the checker reads in full; a page needs a few, not dozens.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "reference/a14-kits-and-libraries.md", "phrase": "It picks from at most {} libraries"}]
+    },
+    "picksItemsPerLibrary": {
+      "value": 256, "unit": "items", "class": "capacity", "section": "4.8",
+      "says": "Items one experience picks from one library.",
+      "why": "Fixed: more than a library's whole catalogue is a mistake; pin the kit instead.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "reference/a14-kits-and-libraries.md", "phrase": "and at most {} items from each"}]
+    },
+    "rightsPerKit": {
+      "value": 32, "unit": "rights", "class": "capacity", "upTo": 128, "section": "9.9",
+      "says": "Editor rights one kit or experience declares.",
+      "why": "A team's list of jobs; more is usually a mistake.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "reference/a09-editing-and-trust.md", "phrase": "unique in the kit, at most {} per kit"}]
+    },
+    "layoutsPerBlock": {
+      "value": 12, "unit": "layouts", "class": "capacity", "upTo": 48, "section": "7.4",
+      "says": "Layouts of one block.",
+      "why": "Each layout is checked in every frame size it claims.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/fit.md", "phrase": "**Limits.** {} layouts per block"}]
+    },
+    "capabilityBundleBytes": {
+      "value": 10000, "unit": "bytes gzip level 9", "class": "capacity", "section": "10.7",
+      "says": "One capability's runtime code.",
+      "why": "Fixed: project policy, so an experience pays only for what it uses. Raised from 8,000 when the ai and page capabilities measured 8,188 and 8,968 (the person, November 2026). Not a host setting.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "10-hosts-and-delivery.md", "phrase": "at most {,} bytes gzip level 9"}]
+    },
+    "coreBundleBytes": {
+      "value": 120000, "unit": "bytes gzip level 9", "class": "capacity", "section": "10.7",
+      "says": "The core player's runtime code, without capabilities.",
+      "why": "Fixed: project policy, so growth is noticed; the core measured about 111,000 (the person, November 2026). Not a host setting.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "10-hosts-and-delivery.md", "phrase": "without capabilities) is at most {,} bytes gzip level 9"}]
+    },
+    "videoBytesAll": {
+      "value": 268435456, "unit": "bytes", "class": "capacity", "section": "10.8",
+      "says": "All video members of one package together.",
+      "why": "A package stays a size a reader can admit; 10.8 always said 256 MiB.", "whyRecorded": false,
+      "checkedBy": ["checker"],
+      "text": []
+    },
+    "richTextRuns": {
+      "value": 64, "unit": "runs", "class": "capacity", "section": "6.8",
+      "says": "Runs of one rich text.",
+      "why": "Enough for a headline or a paragraph with many emphases; a longer text is several fields.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": []
+    },
+    "flowParts": {
+      "value": 16, "unit": "parts", "class": "capacity", "section": "6.8",
+      "says": "Text parts one text may flow across.",
+      "why": "A headline or a column of text needs a few boxes, not many.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": []
+    },
+    "fieldStyles": {
+      "value": 16, "unit": "styles", "class": "capacity", "section": "5.3.1",
+      "says": "Text styles one rich text field may use.",
+      "why": "An editor chooses among a short list of brand styles.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": []
+    },
+    "themeTextStyles": {
+      "value": 32, "unit": "styles", "class": "capacity", "section": "7.7",
+      "says": "Text styles of one theme.",
+      "why": "A brand needs a few named styles; more becomes hand styling.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": []
+    },
+    "moduleCallMs": {
+      "value": 1000, "unit": "ms", "class": "safety", "section": "10.7",
+      "says": "The time budget of one module call.",
+      "why": "Module calls are synchronous to content; a slow call would freeze the page.", "whyRecorded": true,
+      "checkedBy": [],
+      "text": [{"file": "10-hosts-and-delivery.md", "phrase": "within a declared time budget of at most {} ms"}]
+    },
+    "askWith": {
+      "value": 16, "unit": "values", "class": "safety", "section": "A5.1",
+      "says": "Named values an ask action passes in its with.",
+      "why": "The visitor's words and the facts sent to an AI are kept few and separate.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "legalEntries": {
+      "value": 256, "unit": "entries", "class": "capacity", "section": "A4.1",
+      "says": "Entries of one legal list a seat is offered, and the moves a game module returns.",
+      "why": "Fixed: module and remote-seat contracts are written against it; a host cannot change what a module returns.", "whyRecorded": false,
+      "checkedBy": ["schema"],
+      "text": [{"file": "capabilities/seats.md", "phrase": "At most {}"}]
+    },
+    "seatValues": {
+      "value": 64, "unit": "values", "class": "capacity", "upTo": 256, "section": "A4.1",
+      "says": "Values a person or agent seat may input or view, and the public values of play.",
+      "why": "What one seat sees and writes is kept reviewable.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "turnValues": {
+      "value": 16, "unit": "values", "class": "capacity", "upTo": 64, "section": "A4.1",
+      "says": "Values a turn keeps.",
+      "why": "As seatValues.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    },
+    "legalTriggers": {
+      "value": 16, "unit": "triggers", "class": "capacity", "upTo": 64, "section": "A4.1",
+      "says": "Triggers with a legal formula.",
+      "why": "Each legal formula runs for every seat on every turn.", "whyRecorded": false,
+      "checkedBy": ["schema"]
+    }
+  }
+}

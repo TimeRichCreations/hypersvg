@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Along the coast</title>
+  <rect x="-300" y="-150" width="1200" height="600" fill="#cfe8f3" data-hsvg-layer="backdrop"/>
+  <g data-hsvg-layer="content">
+    <text id="where" data-hsvg-kind="part" data-hsvg-role="title" x="20" y="40" font-family="sans-serif" font-size="24" fill="#153b4b">Harbour Row</text>
+    <g id="boat" data-hsvg-kind="part" data-hsvg-role="prop" data-hsvg-label="Boat" data-hsvg-motion="move-x 0..400">
+      <path d="M40 200h100l-15 30H55z" fill="#8a5a2b"/>
+    </g>
+    <g id="signs" data-hsvg-kind="part" data-hsvg-repeat="">
+      <g id="sign-1" data-hsvg-kind="part" data-hsvg-slot="sign-1" transform="translate(40 80)"/>
+      <g id="sign-2" data-hsvg-kind="part" data-hsvg-slot="sign-2" transform="translate(240 80)"/>
+      <g id="sign-3" data-hsvg-kind="part" data-hsvg-slot="sign-3" transform="translate(440 80)"/>
+      <g id="sign-4" data-hsvg-kind="part" data-hsvg-slot="sign-4" transform="translate(440 130)"/>
+    </g>
+    <g id="next" data-hsvg-kind="part" data-hsvg-role="next" data-hsvg-label="Next town">
+      <rect x="460" y="240" width="120" height="44" rx="22" fill="#d84315"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+{
+  "door": 1,
+  "id": "example.shake",
+  "version": "1.0.0",
+  "kind": "preset",
+  "title": "Shake",
+  "description": "A clip that shakes a part left and right, for a wrong move. Play it with {\"play\": \"<as>\"}. The part needs a translate-x motion range of at least the distance.",
+  "adds": {
+    "inputs": {
+      "target": { "type": "part", "description": "the part that shakes" },
+      "distance": { "type": "number", "minimum": 1, "maximum": 40, "initial": 6, "description": "how far it moves each way" },
+      "times": { "type": "integer", "minimum": 1, "maximum": 4, "initial": 2, "description": "how many shakes" }
+    },
+    "provides": {
+      "clips": {
+        "{{as}}": {
+          "durationMs": 400,
+          "loop": "{{times}}",
+          "tracks": [
+            {
+              "id": "{{as}}-x",
+              "target": "{{target}}",
+              "channel": "move", "axis": "x",
+              "keys": [[0, 0], [100, "{{distance}}", "ease-out"], [300, "-{{distance}}", "ease-in-out"], [400, 0, "ease-in"]]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

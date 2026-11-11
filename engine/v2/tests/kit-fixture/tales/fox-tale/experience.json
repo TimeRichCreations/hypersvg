@@ -1,0 +1,21 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "fox-tale",
+  "about": {"title": "The fox and the feather"},
+  "kit": {"id": "tale-kit", "version": "1.0.0"},
+  "with": {"teller": "'Grandma Owl'"},
+  "language": "en",
+  "resources": {"tale-words-en": {"kind": "words", "file": "words/en.csv", "language": "en", "digest": "sha256:166270d13ffdce9f3a7d8ff5d9e7fad14a93dd2d48c4258012e079d0c61bb103"}},
+  "story": {
+    "start": "first",
+    "scenes": {
+      "first": {"use": "page", "with": {"tellerName": "teller", "heading": "words.heading", "pageNumber": "'1'", "turn": "words.next", "step": 1}},
+      "last": {"use": "page", "with": {"tellerName": "teller", "heading": "words.ending", "pageNumber": "'2'", "turn": "words.next", "step": 2}}
+    },
+    "ends": ["last"],
+    "links": [
+      {"id": "first-last", "from": "first", "on": "turned", "to": "last"}
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Catch the apples</title>
+  <rect id="sky" data-hsvg-layer="backdrop" x="0" y="0" width="400" height="300" fill="#dff1fb"/>
+  <rect x="0" y="0" width="400" height="40" fill="#4f8f3a"/>
+  <rect x="0" y="270" width="400" height="30" fill="#7cb85a"/>
+  <g id="apples" data-hsvg-kind="part" data-hsvg-motion="move-y 0..200">
+    <g id="apple-0" data-hsvg-kind="part"><circle cx="100" cy="50" r="16" fill="#d7312b"/><path d="M100 34 L103 26" stroke="#5a3a1a" stroke-width="3"/></g>
+    <g id="apple-1" data-hsvg-kind="part"><circle cx="200" cy="50" r="16" fill="#d7312b"/><path d="M200 34 L203 26" stroke="#5a3a1a" stroke-width="3"/></g>
+    <g id="apple-2" data-hsvg-kind="part"><circle cx="300" cy="50" r="16" fill="#d7312b"/><path d="M300 34 L303 26" stroke="#5a3a1a" stroke-width="3"/></g>
+  </g>
+  <g id="basket" data-hsvg-kind="part" data-hsvg-motion="move-x -100..100">
+    <path d="M165 240 L235 240 L225 270 L175 270 Z" fill="#a8742f"/>
+    <path d="M165 240 Q200 215 235 240" stroke="#7a5420" stroke-width="4" fill="none"/>
+  </g>
+  <text id="score-text" data-hsvg-kind="part" x="20" y="27" font-family="sans-serif" font-size="18" fill="#ffffff">Score 0</text>
+  <text x="380" y="27" text-anchor="end" font-family="sans-serif" font-size="14" fill="#ffffff">Arrow keys move the basket</text>
+</svg>

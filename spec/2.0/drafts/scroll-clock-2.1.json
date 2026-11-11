@@ -1,0 +1,36 @@
+{
+  "format": "hsvg/2.1-draft",
+  "kind": "grammar-draft",
+  "id": "scroll-clock",
+  "about": {
+    "title": "Scroll as a clock source",
+    "description": "A 2.1 draft: a stage slot that takes its time from scroll position instead of the engine clock. 3.10 described it, the checker accepted it, but no 2.0 engine runs it. 2.0 refuses it with E-DRAFT.",
+    "version": "2.1.0-draft"
+  },
+  "adds": [
+    "a clock with \"source\": \"scroll\" and \"spanMs\" (an integer, 1..3,600,000); spanMs goes with source, and only with it",
+    "the engine measures each scroll-driven slot's scroll progress itself, on every web host, as a number from 0 to 1: 0 when the slot's box first reaches the bottom of the window, 1 when it leaves the top",
+    "the slot's local time is progress times spanMs, so it may run both ways",
+    "a scroll-driven slot holds only timeline scenes (3.11) and no machine timers, so every scroll position maps to one scene (review)",
+    "clips and timed links follow the scroll time: scrolling back shows the earlier scene again, and clips are sampled at the new time; elapsed reads the scene's local time, which follows the slot's scroll time from the scene's start",
+    "under reduced motion each scene shows its clips' end poses; the scene shown still follows scroll",
+    "seeking: a scroll-driven slot holds scenes whose behaviour is visual only (bindings, clips, effects and timed links); every action list reachable in its scenes that writes values, adds records, plays sounds or makes add-on calls is not allowed (review)",
+    "each marker crossed forward fires once, in time order; seeking back re-samples poses and nothing else; a jump an add-on makes or a host scene call fires no marker it skips"
+  ],
+  "why": [
+    "2.0's schemas give a clock only to a scene and a use; 3.10 puts the scroll source on a stage slot, which has no clock key in the shell schema, and a page without a shell has no slot to carry it",
+    "it needs timeline scenes that a scroll position can seek both ways, a visual-only check of every reachable action list, and a scroll measurer in the page layer: more than the freeze leaves room for",
+    "speed and paused (3.10) are built in 2.0 and stay"
+  ],
+  "grammar": {
+    "clock": {
+      "type": "object",
+      "properties": {
+        "source": { "enum": ["scroll"] },
+        "spanMs": { "type": "integer", "minimum": 1, "maximum": 3600000 }
+      },
+      "dependentRequired": { "source": ["spanMs"], "spanMs": ["source"] }
+    },
+    "where": ["shell.slots.<stage slot>.clock"]
+  }
+}

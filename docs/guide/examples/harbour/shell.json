@@ -1,0 +1,25 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "shell",
+  "id": "shell",
+  "drawing": "shell.svg",
+  "values": {"settingsOpen": {"type": "boolean", "initial": false}},
+  "slots": {
+    "stage": {"kind": "stage", "label": "Harbour"},
+    "settings": {"kind": "dialog", "label": "Settings", "openValue": "settingsOpen"}
+  },
+  "controls": {
+    "gear": {"kind": "button", "target": "gear", "event": "openSettings", "label": "Settings"},
+    "mute": {"kind": "button", "target": "mute", "event": "mute", "label": "Mute"},
+    "forget": {"kind": "button", "target": "forget", "event": "forget", "label": "Forget progress"},
+    "shop": {"kind": "button", "target": "shop", "event": "shop", "label": "Visit the shop"},
+    "shut": {"kind": "button", "target": "shut", "event": "closeSettings", "label": "Close"}
+  },
+  "on": {
+    "openSettings": [{"actions": [{"open": "settings"}]}],
+    "closeSettings": [{"actions": [{"close": "settings"}]}],
+    "mute": [{"actions": [{"call": "player.setting", "with": {"muted": true}}]}],
+    "forget": [{"actions": [{"call": "player.resetSaved"}]}],
+    "shop": [{"actions": [{"call": "player.openUrl", "with": {"field": "'shopLink'"}}]}]
+  }
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Lamp</title>
+  <rect id="wall" data-hsvg-layer="backdrop" x="0" y="0" width="400" height="300" fill="#e8eef2"/>
+  <rect x="190" y="0" width="20" height="60" fill="#5a6470"/>
+  <circle id="bulb" data-hsvg-kind="part" cx="200" cy="110" r="50" fill="#3a3a48"/>
+  <g id="button" data-hsvg-kind="part" data-hsvg-role="action">
+    <rect x="125" y="220" width="150" height="50" rx="25" fill="#168e91"/>
+    <text x="200" y="252" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">Switch</text>
+  </g>
+</svg>

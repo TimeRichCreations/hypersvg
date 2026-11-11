@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "w9e4-fixture",
+  "about": {"title": "E4: a press is a press when the pressed look swaps the drawn part"},
+  "language": "en",
+  "story": {"start": "one", "scenes": {"one": "scenes/one/scene.json"}, "ends": ["one"]}
+}

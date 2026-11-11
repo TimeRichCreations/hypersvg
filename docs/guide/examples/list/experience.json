@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "towns",
+  "about": {"title": "Along the coast"},
+  "blocks": {"sign": "sign/component.json"},
+  "story": {"start": "coast", "scenes": {"coast": "coast.json"}, "ends": ["coast"]}
+}

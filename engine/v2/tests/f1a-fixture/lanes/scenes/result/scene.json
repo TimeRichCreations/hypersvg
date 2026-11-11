@@ -1,0 +1,7 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "result",
+  "drawing": "result.svg",
+  "bindings": [{"target": "final", "text": "You caught {{ score }} {{ score === 1 ? 'apple' : 'apples' }}"}]
+}

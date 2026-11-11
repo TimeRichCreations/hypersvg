@@ -1,0 +1,210 @@
+# HyperSVG 2.0 base repository (D30, narrowed by D41: the lean base; everything else has its own repository). Root-relative patterns. + includes, - excludes. Exclusions always win.
+# * matches within a path segment; ** matches across segments; ? matches one character.
+# policy.mjs adds hard exclusions no policy can undo: private/, sources/, pro/, evidence/, the private ad rule packs,
+# proof/ (except the certify tool's code in engine/v2/tools/proof/),
+# experiences/, assets/, pieces/, docs/briefs|reports|tasks|reviews, and raster images in examples/ (one allowed).
+# All choices below still need the person's approval before publication.
+
+# D41: the base repository is lean. It holds the format (the core spec; the engine: player, checker, packer; its
+# tests), one tiny example per door, the guide files (release/lean.json), the hypersvg command (bin/) and the release
+# checks. The skills, the kit and its templates, the component library, the showcases and the official add-ons each
+# have their own list: release/hypersvg-skills.files.txt, hypersvg-kit.files.txt, hypersvg-library.files.txt,
+# hypersvg-showcases.files.txt and hypersvg-addons.files.txt.
++ engine/v2/**
++ spec/2.0/**
+# The one-page guide and its example: the guide until GUIDE.md lands (K2c), and the starter of
+# hypersvg init. The README proposal is not exported: the lean README is release/lean/README.md.
++ docs/one-page/**
+- docs/one-page/README-proposal.md
+# The older one-page guides teach the kit and its templates, which have their own repository (R10): they go with the
+# kit (hypersvg-kit.files.txt). The base keeps the example; GUIDE.md is its guide.
+- docs/one-page/FIRST-STEPS.md
+- docs/one-page/ONE-PAGE.md
+# The guide's examples (GUIDE.md). The lamp asset is the starter of hypersvg init. An example that needs a
+# built-in add-on (physics) goes with the add-ons (core-only.mjs writes it below).
++ docs/guide/examples/**
+# Putting a HyperSVG in a page (the README and the guide link it).
++ docs/browser-embedding.md
+# The README's three pictures (a plain picture of the lamp off and on, and a CSS-only animated preview). The README
+# links them by their full npm CDN address, so they show on GitHub and on npmjs.com.
++ docs/readme/**
+
+# One tiny example per door (release/lean.json lists them). The presets, chapter 12's noughts module, its glow and
+# tint capabilities and the shake preset live in engine/v2/addons/ (above). These two live in the skill's folder
+# until they move.
+# Components: one bar component, used once per row.
++ skill/2.0/examples/kinds/infographic/**
+# Representations: one scene with a wide, a square and a tall layout.
++ skill/2.0/examples/recipes/orientation/**
+
+# The one command of the npm package (D44). The export writes package.json from release/npm-package.json.
++ bin/**
++ skills/**
++ llms.txt
+
+# Release tooling a contributor needs: the leak check, its tests and the public checks.
++ release/scan.mjs
++ release/policy.mjs
++ release/verify.mjs
+# The words a public file must not use (release/verify.mjs reads it).
++ release/public-words.json
+# The consumer smoke test: the packed tarball installed and played in Chromium (the browser job of the checks).
++ release/browser-smoke.mjs
++ release/leak.test.mjs
++ release/checks.mjs
++ release/public-omissions.json
++ release/addons-tests.json
++ release/lean-tests.json
+
+# Private or internal, whatever the includes say.
+- **/private/**
+- **/sources/**
+- **/ad?iq*
+- **/ad?iq*/**
+- **/pro/**
+- **/evidence/**
+- **/node_modules/**
+- **/out/**
+- **/*.log
+
+# Internal records of how 2.0 was made (they name internal work labels and this PC); they stay private (R1 answer). The tool
+# reference and the 2.1 drafts stay: the checker reads the drafts.
+- spec/2.0/DECISIONS.md
+- spec/2.0/DRAFT6-DESIGN.md
+
+# Screenshots taken while building, not examples.
+- examples/**/shots/**
+
+# The showcases are not in this repository (art rights undecided). The tests and browser suites that play them
+# stay out: the showcase tests (engine/v2/tests/showcases/), the behaviour suites, the proof guides and the product
+# list, the parity run, and the browser suites and the bench below.
+- engine/v2/tests/showcases/**
+- engine/v2/tests/browser/percy-suite/**
+- engine/v2/tests/browser/percy-browser.mjs
+- engine/v2/tests/browser/percy-behaviour/**
+- engine/v2/tests/browser/parity.mjs
+- engine/v2/tests/browser/packed-browser.mjs
+- engine/v2/tests/browser/snapshot-browser.mjs
+- engine/v2/tests/browser/save-browser.mjs
+- engine/v2/tests/browser/upgraded-browser.mjs
+- engine/v2/tests/bench/race-bench.mjs
+- engine/v2/tools/proof/guides/**
+- engine/v2/tools/proof/products.json
+
+# Deliberate fake-credential fixtures are never scan exemptions (as in 0.1). These stay in the authors' repository until their
+# fake values are built from pieces; release/public-omissions.json names them.
+- engine/v2/tests/x1-security.test.mjs
+- examples/2.0-live-dashboards/tests/host.test.mjs
+
+# D30: no built-in capability's code. Each capability module leaves; the export writes an empty
+# engine/v2/src/capabilities/all.mjs in place of the full list. The core imports none of them: the drawing reaches
+# particles through the effects add-on's drawing part, the checker loads the add-on families it needs when they are
+# there (engine/v2/check/optional.mjs) and says "comes with the hypersvg-addons release" when they are not
+# (engine/v2/check/absent.mjs), and the tests load add-on code with addonCode (engine/v2/tests/helpers.mjs).
+- engine/v2/src/capabilities/motion.mjs
+- engine/v2/src/capabilities/ai.mjs
+- engine/v2/src/capabilities/effects.mjs
+- engine/v2/src/capabilities/fit.mjs
+- engine/v2/src/capabilities/ladder.mjs
+- engine/v2/src/capabilities/lines.mjs
+- engine/v2/src/capabilities/live-data.mjs
+- engine/v2/src/capabilities/media.mjs
+- engine/v2/src/capabilities/page.mjs
+- engine/v2/src/capabilities/physics.mjs
+- engine/v2/src/capabilities/rich-text.mjs
+- engine/v2/src/capabilities/seats.mjs
+- engine/v2/src/capabilities/widgets.mjs
+- engine/v2/src/capabilities/snapshot.mjs
+- engine/v2/src/capabilities/synth.mjs
+# Code only those modules import, and the built-in logic modules.
+- engine/v2/src/mouth.mjs
+- engine/v2/src/ai.mjs
+- engine/v2/src/ai-words.mjs
+- engine/v2/src/effects.mjs
+- engine/v2/src/lines.mjs
+- engine/v2/src/richtext.mjs
+- engine/v2/src/richtext-draw.mjs
+- engine/v2/src/ladder-draw.mjs
+- engine/v2/web/page-web.mjs
+- engine/v2/web/snapshot-web.mjs
+- engine/v2/web/media-web.mjs
+- engine/v2/web/captions-web.mjs
+- engine/v2/web/richtext-web.mjs
+- engine/v2/web/widgets-web.mjs
+# The checker families of built-in add-ons (the AI flow, rich text, spoken lines); check/index.mjs loads them when
+# they are there.
+- engine/v2/check/ai.mjs
+- engine/v2/check/lines.mjs
+- engine/v2/check/richtext.mjs
+- engine/v2/modules/chess/**
+- engine/v2/modules/chess-opponent/**
+
+# The capability pages and manifests go to the add-ons export. The registry (spec/2.0/capabilities.json) stays: the
+# checker reads it to know a built-in name.
+- spec/2.0/capabilities/**
+
+# R1 answers, as recommended (R2 item 5). The person may still change them.
+# The 0.1 upgrade tool stays out (it converts 0.1 files, which were never public), and so do its tests.
+- docs/spec-2.0-work/**
+- engine/v2/tests/w4u-upgrade.test.mjs
+- engine/v2/tests/w5m-upgrade.test.mjs
+
+# Tests of a built-in capability alone (release/addons-tests.json, "moved"), and its browser suites, go to the
+# add-ons export. Mixed test files stay; their add-on tests are skipped here and run in the add-ons checks.
+- engine/v2/tests/a2-mouth-drawing.test.mjs
+- engine/v2/tests/a2-mouth.test.mjs
+- engine/v2/tests/d1-data.test.mjs
+- engine/v2/tests/s1-board.test.mjs
+- engine/v2/tests/s1-seats.test.mjs
+- engine/v2/tests/stage5-effects.test.mjs
+- engine/v2/tests/w5p-page-check.test.mjs
+- engine/v2/tests/w5p-page.test.mjs
+- engine/v2/tests/w6l-board.test.mjs
+- engine/v2/tests/w6l-chess.test.mjs
+- engine/v2/tests/w6v-media-check.test.mjs
+- engine/v2/tests/y3-resize.test.mjs
+- engine/v2/tests/board-game-make.mjs
+- engine/v2/tests/browser/board-game-browser.mjs
+- engine/v2/tests/browser/media-browser.mjs
+- engine/v2/tests/browser/page-browser.mjs
+- engine/v2/tests/browser/seats-browser.mjs
+
+# Examples, recipes, templates and presets whose needs name a built-in capability, and every example, recipe example
+# and template release/core-examples.json does not list (release/core-only.mjs). A "+ experiences/2.0/<name>/**" line
+# here ships a listed experience whose group is on (policy.mjs lifts its hard exclusion).
+# ---- core-only items: generated by node release/core-only.mjs --write; do not edit ----
+- docs/guide/examples/physics/**
+- engine/v2/addons/bouncy-ball/**
+- engine/v2/addons/confetti/**
+- engine/v2/addons/snowfall/**
+- engine/v2/addons/sparkle/**
+- examples/2.0-ad-studio/**
+- examples/2.0-asset-car/**
+- examples/2.0-board-game/**
+- examples/2.0-kit-ads/**
+- examples/2.0-library/**
+- examples/2.0-live-dashboards/**
+- examples/2.0-page-mascot/**
+- examples/2.0-round1/**
+- examples/2.0-showcase/motors/**
+- examples/2.0-video-explainer/**
+- library/2.0/templates/_showcase-controls/**
+- library/2.0/templates/_showcase-shell-paper/**
+- library/2.0/templates/_showcase-shell-rail/**
+- library/2.0/templates/ad/**
+- skill/2.0/examples/kinds/ad/**
+- skill/2.0/examples/kinds/chat/**
+- skill/2.0/examples/kinds/settings/**
+- skill/2.0/examples/recipes/ad-300x250/**
+- skill/2.0/examples/recipes/adaptive-ad/**
+- skill/2.0/examples/recipes/board-game/**
+- skill/2.0/examples/recipes/kit-ads/**
+- skill/2.0/examples/recipes/live-dashboard/**
+- skill/2.0/examples/recipes/oven-dial/**
+- skill/2.0/examples/recipes/page-mascot/**
+- skill/2.0/examples/recipes/rich-text/**
+- skill/2.0/examples/recipes/spoken-lines/**
+- skill/2.0/examples/recipes/toss/**
+- skill/2.0/examples/recipes/typing-over-scene/**
+- skill/2.0/examples/recipes/video-chapters/**
+# ---- end of core-only items ----

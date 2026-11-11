@@ -1,0 +1,56 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "s",
+  "drawing": "s.svg",
+  "values": {
+    "fit": {"type": "string", "maxLength": 1, "initial": "m"},
+    "mood": {"type": "string", "maxLength": 1, "initial": "a"},
+    "moodOn": {"type": "boolean", "initial": true},
+    "loud": {"type": "number", "minimum": 0, "maximum": 100, "initial": 50},
+    "spice": {"type": "number", "minimum": 0, "maximum": 3, "initial": 0},
+    "temp": {"type": "number", "minimum": 0, "maximum": 20, "initial": 0},
+    "showC": {"type": "boolean", "initial": false},
+    "picked": {"type": "boolean", "initial": false},
+    "drops": {"type": "number", "minimum": 0, "maximum": 99, "initial": 0},
+    "presses": {"type": "number", "minimum": 0, "maximum": 99, "initial": 0}
+  },
+  "on": {
+    "dropped": [{"actions": [{"set": "drops", "to": "drops + 1"}]}],
+    "went": [{"actions": [{"set": "presses", "to": "presses + 1"}]}],
+    "reset": [{"actions": [{"set": "moodOn", "to": "!moodOn"}]}]
+  },
+  "bindings": [
+    {"target": "vol", "move": "loud * 3", "axis": "x"},
+    {"target": "spice", "move": "spice * 100", "axis": "x"},
+    {"target": "temp", "move": "temp * 15", "axis": "x"},
+    {"target": "bin-c", "visible": "showC"},
+    {"target": "status", "text": "{{ picked ? 'Held' : 'Resting' }}, {{ drops }} drops"}
+  ],
+  "controls": {
+    "size": {
+      "kind": "choice", "value": "fit", "label": "Size",
+      "options": {
+        "s": {"target": "size-s", "value": "'s'", "label": "Small"},
+        "m": {"target": "size-m", "value": "'m'", "label": "Medium"},
+        "l": {"target": "size-l", "value": "'l'", "label": "Large"}
+      }
+    },
+    "mood": {
+      "kind": "choice", "value": "mood", "label": "Mood", "enabled": "moodOn",
+      "options": {
+        "a": {"target": "mood-a", "value": "'a'", "label": "Calm"},
+        "b": {"target": "mood-b", "value": "'b'", "label": "Busy"}
+      }
+    },
+    "reset": {"kind": "button", "target": "reset", "event": "reset", "label": "Mood on or off"},
+    "volume": {"kind": "slider", "target": "vol", "value": "loud", "axis": "x", "range": [0, 300], "label": "Volume"},
+    "spice": {"kind": "slider", "target": "spice", "value": "spice", "axis": "x", "range": [0, 300], "positions": 4, "label": "Spice"},
+    "temp": {"kind": "slider", "target": "temp", "value": "temp", "axis": "x", "range": [0, 300], "positions": 21, "label": "Temperature"},
+    "go": {"kind": "button", "target": "go", "event": "went", "label": "Go"},
+    "card": {
+      "kind": "drag", "target": "card", "drops": ["bin-a", "bin-c", "bin-b"], "accept": "event.drop !== ''",
+      "event": "dropped", "picked": "picked", "label": "Card"
+    }
+  }
+}

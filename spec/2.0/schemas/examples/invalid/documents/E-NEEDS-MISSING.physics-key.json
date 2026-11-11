@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "a",
+  "drawing": "a.svg",
+  "addons": {
+    "physics": {}
+  }
+}

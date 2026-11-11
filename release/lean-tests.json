@@ -1,0 +1,120 @@
+{
+ "engine/v2/tests/b4-proof.test.mjs": {
+  "tests": [
+   "packing twice gives the same page digest (a trace is tied to the bytes)"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/b4b-engine.test.mjs": {
+  "tests": [
+   "item 2 (D36): a call's string input is a formula in the checker too: quoted text, a name, and bare words refused"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/b4c-motion.test.mjs": {
+  "tests": [
+   "clock: a speed change keeps the remaining local time of each deadline",
+   "clock: at speed 0.5 the use's clip, timer and elapsed run at half speed; the scene runs at its own",
+   "clock: at speed 2 the use runs twice as fast",
+   "clock: paused holds the use and the blocks under it; it hears paused and resumed with the reason authored",
+   "clock: split and whole advances give the same events at speed 0.5",
+   "clock: the checker proves a scene clock's speed (E-CLOCK-SPEED) and that paused is a boolean",
+   "clock: the example checks clean",
+   "clock: the host pause holds a use at speed 0.5 on top of its speed",
+   "face: a facing scale is a number: a word faults at paint (E-TYPE), and the checker refuses a literal one",
+   "face: a mirrored part in a mirrored part leaves its text as drawn (two mirrors cancel)",
+   "face: right is as drawn; left mirrors about the pivot, inside the channels, and the text reads the right way",
+   "face: the example checks clean",
+   "face: under reduced motion the face still follows its value (a choice, not motion)",
+   "scroll: a clock's source and spanMs are refused as a 2.1 draft (E-DRAFT), on a scene and on a use",
+   "wipe: a binding drives it, with a glide",
+   "wipe: a stopped clip puts the drawn clip-path back",
+   "wipe: half way through an ease-out key, the share is the eased value",
+   "wipe: the checker refuses a wipe on a part that draws its own clip-path (E-WRITER)",
+   "wipe: the example checks clean",
+   "wipe: the part owns one clip path; its rectangle grows from the box's left edge with the share shown",
+   "wipe: under reduced motion the wipe ends at its last key at once"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/check-w4k.test.mjs": {
+  "tests": [
+   "formulas.md gives each function its own example, the row functions and the operators",
+   "keys.md lists the nested keys of controls, links, bindings, actions and uses"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/e4-joins.test.mjs": {
+  "tests": [
+   "small: START names hsvg preview; the README names proof.mjs guide, the guides folder and the studio's browser test; preview speaks of srcdoc; the fast run has the studio test"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/f1a-newcomer.test.mjs": {
+  "tests": [
+   "item 6: \"is not an input of\" lists the inputs (a template use, a kit with, a component use)",
+   "item 7: pack counts the files left out (--verbose names them) and refuses to replace another experience's package.json"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/k1-dial.test.mjs": {
+  "tests": [
+   "item 3: the oven example checks clean; its spoken value is the formatted heat, read back by the Node player"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/k2a-addons.test.mjs": {
+  "tests": "all",
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/skill.test.mjs": {
+  "tests": "all",
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/t1-sweep.test.mjs": {
+  "tests": [
+   "the sweep list: every 2.0 experience folder, sorted, no private or source folders"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/x2-speed.test.mjs": {
+  "tests": [
+   "item 2: a running clip keeps its block live; it holds still once the clip ends",
+   "item 3: a moving clip writes only the attributes whose value changed",
+   "item 3: a paint that changes nothing writes no attribute (the line chart after its clip ended)"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/x4-truth.test.mjs": {
+  "tests": [
+   "X4 baggage 1: fonts and colors rules with no evaluator are listed not-run by check.mjs",
+   "X4 newcomer F4: a link on an event nothing sends says how to send it; an event the scene sends needs no outputs (D31.4)"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/x7a-library.test.mjs": {
+  "tests": [
+   "a catalogue with each mistake gets E-CATALOGUE with a message that says the fix",
+   "a copy of a copy names its direct source, and a new experience from a plain folder works too",
+   "a package of picked items carries only what they reach, and the page plays it flattened",
+   "a pick that cannot be used is refused, with what to do",
+   "an experience picks items of the starter: a component, a layout, a shell, a resource and a theme, and checks clean",
+   "an experience that pins the kit gets the catalogue checked too",
+   "hsvg add picks one item for an experience, pinned to the library's version, and checks",
+   "hsvg new makes each of the six starter templates: new id, derivedFrom, the kit brought, checked and packed",
+   "hsvg new refuses a folder that exists, a bad name and an unknown template",
+   "picks keep the kit's pin, seals and rights",
+   "the starter catalogue checks clean, and every block, resource and theme of the kit has an item"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example, some with an add-on too (D41); runs in that repository, laid over the base (and the add-ons)."
+ },
+ "engine/v2/tests/y3-fixes.test.mjs": {
+  "tests": [
+   "item 3: a kit scene's with formula is checked as a formula, at the authored field",
+   "item 3: a with formula of several words reports at the authored field, not inside the kit; a valid one passes",
+   "item 6: hsvg new and hsvg add write the kit's digest into the pin, so a changed kit file is found",
+   "item 7: START says how to build the kit from the source; the template guide's first edits check clean"
+  ],
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ }
+}

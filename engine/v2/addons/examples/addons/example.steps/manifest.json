@@ -1,0 +1,17 @@
+{
+  "door": 2,
+  "id": "example.steps",
+  "version": "1.0.0",
+  "kind": "capability",
+  "title": "Steps",
+  "description": "A control kind: a stepper. A control {\"kind\": \"example.steps.stepper\", \"target\": \"<part>\", \"value\": \"<a whole number value>\", \"label\": \"...\"} steps its value by one: up and down with the arrow keys, and a press steps up and wraps round to the minimum.",
+  "adds": {
+    "controls": {
+      "stepper": {
+        "role": "spinbutton",
+        "gestures": ["press", "up", "down"],
+        "description": "steps a whole number value by one inside its minimum and maximum"
+      }
+    }
+  }
+}

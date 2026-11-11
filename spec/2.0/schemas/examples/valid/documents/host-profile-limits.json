@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "host-profile",
+  "id": "museum-kiosk",
+  "grants": {
+    "storage": ["saved"]
+  },
+  "limits": {
+    "soundBytesEach": 4000000,
+    "soundBytesAll": 32000000,
+    "soundMsEach": 600000,
+    "mountedElements": 400000
+  }
+}

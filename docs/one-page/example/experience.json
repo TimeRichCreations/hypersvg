@@ -1,0 +1,7 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "star-counter",
+  "about": {"title": "Star counter"},
+  "story": {"start": "hello", "scenes": {"hello": "scenes/hello/scene.json"}}
+}

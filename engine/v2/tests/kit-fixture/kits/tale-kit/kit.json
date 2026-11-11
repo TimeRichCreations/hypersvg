@@ -1,0 +1,47 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "kit",
+  "id": "tale-kit",
+  "about": {"title": "Picture story pages", "author": "TimeRich Creations", "license": "CC-BY-4.0", "version": "1.0.0"},
+  "rights": {
+    "designer": {"label": "Designer", "may": ["edit", "changeKit"]},
+    "copywriter": {"label": "Copywriter", "may": ["edit"]},
+    "publisher": {"label": "Publisher", "may": ["edit", "publish"]}
+  },
+  "blocks": {
+    "title": "blocks/title/component.json",
+    "badge": "blocks/badge/component.json",
+    "button": "blocks/button/component.json",
+    "page": "scenes/page/scene.json"
+  },
+  "inputs": {
+    "teller": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 24, "initial": "A storyteller",
+               "editableBy": ["copywriter"]}
+  },
+  "axes": [
+    {"axis": "shape", "select": "space", "sizes": {"400x300": "must"}}
+  ],
+  "roles": {
+    "page-number": {"aliases": ["page-count"], "jobGroup": "info", "appliesTo": ["part"]}
+  },
+  "theme": "meadow-day",
+  "themes": {
+    "meadow-day": {
+      "colorRoles": {"surface": "#fbf6e9", "ink": "#2b2a4c", "accent": "#f2b84b", "accent-2": "#3f6f4f",
+                     "muted": "#6b6780", "success": "#2e7d4f", "warning": "#8a5a00", "danger": "#b3261e",
+                     "on-accent": "#2b2a4c"},
+      "about": {"family": "meadow", "tone": ["warm"], "ground": "light"}
+    },
+    "meadow-night": {
+      "extends": "meadow-day",
+      "colorRoles": {"surface": "#1d2238", "ink": "#fbf6e9", "accent": "#9db7f5", "accent-2": "#f2b84b",
+                     "muted": "#c9c3e0", "success": "#6fcf97", "warning": "#f2c94c", "danger": "#ff8a80",
+                     "on-accent": "#1d2238"},
+      "about": {"family": "meadow", "tone": ["calm"], "ground": "dark"}
+    }
+  },
+  "language": "en",
+  "resources": {
+    "kit-words-en": {"kind": "words", "file": "words/en.csv", "language": "en", "digest": "sha256:87c3abc0922393d085baade2580fb180f0f3640508ece8d1f838f9265e27abc2"}
+  }
+}

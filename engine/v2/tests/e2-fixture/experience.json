@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "e2-fixture",
+  "about": {"title": "E2: the focus ring after a press, and the disabled cursor"},
+  "language": "en",
+  "story": {
+    "start": "one",
+    "scenes": {"one": "scenes/one/scene.json", "two": "scenes/two/scene.json"},
+    "ends": ["two"],
+    "links": [
+      {"id": "onward", "from": "one", "on": "next", "to": "two"},
+      {"id": "home", "from": "two", "on": "back", "to": "one"}
+    ]
+  }
+}

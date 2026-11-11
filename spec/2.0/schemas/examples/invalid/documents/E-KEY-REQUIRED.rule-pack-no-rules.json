@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "rule-pack",
+  "id": "a",
+  "about": {
+    "title": "Example",
+    "version": "1.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "b",
+  "drawing": "b.svg",
+  "controls": {
+    "back": {"kind": "button", "target": "back", "event": "back", "label": "Back to scene A"}
+  }
+}

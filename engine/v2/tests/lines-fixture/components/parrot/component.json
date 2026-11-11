@@ -1,0 +1,217 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "parrot",
+  "needs": [
+    "lines"
+  ],
+  "about": {
+    "category": "character"
+  },
+  "drawing": "parrot.svg",
+  "inputs": {
+    "say": {
+      "kind": "trigger",
+      "payload": {
+        "type": "object",
+        "properties": {
+          "line": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "required": [
+          "line"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "greeting": {
+      "kind": "content",
+      "type": "string",
+      "contentType": "line",
+      "maxLength": 48,
+      "initial": "hello"
+    }
+  },
+  "outputs": {
+    "stressed": {
+      "kind": "event"
+    }
+  },
+  "values": {
+    "heard": {
+      "type": "string",
+      "initial": "",
+      "maxLength": 400
+    }
+  },
+  "addons": {
+    "lines": {
+      "lines": {
+        "hello": {
+          "text": "{{ words.hello }}",
+          "durationMs": 1500,
+          "voices": {
+            "en": {
+              "audio": "hello-en",
+              "durationMs": 1200,
+              "words": [
+                {
+                  "startMs": 0,
+                  "endMs": 400
+                },
+                {
+                  "startMs": 400,
+                  "endMs": 800,
+                  "event": "stress"
+                },
+                {
+                  "startMs": 900,
+                  "endMs": 1200
+                }
+              ],
+              "cues": [
+                {
+                  "startMs": 0,
+                  "endMs": 200,
+                  "cue": "C"
+                },
+                {
+                  "startMs": 200,
+                  "endMs": 500,
+                  "cue": "B"
+                },
+                {
+                  "startMs": 600,
+                  "endMs": 1000,
+                  "cue": "E"
+                }
+              ]
+            },
+            "es": {
+              "durationMs": 1600,
+              "words": [
+                {
+                  "startMs": 0,
+                  "endMs": 500
+                },
+                {
+                  "startMs": 500,
+                  "endMs": 1000,
+                  "event": "stress"
+                },
+                {
+                  "startMs": 1000,
+                  "endMs": 1500
+                }
+              ],
+              "cues": [
+                {
+                  "startMs": 0,
+                  "endMs": 300,
+                  "cue": "D"
+                },
+                {
+                  "startMs": 500,
+                  "endMs": 900,
+                  "cue": "E"
+                }
+              ]
+            }
+          }
+        },
+        "bye": {
+          "text": "{{ words.bye }}",
+          "durationMs": 900
+        }
+      }
+    }
+  },
+  "mouth": {
+    "target": "beak",
+    "leadMs": 20,
+    "blendMs": 60,
+    "cues": {
+      "A": "shut",
+      "B": "wide",
+      "C": "wide",
+      "D": "wide",
+      "E": "round",
+      "F": "round",
+      "G": "shut",
+      "H": "wide",
+      "X": "shut"
+    }
+  },
+  "resources": {
+    "hello-en": {
+      "kind": "sound",
+      "file": "hello-en.wav",
+      "digest": "sha256:2f2bd27c2b0521924bd67aa6e8f0c013ddc20fbf3b0280a558973a0eb04f460f"
+    }
+  },
+  "on": {
+    "say": [
+      {
+        "id": "speak",
+        "actions": [
+          {
+            "id": "speak-line",
+            "call": "lines.say",
+            "with": {
+              "line": "event.line"
+            }
+          }
+        ]
+      }
+    ],
+    "stress": [
+      {
+        "id": "note-stress",
+        "actions": [
+          {
+            "id": "log-stress",
+            "set": "heard",
+            "to": "heard + 'stress '"
+          },
+          {
+            "id": "tell",
+            "emit": "stressed"
+          }
+        ]
+      }
+    ],
+    "lines:ended:hello": [
+      {
+        "id": "note-hello",
+        "actions": [
+          {
+            "id": "log-hello",
+            "set": "heard",
+            "to": "heard + (event.interrupted ? 'cut ' : 'done ')"
+          }
+        ]
+      }
+    ],
+    "lines:ended:bye": [
+      {
+        "id": "note-bye",
+        "actions": [
+          {
+            "id": "log-bye",
+            "set": "heard",
+            "to": "heard + 'bye-done '"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "id": "show-word",
+      "target": "word",
+      "text": "{{ spoken.text }}"
+    }
+  ]
+}

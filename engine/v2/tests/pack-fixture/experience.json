@@ -1,0 +1,24 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "pack-fixture",
+  "about": {
+    "title": "Packer fixture"
+  },
+  "story": {
+    "start": "one",
+    "scenes": {
+      "one": "scenes/one/scene.json"
+    },
+    "ends": [
+      "one"
+    ]
+  },
+  "resources": {
+    "blip": {
+      "kind": "sound",
+      "file": "sounds/blip.ogg",
+      "digest": "sha256:3f587973d13bfc179d6f340735fdb90abba763b3faf3658aa9e3abc05cc911d3"
+    }
+  }
+}

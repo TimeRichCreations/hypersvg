@@ -1,0 +1,57 @@
+{
+ "engine/v2/tests/check-coverage.test.mjs": {
+  "tests": "all",
+  "why": "needs docs/spec-2.0-work (the internal spec work folder and its upgrade tool), which is not exported."
+ },
+ "engine/v2/tests/skill-refs.test.mjs": {
+  "tests": [
+   "skill/2.0/tools/make-refs.mjs --check finds every page up to date"
+  ],
+  "why": "make-refs.mjs --check rebuilds the reference pages from docs/spec-2.0-work, which is not exported."
+ },
+ "engine/v2/tests/w2e-load.test.mjs": {
+  "tests": [
+   "stands alone: only the upgrade tool tests reach docs/ from engine/v2/tests (the tests of a work tool)"
+  ],
+  "why": "it lists the two tests of the 0.1 upgrade tool by name, and those are not exported."
+ },
+ "engine/v2/tests/w4u-upgrade.test.mjs": {
+  "tests": "all",
+  "why": "not exported: it tests the 0.1 upgrade tool (docs/spec-2.0-work), which stays out of the public repository."
+ },
+ "engine/v2/tests/w5m-upgrade.test.mjs": {
+  "tests": "all",
+  "why": "not exported: it tests the 0.1 upgrade tool (docs/spec-2.0-work), which stays out of the public repository."
+ },
+ "engine/v2/tests/w6m-readme.test.mjs": {
+  "tests": "all",
+  "why": "reads the authors' repository AGENTS.md at import, which is not exported."
+ },
+ "engine/v2/tests/x1-security.test.mjs": {
+  "tests": "all",
+  "why": "not exported: it plants a fake credential literal; the leak check refuses it. The authors' CI still runs it."
+ },
+ "engine/v2/tests/x4-truth.test.mjs": {
+  "tests": [
+   "X4 architecture 10: a code quoted in a one-off spec edit script is not produced; the upgrade tool still is",
+   "X4 newcomer F1: README.md leads with 2.0 (the kit, START.md, the skill); its links resolve; its commands run"
+  ],
+  "why": "Architecture 10 needs docs/spec-2.0-work (the internal spec work folder and its upgrade tool), which is not exported. Newcomer F1 checks the authors' repository README.md (with its 0.1 page); the export's front page is the one-page README proposal."
+ },
+ "engine/v2/tests/x5-status.test.mjs": {
+  "tests": [
+   "X5.14 the status table: six status words, every evidence file exists"
+  ],
+  "why": "names spec/2.0/DECISIONS.md as evidence; the decisions log is not exported (it names this PC's bench folder)."
+ },
+ "engine/v2/tests/y3-fixes.test.mjs": {
+  "tests": [
+   "item 6: openUrl's with carries only ids and numbers: the checker refuses words, the engine never sends them"
+  ],
+  "why": "needs an example the core release does not ship (release/core-examples.json does not list it): examples/2.0-round1. It runs in the authors' repository."
+ },
+ "examples/2.0-live-dashboards/tests/host.test.mjs": {
+  "tests": "all",
+  "why": "not exported: it plants a fake login URL; the leak check refuses it. The authors' CI still runs it."
+ }
+}

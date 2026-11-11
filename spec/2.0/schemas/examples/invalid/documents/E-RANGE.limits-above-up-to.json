@@ -1,0 +1,10 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "a",
+  "story": {},
+  "needs": [],
+  "limits": {
+    "soundBytesEach": 100000000
+  }
+}

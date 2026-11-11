@@ -1,0 +1,43 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "rule-pack",
+  "id": "hsvg-accessibility",
+  "about": {
+    "title": "HyperSVG accessibility",
+    "description": "The fuller accessibility pack for lessons, games and apps. It adds to hsvg-baseline: reading order for every control, a caption for every spoken line, contrast for every control and every drawn text, and a minimum wait on timed links.",
+    "version": "2.0.0"
+  },
+  "domain": "accessibility",
+  "rules": [
+    {
+      "id": "reading-order",
+      "kind": "reading-order",
+      "subject": "controls",
+      "order": [
+        "controls"
+      ]
+    },
+    {
+      "id": "captions",
+      "kind": "captions"
+    },
+    {
+      "id": "text-contrast",
+      "kind": "contrast",
+      "ratio": 4.5,
+      "largeRatio": 3
+    },
+    {
+      "id": "controls-contrast",
+      "kind": "contrast",
+      "subject": "controls",
+      "ratio": 4.5,
+      "largeRatio": 3
+    },
+    {
+      "id": "timing",
+      "kind": "timing",
+      "minMs": 20000
+    }
+  ]
+}

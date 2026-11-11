@@ -1,0 +1,1643 @@
+{
+ "about": "HyperSVG 2.0 rename table (A13.4), the one rename list: words, keys, marks and error codes. Generated from addons/a13-migration.md by make-renames.mjs; keep in step.",
+ "rows": [
+  {
+   "row": "A-01",
+   "group": "hsvg/0.1 documents",
+   "from": "`\"format\": \"hsvg/0.1\"`",
+   "to": "`\"format\": \"hsvg/2.0\"`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-02",
+   "group": "hsvg/0.1 documents",
+   "from": "`kind`: `experience`, `component`, `settings`",
+   "to": "`experience` and `component` stay; a `settings` document becomes the experience's `settings` key (5.3.2)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-03",
+   "group": "hsvg/0.1 documents",
+   "from": "`kind: \"scene\"`",
+   "to": "`kind: \"scene\"` (the file path is kept)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-04",
+   "group": "hsvg/0.1 documents",
+   "from": "settings item `value` (a stored value) and `step`",
+   "to": "item `knob`; the value moves to the experience's inputs face as a knob with `step` (5.3.2); a `set` of it in a person's control becomes the `setting` action, and a reset of it `resetSaved` with `settings: true` (5.15)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-05",
+   "group": "hsvg/0.1 documents",
+   "from": "settings item `when: \"play\"`",
+   "to": "same: the knob is a setting",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-06",
+   "group": "hsvg/0.1 documents",
+   "from": "settings item `when: \"make\"`",
+   "to": "same; the knob gets `editableBy` (default `[\"designer\"]`), and an experience without rights gets the starter rights (9.9)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-07",
+   "group": "hsvg/0.1 documents",
+   "from": "`kind: \"layout\"`",
+   "to": "editor sidecar outside the format, never packed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-08",
+   "group": "hsvg/0.1 documents",
+   "from": "`title`",
+   "to": "`about.title`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-09",
+   "group": "hsvg/0.1 documents",
+   "from": "`story.initial`, `story.scenes`",
+   "to": "`story.start`, `story.scenes` (A13.11); `ends` are the scenes with no outgoing `go`; `lifetime` is `saved` when any value is kept, else `run`; a kept value that held the resume scene becomes `resumeAt`",
+   "treatment": "review"
+  },
+  {
+   "row": "A-10",
+   "group": "hsvg/0.1 documents",
+   "from": "`go` action",
+   "to": "`emit` of a declared output event plus a story-graph link (A13.11, A13.5). A destination that is a value with an `enum` of scenes, a computed value whose formula is a known list, or a column of a data table read with `lookup` gives one link per scene",
+   "treatment": "review"
+  },
+  {
+   "row": "A-11",
+   "group": "hsvg/0.1 documents",
+   "from": "`go` with `transition`",
+   "to": "the link's `transition`, with `transitionMs`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-12",
+   "group": "hsvg/0.1 documents",
+   "from": "`visit`, `return`; `returned` payload `{scene}`",
+   "to": "links with `visit: true` and `return: true`; each return link gets a fallback link, whose destination is an unconverted item unless every way into the scene is a visit (3.7); payload `{scene}`",
+   "treatment": "review"
+  },
+  {
+   "row": "A-13",
+   "group": "hsvg/0.1 documents",
+   "from": "`values`; `keep: true`",
+   "to": "values; `lifetime: \"saved\"` (5.1.2)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-14",
+   "group": "hsvg/0.1 documents",
+   "from": "`computed`",
+   "to": "`computed`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-15",
+   "group": "hsvg/0.1 documents",
+   "from": "`states` (statecharts)",
+   "to": "`machines`; a state is a machine state (5.14)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-16",
+   "group": "hsvg/0.1 documents",
+   "from": "`on` (event to rules)",
+   "to": "reactions, still under `on` (5.13)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-17",
+   "group": "hsvg/0.1 documents",
+   "from": "`after[].delay` (already milliseconds in 0.1)",
+   "to": "`after[].delayMs`, same number",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-18",
+   "group": "hsvg/0.1 documents",
+   "from": "`entry`, `exit`",
+   "to": "same",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-19",
+   "group": "hsvg/0.1 documents",
+   "from": "`shows`",
+   "to": "`bindings` (6.8)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-20",
+   "group": "hsvg/0.1 documents",
+   "from": "show `state` (drawn state)",
+   "to": "binding `look`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-21",
+   "group": "hsvg/0.1 documents",
+   "from": "actions `state`, `show`, `hide`",
+   "to": "a value write plus a `look` or `visible` binding (5.15.1 has no imperative drawing actions)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-22",
+   "group": "hsvg/0.1 documents",
+   "from": "show `token` / `value`",
+   "to": "binding `color` (6.8, 7.7) with `role` the token's name: only the paints that used `var(--token)` change",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-23",
+   "group": "hsvg/0.1 documents",
+   "from": "show `fit` (`region`, `fontPx`, `minFontPx`, `maxLines`)",
+   "to": "`fit` on the text binding (7.6); the region gets `data-hsvg-region=\"fit\"` in every frame",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-24",
+   "group": "hsvg/0.1 documents",
+   "from": "control `kind: \"choice\"`; a press control's `hold`",
+   "to": "option control (5.11), whose own `target` goes (each option keeps its target); `held`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-25",
+   "group": "hsvg/0.1 documents",
+   "from": "component `inputs`",
+   "to": "inputs with `kind` `content`, `knob` or `trigger` (5.3); a counter used as a pulse becomes a trigger, and each caller's increment becomes the `trigger` action; an entry that reads a pulse at mount has no 2.0 form and is listed",
+   "treatment": "review"
+  },
+  {
+   "row": "A-26",
+   "group": "hsvg/0.1 documents",
+   "from": "component `outputs` (formulas)",
+   "to": "outputs of kind `result` (5.4)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-27",
+   "group": "hsvg/0.1 documents",
+   "from": "`instances` (`component`, `target`, `with`)",
+   "to": "`uses` (`use`, `into`, `with`) (4.3); `into` is the `data-hsvg-slot` name of the element `target` named; a use id equal to a value or computed name gets the suffix `-use`, and its events follow",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-28",
+   "group": "hsvg/0.1 documents",
+   "from": "`each` (`items`, `key`, `component`, `region`, `with`)",
+   "to": "a repeated use: a `uses` entry with `use`, `into`, `with`, `items` and `key` (4.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-29",
+   "group": "hsvg/0.1 documents",
+   "from": "`instances['x'].out` in formulas",
+   "to": "`uses['x'].out` (5.4)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-30",
+   "group": "hsvg/0.1 documents",
+   "from": "`tokens`",
+   "to": "colour roles in the experience's own `themes`, or its kit's (7.7): a token named like a core role maps to it; every other token becomes a role of its own name, so a character's colours never follow `surface` or `ink`",
+   "treatment": "review"
+  },
+  {
+   "row": "A-31",
+   "group": "hsvg/0.1 documents",
+   "from": "`sounds` (`file`, `volume`)",
+   "to": "one sound resource per file; `volume` becomes gain where it is played",
+   "treatment": "review"
+  },
+  {
+   "row": "A-32",
+   "group": "hsvg/0.1 documents",
+   "from": "`data` tables, `words`",
+   "to": "data and words resources; the default language is the `language` key (2.7)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-33",
+   "group": "hsvg/0.1 documents",
+   "from": "`extensions`",
+   "to": "`needs`, derived from content (10.11); a capability no content uses is listed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-34",
+   "group": "hsvg/0.1 documents",
+   "from": "extension fields (`physics`, `audio`, `audioMouth`, `audioSynths`, `snapshot`)",
+   "to": "the capability's 2.0 grammar (10.7); a physics burst that only emits becomes a `particles` effect (A1.1) with `start: \"play\"`, made in a new empty group `<layer>-particles` after the layer, whose transform fits the burst `viewBox` into the layer's box (meet) in each drawing; `audioMouth` (a mouth moved by loudness) and `audioSynths` (made sounds) keep their names under the `synth` capability (`capabilities/synth.json`; the 0.1 extension `audio` is the 2.0 capability `synth`), times in ms",
+   "treatment": "review",
+   "treatmentNote": "R; N where a manifest does not cover a field"
+  },
+  {
+   "row": "A-35",
+   "group": "hsvg/0.1 documents",
+   "from": "`audioPlay`; clip `period`; glide `ms`",
+   "to": "`sound` with `group`; `periodMs`; `durationMs` (6.7)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-36",
+   "group": "hsvg/0.1 documents",
+   "from": "`aiSeats`, `aiAsk`",
+   "to": "character seats with the `ai` grant (A5.1); `ask`",
+   "treatment": "review"
+  },
+  {
+   "row": "A-37",
+   "group": "hsvg/0.1 documents",
+   "from": "`audioSettings` (drawn panel), `aiSettings`, `tuneSettings`",
+   "to": "the `open` action on a dialog slot (10.1) with a `form` or SVG widget (A6.1); until a shell exists, the drawn panel stays in its scene, shown by a value through a `visible` binding, its controls changing settings with `setting` (5.15)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-38",
+   "group": "hsvg/0.1 documents",
+   "from": "`drawing` (one SVG, or `wide` / `tall`)",
+   "to": "`drawing`, or `layouts` with `when` `wide` and `tall` (7.4); the experience gets the shape axis of 7.1 (`wide` from aspect 1, `tall` below)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-39",
+   "group": "hsvg/0.1 documents",
+   "from": "scene field `inputMode`; built-ins `now`, `elapsed`, `reducedMotion`, `muted`, `volume`",
+   "to": "ambient inputs (5.5); a `set` of `muted` or `volume` becomes the `setting` action",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-40",
+   "group": "hsvg/0.1 documents",
+   "from": "`logic` declarations and `logic/*.js` files",
+   "to": "a reviewed registry module named in `needs` (10.7, A9.3)",
+   "treatment": "none",
+   "treatmentNote": "N until a reviewed module exists"
+  },
+  {
+   "row": "A-41",
+   "group": "hsvg/0.1 documents",
+   "from": "shared values a host set with `player.set`",
+   "to": "none exposed; the report lists them for the author to move onto the inputs face (10.6)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-42",
+   "group": "hsvg/0.1 documents",
+   "from": "ids, value names, formulas, templates",
+   "to": "unchanged (decision 3), apart from the renames of A-27 and hyphenated value names, which become camelCase and are listed (`lists.names`; a collision, such as `a-b` and `aB`, is unconverted); an `id` equal to its map key is dropped",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-43",
+   "group": "hsvg/0.1 documents",
+   "from": "focus order by `controls` declaration order",
+   "to": "focus order by document order of targets (6.5); the tool reports every scene where the two orders differ",
+   "treatment": "review"
+  },
+  {
+   "row": "A-44",
+   "group": "hsvg/0.1 documents",
+   "from": "two clips that write one channel of one target",
+   "to": "the same `lane`, named after the target (6.7)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-45",
+   "group": "hsvg/0.1 documents",
+   "from": "a clip with no tracks, used as a timer",
+   "to": "a machine `after` timer (5.14)",
+   "treatment": "review"
+  },
+  {
+   "row": "A-46",
+   "group": "hsvg/0.1 documents",
+   "from": "`audio` extension keys: the mix (`groups`, `mutes`) and a scene's `audio.music` (`name`, `fade`)",
+   "to": "the core mix on the experience (6.10); the scene's `music` with `sound` and `fadeMs`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-47",
+   "group": "hsvg/0.1 documents",
+   "from": "a reaction key `physicsEvent:<event>:<body>` with an optional percent-encoded `:<other>`",
+   "to": "`physics:<event>:<body>` (10.7); the other part becomes the guard `event.other === '<other>'`, joined to the reaction's own guard with `&&`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-48",
+   "group": "hsvg/0.1 documents",
+   "from": "a reaction to `ended:<clip>` (0.1 fired it only when the clip finished; `stop` and a new `play` dropped the clip silently)",
+   "to": "the same reaction with the guard `!event.interrupted`, joined to its own guard with `&&` (5.12: 2.0 also fires it, interrupted, on stop and replay); a timer clip's `Stop` (A-45) returns to idle without its ended event",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-49",
+   "group": "hsvg/0.1 documents",
+   "from": "an event a component emits that a parent hears as `<instance>.<event>` (0.1 passed every emitted event up)",
+   "to": "an output event of the component, `{\"kind\": \"event\"}` (5.4, 5.12: only a declared output event leaves a block)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-50",
+   "group": "hsvg/0.1 documents",
+   "from": "values, knobs or a graph with `keep` or a stored lifetime (0.1 kept them on the device without asking)",
+   "to": "the experience asks for the `storage` grant with the `session` and `saved` scopes it uses (5.1.2, 10.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "A-51",
+   "group": "hsvg/0.1 documents",
+   "from": "a drag control's `accept` (0.1: whether the item snaps onto the drop; every hit still sent `event` with the drop)",
+   "to": "removed, so every hit sends `event` as before and the item goes home (5.11); with `accept` other than `false`, the snap is not carried and the row is reviewed",
+   "treatment": "mechanical",
+   "treatmentNote": "M, R"
+  },
+  {
+   "row": "A-52",
+   "group": "hsvg/0.1 documents",
+   "from": "a channel binding whose value 0.1 checked only at play (the 0.1 player stopped with a fault, `E-MOTION-RANGE`, when the value left the part's motion range; it never clamped)",
+   "to": "where the 2.0 checker cannot prove the range (5.6.7), the same formula inside `clamp(f, lo, hi)`, lo..hi being the part's motion range; every value 0.1 played is unchanged. A part whose range differs between layouts is listed, not clamped",
+   "treatment": "review"
+  },
+  {
+   "row": "A-53",
+   "group": "hsvg/0.1 documents",
+   "from": "a control with `enabled` (0.1 drew its target at opacity 0.45 while it could not be used, 1 while it could, whatever the drawing had)",
+   "to": "an opacity binding on the target, `(enabled) ? 1 : 0.45`, with the motion range `opacity(0.45 1)` widened to any range it had (6.2.1); an opacity binding the target already has joins it as `min(look, formula)`; a `choice` dims its group, the 0.1 target; a `transform` on the target moves to a new plain `<g>` around it. A target that is a look, or a component drawing's top `<g>` with a transform, is not converted. Without it 2.0 shows a disabled look only where the drawing has one (6.2.4)",
+   "treatment": "mechanical",
+   "treatmentNote": "M, R"
+  },
+  {
+   "row": "A-54",
+   "group": "hsvg/0.1 documents",
+   "from": "a clip that is not endless (0.1 kept every part at its last sampled value when a clip ended)",
+   "to": "`loopMode: \"hold\"`, so the final pose stays until the clip is stopped or replaced (6.7). An endless clip (`loop: true`) never ends and is unchanged",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-01",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-version` `1.2`, `1.1`, `1.0`, `0.4`",
+   "to": "`2.0`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-02",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-kind` `artboard`, `component`, `compound`, `part`",
+   "to": "`artboard` becomes `screen`; the others are unchanged; every element with a job gets `data-hsvg-kind=\"part\"` (4.1)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-03",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-slot` on an empty `<g>` that a use mounts into",
+   "to": "a slot (drawn place); `-slot-target` removed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-04",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-slot` (and `-slot-target`) on a node that shows a value",
+   "to": "a part holding a content field, with a binding in JSON (A13.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-05",
+   "group": "SVG 1.x drawings",
+   "from": "icon slot: `data-hsvg-icon-meaning`, `-icon-package`, `-icon-source`; pre-1.2 `data-hsvg-icon-slot`",
+   "to": "an icon place with `data-hsvg-icon` (6.2.2), plus a content field with `contentType: \"icon\"` and an `icon` binding when the icon was editable; package and source go to the icon-set resource",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-06",
+   "group": "SVG 1.x drawings",
+   "from": "colour slot (`attr:fill`, `css:--…` on a shared colour)",
+   "to": "a colour role on the part (7.7)",
+   "treatment": "review"
+  },
+  {
+   "row": "B-07",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-states`, `-state`, `-state-name`",
+   "to": "look marks (6.2.4), with `display=\"none\"` on every look but the rest look; readers still accept the old marks, writers never write them",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-08",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-state-review` `draft` / `redo` / `approved` and its note",
+   "to": "a trust review `of` the look: `draft` to `draft`, `redo` to `blocked`, `approved` to `candidate` (A9.3); an `approved` never becomes `accepted`, since it does not say a person gave it",
+   "treatment": "review"
+  },
+  {
+   "row": "B-09",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-inferred=\"auto\"` / `\"person\"`",
+   "to": "listed in `about.trust.provenance.inferred` / removed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-10",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-layer` (five bands)",
+   "to": "`data-hsvg-paint` on the layer (6.4); paint outside the viewBox by a part that is not backdrop is listed, to fix by hand",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-11",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-place` (library name)",
+   "to": "a slot and a use in JSON (`uses[].use`, `into`)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-12",
+   "group": "SVG 1.x drawings",
+   "from": "page marks `data-hsvg-target=\"signup\"` (and `-spot`, `-grab`, `-action`)",
+   "to": "none: read as aliases on host pages (A13.2, A3.1)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-13",
+   "group": "SVG 1.x drawings",
+   "from": "manifest `<metadata id=\"<ns>__hsvg\">`",
+   "to": "`about` (id, version), trust provenance; `variant.of` becomes a look or a layout",
+   "treatment": "review"
+  },
+  {
+   "row": "B-14",
+   "group": "SVG 1.x drawings",
+   "from": "built-in motion `<style … data-hsvg-role=\"motion\">`",
+   "to": "a clip (6.7)",
+   "treatment": "review"
+  },
+  {
+   "row": "B-15",
+   "group": "SVG 1.x drawings",
+   "from": "colour variables `--hsvg-primary`, `-secondary`, `-accent`, `-surface`, `-text`",
+   "to": "`data-hsvg-color-role`: `primary` to `accent`, `secondary` to `ink`, `accent` to `accent-2`, `surface` to `surface`, `text` to the kit role `on-accent` (7.7), which the tool adds to every theme of the kit with the old colour",
+   "treatment": "review"
+  },
+  {
+   "row": "B-16",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-role`, `-label`, `-pivot`, `-motion`, `-side`, `-follows`",
+   "to": "unchanged; on the root `<svg>` or a component root, `-label` becomes the root `<title>` when there is none (else it is listed), and `-motion` is listed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-17",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-category`, `-tags`",
+   "to": "`about.category`, `about.tags` of the owning document (2.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-18",
+   "group": "SVG 1.x drawings",
+   "from": "a named `font-family` that is neither generic nor a font resource",
+   "to": "a `font:<family>` need (10.11), or a font resource when the source carries the file",
+   "treatment": "review"
+  },
+  {
+   "row": "B-19",
+   "group": "SVG 1.x drawings",
+   "from": "paints `var(--name, #hex)`, in attributes or `style` text",
+   "to": "the fallback colour, with `data-hsvg-color-role` naming the token's role (row A-30)",
+   "treatment": "review"
+  },
+  {
+   "row": "B-20",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-scene`",
+   "to": "dropped: the scene names its frames",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-21",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-kind=\"anchor\"`",
+   "to": "a part with `data-hsvg-anchor=\"0 0\"`, keeping its transform",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-22",
+   "group": "SVG 1.x drawings",
+   "from": "motion range `reveal(min max)`",
+   "to": "`draw(min max)`, adding `pathLength=\"1\"` to the element",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-23",
+   "group": "SVG 1.x drawings",
+   "from": "`<title>` inside a part; `aria-hidden=\"true\"`; authored `role`, `aria-*`, `tabindex`",
+   "to": "`data-hsvg-label`; `data-hsvg-paint=\"decoration\"`; removed and listed (the player writes them, 6.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-24",
+   "group": "SVG 1.x drawings",
+   "from": "ids in JSON with the namespace (`robin__near-wing`)",
+   "to": "local ids (`near-wing`)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-25",
+   "group": "SVG 1.x drawings",
+   "from": "a nested `<svg>` used as a coordinate system (not a placed copy or icon place)",
+   "to": "a `<g>` with the same `transform`, and a clip path when it clipped",
+   "treatment": "review"
+  },
+  {
+   "row": "B-26",
+   "group": "SVG 1.x drawings",
+   "from": "a `<symbol>` that no `<use>` names",
+   "to": "its content as a `<g display=\"none\">`, listed; where something opened it, a `visible` binding shows it",
+   "treatment": "review"
+  },
+  {
+   "row": "B-27",
+   "group": "SVG 1.x drawings",
+   "from": "a mover (a part with `data-hsvg-motion`, or a channel target) that carries a `transform`",
+   "to": "the `transform` moves to a new wrapping `<g>`; the drawing renders the same (6.2.1)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-28",
+   "group": "SVG 1.x drawings",
+   "from": "an id outside the id grammar (camelCase, `_`, `.`)",
+   "to": "the same id in kebab-case, with `-2`, `-3` on a clash; the JSON follows (2.12)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-29",
+   "group": "SVG 1.x drawings",
+   "from": "an id with `__` in a screen drawing, outside a placed copy",
+   "to": "`__` becomes `-`; the JSON follows (2.12)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-30",
+   "group": "SVG 1.x drawings",
+   "from": "a scene drawing of an `hsvg/0.1` document with no `data-hsvg-version`",
+   "to": "the 2.0 root marks: `data-hsvg-version=\"2.0\"`, `data-hsvg-kind=\"screen\"`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-31",
+   "group": "SVG 1.x drawings",
+   "from": "`focusable`; an empty `data-hsvg-label`",
+   "to": "removed (the player owns focus, 6.5; an empty label says nothing)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "B-32",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-kind=\"text\"` (not a 1.x kind)",
+   "to": "removed; listed, so a part with a job is marked `part` by hand",
+   "treatment": "review"
+  },
+  {
+   "row": "B-33",
+   "group": "SVG 1.x drawings",
+   "from": "looks on a component root (`data-hsvg-states` on the component `<g>`)",
+   "to": "the looks wrapped in a new part `<namespace>__face`; controls on a look target that part, and press controls that land on one part become one (6.2.4)",
+   "treatment": "review"
+  },
+  {
+   "row": "B-34",
+   "group": "SVG 1.x drawings",
+   "from": "`data-hsvg-slot-target` on a mount that a use fills",
+   "to": "kept as a slot; `slot-target` removed (a use, not a value, fills it)",
+   "treatment": "review"
+  },
+  {
+   "row": "B-35",
+   "group": "SVG 1.x drawings",
+   "from": "looks on a component of a screen drawing (`data-hsvg-states` on a component `<g>` that is not the root of a component drawing)",
+   "to": "the component becomes a part: looks belong to parts (6.2.4), and a component defined in place is used like one (4.1)",
+   "treatment": "review"
+  },
+  {
+   "row": "B-36",
+   "group": "SVG 1.x drawings",
+   "from": "a use in a `<g>` slot (0.1 and runtime JSON drew the component with its drawing's own `x`, `y`, `width` and `height`: the viewBox origin less `x`, `y` sat on the slot's origin)",
+   "to": "`translate(dx dy)` after the slot's `transform`, (dx, dy) being the root's pivot (default the viewBox centre, 6.2.1) less the viewBox origin plus the root's `x` and `y`; a pivot on the slot moves by (-dx, -dy), so clips on it turn about the same point. It draws as before. A component whose layouts need different moves, a root whose `width` or `height` is not its viewBox size (0.1 scaled it), and one slot that two uses need moved apart are listed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-01",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-brief` `fields`, `short`, `assets`, `icons`, `language`",
+   "to": "content values with tiers (7.9); resource ids; icon field values; the language axis",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-02",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-tokens` `colors`, `type`, `spacing` (with options and ranges)",
+   "to": "theme values; ranges become knob bounds (7.7)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-03",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-policy` `parts` (`priority`, `steps`, `neverRemove`), `floorPx`, `removeBelowHeight`",
+   "to": "rule pack: give-way rules, `keep` rules, `readable` (8.4, 8.9); `removeBelowHeight` becomes a layout with `when: {\"maxHeight\": <n>}` whose layout plan leaves the part out (7.4); rules cannot read the space (8.1)",
+   "treatment": "review"
+  },
+  {
+   "row": "C-04",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-motion` clips (`duration`, `delay`, key `t` in seconds; targets `part:`, `role:`, `slot:`, `layer:`)",
+   "to": "clips in ms, a clip `delay` added to every key time and to `durationMs`; targets as addresses, where `role:`, `slot:` and `layer:` targets expand to one track per matching part",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-05",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-receipt`",
+   "to": "receipt (A8.1)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-06",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-roles` (role word to content category)",
+   "to": "role map: role word to job group",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-07",
+   "group": "sidecars and the ad catalog",
+   "from": "`hsvg-components` (`resize`, `keepAspect`, `corners`, `padding`, `anchor`, `crop`, `versions`)",
+   "to": "sizing, layouts and layout plans (7.4, 7.5)",
+   "treatment": "review"
+  },
+  {
+   "row": "C-08",
+   "group": "sidecars and the ad catalog",
+   "from": "card `card`, `id`, `version`",
+   "to": "component header and `about.version`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-09",
+   "group": "sidecars and the ad catalog",
+   "from": "card `kind`, `category`, `job`, `alsoJobs`, `tags`",
+   "to": "rung mark, category, role (A13.5, catalog items), `about.tags`; `alsoJobs` words join the tags",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-10",
+   "group": "sidecars and the ad catalog",
+   "from": "card `look` (`family`, `tone`, `on`; `on` becomes `ground`)",
+   "to": "the `about` of the kit's theme (7.7); an item upgraded without a kit lists it",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-11",
+   "group": "sidecars and the ad catalog",
+   "from": "card `layer`",
+   "to": "a layer with `data-hsvg-paint`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-12",
+   "group": "sidecars and the ad catalog",
+   "from": "card `fields` (`type`, `required`, `case`, `fontRole`)",
+   "to": "content fields (5.3.1) with `editableBy` `[\"copywriter\", \"marketer\"]`; `case` becomes the text binding's `case` (6.8); `fontRole` becomes `data-hsvg-type-role` on the bound part (6.2.3)",
+   "treatment": "review"
+  },
+  {
+   "row": "C-13",
+   "group": "sidecars and the ad catalog",
+   "from": "card `colors` (brand role to parts)",
+   "to": "colour roles on those parts",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-14",
+   "group": "sidecars and the ad catalog",
+   "from": "card `variants[]` (`file`, `shapes`, `viewBox`, `resize`, `minWidth`, `fit`, `sha256`)",
+   "to": "layouts with `shape` ranges, `resize`, and text bindings with `fit` (A13.5, catalog items); `sha256` is the drawing digest",
+   "treatment": "review"
+  },
+  {
+   "row": "C-15",
+   "group": "sidecars and the ad catalog",
+   "from": "card `members`",
+   "to": "compound members; a member's job follows the role order of A13.5",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-16",
+   "group": "sidecars and the ad catalog",
+   "from": "card `from`",
+   "to": "`about.trust.provenance.upgradedFrom.from` (`derivedFrom` names only 2.0 sources)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-17",
+   "group": "sidecars and the ad catalog",
+   "from": "card `status`, `reviews`",
+   "to": "trust reviews (A13.3, rule 10), against the card's source digest (A13.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-18",
+   "group": "sidecars and the ad catalog",
+   "from": "`provenance.json`",
+   "to": "`about.trust.provenance`; free notes go to `notes`; private paths removed, and the report names only their pointers",
+   "treatment": "review"
+  },
+  {
+   "row": "C-19",
+   "group": "sidecars and the ad catalog",
+   "from": "`catalog.json`, `aliases.json`",
+   "to": "a kit of components; the kit's `aliases` map for old ids (4.8)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "C-20",
+   "group": "sidecars and the ad catalog",
+   "from": "card `ground` (what the item sits on)",
+   "to": "a `contrast` rule with `against` that colour role (8.9)",
+   "treatment": "review"
+  },
+  {
+   "row": "C-21",
+   "group": "sidecars and the ad catalog",
+   "from": "an item whose job is `action` with no control",
+   "to": "a `press` control on its `surface` part (else its root part) with event `pressed`, and the output event `pressed` (5.11)",
+   "treatment": "review"
+  },
+  {
+   "row": "C-22",
+   "group": "sidecars and the ad catalog",
+   "from": "`checks.json`, preview images",
+   "to": "not carried: tools make new receipts and previews; listed",
+   "treatment": "dropped"
+  },
+  {
+   "row": "D-01",
+   "group": "interaction chapters",
+   "from": "`\"hsvg-<chapter>\": \"1.0\"` (or `0.1`)",
+   "to": "`\"format\": \"hsvg/2.0\"` and a document kind",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-02",
+   "group": "interaction chapters",
+   "from": "condition objects `{var,op,value}`, `{all}`, `{any}`, `{not}`; `{visits,op,value}`",
+   "to": "formulas; a visit count reads the built-in `visits` (A13.10, 3.6)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-03",
+   "group": "interaction chapters",
+   "from": "computed `{type,op,args}`, `cases`, helpers; `set.from`",
+   "to": "formulas; `set` with `to` (A13.10)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-04",
+   "group": "interaction chapters",
+   "from": "ordered text parts with number formats",
+   "to": "templates with `formatNumber` (A13.10)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-05",
+   "group": "interaction chapters",
+   "from": "`behaviour.variables`, `story.variables`, `chat.variables`",
+   "to": "values (one store, as before)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-06",
+   "group": "interaction chapters",
+   "from": "`persistence`: `none`, `session`, `device`, `host`",
+   "to": "`lifetime` (5.1.2): `session` keeps its name, `none` becomes `run`, `device` becomes `saved`, and `host` becomes `saved` with the `storage` grant (10.5)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-07",
+   "group": "interaction chapters",
+   "from": "`behaviour.inputs` (boolean, number, string, trigger)",
+   "to": "inputs with `kind` `knob`, `content` or `trigger`",
+   "treatment": "review"
+  },
+  {
+   "row": "D-08",
+   "group": "interaction chapters",
+   "from": "`behaviour.states` (atomic, compound, parallel)",
+   "to": "machines (5.14)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-09",
+   "group": "interaction chapters",
+   "from": "`history` and `final` states",
+   "to": "none: 2.0 machines have neither (5.14)",
+   "treatment": "none"
+  },
+  {
+   "row": "D-10",
+   "group": "interaction chapters",
+   "from": "`on` transitions; `after` keyed by decimal-ms strings",
+   "to": "reactions; `after` with numeric `delayMs`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-11",
+   "group": "interaction chapters",
+   "from": "`behaviour.actions` registry; `set`; `emit`; `play`, `stop`; `say`",
+   "to": "core actions (5.15.1); `emit` of an output event",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-12",
+   "group": "interaction chapters",
+   "from": "`scroll`, `point`, `go-spot`",
+   "to": "capability actions `scroll` and `point` (5.15.2), under `pageActions` grants (10.5); `go-spot` has no 2.0 form (`goSpot` is a 2.1 draft) and is listed",
+   "treatment": "mechanical",
+   "treatmentNote": "M; N for `go-spot`"
+  },
+  {
+   "row": "D-13",
+   "group": "interaction chapters",
+   "from": "`add-to-cart`, `open-contact`",
+   "to": "`invoke` on an `action` hook, human-only (5.15.4, A3.1)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-14",
+   "group": "interaction chapters",
+   "from": "`start-story`, `start-tour`",
+   "to": "links into a scene (section 3)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-15",
+   "group": "interaction chapters",
+   "from": "`mode` (hero, companion, tour, chat, carried, minimised, closed)",
+   "to": "presentation scenes joined by page signals (A3.1)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-16",
+   "group": "interaction chapters",
+   "from": "`grab`, `carry-to`, `throw`, `hide`, `reveal`, `give-back`",
+   "to": "`throw` becomes the physics capability's action; `grab`, `carry-to` and `give-back` have no 2.0 form (a 2.1 draft) and are listed; `hide` and `reveal` become a value write plus a `visible` binding (6.8)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-17",
+   "group": "interaction chapters",
+   "from": "story beats, choices with `maxVisits`, routes, visits, `waitMs`",
+   "to": "scene behaviour, choice links with `max`, a `start` list or link `when`, visit counts, timed links (A13.11)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-18",
+   "group": "interaction chapters",
+   "from": "tour steps",
+   "to": "scenes with page hooks (A5.2)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-19",
+   "group": "interaction chapters",
+   "from": "`select-limb-driver`, procedural limbs, rig",
+   "to": "none while rigging is on hold",
+   "treatment": "none"
+  },
+  {
+   "row": "D-20",
+   "group": "interaction chapters",
+   "from": "page targets, spots, floors, docks",
+   "to": "page hooks and page conduct rules (A3.1, 8.9)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-21",
+   "group": "interaction chapters",
+   "from": "lines (captions, word timing, mouth cues)",
+   "to": "spoken lines (6.11); cue times in seconds become ms",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-22",
+   "group": "interaction chapters",
+   "from": "clips chapter (motion channels v2)",
+   "to": "clips (6.7), `timeRemap` included; the `trim` and `stroke-dash` channels are not carried (`draw` covers stroke draw-on)",
+   "treatment": "mechanical",
+   "treatmentNote": "M; D for those two"
+  },
+  {
+   "row": "D-23",
+   "group": "interaction chapters",
+   "from": "`theme.json`",
+   "to": "a theme (7.7)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-24",
+   "group": "interaction chapters",
+   "from": "slots chapter (effect recipes, providers); dynamics; particles",
+   "to": "effects with capability needs (A1.1)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "D-25",
+   "group": "interaction chapters",
+   "from": "mascot chapter colour slots, parts and holds",
+   "to": "colour roles, parts and looks",
+   "treatment": "review"
+  },
+  {
+   "row": "D-26",
+   "group": "interaction chapters",
+   "from": "gateway `inbound`, `outbound`, `requests`",
+   "to": "the host API, triggers, output events and `network` grants (10.5, 10.6)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-27",
+   "group": "interaction chapters",
+   "from": "chat (scripted answers, finder), AI chapter",
+   "to": "finders and character seats (A5.1, A5.2)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-28",
+   "group": "interaction chapters",
+   "from": "agent chapter (door, seats, turns, results)",
+   "to": "player seats (A4.1)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-29",
+   "group": "interaction chapters",
+   "from": "adaptive chapter",
+   "to": "layouts and fitting, authoring only (section 7)",
+   "treatment": "review"
+  },
+  {
+   "row": "D-30",
+   "group": "interaction chapters",
+   "from": "`x-` keys",
+   "to": "a tool sidecar outside the format, listed",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-01",
+   "group": "packages and other containers",
+   "from": "`hsvg-experience/1` `manifest.json`",
+   "to": "`package.json` (10.8 table)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-02",
+   "group": "packages and other containers",
+   "from": "`delivery.json`, `hsvg-interaction-lab/1`",
+   "to": "refused, as in 1.x",
+   "treatment": "dropped"
+  },
+  {
+   "row": "P-03",
+   "group": "packages and other containers",
+   "from": "`hsvg-package/1` (`sizes`, `slots`, `moves.json`, `mascot`, `fluid`, `bytes`)",
+   "to": "package and experience: frames, content fields and the input list, clips, kit content, a size range; `bytes` dropped",
+   "treatment": "review"
+  },
+  {
+   "row": "P-04",
+   "group": "packages and other containers",
+   "from": "`template/0.1` with typed slots and `example/`",
+   "to": "a template kit (`about.template: true`); slots become kit inputs; the example becomes the sample kit experience (4.10)",
+   "treatment": "review"
+  },
+  {
+   "row": "P-05",
+   "group": "packages and other containers",
+   "from": "`template-values/0.1`",
+   "to": "a kit experience's `with` values",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-06",
+   "group": "packages and other containers",
+   "from": "`extension/0.2` manifest",
+   "to": "capability manifest with `\"format\": \"hsvg/2.0\"` (10.7)",
+   "treatment": "review"
+  },
+  {
+   "row": "P-07",
+   "group": "packages and other containers",
+   "from": "`hsvg-reviewed/1` lock",
+   "to": "the host's reviewed lock, pinning 2.0 bundles",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-08",
+   "group": "packages and other containers",
+   "from": "`lean-family-v1` (`master`, `assets`, `components`, `canonical`, `integrity`)",
+   "to": "a kit with resources and one sample kit experience that shows the master with its drawn content (so mounted checks can run); the JSON master becomes an SVG drawing through a tool that round-trips (decision 4); the rows P-11 to P-23 below cover its parts",
+   "treatment": "review"
+  },
+  {
+   "row": "P-09",
+   "group": "packages and other containers",
+   "from": "runtime JSON and short forms",
+   "to": "first the one-time map in `hsvg/0.1`'s `format-migration.md`, then table A, in one run",
+   "treatment": "per-row",
+   "treatmentNote": "per row"
+  },
+  {
+   "row": "P-10",
+   "group": "packages and other containers",
+   "from": "runtime `rules[]` (`on`, `if`, `do`, `every`, `after`)",
+   "to": "reactions grouped by trigger (A13.5)",
+   "treatment": "review"
+  },
+  {
+   "row": "P-11",
+   "group": "packages and other containers",
+   "from": "Lean `master` with no scene nodes",
+   "to": "a drawing assembled from `canonical.placements` and the component originals",
+   "treatment": "review"
+  },
+  {
+   "row": "P-12",
+   "group": "packages and other containers",
+   "from": "Lean `responsive.arrangements` (`when`, `layout`, `unit`, `name`, `aspect`)",
+   "to": "plan-only layouts on the master drawing (7.4), in source order, `shape` from `when`, `scale` from `unit`, `label` from `name`; `aspect` dropped",
+   "treatment": "review"
+  },
+  {
+   "row": "P-13",
+   "group": "packages and other containers",
+   "from": "Lean `representations`, and a parent's choice of one",
+   "to": "component layouts; the choice becomes the use's `layout` map (4.3)",
+   "treatment": "review"
+  },
+  {
+   "row": "P-14",
+   "group": "packages and other containers",
+   "from": "Lean text policy per representation (`min`, `preferred`, `max`, `maxLines`, `minReadable`, `wrap`, `lineHeight`)",
+   "to": "the binding's `fit`, and each layout's own `fit` (7.4): `preferred` becomes `fontPx`, the larger of `min` and `minReadable` becomes `minFontPx`, `maxLines`, `wrap` and `lineHeight` carry over; a `max` above `preferred` is listed (2.0 never grows text past `fontPx`), and so is a floor below the host's",
+   "treatment": "review"
+  },
+  {
+   "row": "P-15",
+   "group": "packages and other containers",
+   "from": "Lean `contentOptions` and `omit`",
+   "to": "content tiers chosen by `person` with a `default` (7.9); an omitted element's field gets `tier`; a text field's `maxLength` is its longest authored wording, listed for review",
+   "treatment": "review"
+  },
+  {
+   "row": "P-16",
+   "group": "packages and other containers",
+   "from": "Lean `weight`",
+   "to": "the plan child's `weight` (7.5)",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-17",
+   "group": "packages and other containers",
+   "from": "Lean `replacementCatalog` (`slots`, `candidates`, field maps, `required`, `protected`, `styleBindings`)",
+   "to": "a replaceable use with `choices` and `pick` (4.3); each candidate a component whose inputs carry the slot's field names; `protected` fields get no `editableBy`; `styleBindings` become colour and type roles on the candidate's parts",
+   "treatment": "review"
+  },
+  {
+   "row": "P-18",
+   "group": "packages and other containers",
+   "from": "Lean `treatments`",
+   "to": "components with their roles (`surface`, `backdrop`), placed as plan items with `fit: \"stretch\"`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-19",
+   "group": "packages and other containers",
+   "from": "Lean `canonical.relationships`",
+   "to": "`relation` rules, scoped with `layouts` (8.1) to where they hold",
+   "treatment": "review"
+  },
+  {
+   "row": "P-20",
+   "group": "packages and other containers",
+   "from": "Lean scene node ids",
+   "to": "SVG ids; an id repeated in one drawing gets its element's id as a prefix",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-21",
+   "group": "packages and other containers",
+   "from": "Lean `integrity`, `dependencies`, `runtimeVersion`",
+   "to": "`upgradedFrom.digest` is the family's own integrity digest (A9.3); `needs`; dropped",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-22",
+   "group": "packages and other containers",
+   "from": "Lean role words `media`, `identity`, `message`, `surface`, `information`",
+   "to": "the core roles `media`, `identity`, `message`; `surface` stays a part role; `information` becomes the `info`-group role its fields match (`specifications` when none fits better), for review",
+   "treatment": "review"
+  },
+  {
+   "row": "P-23",
+   "group": "packages and other containers",
+   "from": "Lean image `sourceRect`",
+   "to": "the plan item's `crop` (7.5); `patch` is listed",
+   "treatment": "review"
+  },
+  {
+   "row": "P-24",
+   "group": "packages and other containers",
+   "from": "runtime `data-hsvg-place` with `data-hsvg-as` whose parts the scene's own JSON names",
+   "to": "the piece's drawing written in where it stands, as the 0.x player did: its root a component defined in place (4.1), its ids `<as>__<local>`, which B-29 then flattens. A use (B-11) would hide the parts the JSON names",
+   "treatment": "review"
+  },
+  {
+   "row": "P-25",
+   "group": "packages and other containers",
+   "from": "runtime event names (control `event` and `missEvent`, `emit`, marker `event`, rule `on`)",
+   "to": "camelCase value names (2.9): `choose-comic` becomes `chooseComic`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-26",
+   "group": "packages and other containers",
+   "from": "the runtime `save` extension's scene lists (`save`, `saveLists`)",
+   "to": "`keep: true` on each listed declaration; review when the scenes list different values, since a kept value is kept in every scene",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-27",
+   "group": "packages and other containers",
+   "from": "runtime synthesised `sounds` (`wave`, `from`, `to`, `ms`, `volume`, `attackMs`, `releaseMs`) and `{\"do\": \"sound\", \"name\": …}`",
+   "to": "`audioSynths` and the `audioSynth` action of `hsvg/0.1`, then row A-34; a file sound is not converted",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-28",
+   "group": "packages and other containers",
+   "from": "runtime `clipSets` and clips",
+   "to": "the loader's copies (`<as>-<recipe>`, targets renamed) as plain clips; tracks and markers get ids `<clip>-track-<n>` and `<clip>-marker-<n>`; string key values become quoted literals",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-29",
+   "group": "packages and other containers",
+   "from": "runtime `controls` list",
+   "to": "controls with ids `<target>-control-<n>` (`__` in the target written `-`); conditions become formulas; a choice's `options` map `{target: value}` becomes option objects with the target as id",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-30",
+   "group": "packages and other containers",
+   "from": "runtime `bindings`",
+   "to": "`shows` with ids `<target>-binding-<n>`; `text` becomes a template (a `join` becomes `{{ }}` spans); each `fit.box` becomes a drawn `<rect>` `<target>-region-<n>` beside its text, in the text's coordinates, in every drawing; a text with a `transform` is not converted",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "P-31",
+   "group": "packages and other containers",
+   "from": "the runtime `type` control (`type` extension) with a drawn `keyboard`",
+   "to": "reactions to the drawn keys' press events: a letter appends to the value while it is shorter than `maxLength`, `Backspace` returns to the text before the last key (a list value `<value>Typed`), `Enter` sends the field's event; typing on a physical keyboard into the field is not carried",
+   "treatment": "review"
+  },
+  {
+   "row": "P-32",
+   "group": "packages and other containers",
+   "from": "runtime `add` on a number with `min` and `max`",
+   "to": "`set` with `clamp(<value> + (<by>), min, max)`: the 0.x add kept the value inside its bounds",
+   "treatment": "review"
+  },
+  {
+   "row": "P-33",
+   "group": "packages and other containers",
+   "from": "runtime `go` with `transition: \"slide\"`",
+   "to": "`transition: \"fade\"` (links have cut and fade)",
+   "treatment": "review"
+  },
+  {
+   "row": "P-34",
+   "group": "packages and other containers",
+   "from": "runtime `every` and `after` rules",
+   "to": "one machine per rule, `<scene>-timer-<n>`: `after` is a one-shot timer to a final state; `every` a self-target timer that re-arms from its due time; a guard becomes an `if` action",
+   "treatment": "review"
+  },
+  {
+   "row": "P-35",
+   "group": "packages and other containers",
+   "from": "`data-hsvg-slot` and `-slot-target` in a runtime drawing (template marks)",
+   "to": "dropped and listed: no template fills a runtime experience, and its bindings write those texts",
+   "treatment": "dropped"
+  },
+  {
+   "row": "P-36",
+   "group": "packages and other containers",
+   "from": "runtime built-ins `muted` and `volume`",
+   "to": "the ambient inputs of the same names (5.5); a `toggle` of `muted` becomes a `set` that row A-39 turns into the `setting` action (human-only)",
+   "treatment": "review"
+  },
+  {
+   "row": "P-37",
+   "group": "packages and other containers",
+   "from": "a runtime value or computed value whose name 2.0 reserves (5.9: `chapter`, `count`, `size` and the rest)",
+   "to": "`own<Name>` (`ownChapter`): runtime JSON had none of those built-ins, so the name is the content's own value",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "W-01",
+   "group": "earlier words",
+   "from": "`data-hsvg-slot` as a content input; template slots; value slots",
+   "to": "**content field** with a binding",
+   "treatment": "review"
+  },
+  {
+   "row": "W-02",
+   "group": "earlier words",
+   "from": "effect slots",
+   "to": "**effect**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-03",
+   "group": "earlier words",
+   "from": "package manifest `slots`",
+   "to": "input list",
+   "treatment": "review"
+  },
+  {
+   "row": "W-04",
+   "group": "earlier words",
+   "from": "mascot colour slots",
+   "to": "**colour role**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-05",
+   "group": "earlier words",
+   "from": "Lean replacement slot, swap contract",
+   "to": "**replaceable use** (`choices`, `pick`, 4.3)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-06",
+   "group": "earlier words",
+   "from": "zone, area, rect, focal",
+   "to": "**region** (or a box `[x, y, w, h]`); the key `focal` is a point `[x, y]` (7.4, 7.5), not a region",
+   "treatment": "review"
+  },
+  {
+   "row": "W-07",
+   "group": "earlier words",
+   "from": "`data-hsvg-place` as a library name",
+   "to": "a slot and a use in JSON (`uses[].use`, `into`)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-08",
+   "group": "earlier words",
+   "from": "host-page anchor; `data-hsvg-target`, `-spot`, `-grab`, `-action`",
+   "to": "**page hook** (`data-hsvg-hook`, aliases kept)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-09",
+   "group": "earlier words",
+   "from": "registry `anchorRoleIds`",
+   "to": "`attachTo`",
+   "treatment": "review"
+  },
+  {
+   "row": "W-10",
+   "group": "earlier words",
+   "from": "statechart state",
+   "to": "**machine state**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-11",
+   "group": "earlier words",
+   "from": "drawn state, `state` action and show, mood, control idle/hover/pressed",
+   "to": "**look**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-12",
+   "group": "earlier words",
+   "from": "review state, card status",
+   "to": "review status (in the trust record)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-13",
+   "group": "earlier words",
+   "from": "catalog look, tokens, style meaning of \"look\"",
+   "to": "**theme**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-14",
+   "group": "earlier words",
+   "from": "legacy `rules` array of event → actions",
+   "to": "**reactions** (`on`)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-15",
+   "group": "earlier words",
+   "from": "rules module",
+   "to": "logic module",
+   "treatment": "review"
+  },
+  {
+   "row": "W-16",
+   "group": "earlier words",
+   "from": "policy rules, rules kit",
+   "to": "**rule pack**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-17",
+   "group": "earlier words",
+   "from": "Lean family rules",
+   "to": "**layouts**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-18",
+   "group": "earlier words",
+   "from": "variant (bare), alternate",
+   "to": "**layout**, **tier** or **look**, by meaning",
+   "treatment": "review"
+  },
+  {
+   "row": "W-19",
+   "group": "earlier words",
+   "from": "\"Version A/B\"",
+   "to": "two kit experiences (content options are a 2.1 draft)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-20",
+   "group": "earlier words",
+   "from": "`data-hsvg-layer`",
+   "to": "a **layer**: a `<g>` with `data-hsvg-paint`",
+   "treatment": "review"
+  },
+  {
+   "row": "W-21",
+   "group": "earlier words",
+   "from": "page layer",
+   "to": "**overlay slot**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-22",
+   "group": "earlier words",
+   "from": "frame category (borders, mounts)",
+   "to": "the role `mount` (6.3)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-23",
+   "group": "earlier words",
+   "from": "Lean layout frame",
+   "to": "a `free` node of a layout plan",
+   "treatment": "review"
+  },
+  {
+   "row": "W-24",
+   "group": "earlier words",
+   "from": "Lean master, frozen original",
+   "to": "original",
+   "treatment": "review"
+  },
+  {
+   "row": "W-25",
+   "group": "earlier words",
+   "from": "Lean \"sealed\"",
+   "to": "**digest** (never the new seal)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-26",
+   "group": "earlier words",
+   "from": "signed package",
+   "to": "**signature**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-27",
+   "group": "earlier words",
+   "from": "family (as a package)",
+   "to": "**kit** (family stays a descriptive word)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-28",
+   "group": "earlier words",
+   "from": "piece",
+   "to": "component file",
+   "treatment": "review"
+  },
+  {
+   "row": "W-29",
+   "group": "earlier words",
+   "from": "cast, unit",
+   "to": "no 2.0 word: a cast is a set of uses, a unit is a component",
+   "treatment": "review"
+  },
+  {
+   "row": "W-30",
+   "group": "earlier words",
+   "from": "editor roles",
+   "to": "**editor rights**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-31",
+   "group": "earlier words",
+   "from": "seat roles",
+   "to": "seat kind",
+   "treatment": "review"
+  },
+  {
+   "row": "W-32",
+   "group": "earlier words",
+   "from": "the \"inputs\" dial",
+   "to": "**liveness**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-33",
+   "group": "earlier words",
+   "from": "`go` action",
+   "to": "`emit` of an output event plus a link",
+   "treatment": "review"
+  },
+  {
+   "row": "W-34",
+   "group": "earlier words",
+   "from": "choice control",
+   "to": "option control",
+   "treatment": "review"
+  },
+  {
+   "row": "W-35",
+   "group": "earlier words",
+   "from": "content category",
+   "to": "job group",
+   "treatment": "review"
+  },
+  {
+   "row": "W-36",
+   "group": "earlier words",
+   "from": "wording ladder, content depth",
+   "to": "**tier**",
+   "treatment": "review"
+  },
+  {
+   "row": "W-37",
+   "group": "earlier words",
+   "from": "billing licence",
+   "to": "plan (outside the format)",
+   "treatment": "review"
+  },
+  {
+   "row": "W-38",
+   "group": "earlier words",
+   "from": "seconds (`*Sec` fields)",
+   "to": "milliseconds (`*Ms`)",
+   "treatment": "review"
+  },
+  {
+   "row": "K-01",
+   "group": "error codes",
+   "from": "`E-EXPRESSION`",
+   "to": "`E-FORMULA`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-02",
+   "group": "error codes",
+   "from": "`E-SETTING-GROUP`",
+   "to": "`E-SETTING`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-03",
+   "group": "error codes",
+   "from": "`E-C-DRIVES`",
+   "to": "`E-WORDS-DECIDE`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-04",
+   "group": "error codes",
+   "from": "`E-STATE-INITIAL`",
+   "to": "`E-MACHINE-INITIAL`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-05",
+   "group": "error codes",
+   "from": "`E-STATE-TARGET`",
+   "to": "`E-MACHINE-TARGET`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-06",
+   "group": "error codes",
+   "from": "`E-STATE-NOT-DRAWN`",
+   "to": "`E-LOOK-NOT-DRAWN`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-07",
+   "group": "error codes",
+   "from": "`E-EACH-CAPACITY`",
+   "to": "`E-REPEAT-CAPACITY`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-08",
+   "group": "error codes",
+   "from": "`E-EACH-NESTED`",
+   "to": "`E-REPEAT-NESTED`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-09",
+   "group": "error codes",
+   "from": "`E-FILE-ID`",
+   "to": "`E-ID-FILE`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-10",
+   "group": "error codes",
+   "from": "`E-SVG-REFUSED`",
+   "to": "`E-SVG-UNSAFE`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-11",
+   "group": "error codes",
+   "from": "`E-WORDS-LANGUAGE`",
+   "to": "`E-WORDS`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-12",
+   "group": "error codes",
+   "from": "`E-DATA-CELL`",
+   "to": "`E-DATA`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-13",
+   "group": "error codes",
+   "from": "`E-REF-NAMESPACE`",
+   "to": "`E-ID-SHAPE`",
+   "treatment": "mechanical"
+  },
+  {
+   "row": "K-14",
+   "group": "error codes",
+   "from": "`E-CONTROL`",
+   "to": "`E-REF-UNKNOWN` or E-WRITER, by cause",
+   "treatment": "review"
+  },
+  {
+   "row": "K-15",
+   "group": "error codes",
+   "from": "`E-KEY-REMOVED`",
+   "to": "`E-KEY-UNKNOWN` (an earlier key in a 2.0 file)",
+   "treatment": "review"
+  },
+  {
+   "row": "K-16",
+   "group": "error codes",
+   "from": "`E-WAIVER-RIGHT`",
+   "to": "`E-RIGHTS`",
+   "treatment": "mechanical"
+  }
+ ]
+}

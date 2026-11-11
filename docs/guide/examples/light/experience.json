@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "light",
+  "language": "en",
+  "about": {"title": "Traffic light", "description": "A button that cycles a light through three states."},
+  "story": {"start": "light", "scenes": {"light": "light.json"}, "endless": true}
+}

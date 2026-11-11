@@ -1,0 +1,24 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "a",
+  "drawing": "a.svg",
+  "values": {
+    "level": {"type": "number", "minimum": 0, "maximum": 10, "initial": 5},
+    "pick": {"type": "string", "maxLength": 1, "initial": "x"}
+  },
+  "bindings": [
+    {"target": "knob", "move": "level * 20", "axis": "x"}
+  ],
+  "controls": {
+    "next": {"kind": "button", "target": "next", "event": "next", "label": "Continue"},
+    "level": {"kind": "slider", "target": "knob", "value": "level", "axis": "x", "range": [0, 200], "label": "Level"},
+    "pick": {
+      "kind": "choice", "value": "pick", "label": "Pick one",
+      "options": {
+        "x": {"target": "opt-x", "value": "'x'", "label": "Left"},
+        "y": {"target": "opt-y", "value": "'y'", "label": "Right"}
+      }
+    }
+  }
+}

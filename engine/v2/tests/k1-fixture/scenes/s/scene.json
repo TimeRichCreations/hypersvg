@@ -1,0 +1,124 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "s",
+  "drawing": "s.svg",
+  "values": {
+    "heard": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "initial": 0
+    },
+    "lights": {
+      "type": "boolean",
+      "initial": false
+    },
+    "toggles": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "initial": 0
+    },
+    "pick": {
+      "type": "string",
+      "maxLength": 1,
+      "initial": "m"
+    },
+    "large": {
+      "type": "boolean",
+      "initial": true
+    }
+  },
+  "uses": [
+    {
+      "id": "oven",
+      "use": "knob",
+      "into": "slot-a",
+      "with": {
+        "label": "'Oven'"
+      }
+    },
+    {
+      "id": "fan",
+      "use": "knob",
+      "into": "slot-b",
+      "with": {
+        "label": "'Fan'",
+        "start": "0.5"
+      }
+    },
+    {
+      "id": "level",
+      "use": "level",
+      "into": "slot-c",
+      "with": {
+        "stops": "6",
+        "label": "'Level'"
+      }
+    }
+  ],
+  "on": {
+    "oven.changed": [
+      {
+        "actions": [
+          {
+            "set": "heard",
+            "to": "heard + 1"
+          }
+        ]
+      }
+    ],
+    "toggled": [
+      {
+        "actions": [
+          {
+            "set": "toggles",
+            "to": "toggles + 1"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "target": "count",
+      "text": "{{ heard }}"
+    },
+    {
+      "target": "size-l",
+      "visible": "large"
+    }
+  ],
+  "controls": {
+    "size": {
+      "kind": "choice",
+      "value": "pick",
+      "label": "Size",
+      "options": {
+        "s": {
+          "target": "size-s",
+          "value": "'s'",
+          "label": "Small"
+        },
+        "m": {
+          "target": "size-m",
+          "value": "'m'",
+          "label": "Medium"
+        },
+        "l": {
+          "target": "size-l",
+          "value": "'l'",
+          "label": "Large"
+        }
+      }
+    },
+    "lights": {
+      "kind": "toggle",
+      "target": "lamp",
+      "value": "lights",
+      "event": "toggled",
+      "label": "Lights"
+    }
+  }
+}

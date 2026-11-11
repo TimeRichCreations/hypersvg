@@ -1,0 +1,85 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "ad",
+  "about": {
+    "title": "Bakery ad"
+  },
+  "layouts": [
+    {
+      "id": "billboard",
+      "size": "970x250",
+      "drawing": "ad-970x250.svg"
+    },
+    {
+      "id": "leaderboard",
+      "size": "728x90",
+      "drawing": "ad-728x90.svg"
+    },
+    {
+      "id": "rectangle",
+      "size": "300x250",
+      "drawing": "ad-300x250.svg"
+    },
+    {
+      "id": "phone-strip",
+      "size": "320x50",
+      "drawing": "ad-320x50.svg"
+    }
+  ],
+  "bindings": [
+    {"id": "headline-text", "target": "headline", "text": "{{ headline }}", "fit": {"box": "headline-box", "minFontPx": 14, "maxLines": 2}},
+    {"id": "legal-text", "target": "legal", "text": "{{ legal }}", "fit": {"box": "legal-box", "minFontPx": 10, "maxLines": 1}},
+    {"id": "brand-text", "target": "brand", "text": "{{ brand }}", "fit": {"box": "brand-box", "minFontPx": 16}}
+  ],
+  "rules": [
+    {
+      "id": "headline-fits",
+      "kind": "fits",
+      "subject": "field:headline",
+      "strength": "give-way",
+      "priority": 0.8,
+      "steps": [
+        "wrap",
+        "short",
+        "shrink"
+      ],
+      "floor": {
+        "minTextPx": 14
+      }
+    },
+    {
+      "id": "legal-fits",
+      "kind": "fits",
+      "subject": "field:legal",
+      "strength": "give-way",
+      "priority": 0.2,
+      "steps": [
+        "short",
+        "shrink",
+        "remove"
+      ],
+      "floor": {
+        "minTextPx": 13
+      }
+    },
+    {
+      "id": "logo-kept",
+      "kind": "keep",
+      "subject": "part:logo",
+      "strength": "give-way",
+      "priority": 0.5,
+      "steps": [
+        "simplify",
+        "mark-only"
+      ],
+      "floor": {
+        "keep": true
+      },
+      "minSize": [
+        40,
+        40
+      ]
+    }
+  ]
+}

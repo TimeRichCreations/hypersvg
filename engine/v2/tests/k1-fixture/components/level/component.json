@@ -1,0 +1,60 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "level",
+  "about": {
+    "title": "A line slider with stops from an input"
+  },
+  "drawing": "level.svg",
+  "inputs": {
+    "stops": {
+      "kind": "knob",
+      "type": "number",
+      "minimum": 2,
+      "maximum": 11,
+      "step": 1,
+      "initial": 5
+    },
+    "label": {
+      "kind": "content",
+      "type": "string",
+      "maxLength": 32,
+      "initial": "Level"
+    }
+  },
+  "values": {
+    "share": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "initial": 0
+    },
+    "holding": {
+      "type": "boolean",
+      "initial": false
+    }
+  },
+  "controls": {
+    "slide": {
+      "kind": "slider",
+      "axis": "x",
+      "target": "handle",
+      "value": "share",
+      "range": [
+        0,
+        200
+      ],
+      "positions": "clamp(round(stops), 2, 1000)",
+      "valueText": "{{ numberText(share * 100, 0) }} percent",
+      "held": "holding",
+      "label": "{{ label }}"
+    }
+  },
+  "bindings": [
+    {"target": "handle", "move": "share * 200", "axis": "x"},
+    {
+      "target": "bubble",
+      "visible": "holding"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "ad",
+  "about": { "title": "Summer ad" },
+  "layouts": [
+    { "id": "rectangle", "size": "300x250", "drawing": "ad-300x250.svg" },
+    { "id": "skyscraper", "size": "160x600", "drawing": "ad-160x600.svg" },
+    { "id": "leaderboard", "size": "728x90", "drawing": "ad-728x90.svg" },
+    { "id": "phone-strip", "size": "320x50", "drawing": "ad-320x50.svg" }
+  ],
+  "values": { "taps": { "type": "number", "initial": 0, "minimum": 0, "maximum": 1000 } },
+  "controls": { "tap": { "kind": "button", "target": "button", "label": "Shop now" } },
+  "on": { "press:button": [{ "id": "count", "actions": [{ "id": "add", "set": "taps", "to": "taps + 1" }] }] },
+  "bindings": [{ "id": "count-text", "target": "count", "text": "{{ taps }}" }]
+}

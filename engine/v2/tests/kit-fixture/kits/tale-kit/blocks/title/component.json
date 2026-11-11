@@ -1,0 +1,13 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "title",
+  "drawing": "title.svg",
+  "inputs": {
+    "text": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 40, "initial": "Once upon a time",
+             "editableBy": ["copywriter"]}
+  },
+  "bindings": [
+    {"id": "title-text", "target": "line", "text": "{{ text }}"}
+  ]
+}

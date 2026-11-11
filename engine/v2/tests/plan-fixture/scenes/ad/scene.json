@@ -1,0 +1,13 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "ad",
+  "about": { "title": "Summer offer" },
+  "drawing": "ad.svg",
+  "layouts": [
+    { "id": "fill", "shape": { "minAspect": 0 },
+      "layoutPlan": { "place": "ad-box", "kind": "column", "padding": 4,
+        "children": [ { "node": { "item": "use:offer" } } ] } }
+  ],
+  "uses": [ { "id": "offer", "use": "offer", "into": "offer" } ]
+}

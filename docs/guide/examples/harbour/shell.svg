@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Harbour shell</title>
+  <rect x="-400" y="-280" width="1600" height="1120" fill="#153b4b" data-hsvg-layer="backdrop"/>
+  <g data-hsvg-layer="content">
+    <rect id="stage" data-hsvg-kind="part" data-hsvg-slot="stage" x="0" y="60" width="800" height="500" fill="none"/>
+    <g id="gear" data-hsvg-kind="part" data-hsvg-role="action" data-hsvg-label="Settings"><circle cx="760" cy="30" r="20" fill="#e6af42"/></g>
+  </g>
+  <g data-hsvg-layer="overlay">
+    <g id="settings" data-hsvg-kind="part" data-hsvg-slot="settings">
+      <rect x="200" y="120" width="400" height="300" rx="16" fill="#fff4d8"/>
+      <g id="mute" data-hsvg-kind="part" data-hsvg-role="action" data-hsvg-label="Mute"><rect x="240" y="160" width="140" height="50" rx="10" fill="#168e91"/></g>
+      <g id="forget" data-hsvg-kind="part" data-hsvg-role="action" data-hsvg-label="Forget progress"><rect x="420" y="160" width="140" height="50" rx="10" fill="#b3261e"/></g>
+      <g id="shop" data-hsvg-kind="part" data-hsvg-role="action" data-hsvg-label="Visit the shop"><rect x="240" y="240" width="320" height="50" rx="10" fill="#d84315"/></g>
+      <g id="shut" data-hsvg-kind="part" data-hsvg-role="action" data-hsvg-label="Close"><rect x="330" y="340" width="140" height="50" rx="10" fill="#153b4b"/></g>
+    </g>
+  </g>
+</svg>

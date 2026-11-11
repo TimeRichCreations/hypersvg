@@ -1,0 +1,457 @@
+{
+  "format": "hsvg/2.0",
+  "registry": "capabilities",
+  "description": "Every capability and module name HyperSVG 2.0 knows, the grammar each owns and its authoring-only marks (A10.2, 10.7). Host profiles and capability manifests are checked against it.",
+  "notation": "Names are exactly as written in content. <x> is a placeholder. A bracket qualifies a name: seats[kind=player] is the seats map entry whose kind is player; a.*.b is a key b under any entry of a; a[].b is a key b under every list entry of a.",
+  "contracts": {
+    "section": "10.7, 10.11",
+    "note": "Each capability entry carries contract, one of module, privileged or engine.",
+    "module": "content-named pure code: typed inputs and outputs, no host ports; named in needs with its exact version and pinned by digest (A9.3)",
+    "privileged": "reviewed host code given host ports (page, storage, audio output, network, timers) that the engine checks against the experience's grants; named in needs by name, pinned by the host in its reviewed lock under the manifest version",
+    "engine": "built into the engine and reviewed with it; no host ports; named in needs by name only"
+  },
+  "coreEvents": {
+    "section": "5.12, 10.4",
+    "note": "Events owned by no capability. self is a core signal kind with the hooks visible and hidden; both are granted under signals.",
+    "events": [
+      "signal:self:visible",
+      "signal:self:hidden"
+    ]
+  },
+  "needsForms": [
+    "<capability name>",
+    "<module>@<version>",
+    "font:<family>"
+  ],
+  "manifestCategories": [
+    "experience",
+    "scene",
+    "shell",
+    "valueFields",
+    "controlFields",
+    "triggers",
+    "actions",
+    "controls",
+    "bindings",
+    "events",
+    "effectKinds",
+    "channels",
+    "exports"
+  ],
+  "capabilities": [
+    {
+      "name": "widgets",
+      "kind": "capability",
+      "contract": "privileged",
+      "section": "A6.1, 5.3.2",
+      "owns": {
+        "blockFields": [
+          "addons.widgets"
+        ],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/widgets.json"
+    },
+    {
+      "name": "page",
+      "kind": "capability",
+      "contract": "privileged",
+      "section": "A3.1",
+      "owns": {
+        "blockFields": [
+          "addons.page"
+        ],
+        "actions": [],
+        "calls": [
+          "page.point",
+          "page.highlight",
+          "page.scroll",
+          "page.focus",
+          "page.invoke"
+        ],
+        "events": [
+          "page:visible:<hook>",
+          "page:hidden:<hook>",
+          "page:clicked:<hook>",
+          "page:invalid:<hook>",
+          "page:scrollEnd",
+          "page:idle",
+          "page:exitIntent",
+          "page:scroll",
+          "page:ended:<mark>",
+          "hookHealth"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "humanOnly": [
+        "page.invoke"
+      ],
+      "manifest": "capabilities/page.json"
+    },
+    {
+      "name": "seats",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "A4.1",
+      "owns": {
+        "blockFields": [
+          "addons.seats"
+        ],
+        "actions": [],
+        "events": [
+          "seats:ended"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/seats.json"
+    },
+    {
+      "name": "ai",
+      "kind": "capability",
+      "contract": "privileged",
+      "section": "5.15.2, A5.1",
+      "owns": {
+        "blockFields": [
+          "addons.ai"
+        ],
+        "actions": [],
+        "calls": [
+          "ai.ask"
+        ],
+        "events": [
+          "ai:answered"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/ai.json"
+    },
+    {
+      "name": "fit",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "7.5, 7.6",
+      "owns": {
+        "blockFields": [],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [
+        "layout-plan-baked",
+        "give-way-steps",
+        "adaptive-envelope"
+      ],
+      "manifest": "capabilities/fit.json",
+      "neededWhen": "a layout plan must solve while playing (7.5); plan keys are core grammar"
+    },
+    {
+      "name": "ladder",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "8.4, 7.9",
+      "owns": {
+        "blockFields": [],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "neededWhen": "a give-way rule of kind fits, limit or keep (8.4) in a package that needs fit: the ladder runs while playing (D2); a baked page needs none",
+      "manifest": "capabilities/ladder.json"
+    },
+    {
+      "name": "rich-text",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "6.8.1, 5.3.1, 7.7",
+      "owns": {
+        "blockFields": [
+          "addons.rich-text",
+          "bindings[].rich-text"
+        ],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "contentTypes": [
+        "richText"
+      ],
+      "manifest": "capabilities/rich-text.json"
+    },
+    {
+      "name": "lines",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "6.11",
+      "owns": {
+        "blockFields": [
+          "addons.lines"
+        ],
+        "actions": [],
+        "calls": [
+          "lines.say",
+          "lines.stop"
+        ],
+        "events": [
+          "lines:ended:<line>"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/lines.json"
+    },
+    {
+      "name": "physics",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "10.7",
+      "owns": {
+        "blockFields": [
+          "addons.physics"
+        ],
+        "actions": [],
+        "calls": [
+          "physics.throw",
+          "physics.kick"
+        ],
+        "events": [
+          "physics:hit:<body>",
+          "physics:landed:<body>",
+          "physics:rest:<body>"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/physics.json"
+    },
+    {
+      "name": "motion",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "6.7",
+      "owns": {
+        "blockFields": [],
+        "actions": [],
+        "events": [],
+        "channels": [
+          "morph"
+        ],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/motion.json"
+    },
+    {
+      "name": "synth",
+      "kind": "capability",
+      "contract": "privileged",
+      "section": "6.11, 10.7",
+      "owns": {
+        "blockFields": [
+          "addons.synth"
+        ],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/synth.json"
+    },
+    {
+      "name": "effects",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "A1.1",
+      "owns": {
+        "blockFields": [
+          "addons.effects"
+        ],
+        "actions": [],
+        "events": [
+          "effects:ended:<effect>"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": [],
+        "calls": [
+          "effects.play",
+          "effects.stop"
+        ]
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/effects.json"
+    },
+    {
+      "name": "live-data",
+      "kind": "capability",
+      "contract": "privileged",
+      "section": "10.7, 10.9",
+      "owns": {
+        "blockFields": [
+          "addons.live-data"
+        ],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/live-data.json"
+    },
+    {
+      "name": "snapshot",
+      "kind": "capability",
+      "contract": "engine",
+      "section": "10.7",
+      "owns": {
+        "blockFields": [
+          "addons.snapshot"
+        ],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": [],
+        "calls": [
+          "snapshot.save"
+        ]
+      },
+      "authoringOnly": [],
+      "humanOnly": [
+        "snapshot.save"
+      ],
+      "manifest": "capabilities/snapshot.json"
+    },
+    {
+      "name": "media",
+      "kind": "capability",
+      "contract": "privileged",
+      "section": "A2.1, 10.7",
+      "owns": {
+        "blockFields": [
+          "bindings[].media"
+        ],
+        "actions": [],
+        "events": [
+          "media:ended:<place>",
+          "media:stalled:<place>",
+          "media:failed:<place>"
+        ],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": [],
+        "calls": [
+          "media.play",
+          "media.pause",
+          "media.seek"
+        ]
+      },
+      "authoringOnly": [],
+      "manifest": "capabilities/media.json",
+      "neededWhen": "content uses a video resource, a video binding or a media action"
+    },
+    {
+      "name": "chess",
+      "kind": "module",
+      "contract": "module",
+      "section": "10.7, A9.3",
+      "owns": {
+        "blockFields": [],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "needs": "chess@0.1.0",
+      "exports": [
+        "chess.legalMoves",
+        "chess.applyMove",
+        "chess.status"
+      ],
+      "manifest": "capabilities/chess.json"
+    },
+    {
+      "name": "chess-opponent",
+      "kind": "module",
+      "contract": "module",
+      "section": "10.7, A4.1, A9.3",
+      "owns": {
+        "blockFields": [],
+        "actions": [],
+        "events": [],
+        "channels": [],
+        "effectKinds": [],
+        "controlKinds": []
+      },
+      "authoringOnly": [],
+      "needs": "chess-opponent@0.1.0",
+      "exports": [
+        "chess-opponent.choose"
+      ],
+      "manifest": "capabilities/chess-opponent.json"
+    }
+  ],
+  "authoringOnlyFeatures": [
+    {
+      "id": "layout-plan-baked",
+      "owner": "fit",
+      "section": "7.5, A10.2",
+      "what": "a layout plan solved per declared size; the packer writes the derived frames and drops the plan unless fit is in needs"
+    },
+    {
+      "id": "give-way-steps",
+      "owner": "fit",
+      "section": "8.4, A10.2",
+      "what": "give-way rules with steps, priority and floor; the packer applies their results and leaves them out"
+    },
+    {
+      "id": "authoring-only-rule-packs",
+      "owner": "core",
+      "section": "8.3, A10.2",
+      "what": "rule packs marked authoringOnly true"
+    },
+    {
+      "id": "draft-looks",
+      "owner": "core",
+      "section": "6.2.4, A10.2",
+      "what": "looks whose latest review is draft or blocked; left out of exports"
+    },
+    {
+      "id": "adaptive-envelope",
+      "owner": "fit",
+      "section": "A8.1, 7.1, A10.2",
+      "what": "the kit's declared envelope of sizes, languages, tiers, themes and content cases, and the evidence index that names it"
+    }
+  ]
+}

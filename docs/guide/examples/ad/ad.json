@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "ad",
+  "layouts": [{"id": "wide", "size": "728x90", "drawing": "ad-728x90.svg"},
+              {"id": "tall", "size": "160x600", "drawing": "ad-160x600.svg"}],
+  "bindings": [{"target": "headline", "text": "{{ headline }}", "fit": {"box": "headline-box", "minFontPx": 14, "maxLines": 3}}]
+}

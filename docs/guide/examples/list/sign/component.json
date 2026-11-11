@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "sign",
+  "drawing": "sign.svg",
+  "inputs": {"name": {"kind": "content", "type": "string", "maxLength": 20, "initial": "Town"}},
+  "bindings": [{"target": "name", "text": "{{ name }}"}]
+}

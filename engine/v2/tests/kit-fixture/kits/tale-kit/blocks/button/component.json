@@ -1,0 +1,17 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "button",
+  "drawing": "button.svg",
+  "inputs": {
+    "label": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 16, "initial": "Turn the page",
+              "editableBy": ["copywriter"]}
+  },
+  "outputs": {"pressed": {"kind": "event"}},
+  "controls": {
+    "press": {"kind": "button", "target": "face", "event": "pressed", "label": "{{ label }}"}
+  },
+  "bindings": [
+    {"id": "button-label", "target": "caption", "text": "{{ label }}"}
+  ]
+}

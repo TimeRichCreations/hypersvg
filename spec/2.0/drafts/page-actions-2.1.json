@@ -1,0 +1,198 @@
+{
+  "format": "hsvg/2.1-draft",
+  "kind": "capability-draft",
+  "id": "page",
+  "about": {
+    "title": "Page actions that move the actor",
+    "description": "A 2.1 draft, outside the 2.0 registry (decision 2 after R2): the page actions goSpot, grab, carryTo and giveBack, with their grammar as 2.0 had it. They were never built.",
+    "version": "2.1.0-draft"
+  },
+  "adds": [
+    "goSpot moves the actor to a spot hook, or beside a target hook with near true (first of below, above, right, left where the box fits and covers no control), or to the dock with the reserved word dock; ended:<id> fires on arrival, with interrupted true if it docks instead",
+    "grab moves the real element of a grab hook into the drawn anchor named by anchor, leaving a same-size placeholder, and gives it back at once on timeoutMs, tap, close, minimise, navigation and teardown; carryTo carries the held element to a spot hook; giveBack returns it (idempotent); carryTo and giveBack without an active grab do nothing; navigation, prices, checkout, inputs and containers holding them are never grabbed"
+  ],
+  "grammar": {
+    "actions": {
+      "goSpot": {
+        "type": "object",
+        "properties": {
+          "goSpot": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "near": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "required": [
+          "id",
+          "goSpot"
+        ],
+        "additionalProperties": false
+      },
+      "grab": {
+        "type": "object",
+        "properties": {
+          "grab": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "anchor": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "timeoutMs": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 600000
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "required": [
+          "id",
+          "grab",
+          "anchor"
+        ],
+        "additionalProperties": false
+      },
+      "carryTo": {
+        "type": "object",
+        "properties": {
+          "carryTo": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "required": [
+          "id",
+          "carryTo"
+        ],
+        "additionalProperties": false
+      },
+      "giveBack": {
+        "type": "object",
+        "properties": {
+          "giveBack": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "required": [
+          "id",
+          "giveBack"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "actionForms": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "maxLength": 48
+        },
+        "goSpot": {
+          "type": "string",
+          "maxLength": 48
+        },
+        "near": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "goSpot"
+      ],
+      "additionalProperties": false,
+      "x-hsvg-owner": "page"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "maxLength": 48
+        },
+        "grab": {
+          "type": "string",
+          "maxLength": 48
+        },
+        "anchor": {
+          "type": "string",
+          "maxLength": 48
+        },
+        "timeoutMs": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 600000
+        }
+      },
+      "required": [
+        "id",
+        "grab",
+        "anchor"
+      ],
+      "additionalProperties": false,
+      "x-hsvg-owner": "page"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "maxLength": 48
+        },
+        "carryTo": {
+          "type": "string",
+          "maxLength": 48
+        }
+      },
+      "required": [
+        "id",
+        "carryTo"
+      ],
+      "additionalProperties": false,
+      "x-hsvg-owner": "page"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "maxLength": 48
+        },
+        "giveBack": {
+          "type": "string",
+          "maxLength": 48
+        }
+      },
+      "required": [
+        "id",
+        "giveBack"
+      ],
+      "additionalProperties": false,
+      "x-hsvg-owner": "page"
+    }
+  ]
+}

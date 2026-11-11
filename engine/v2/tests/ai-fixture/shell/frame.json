@@ -1,0 +1,38 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "shell",
+  "id": "frame",
+  "needs": [
+    "widgets"
+  ],
+  "drawing": "frame.svg",
+  "slots": {
+    "stage": {
+      "kind": "stage",
+      "label": "Stage"
+    },
+    "ask": {
+      "kind": "dialog",
+      "label": "Ask the guide",
+      "openValue": "askOpen"
+    }
+  },
+  "addons": {
+    "widgets": {
+      "ask": {
+        "form": {
+          "items": [
+            "askText"
+          ],
+          "submit": "askGuide"
+        }
+      }
+    }
+  },
+  "values": {
+    "askOpen": {
+      "type": "boolean",
+      "initial": false
+    }
+  }
+}

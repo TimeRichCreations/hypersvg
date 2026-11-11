@@ -1,0 +1,17 @@
+{
+  "door": 2,
+  "id": "example.sway",
+  "version": "1.0.0",
+  "kind": "capability",
+  "title": "Sway",
+  "description": "A channel: swing. A binding {\"target\": \"<part>\", \"example.sway.swing\": \"<formula>\"} or a clip track with \"channel\": \"example.sway.swing\" gives -1 to 1, and the part turns up to 20 degrees either way about its pivot. The part needs a rotate motion range.",
+  "adds": {
+    "paints": {
+      "swing": {
+        "value": { "type": "number", "minimum": -1, "maximum": 1 },
+        "onto": ["rotate"],
+        "description": "how far the part swings: -1 is left, 1 is right"
+      }
+    }
+  }
+}

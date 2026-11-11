@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="50" viewBox="0 0 320 50" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Summer ad</title>
+<rect width="320" height="50" fill="#fff4d8" data-hsvg-layer="backdrop"/>
+<text id="label" data-hsvg-kind="part" x="10" y="32" font-family="sans-serif" font-size="18" fill="#153b4b">320x50</text>
+<g id="button" data-hsvg-kind="part"><rect x="220" y="10" width="90" height="30" rx="4" fill="#e6af42"/></g>
+<text id="count" data-hsvg-kind="part" x="220" y="6" font-family="sans-serif" font-size="12" fill="#153b4b">0</text>
+</svg>

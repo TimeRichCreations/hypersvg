@@ -1,0 +1,23 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "synth-demo",
+  "story": {
+    "start": "one",
+    "scenes": {
+      "one": "scenes/one/scene.json"
+    }
+  },
+  "needs": [
+    "synth"
+  ],
+  "audioSynths": {
+    "beep": {
+      "wave": "sine",
+      "from": 440,
+      "to": 880,
+      "durationMs": 120,
+      "gain": 0.5
+    }
+  }
+}

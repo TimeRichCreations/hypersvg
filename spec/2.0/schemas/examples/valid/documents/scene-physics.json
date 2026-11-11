@@ -1,0 +1,37 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "toss",
+  "drawing": "toss.svg",
+  "needs": [
+    "physics"
+  ],
+  "controls": {
+    "fling": {
+      "kind": "drag",
+      "target": "ball"
+    }
+  },
+  "addons": {
+    "physics": {
+      "bodies": {
+        "ball": {
+          "target": "ball",
+          "shape": {
+            "kind": "circle",
+            "radius": 10
+          },
+          "rest": [
+            0,
+            0
+          ]
+        }
+      },
+      "controls": {
+        "fling": {
+          "releaseVelocity": true
+        }
+      }
+    }
+  }
+}

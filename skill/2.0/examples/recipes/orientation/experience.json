@@ -1,0 +1,37 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "orientation",
+  "language": "en",
+  "shell": "shell/frame.json",
+  "about": {
+    "title": "Orientation: wide, tall and square layouts of one scene"
+  },
+  "axes": [
+    {
+      "axis": "shape",
+      "select": "space",
+      "shapes": {
+        "wide": {
+          "minAspect": 1.2
+        },
+        "square": {
+          "minAspect": 0.8,
+          "maxAspect": 1.2
+        },
+        "tall": {
+          "maxAspect": 0.8
+        }
+      }
+    }
+  ],
+  "story": {
+    "start": "harbour",
+    "scenes": {
+      "harbour": "scenes/harbour/scene.json"
+    },
+    "ends": [
+      "harbour"
+    ]
+  }
+}

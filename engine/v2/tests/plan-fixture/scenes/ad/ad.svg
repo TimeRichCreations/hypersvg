@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Summer offer</title>
+<rect x="-2000" y="-2000" width="4300" height="4250" fill="#fff4d8" data-hsvg-layer="backdrop"/>
+<rect id="ad-box" data-hsvg-kind="part" data-hsvg-fit="" x="0" y="0" width="300" height="250" fill="none"/>
+<rect id="offer-slot" data-hsvg-kind="part" data-hsvg-slot="offer" x="4" y="4" width="292" height="242" fill="none"/>
+</svg>

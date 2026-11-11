@@ -1,0 +1,34 @@
+{
+  "door": 1,
+  "id": "example.glow",
+  "version": "1.0.0",
+  "kind": "capability",
+  "title": "Glow",
+  "description": "A visual effect: a soft coloured glow around a drawn part that pulses a few times and fades. A block sets it up under addons.example.glow; content starts it with the call example.glow.pulse and hears example.glow:faded when it ends.",
+  "adds": {
+    "keys": {
+      "type": "object",
+      "properties": {
+        "part": { "type": "string", "maxLength": 48, "description": "the drawn part that glows" },
+        "color": { "type": "string", "maxLength": 7, "pattern": "^#[0-9a-fA-F]{6}$", "description": "the glow's colour" },
+        "level": { "type": "string", "maxLength": 48, "description": "a number value of the block, 0 to 1, that the add-on writes: how bright the glow is now" }
+      },
+      "required": ["part", "color", "level"],
+      "additionalProperties": false
+    },
+    "calls": {
+      "pulse": {
+        "with": {
+          "type": "object",
+          "properties": {
+            "times": { "type": "number", "step": 1, "minimum": 1, "maximum": 5 }
+          },
+          "required": ["times"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "events": ["faded"],
+    "channels": ["level"]
+  }
+}

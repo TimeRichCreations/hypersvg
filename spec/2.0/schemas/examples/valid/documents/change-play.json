@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "change",
+  "id": "play-1",
+  "at": "play",
+  "target": "harbour-ad",
+  "expected": 12,
+  "changes": [
+    {
+      "address": "harbour-ad/headline",
+      "old": "Rain? Bring it on.",
+      "new": "Rain? Go!"
+    }
+  ]
+}

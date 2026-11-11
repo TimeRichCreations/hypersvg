@@ -1,0 +1,32 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "chess-game",
+  "story": {
+    "start": "board",
+    "scenes": {
+      "board": "scenes/board/scene.json"
+    }
+  },
+  "needs": [
+    "seats"
+  ],
+  "addons": {
+    "seats": {
+      "seats": {
+        "white": {
+          "kind": "player",
+          "fillers": [
+            "human"
+          ],
+          "inputs": [
+            "move"
+          ],
+          "view": [
+            "position"
+          ]
+        }
+      }
+    }
+  }
+}

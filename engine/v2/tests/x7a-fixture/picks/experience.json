@@ -1,0 +1,21 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "picks-demo",
+  "about": {"title": "Picked from the starter library"},
+  "picks": [
+    {"id": "hsvg-starter", "version": "1.0.0",
+     "items": ["icon-star", "button", "bg-meadow-dawn", "theme-starter-night", "frame-quiz", "shell-paper"]}
+  ],
+  "theme": "starter-night",
+  "shell": {"use": "shell-paper"},
+  "story": {
+    "start": "home",
+    "scenes": {
+      "home": "scenes/home/scene.json",
+      "quiz": {"use": "frame-quiz", "with": {"q1": "'Which star is ours?'"}}
+    },
+    "links": [{"id": "home-quiz", "from": "home", "on": "go", "to": "quiz"}],
+    "ends": ["quiz"]
+  }
+}

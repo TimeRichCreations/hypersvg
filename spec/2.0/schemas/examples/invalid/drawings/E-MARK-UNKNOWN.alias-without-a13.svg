@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" data-hsvg-version="2.0">
+  <title>Button</title>
+  <g id="cta" data-hsvg-kind="component" data-hsvg-role="action">
+    <g id="cta__face" data-hsvg-kind="part">
+      <g data-hsvg-variant="calm" data-hsvg-state-name="calm"><rect width="5" height="5"/></g>
+      <g data-hsvg-variant="happy" display="none"><rect width="6" height="6"/></g>
+    </g>
+  </g>
+</svg>

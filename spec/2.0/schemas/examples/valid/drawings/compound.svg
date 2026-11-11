@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" data-hsvg-version="2.0">
+  <g id="offer-box" data-hsvg-kind="component" data-hsvg-role="action">
+    <g id="offer-box__price" data-hsvg-kind="part" data-hsvg-role="info"><text x="10" y="20">£4</text></g>
+    <g id="offer-box__button" data-hsvg-kind="part" data-hsvg-role="action"><rect width="50" height="20"/></g>
+  </g>
+</svg>

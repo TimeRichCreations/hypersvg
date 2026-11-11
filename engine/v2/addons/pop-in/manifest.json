@@ -1,0 +1,84 @@
+{
+  "door": 1,
+  "id": "pop-in",
+  "version": "1.0.0",
+  "kind": "preset",
+  "title": "Pop in",
+  "description": "A clip that grows a part from nothing with a small overshoot, played on entry. The part needs scale and opacity motion ranges (scale up to the overshoot).",
+  "adds": {
+    "inputs": {
+      "target": {
+        "type": "part",
+        "description": "the part that pops in"
+      },
+      "overshoot": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 1.5,
+        "initial": 1.12,
+        "description": "the largest scale before it settles at 1"
+      },
+      "durationMs": {
+        "type": "integer",
+        "minimum": 150,
+        "maximum": 3000,
+        "initial": 450,
+        "description": "how long the pop takes"
+      }
+    },
+    "provides": {
+      "clips": {
+        "{{as}}": {
+          "durationMs": 1000,
+          "speed": "1000 / {{durationMs}}",
+          "reducedMotion": "finish",
+          "tracks": [
+            {
+              "id": "{{as}}-grow",
+              "target": "{{target}}",
+              "channel": "scale",
+              "keys": [
+                [
+                  0,
+                  0.01
+                ],
+                [
+                  600,
+                  "{{overshoot}}",
+                  "ease-out"
+                ],
+                [
+                  1000,
+                  1,
+                  "ease-in-out"
+                ]
+              ]
+            },
+            {
+              "id": "{{as}}-show",
+              "target": "{{target}}",
+              "channel": "opacity",
+              "keys": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  300,
+                  1,
+                  "ease-out"
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "entry": [
+        {
+          "id": "{{as}}-start",
+          "play": "{{as}}"
+        }
+      ]
+    }
+  }
+}

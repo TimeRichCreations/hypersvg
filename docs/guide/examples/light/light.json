@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "light",
+  "drawing": "light.svg",
+  "values": {"light": {"type": "number", "initial": 0, "minimum": 0, "maximum": 2}},
+  "controls": {"next": {"kind": "button", "target": "next", "event": "nextLight", "label": "Next light"}},
+  "on": {"nextLight": [{"actions": [{"set": "light", "to": "(light + 1) % 3"}]}]},
+  "bindings": [
+    {"target": "lamp-red", "variant": "light === 0 ? 'on' : 'off'"},
+    {"target": "lamp-amber", "variant": "light === 1 ? 'on' : 'off'"},
+    {"target": "lamp-green", "variant": "light === 2 ? 'on' : 'off'"}
+  ]
+}

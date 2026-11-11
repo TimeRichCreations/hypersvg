@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen"><title>The frame</title>
+<rect width="400" height="300" fill="#eee" data-hsvg-layer="backdrop"/>
+<rect id="stage-box" x="0" y="0" width="400" height="300" fill="none" data-hsvg-slot="stage" data-hsvg-kind="part"/>
+<rect id="ask-box" x="40" y="40" width="320" height="220" fill="#fff" data-hsvg-slot="ask" data-hsvg-kind="part"/>
+</svg>

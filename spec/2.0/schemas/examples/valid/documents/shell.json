@@ -1,0 +1,11 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "shell",
+  "id": "robin-screen",
+  "drawing": "robin-screen.svg",
+  "slots": {
+    "stage": {
+      "kind": "stage"
+    }
+  }
+}

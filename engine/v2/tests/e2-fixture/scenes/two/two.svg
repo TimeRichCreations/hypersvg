@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Step two</title>
+<rect width="640" height="480" fill="#f3f4f6" data-hsvg-layer="backdrop" data-hsvg-color="surface"/>
+<g id="back" data-hsvg-kind="part">
+  <g data-hsvg-variant="idle"><rect x="40" y="400" width="140" height="48" rx="24" fill="#bfdbfe"/></g>
+  <g data-hsvg-variant="focus" display="none"><rect x="40" y="400" width="140" height="48" rx="24" fill="#fde68a"/></g>
+  <text x="110" y="431" text-anchor="middle" font-size="20" fill="#111827">Back</text>
+</g>
+</svg>

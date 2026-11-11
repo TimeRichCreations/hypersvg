@@ -1,0 +1,24 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "lamp",
+  "drawing": "lamp.svg",
+  "controls": {
+    "power": {"kind": "toggle", "target": "switch", "value": "on", "event": "flipped", "label": "Lamp on"},
+    "bright": {"kind": "slider", "target": "dimmer", "value": "bright", "axis": "x", "range": [0, 200], "positions": 5, "label": "Brightness"},
+    "shade": {
+      "kind": "choice", "value": "shade", "label": "Shade",
+      "options": {
+        "sun": {"target": "pick-sun", "value": "'sun'", "label": "Sun"},
+        "sky": {"target": "pick-sky", "value": "'sky'", "label": "Sky"}
+      }
+    }
+  },
+  "bindings": [
+    {"target": "glow", "opacity": "on ? bright : 0"},
+    {"target": "dimmer", "move": "bright * 200", "axis": "x"},
+    {"target": "bulb", "color": "shade", "role": "sun"},
+    {"target": "state", "text": "{{ on ? 'On' : 'Off' }}"}
+  ],
+  "on": {"flipped": [{"actions": [{"emit": "clicked"}]}]}
+}

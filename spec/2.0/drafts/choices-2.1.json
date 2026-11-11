@@ -1,0 +1,26 @@
+{
+  "format": "hsvg/2.1-draft",
+  "kind": "grammar-draft",
+  "id": "choices",
+  "about": {
+    "title": "Choice timing",
+    "description": "A 2.1 draft, outside the 2.0 registry (D31): choiceRegion and choicesAtMs on a scene. Only the checker read them and no file used them. 2.0 refuses them with E-DRAFT.",
+    "version": "2.1.0-draft"
+  },
+  "grammar": {
+    "scene.keys": {
+      "choiceRegion": {
+        "type": "string",
+        "required": false,
+        "section": "3.5",
+        "owner": "core"
+      },
+      "choicesAtMs": {
+        "type": "number",
+        "required": false,
+        "section": "3.5",
+        "owner": "core"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "offer",
+  "about": { "title": "Offer panel" },
+  "drawing": "offer.svg",
+  "layouts": [
+    { "id": "row", "shape": { "minAspect": 1.6 },
+      "layoutPlan": { "place": "offer-box", "kind": "row", "gap": 8, "padding": 8,
+        "scale": { "reference": 250, "minimum": 0.25, "maximum": 2 },
+        "children": [
+          { "share": { "id": "media", "minimum": 30, "initial": 40, "maximum": 70 },
+            "node": { "item": "use:photo", "fit": "cover", "focal": [0.5, 0.4] } },
+          { "share": { "id": "copy", "minimum": 30, "initial": 60, "maximum": 70 },
+            "node": { "kind": "column", "gap": 4, "children": [
+              { "size": 40, "node": { "item": "part:offer-title", "align": "start" } },
+              { "node": { "item": "part:offer-copy", "align": ["start", "start"] } } ] } } ] } },
+    { "id": "stacked", "shape": { "maxAspect": 1.6 },
+      "layoutPlan": { "place": "offer-box", "kind": "column", "gap": 8, "padding": 8,
+        "scale": { "reference": 250, "minimum": 0.25, "maximum": 2 },
+        "children": [
+          { "size": 40, "node": { "item": "part:offer-title" } },
+          { "share": { "id": "media", "minimum": 30, "initial": 60, "maximum": 70 },
+            "node": { "item": "use:photo", "fit": "cover" } },
+          { "share": { "id": "copy", "minimum": 30, "initial": 40, "maximum": 70 },
+            "node": { "item": "part:offer-copy" } } ] } }
+  ],
+  "uses": [ { "id": "photo", "use": "photo", "into": "photo" } ]
+}

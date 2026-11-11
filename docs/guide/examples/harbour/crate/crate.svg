@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" data-hsvg-version="2.0">
+  <title>Crate</title>
+  <g id="crate" data-hsvg-kind="component" data-hsvg-role="crate">
+    <rect x="0" y="10" width="50" height="40" fill="#b5803d" stroke="#8d6e63" data-hsvg-color="fill:warning stroke:muted"/>
+    <text id="crate__name" data-hsvg-kind="part" data-hsvg-role="label" data-hsvg-text-style="caption" x="25" y="36" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#ffffff">Crate</text>
+    <g id="crate__lid" data-hsvg-kind="part" data-hsvg-role="lid near" data-hsvg-motion="move-y -10..0">
+      <rect x="0" y="4" width="50" height="8" fill="#8a5a2b"/>
+      <g id="crate__lid-point" data-hsvg-kind="part" data-hsvg-slot="lid-point" transform="translate(25 4)"/>
+    </g>
+  </g>
+</svg>

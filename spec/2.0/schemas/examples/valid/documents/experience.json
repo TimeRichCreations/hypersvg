@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "harbour-ad",
+  "about": {
+    "title": "Example",
+    "version": "1.0.0"
+  },
+  "story": {
+    "start": "hook",
+    "scenes": {
+      "hook": "scenes/hook/scene.json"
+    }
+  },
+  "needs": []
+}

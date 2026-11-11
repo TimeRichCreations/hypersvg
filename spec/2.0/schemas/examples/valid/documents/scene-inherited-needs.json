@@ -1,0 +1,23 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "toss-two",
+  "drawing": "toss-two.svg",
+  "addons": {
+    "physics": {
+      "bodies": {
+        "ball": {
+          "target": "ball",
+          "shape": {
+            "kind": "circle",
+            "radius": 10
+          },
+          "rest": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  }
+}

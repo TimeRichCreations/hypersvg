@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" data-hsvg-version="2.0">
+  <title>Town sign</title>
+  <g id="sign" data-hsvg-kind="component">
+    <rect x="0" y="0" width="120" height="40" rx="6" fill="#ffffff"/>
+    <text id="sign__name" data-hsvg-kind="part" data-hsvg-role="label" x="60" y="26" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#153b4b">Town</text>
+  </g>
+</svg>

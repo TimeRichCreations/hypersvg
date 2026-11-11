@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="728" height="90" viewBox="0 0 728 90" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Ferry sale, wide</title>
+  <rect x="-364" y="-45" width="1456" height="180" fill="#fff7ec" data-hsvg-color="surface" data-hsvg-layer="backdrop"/>
+  <g data-hsvg-layer="content">
+    <rect id="headline-box" data-hsvg-kind="part" data-hsvg-fit="" x="16" y="15" width="480" height="60" fill="none"/>
+    <text id="headline" data-hsvg-kind="part" data-hsvg-role="headline" data-hsvg-text-style="heading" data-hsvg-color="ink" x="16" y="55" font-family="sans-serif" font-size="28" fill="#3e2723">Ferry tickets, half price</text>
+    <rect id="logo-guard" data-hsvg-kind="part" data-hsvg-role="keep-inside keep-clear" x="600" y="15" width="112" height="60" fill="none"/>
+    <circle cx="656" cy="45" r="26" fill="#d84315" data-hsvg-color="accent"/>
+  </g>
+</svg>

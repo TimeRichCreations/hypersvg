@@ -1,0 +1,25 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "yard",
+  "drawing": "yard.svg",
+  "values": {
+    "wind": {"type": "number", "minimum": 0, "maximum": 5, "initial": 1}
+  },
+  "controls": {
+    "wind": {"kind": "example.steps.stepper", "target": "dial", "value": "wind", "label": "Wind"},
+    "gust": {"kind": "button", "target": "gust", "event": "gusted", "label": "Gust"}
+  },
+  "on": {
+    "gusted": [{"actions": [{"play": "blow"}]}]
+  },
+  "clips": {
+    "blow": {"durationMs": 1200, "tracks": [
+      {"target": "pennant", "channel": "example.sway.swing", "keys": [[0, 0], [300, 1], [900, -1], [1200, 0]]}
+    ]}
+  },
+  "bindings": [
+    {"target": "flag", "example.sway.swing": "wind / 5"},
+    {"target": "wind-text", "text": "{{ wind }}"}
+  ]
+}

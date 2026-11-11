@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-hsvg-version="2.0">
+  <title>K2b icons</title>
+  <symbol id="clock" data-hsvg-role="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#153b4b" stroke-width="2"/><path d="M12 7v5l3 3" fill="none" stroke="#153b4b" stroke-width="2"/></symbol>
+  <symbol id="star" data-hsvg-role="icon" viewBox="0 0 10 10"><path d="M5 0L6.2 3.6H10L7 5.9L8.1 9.5L5 7.3L1.9 9.5L3 5.9L0 3.6H3.8Z" fill="#e6af42"/></symbol>
+</svg>

@@ -1,0 +1,18 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "e1-fixture",
+  "about": {
+    "title": "E1: how controls reach people"
+  },
+  "language": "en",
+  "story": {
+    "start": "s",
+    "scenes": {
+      "s": "scenes/s/scene.json"
+    },
+    "ends": [
+      "s"
+    ]
+  }
+}

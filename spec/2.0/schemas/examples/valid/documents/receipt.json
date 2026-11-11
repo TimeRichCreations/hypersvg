@@ -1,0 +1,11 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "receipt",
+  "id": "check-2026-11-05",
+  "run": "check",
+  "subject": "harbour-ad",
+  "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "date": "2026-11-05",
+  "status": "pass",
+  "rules": []
+}

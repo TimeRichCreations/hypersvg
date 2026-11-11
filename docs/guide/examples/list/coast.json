@@ -1,0 +1,21 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "coast",
+  "drawing": "coast.svg",
+  "values": {
+    "towns": {"type": "array", "maxItems": 4, "items": {"type": "object", "properties": {
+                "name": {"type": "string", "maxLength": 20}, "x": {"type": "number", "minimum": 0, "maximum": 400}},
+                "required": ["name", "x"], "additionalProperties": false},
+              "initial": [{"name": "Harbour Row", "x": 0}, {"name": "Mill Lane", "x": 200}, {"name": "The Point", "x": 400}]},
+    "stop": {"type": "number", "initial": 0, "minimum": 0, "maximum": 3}
+  },
+  "uses": [{"id": "signs", "use": "sign", "into": "signs", "items": "range(length(towns))", "key": "item",
+            "with": {"name": "towns[item].name"}}],
+  "controls": {"next": {"kind": "button", "target": "next", "event": "next", "label": "Next town", "enabled": "stop < length(towns) - 1"}},
+  "on": {"next": [{"actions": [{"set": "stop", "to": "stop + 1"}]}]},
+  "bindings": [
+    {"target": "where", "text": "{{ towns[stop].name }} ({{ stop + 1 }} of {{ length(towns) }})"},
+    {"target": "boat", "move": "towns[stop].x", "axis": "x"}
+  ]
+}

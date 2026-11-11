@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 480" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Two knobs</title>
+<rect width="560" height="480" fill="#f3f4f6" data-hsvg-layer="backdrop"/>
+<g id="slot-a" data-hsvg-kind="part" data-hsvg-slot="slot-a" transform="translate(40 40)"/>
+<g id="slot-b" data-hsvg-kind="part" data-hsvg-slot="slot-b" transform="translate(320 40)"/>
+<g id="slot-c" data-hsvg-kind="part" data-hsvg-slot="slot-c" transform="translate(160 300)"/>
+<g id="size-s" data-hsvg-kind="part"><rect x="40" y="380" width="56" height="48" rx="8" fill="#d1d5db"/></g>
+<g id="size-m" data-hsvg-kind="part"><rect x="104" y="380" width="56" height="48" rx="8" fill="#d1d5db"/></g>
+<g id="size-l" data-hsvg-kind="part"><rect x="168" y="380" width="56" height="48" rx="8" fill="#d1d5db"/></g>
+<g id="lamp" data-hsvg-kind="part"><g data-hsvg-variant="idle"><rect x="300" y="380" width="120" height="48" rx="8" fill="#e5e7eb"/></g><g data-hsvg-variant="selected" display="none"><rect x="300" y="380" width="120" height="48" rx="8" fill="#facc15"/></g></g>
+<text id="count" data-hsvg-kind="part" x="280" y="470" text-anchor="middle" font-size="16" fill="#111827">0</text>
+</svg>

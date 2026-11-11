@@ -1,0 +1,18 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "stop-harbour",
+  "drawing": "stop-harbour.svg",
+  "outputs": {
+    "delivered": {
+      "kind": "event"
+    }
+  },
+  "controls": {
+    "press": {
+      "kind": "button",
+      "target": "onward",
+      "event": "delivered"
+    }
+  }
+}

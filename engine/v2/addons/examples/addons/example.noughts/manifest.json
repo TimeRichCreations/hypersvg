@@ -1,0 +1,37 @@
+{
+  "door": 1,
+  "id": "example.noughts",
+  "version": "1.0.0",
+  "kind": "module",
+  "title": "Noughts and crosses opponent",
+  "description": "Plays O against a person who plays X. turn takes the board, the person's cell and a level from 1 (easy) to 3 (never loses), and returns the new board, the winner and the cell O took.",
+  "adds": {
+    "exports": {
+      "turn": {
+        "description": "Puts X in cell, then, unless the game is over, puts O where the level chooses.",
+        "with": {
+          "type": "object",
+          "properties": {
+            "board": { "type": "array", "maxItems": 9, "items": { "type": "string", "maxLength": 1, "enum": ["", "X", "O"] } },
+            "cell": { "type": "number", "step": 1, "minimum": 0, "maximum": 8 },
+            "level": { "type": "number", "step": 1, "minimum": 1, "maximum": 3 }
+          },
+          "required": ["board", "cell", "level"],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "board": { "type": "array", "maxItems": 9, "items": { "type": "string", "maxLength": 1, "enum": ["", "X", "O"] } },
+            "winner": { "type": "string", "maxLength": 4, "enum": ["", "X", "O", "draw"] },
+            "reply": { "type": "number", "step": 1, "minimum": -1, "maximum": 8 }
+          },
+          "required": ["board", "winner", "reply"],
+          "additionalProperties": false
+        },
+        "budgetMs": 250,
+        "budgetSteps": 1000000
+      }
+    }
+  }
+}

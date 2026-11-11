@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Star counter</title>
+  <rect id="sky" data-hsvg-layer="backdrop" x="0" y="0" width="400" height="300" fill="#fff4d8"/>
+  <path id="star" data-hsvg-kind="part" data-hsvg-pivot="200 110" data-hsvg-motion="scale 1..1.2" d="M200 40 L218 92 L272 92 L228 124 L245 176 L200 145 L155 176 L172 124 L128 92 L182 92 Z" fill="#e6af42"/>
+  <text id="count" data-hsvg-kind="part" x="200" y="215" text-anchor="middle"
+        font-family="sans-serif" font-size="26" fill="#153b4b">0 stars</text>
+  <g id="button" data-hsvg-kind="part" data-hsvg-role="action">
+    <rect x="125" y="235" width="150" height="50" rx="25" fill="#168e91"/>
+    <text x="200" y="267" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">Add a star</text>
+  </g>
+</svg>

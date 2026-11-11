@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperSVG 2.0 player</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff4d8; }
+  #stage { position: fixed; inset: 0; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script type="module">
+  import { boot } from './player-web.mjs';
+  const q = new URLSearchParams(location.search);
+  window.hsvg = await boot(document.getElementById('stage'), {
+    filesUrl: q.get('files') || '/files.json', schemasUrl: q.get('schemas') || '/schemas.json',
+    assetsUrl: q.get('assets') || '/assets/',
+    manualClock: q.get('clock') === 'manual', start: q.get('start'), partition: q.get('partition') || 'device',
+    ...(q.has('timeLimits') ? { timeLimits: Number(q.get('timeLimits')) } : {}),
+    // The author previewing is the host: it gives the grants the experience asks for (?host=none gives none, as a
+    // page with no host profile).
+    previewHost: q.get('host') !== 'none',
+  });
+  window.hsvgReady = true;
+</script>
+</body>
+</html>

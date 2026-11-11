@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "lines-fixture",
+  "about": { "title": "Spoken lines fixture" },
+  "needs": ["lines"],
+  "language": "en",
+  "resources": {
+    "words-en": { "kind": "words", "file": "words/en.csv", "language": "en", "digest": "sha256:ae786dc2d66ece04c8e803e199e0a3b927e88f97c7d4c3225323b67b176057ed" },
+    "words-es": { "kind": "words", "file": "words/es.csv", "language": "es", "digest": "sha256:b332ec4c91bf4c8a33709f4720a55948117576684376625817802fed8727252e" }
+  },
+  "story": { "start": "talk", "scenes": { "talk": "scenes/talk/scene.json" }, "ends": ["talk"] },
+  "blocks": { "parrot": "components/parrot/component.json" }
+}

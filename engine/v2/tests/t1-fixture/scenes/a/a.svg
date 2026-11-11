@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>T1 fixture, scene a</title>
+<rect width="640" height="400" fill="#f3f4f6" data-hsvg-layer="backdrop"/>
+<text id="title" x="20" y="40" font-size="24" fill="#111827">Scene A</text>
+<text id="tiny" x="20" y="70" font-size="7" fill="#111827">This note is far too small</text>
+<g id="track" data-hsvg-kind="part"><rect x="20" y="120" width="240" height="8" rx="4" fill="#9ca3af"/></g>
+<g id="knob" data-hsvg-kind="part" data-hsvg-motion="move-x 0..200"><circle cx="40" cy="124" r="20" fill="#2563eb"/></g>
+<g id="opt-x" data-hsvg-kind="part"><rect x="20" y="200" width="120" height="50" rx="8" fill="#bfdbfe"/><text x="80" y="232" text-anchor="middle" font-size="18" fill="#111827">Left</text></g>
+<g id="opt-y" data-hsvg-kind="part"><rect x="160" y="200" width="120" height="50" rx="8" fill="#bfdbfe"/><text x="220" y="232" text-anchor="middle" font-size="18" fill="#111827">Right</text></g>
+<g id="next" data-hsvg-kind="part"><rect x="480" y="320" width="140" height="56" rx="8" fill="#1d4ed8"/><text x="550" y="355" text-anchor="middle" font-size="20" fill="#ffffff">Go on</text></g>
+</svg>

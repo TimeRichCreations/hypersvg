@@ -1,0 +1,11 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "capability",
+  "id": "a",
+  "about": {
+    "title": "Example",
+    "version": "1.0.0"
+  },
+  "core": ">=2.0 <3",
+  "adds": []
+}

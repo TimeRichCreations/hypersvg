@@ -1,0 +1,18 @@
+# HyperSVG
+
+> Turn an SVG into a hyper drawing: parts that respond, with behavior in plain JSON and no program code. Pack it as
+> a HyperSVG (one .svg file for a web page) or an Experience (one offline .html page). npm package: @hypersvg/core.
+
+## Start here
+
+- [README](README.md): the starter lamp in five steps
+- [GUIDE](GUIDE.md): every JSON word and drawing mark, each with an example
+- [AGENTS](AGENTS.md): the rules for coding agents
+- [Skill](skills/hypersvg/SKILL.md): the HyperSVG skill for coding agents (init also puts it in .claude/skills/hypersvg/)
+
+## More
+
+- [Examples](docs/guide/examples/): lamp, harbour, ad, list
+- [Embedding](docs/browser-embedding.md): HyperSVGs in a web page
+- [Extending](EXTENDING.md): components and add-ons
+- [Specification](spec/2.0/README.md): the full format

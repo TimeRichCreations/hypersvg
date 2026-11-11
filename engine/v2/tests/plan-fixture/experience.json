@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "plan-fixture",
+  "about": { "title": "Plan fixture: one offer at five sizes" },
+  "language": "en",
+  "axes": [
+    { "axis": "shape", "select": "space",
+      "sizes": { "300x250": "must", "728x90": "must", "160x600": "must", "320x50": "must", "970x250": "must" } }
+  ],
+  "blocks": {
+    "offer": "components/offer/component.json",
+    "photo": "components/photo/component.json"
+  },
+  "story": { "start": "ad", "scenes": { "ad": "scenes/ad/scene.json" }, "ends": ["ad"] }
+}

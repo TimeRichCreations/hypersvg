@@ -1,0 +1,11 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "package",
+  "id": "a",
+  "about": {
+    "title": "Example",
+    "version": "1.0.0"
+  },
+  "experience": "experience.json",
+  "inputs": []
+}

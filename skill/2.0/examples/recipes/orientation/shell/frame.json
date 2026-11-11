@@ -1,0 +1,85 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "shell",
+  "id": "frame",
+  "drawing": "frame.svg",
+  "slots": {
+    "stage": {
+      "kind": "stage",
+      "label": "Stage"
+    }
+  },
+  "values": {
+    "w": {
+      "type": "number",
+      "initial": 400,
+      "minimum": 100,
+      "maximum": 440
+    },
+    "h": {
+      "type": "number",
+      "initial": 300,
+      "minimum": 100,
+      "maximum": 400
+    },
+    "tmp": {
+      "type": "number",
+      "initial": 0,
+      "minimum": 0,
+      "maximum": 440
+    }
+  },
+  "controls": {
+    "width": {
+      "kind": "slider",
+      "target": "width-handle",
+      "value": "w",
+      "axis": "x",
+      "range": [-300, 40],
+      "label": "Stage width"
+    },
+    "height": {
+      "kind": "slider",
+      "target": "height-handle",
+      "value": "h",
+      "axis": "y",
+      "range": [-200, 100],
+      "label": "Stage height"
+    },
+    "turn": {
+      "kind": "button",
+      "target": "turn-btn",
+      "event": "turn",
+      "label": "Turn: landscape or portrait"
+    }
+  },
+  "on": {
+    "turn": [
+      {
+        "id": "swap",
+        "actions": [
+          {
+            "id": "keep-w",
+            "set": "tmp",
+            "to": "w"
+          },
+          {
+            "id": "w-is-h",
+            "set": "w",
+            "to": "h"
+          },
+          {
+            "id": "h-is-w",
+            "set": "h",
+            "to": "tmp"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {"id": "stage-size", "target": "stage-box", "scale": "[w, h]", "as": "box", "anchor": ["start", "start"]},
+    {"id": "width-at", "target": "width-handle", "move": "w - 400", "axis": "x"},
+    {"id": "height-at", "target": "height-handle", "move": "h - 300", "axis": "y"}
+  ]
+}

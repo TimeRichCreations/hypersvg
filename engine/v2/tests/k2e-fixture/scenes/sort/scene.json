@@ -1,0 +1,232 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "sort",
+  "drawing": "sort.svg",
+  "values": {
+    "sorted": {
+      "type": "number",
+      "initial": 0,
+      "minimum": 0,
+      "maximum": 4
+    },
+    "misses": {
+      "type": "number",
+      "initial": 0,
+      "minimum": 0,
+      "maximum": 99
+    },
+    "appleIn": {
+      "type": "boolean",
+      "initial": false
+    },
+    "paperIn": {
+      "type": "boolean",
+      "initial": false
+    },
+    "bottleIn": {
+      "type": "boolean",
+      "initial": false
+    },
+    "canIn": {
+      "type": "boolean",
+      "initial": false
+    }
+  },
+  "controls": {
+    "apple": {
+      "kind": "drag",
+      "target": "apple",
+      "drops": [
+        "compost-bin",
+        "recycle-bin"
+      ],
+      "accept": "event.drop === 'compost-bin'",
+      "event": "appleSorted",
+      "missEvent": "missed",
+      "snap": true,
+      "enabled": "!appleIn",
+      "label": "Apple core",
+      "disabledLabel": "Apple core, sorted"
+    },
+    "paper": {
+      "kind": "drag",
+      "target": "paper",
+      "drops": [
+        "compost-bin",
+        "recycle-bin"
+      ],
+      "accept": "event.drop === 'compost-bin'",
+      "event": "paperSorted",
+      "missEvent": "missed",
+      "snap": true,
+      "enabled": "!paperIn",
+      "label": "Paper bag",
+      "disabledLabel": "Paper bag, sorted"
+    },
+    "bottle": {
+      "kind": "drag",
+      "target": "bottle",
+      "drops": [
+        "compost-bin",
+        "recycle-bin"
+      ],
+      "accept": "event.drop === 'recycle-bin'",
+      "event": "bottleSorted",
+      "missEvent": "missed",
+      "snap": true,
+      "enabled": "!bottleIn",
+      "label": "Glass bottle",
+      "disabledLabel": "Glass bottle, sorted"
+    },
+    "can": {
+      "kind": "drag",
+      "target": "can",
+      "drops": [
+        "compost-bin",
+        "recycle-bin"
+      ],
+      "accept": "event.drop === 'recycle-bin'",
+      "event": "canSorted",
+      "missEvent": "missed",
+      "snap": true,
+      "enabled": "!canIn",
+      "label": "Tin can",
+      "disabledLabel": "Tin can, sorted"
+    }
+  },
+  "on": {
+    "appleSorted": [
+      {
+        "id": "sort-apple",
+        "actions": [
+          {
+            "id": "apple-in",
+            "set": "appleIn",
+            "to": true
+          },
+          {
+            "id": "count-apple",
+            "set": "sorted",
+            "to": "min(4, sorted + 1)"
+          },
+          {
+            "id": "done-after-apple",
+            "if": "sorted === 4",
+            "then": [
+              {
+                "id": "report-done-apple",
+                "emit": "finished"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "paperSorted": [
+      {
+        "id": "sort-paper",
+        "actions": [
+          {
+            "id": "paper-in",
+            "set": "paperIn",
+            "to": true
+          },
+          {
+            "id": "count-paper",
+            "set": "sorted",
+            "to": "min(4, sorted + 1)"
+          },
+          {
+            "id": "done-after-paper",
+            "if": "sorted === 4",
+            "then": [
+              {
+                "id": "report-done-paper",
+                "emit": "finished"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "bottleSorted": [
+      {
+        "id": "sort-bottle",
+        "actions": [
+          {
+            "id": "bottle-in",
+            "set": "bottleIn",
+            "to": true
+          },
+          {
+            "id": "count-bottle",
+            "set": "sorted",
+            "to": "min(4, sorted + 1)"
+          },
+          {
+            "id": "done-after-bottle",
+            "if": "sorted === 4",
+            "then": [
+              {
+                "id": "report-done-bottle",
+                "emit": "finished"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "canSorted": [
+      {
+        "id": "sort-can",
+        "actions": [
+          {
+            "id": "can-in",
+            "set": "canIn",
+            "to": true
+          },
+          {
+            "id": "count-can",
+            "set": "sorted",
+            "to": "min(4, sorted + 1)"
+          },
+          {
+            "id": "done-after-can",
+            "if": "sorted === 4",
+            "then": [
+              {
+                "id": "report-done-can",
+                "emit": "finished"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "missed": [
+      {
+        "id": "count-miss",
+        "actions": [
+          {
+            "id": "miss-one",
+            "set": "misses",
+            "to": "min(99, misses + 1)"
+          }
+        ]
+      }
+    ]
+  },
+  "outputs": {
+    "finished": {
+      "kind": "event"
+    }
+  },
+  "bindings": [
+    {
+      "id": "status-text",
+      "target": "status",
+      "text": "Sorted {{ sorted }} of 4. Wrong bin: {{ misses }}"
+    }
+  ]
+}

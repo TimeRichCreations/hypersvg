@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" width="160" height="44" data-hsvg-version="2.0">
+<title>Page button</title>
+<g id="button" data-hsvg-kind="component">
+<g id="button__face" data-hsvg-kind="part" data-hsvg-role="action">
+<rect id="button__pill" data-hsvg-kind="part" data-hsvg-color="accent-2" x="2" y="2" width="156" height="40" rx="20" fill="#3f6f4f"/>
+<text id="button__caption" data-hsvg-kind="part" data-hsvg-color="surface" x="80" y="28" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#fbf6e9">Turn the page</text>
+</g>
+</g>
+</svg>

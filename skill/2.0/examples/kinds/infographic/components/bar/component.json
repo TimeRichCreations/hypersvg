@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "bar",
+  "drawing": "bar.svg",
+  "inputs": {
+    "name": {"kind": "content", "type": "string", "maxLength": 24, "initial": "Fruit"},
+    "share": {"kind": "content", "type": "number", "minimum": 0, "maximum": 1, "initial": 1}
+  },
+  "bindings": [
+    {"id": "bar-height", "target": "fill", "scale": "share", "axis": "y"},
+    {"id": "bar-name", "target": "name", "text": "{{ name }}"},
+    {"id": "bar-label", "target": "fill", "label": "{{ name }}: {{ round(share * 100) }} percent"}
+  ]
+}

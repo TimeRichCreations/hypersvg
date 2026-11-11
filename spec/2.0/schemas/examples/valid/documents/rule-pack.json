@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "rule-pack",
+  "id": "harbour-brand",
+  "about": {
+    "title": "Example",
+    "version": "1.0.0"
+  },
+  "rules": [
+    {
+      "id": "logo-whole",
+      "kind": "protected",
+      "subject": "part:logo"
+    }
+  ]
+}

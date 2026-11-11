@@ -1,0 +1,18 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "a",
+  "story": {},
+  "needs": [
+    "synth"
+  ],
+  "audioSynths": {
+    "beep": {
+      "wave": "piano",
+      "from": 440,
+      "to": 880,
+      "durationMs": 120,
+      "gain": 0.5
+    }
+  }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0">
+<title>Product photo</title>
+<g id="photo" data-hsvg-kind="component">
+<rect id="photo__sky" data-hsvg-kind="part" x="0" y="0" width="400" height="300" fill="#bfe4de"/>
+<circle id="photo__ball" data-hsvg-kind="part" cx="200" cy="140" r="90" fill="#e6af42"/>
+</g>
+</svg>

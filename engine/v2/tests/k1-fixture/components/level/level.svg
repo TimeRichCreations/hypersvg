@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" data-hsvg-version="2.0">
+<title>Level</title>
+<g id="level" data-hsvg-kind="component" data-hsvg-pivot="0 0">
+<rect x="20" y="36" width="200" height="6" rx="3" fill="#9ca3af"/>
+<g id="level__handle" data-hsvg-kind="part" data-hsvg-motion="move-x 0..200"><rect x="8" y="24" width="24" height="30" rx="6" fill="#2563eb"/></g>
+<g id="level__bubble" data-hsvg-kind="part"><rect x="0" y="0" width="40" height="18" rx="5" fill="#111827"/></g>
+</g>
+</svg>

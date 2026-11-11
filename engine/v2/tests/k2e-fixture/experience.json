@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "drag-sort",
+  "about": {"title": "Sort the rubbish", "preset": "game"},
+  "story": {
+    "start": "sort",
+    "scenes": {"sort": "scenes/sort/scene.json", "done": "scenes/done/scene.json"},
+    "ends": ["done"],
+    "links": [
+      {"id": "sort-to-done", "from": "sort", "on": "finished", "to": "done", "transition": "fade", "transitionMs": 300},
+      {"id": "done-to-sort", "from": "done", "on": "again", "to": "sort"}
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "rule-pack",
+  "id": "hsvg-baseline",
+  "about": {
+    "title": "HyperSVG baseline",
+    "description": "The minimum accessibility and layout rules every experience is checked against: readable text, theme contrast, a keyboard path and a name for every control, hit targets, reduced motion that keeps meaning, focus never stolen, nothing covering a control, no exact copies, and every seed option keeping every rule.",
+    "version": "2.0.0"
+  },
+  "domain": "accessibility",
+  "rules": [
+    {
+      "id": "readable",
+      "kind": "readable",
+      "minTextPx": "host"
+    },
+    {
+      "id": "ink-contrast",
+      "kind": "contrast",
+      "subject": "color:ink",
+      "against": "surface",
+      "ratio": 4.5
+    },
+    {
+      "id": "muted-contrast",
+      "kind": "contrast",
+      "subject": "color:muted",
+      "against": "surface",
+      "ratio": 4.5
+    },
+    {
+      "id": "success-contrast",
+      "kind": "contrast",
+      "subject": "color:success",
+      "against": "surface",
+      "ratio": 4.5
+    },
+    {
+      "id": "warning-contrast",
+      "kind": "contrast",
+      "subject": "color:warning",
+      "against": "surface",
+      "ratio": 4.5
+    },
+    {
+      "id": "danger-contrast",
+      "kind": "contrast",
+      "subject": "color:danger",
+      "against": "surface",
+      "ratio": 4.5
+    },
+    {
+      "id": "focus-contrast",
+      "kind": "contrast",
+      "subject": "color:accent-2",
+      "against": "surface",
+      "ratio": 3
+    },
+    {
+      "id": "keyboard",
+      "kind": "keyboard",
+      "subject": "controls"
+    },
+    {
+      "id": "hit-target",
+      "kind": "hit-target",
+      "subject": "controls",
+      "minPx": 44
+    },
+    {
+      "id": "reduced-motion",
+      "kind": "reduced-motion"
+    },
+    {
+      "id": "focus",
+      "kind": "focus"
+    },
+    {
+      "id": "controls-clear",
+      "kind": "clear",
+      "subject": "controls"
+    },
+    {
+      "id": "no-copy",
+      "kind": "no-copy",
+      "minBytes": 200
+    }
+  ]
+}

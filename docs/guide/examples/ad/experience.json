@@ -1,0 +1,12 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "ad",
+  "about": {"title": "Ferry sale"},
+  "axes": [{"axis": "shape", "select": "space", "sizes": {"728x90": "must", "160x600": "must"}}],
+  "theme": "harbour",
+  "themes": {"harbour": {"colorRoles": {"surface": "#fff7ec", "ink": "#3e2723", "accent": "#d84315",
+    "accent-2": "#168e91", "muted": "#8d6e63", "success": "#2e7d32", "warning": "#8a5a00", "danger": "#b3261e"}}},
+  "inputs": {"headline": {"kind": "content", "type": "string", "maxLength": 40, "initial": "Ferry tickets, half price"}},
+  "story": {"start": "ad", "scenes": {"ad": "ad.json"}, "ends": ["ad"]}
+}

@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "one",
+  "drawing": "one.svg",
+  "values": { "n": { "type": "number", "initial": 0, "minimum": 0, "maximum": 9 } },
+  "controls": { "go": { "kind": "button", "target": "button", "label": "Go" } },
+  "on": { "press:button": [ { "id": "count", "actions": [ { "id": "add", "set": "n", "to": "n + 1" } ] } ] }
+}

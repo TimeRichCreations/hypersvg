@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "gate",
+  "drawing": "gate.svg",
+  "controls": {"go": {"kind": "button", "target": "go", "event": "start"}},
+  "bindings": [{"target": "welcome", "text": "Welcome to {{ title }}"}]
+}

@@ -1,0 +1,7 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "photo",
+  "about": { "title": "Product photo" },
+  "drawing": "photo.svg"
+}

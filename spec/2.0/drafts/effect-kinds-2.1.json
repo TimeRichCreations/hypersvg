@@ -1,0 +1,582 @@
+{
+  "format": "hsvg/2.1-draft",
+  "kind": "capability-draft",
+  "id": "effects",
+  "about": {
+    "title": "Effect kinds after particles",
+    "description": "A 2.1 draft, outside the 2.0 registry (decision 3 after R2): the effect kinds spring, aim, follow, limit and dynamics, with their grammar as 2.0 had it. 2.0 runs only particles.",
+    "version": "2.1.0-draft"
+  },
+  "adds": [
+    "the effect kinds spring, aim, follow, limit, dynamics and particles for the effects map of a block (A1.1)",
+    "springs and dynamics advance in fixed 120 Hz steps on the owner's clock with at most 12 catch-up steps: velocity += acceleration * dt, then position += velocity * dt, dt = 1/120",
+    "at most 16 effects per block; at most 32 dynamics bodies per block; unknown kinds and keys are refused",
+    "spring: a damped spring on one channel toward to; defaults rest 0, stiffness 100, damping 15; acceleration = stiffness * (to - position) - damping * velocity",
+    "aim: turns target about its pivot toward the point at (block drawing coordinates); rest is the angle in degrees the part faces as drawn; the written rotate offset is the angle to the point minus rest, clamped to limits (degrees from rest) and multiplied by weight (default 1)",
+    "follow: copies the current offset of part 'of' on the same channel into target, clamped to limits",
+    "limit: writes the value of the formula, clamped to limits, to the channel",
+    "dynamics: scalar bodies, one channel each, never bones; a body owns its part's whole transform; acceleration = force + w*w*(goal - position) - (2*damping*w + drag)*velocity with w = 2*pi*springHz; velocity is clamped to +-100000; the two ends of range are walls that reverse outward velocity times bounce; a parent names the part of an earlier body on the same channel and needs springHz above 0: its goal is the parent's previous position plus its own to; squash-stretch writes scale-x = x and scale-y = 1/x; the range lies inside the part's motion range (scale channels inside 0.25..4); reducedMotion rest shows the first row, finish the final simulated row"
+  ],
+  "grammar": {
+    "effectKinds": {
+      "spring": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "spring"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "channel": {
+            "enum": [
+              "translate-x",
+              "translate-y",
+              "rotate",
+              "scale",
+              "scale-x",
+              "scale-y",
+              "opacity"
+            ]
+          },
+          "to": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "rest": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "stiffness": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 1000
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "damping": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "start": {
+            "enum": [
+              "entry",
+              "play"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 600000
+          },
+          "reducedMotion": {
+            "enum": [
+              "rest",
+              "finish"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "target",
+          "channel",
+          "to",
+          "reducedMotion"
+        ],
+        "additionalProperties": false
+      },
+      "aim": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "aim"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "at": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "oneOf": [
+                  {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 4096
+                  }
+                ]
+              },
+              "y": {
+                "oneOf": [
+                  {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 4096
+                  }
+                ]
+              }
+            },
+            "required": [
+              "x",
+              "y"
+            ],
+            "additionalProperties": false
+          },
+          "rest": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": -360,
+                "maximum": 360
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "limits": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "number",
+                  "minimum": -720,
+                  "maximum": 720
+                },
+                {
+                  "type": "string",
+                  "maxLength": 4096
+                }
+              ]
+            }
+          },
+          "weight": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "start": {
+            "enum": [
+              "entry",
+              "play"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 600000
+          },
+          "reducedMotion": {
+            "enum": [
+              "rest",
+              "finish"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "target",
+          "at",
+          "limits",
+          "reducedMotion"
+        ],
+        "additionalProperties": false
+      },
+      "follow": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "follow"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "channel": {
+            "enum": [
+              "translate-x",
+              "translate-y"
+            ]
+          },
+          "of": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "limits": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "number",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                {
+                  "type": "string",
+                  "maxLength": 4096
+                }
+              ]
+            }
+          },
+          "start": {
+            "enum": [
+              "entry",
+              "play"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 600000
+          },
+          "reducedMotion": {
+            "enum": [
+              "rest",
+              "finish"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "target",
+          "channel",
+          "of",
+          "limits",
+          "reducedMotion"
+        ],
+        "additionalProperties": false
+      },
+      "limit": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "limit"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "channel": {
+            "enum": [
+              "rotate",
+              "translate-x",
+              "translate-y"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              {
+                "type": "string",
+                "maxLength": 4096
+              }
+            ]
+          },
+          "limits": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "number",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                {
+                  "type": "string",
+                  "maxLength": 4096
+                }
+              ]
+            }
+          },
+          "start": {
+            "enum": [
+              "entry",
+              "play"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 600000
+          },
+          "reducedMotion": {
+            "enum": [
+              "rest",
+              "finish"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "target",
+          "channel",
+          "value",
+          "limits",
+          "reducedMotion"
+        ],
+        "additionalProperties": false
+      },
+      "dynamics": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "dynamics"
+            ]
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 600000
+          },
+          "bodies": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "properties": {
+                "part": {
+                  "type": "string",
+                  "maxLength": 48
+                },
+                "channel": {
+                  "enum": [
+                    "translate-x",
+                    "translate-y",
+                    "rotate",
+                    "scale-x",
+                    "scale-y",
+                    "squash-stretch"
+                  ]
+                },
+                "from": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "to": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "velocity": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "force": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": -100000,
+                      "maximum": 100000
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "springHz": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 10
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "damping": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 2
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "drag": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 20
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "range": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "minimum": -10000,
+                    "maximum": 10000
+                  }
+                },
+                "bounce": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    }
+                  ]
+                },
+                "parent": {
+                  "type": "string",
+                  "maxLength": 48
+                }
+              },
+              "required": [
+                "part",
+                "channel",
+                "from",
+                "to",
+                "velocity",
+                "force",
+                "springHz",
+                "damping",
+                "drag",
+                "range",
+                "bounce"
+              ],
+              "additionalProperties": false
+            },
+            "x-hsvg-limit": "dynamicsBodies"
+          },
+          "start": {
+            "enum": [
+              "entry",
+              "play"
+            ]
+          },
+          "reducedMotion": {
+            "enum": [
+              "rest",
+              "finish"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "durationMs",
+          "bodies",
+          "reducedMotion"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

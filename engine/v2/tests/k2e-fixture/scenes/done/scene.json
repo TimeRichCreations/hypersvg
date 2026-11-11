@@ -1,0 +1,10 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "done",
+  "drawing": "done.svg",
+  "controls": {
+    "again": {"kind": "button", "target": "again-button", "event": "again", "keys": ["KeyR"], "label": "Sort again"}
+  },
+  "outputs": {"again": {"kind": "event"}}
+}

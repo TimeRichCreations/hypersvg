@@ -1,0 +1,78 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "harbour",
+  "drawing": "harbour.svg",
+  "values": {
+    "score": {"type": "number", "initial": 0, "minimum": 0, "maximum": 99},
+    "note": {"type": "string", "initial": "", "maxLength": 20},
+    "lampOn": {"type": "boolean", "initial": false},
+    "speed": {"type": "number", "initial": 0, "minimum": 0, "maximum": 200},
+    "wind": {"type": "number", "initial": 0, "minimum": -45, "maximum": 45},
+    "pick": {"type": "string", "initial": "", "maxLength": 1},
+    "flight": {"type": "number", "initial": 0, "minimum": 0, "maximum": 1},
+    "tension": {"type": "number", "initial": 1, "minimum": 1, "maximum": 6},
+    "stops": {"type": "array", "items": {"type": "string", "maxLength": 12}, "maxItems": 3,
+              "initial": ["Mill", "Quay", "Point"]}
+  },
+  "outputs": {
+    "score": {"kind": "result", "type": "number", "minimum": 0, "maximum": 99, "value": "score"},
+    "done": {"kind": "event"},
+    "trips": {"kind": "record", "maxRows": 20, "row": {"type": "object", "properties": {
+      "stop": {"type": "string", "maxLength": 12}}, "required": ["stop"], "additionalProperties": false}}
+  },
+  "uses": [
+    {"id": "lead", "use": "crate", "into": "lead-spot", "with": {"name": "'Lead'"}},
+    {"id": "spare", "use": "crate", "into": "spare-spot", "with": {"name": "'Spare'"}},
+    {"id": "crates", "use": "crate", "into": "crates", "items": "range(3)", "key": "item", "with": {"name": "stops[item]"}}
+  ],
+  "entry": [{"set": "note", "to": "'Ahoy!'"}, {"play": "roll"}],
+  "controls": {
+    "go":     {"kind": "button", "target": "go", "event": "load", "enabled": "score < 99"},
+    "lamp":   {"kind": "toggle", "target": "lamp", "value": "lampOn", "label": "Lamp"},
+    "pick":   {"kind": "choice", "value": "pick", "event": "picked", "options": {
+                 "a": {"target": "card-a", "value": "'a'"}, "b": {"target": "card-b", "value": "'b'"}}},
+    "speed":  {"kind": "slider", "axis": "x", "target": "handle", "value": "speed", "range": [0, 200], "label": "Speed",
+               "valueText": "{{ speed }} km/h"},
+    "wind":   {"kind": "dial", "target": "vane", "value": "wind", "range": [-45, 45], "label": "Wind",
+               "valueText": "{{ wind }} degrees"},
+    "parcel": {"kind": "drag", "target": "parcel", "drops": ["basket", "bin"], "accept": "event.drop === 'basket'",
+               "event": "loaded", "missEvent": "missed", "label": "Parcel"}
+  },
+  "on": {
+    "load": [{"actions": [{"set": "score", "to": "score + 1"}, {"play": "'bell'", "as": "sound", "volume": 0.5},
+              {"if": "score > 9", "then": [{"emit": "done"}], "else": [{"set": "note", "to": "'Keep going'"}]}]}],
+    "loaded": [{"guard": "speed > 0", "actions": [{"set": "note", "to": "'Loaded!'"},
+                {"emit": "trips", "as": "record", "with": {"stop": "'quay'"}}, {"emit": "lead.shake", "as": "trigger"},
+                {"call": "player.attach", "with": {"part": "'lead'", "to": "'spare.lid-point'"}}]}],
+    "missed": [{"actions": [{"set": "note", "to": "'Try again.'"}, {"stop": "roll", "keep": true},
+              {"call": "player.attach", "with": {"part": "'lead'", "to": "null"}}]}],
+    "picked": [{"actions": [{"set": "flight", "to": "pick === 'a' ? 1 : 0"}]}]
+  },
+  "machines": [{"id": "buoy", "initial": "on", "states": {
+    "on": {"after": [{"delayMs": 1000, "target": "off"}]}, "off": {"after": [{"delayMs": 500, "target": "on"}]}}}],
+  "clips": {
+    "roll": {"durationMs": 800, "loop": true, "speed": "max(0.25, pace)",
+      "tracks": [{"target": "wheel", "channel": "rotate", "keys": [[0, 0], [800, 360]]}]}
+  },
+  "bindings": [
+    {"target": "title", "text": "{{ note }}", "fit": {"box": "title-box", "minFontPx": 18, "maxLines": 2}},
+    {"target": "parcel", "label": "Parcel, {{ score }} loaded"},
+    {"target": "badge", "visible": "score > 9"},
+    {"target": "beam", "variant": "lampOn ? 'bright' : 'dim'"},
+    {"target": "buoy-light", "variant": "active('on') ? 'on' : 'off'"},
+    {"target": "go", "color": "score > 0 ? 'accent' : 'muted'"},
+    {"target": "lamp", "color": "lampOn ? 'success' : 'ink'"},
+    {"target": "rope", "color": "tension > 3 ? '#b3261e' : '#5a3a30'", "as": "stroke"},
+    {"target": "handle", "move": "speed", "axis": "x"},
+    {"target": "boat", "move": "speed", "axis": "x"},
+    {"target": "gull", "move": "flight", "axis": "route", "route": "gull-path"},
+    {"target": "vane", "rotate": "wind"},
+    {"target": "flag", "rotate": "wind / 2", "as": "lean"},
+    {"target": "gull", "scale": "wind < 0 ? -1 : 1", "axis": "x"},
+    {"target": "rope", "scale": "tension", "as": "line"},
+    {"target": "haze", "opacity": "lampOn ? 0.3 : 1"},
+    {"target": "trail", "draw": "speed / 200"},
+    {"target": "curtain", "draw": "flight", "as": "wipe"}
+  ]
+}

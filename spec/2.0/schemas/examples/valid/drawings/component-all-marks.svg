@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" data-hsvg-version="2.0">
+  <metadata>{"derived":"derived","steps":"fits-title:short fits-title:shrink fits-title:shrink"}</metadata>
+  <title>Mascot</title>
+  <defs><linearGradient id="mascot__sky"><stop offset="0" stop-color="#ffffff"/></linearGradient></defs>
+  <g id="mascot" data-hsvg-kind="component" data-hsvg-role="identity" data-hsvg-pivot="100 50" data-hsvg-layer="content">
+    <g id="mascot__body" data-hsvg-kind="part" data-hsvg-role="body" data-hsvg-label="Body" data-hsvg-pivot="100 80"
+       data-hsvg-motion="rotate -10..10; move-y -4..4">
+      <rect x="60" y="40" width="80" height="50" data-hsvg-color="fill:accent stroke:ink" fill="url(#mascot__sky)"/>
+      <g id="mascot__body-point" data-hsvg-kind="part" data-hsvg-slot="body-point" transform="translate(100 90)"/>
+    </g>
+    <g id="mascot__near-wing" data-hsvg-kind="part" data-hsvg-role="wing near" data-hsvg-follow="body"
+       data-hsvg-pivot="70 50" data-hsvg-motion="rotate *"><path d="M70 50l-20 10z"/></g>
+    <g id="mascot__mouth" data-hsvg-kind="part" data-hsvg-role="mouth">
+      <g data-hsvg-variant="closed"><path d="M95 70h10"/></g>
+      <g data-hsvg-variant="open" display="none"><circle cx="100" cy="70" r="4"/></g>
+    </g>
+    <path id="mascot__trail" data-hsvg-kind="part" data-hsvg-motion="draw 0..1; opacity 0..1" pathLength="1" d="M10 10H90"/>
+    <svg id="mascot__badge" data-hsvg-kind="part" data-hsvg-role="icon" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>
+    <text id="mascot__name" data-hsvg-kind="part" data-hsvg-role="label" data-hsvg-text-style="heading" x="10" y="95" style="fill: #153b4b; mix-blend-mode: normal">Robin</text>
+    <g id="mascot__hat-mount" data-hsvg-kind="part" data-hsvg-slot="hat"/>
+    <rect id="mascot__name-box" data-hsvg-kind="part" data-hsvg-fit="" x="10" y="80" width="80" height="18" fill="none"/>
+    <g id="mascot__decor" data-hsvg-layer="decoration"><circle cx="5" cy="5" r="2"/></g>
+  </g>
+</svg>

@@ -1,0 +1,140 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "s",
+  "drawing": "s.svg",
+  "values": {
+    "status": {
+      "type": "string",
+      "maxLength": 12,
+      "initial": "clock"
+    },
+    "ride": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "initial": 0
+    }
+  },
+  "controls": {
+    "next": {
+      "kind": "button",
+      "target": "next",
+      "label": "Next icon"
+    },
+    "load": {
+      "kind": "button",
+      "target": "load",
+      "label": "Load"
+    },
+    "home": {
+      "kind": "button",
+      "target": "home",
+      "label": "Home slot"
+    },
+    "off": {
+      "kind": "button",
+      "target": "off",
+      "label": "Take off"
+    },
+    "ride": {
+      "kind": "button",
+      "target": "ride",
+      "label": "Ride"
+    }
+  },
+  "bindings": [
+    {
+      "id": "show",
+      "target": "badge",
+      "variant": "status",
+      "as": "icon"
+    }
+  ],
+  "on": {
+    "press:next": [
+      {
+        "id": "flip",
+        "actions": [
+          {
+            "id": "swap",
+            "set": "status",
+            "to": "status === 'clock' ? 'star' : 'nothing'"
+          }
+        ]
+      }
+    ],
+    "press:load": [
+      {
+        "id": "put-on",
+        "actions": [
+          {
+            "id": "attach",
+            "call": "player.attach",
+            "with": {
+              "part": "'parcel'",
+              "to": "'bike.basket-point'"
+            }
+          }
+        ]
+      }
+    ],
+    "press:home": [
+      {
+        "id": "put-home",
+        "actions": [
+          {
+            "id": "back",
+            "call": "player.attach",
+            "with": {
+              "part": "'parcel'",
+              "to": "'parcel-home'"
+            }
+          }
+        ]
+      }
+    ],
+    "press:off": [
+      {
+        "id": "take-off",
+        "actions": [
+          {
+            "id": "detach",
+            "call": "player.attach",
+            "with": {
+              "part": "'parcel'",
+              "to": "null"
+            }
+          }
+        ]
+      }
+    ],
+    "press:ride": [
+      {
+        "id": "move",
+        "actions": [
+          {
+            "id": "forward",
+            "set": "ride",
+            "to": "ride === 0 ? 100 : 0"
+          }
+        ]
+      }
+    ]
+  },
+  "uses": [
+    {
+      "id": "bike",
+      "use": "bike",
+      "into": "bike-spot",
+      "with": {
+        "ride": "ride"
+      }
+    },
+    {
+      "id": "parcel",
+      "use": "parcel",
+      "into": "parcel-home"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "k1-fixture",
+  "about": {
+    "title": "K1: two knobs turned as sliders with an angle axis"
+  },
+  "language": "en",
+  "blocks": {
+    "knob": "components/knob/component.json",
+    "level": "components/level/component.json"
+  },
+  "story": {
+    "start": "s",
+    "scenes": {
+      "s": "scenes/s/scene.json"
+    },
+    "ends": [
+      "s"
+    ]
+  }
+}

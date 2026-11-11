@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" data-hsvg-version="2.0">
+<title>Bike</title>
+<g id="bike" data-hsvg-kind="component" data-hsvg-pivot="10 50">
+  <g id="bike__frame" data-hsvg-kind="part" data-hsvg-role="body" data-hsvg-motion="move-x 0..100">
+    <rect x="10" y="30" width="90" height="12" rx="6" fill="#168e91"/>
+    <circle cx="25" cy="48" r="10" fill="#153b4b"/><circle cx="85" cy="48" r="10" fill="#153b4b"/>
+    <g id="bike__basket-point" data-hsvg-kind="part" data-hsvg-slot="basket-point" transform="translate(80 30)"/>
+  </g>
+</g>
+</svg>

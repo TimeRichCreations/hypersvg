@@ -1,0 +1,10 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "chart",
+  "drawing": "chart.svg",
+  "uses": [
+    {"id": "bars", "use": "bar", "into": "bars", "items": "data.fruit", "key": "item.id",
+     "with": {"name": "item.name", "share": "item.share"}}
+  ]
+}

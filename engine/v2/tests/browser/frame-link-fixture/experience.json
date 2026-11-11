@@ -1,0 +1,23 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "frame-link-fixture",
+  "about": {"title": "Frame link fixture"},
+  "inputs": {
+    "visitorName": {"kind": "content", "type": "string", "maxLength": 20, "initial": "friend"},
+    "musicVolume": {"kind": "knob", "type": "number", "minimum": 0, "maximum": 1, "initial": 0.5},
+    "start": {"kind": "trigger"}
+  },
+  "values": {
+    "starts": {"type": "number", "initial": 0, "minimum": 0, "maximum": 99}
+  },
+  "outputs": {
+    "startCount": {"kind": "result", "type": "number", "minimum": 0, "maximum": 99, "value": "starts"},
+    "started": {"kind": "event"}
+  },
+  "story": {
+    "start": "hello",
+    "scenes": {"hello": "scenes/hello/scene.json"},
+    "ends": ["hello"]
+  }
+}

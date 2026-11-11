@@ -1,0 +1,33 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "rule-pack",
+  "id": "hsvg-page",
+  "about": {
+    "title": "HyperSVG page conduct",
+    "description": "The good-guest rules for an experience on someone else's page: few unasked prompts, pause when off screen, always dismissible, reduced motion that keeps meaning, and focus never stolen. Applied without being listed whenever the experience has a page key.",
+    "version": "2.0.0"
+  },
+  "domain": "page",
+  "rules": [
+    {
+      "id": "prompt-limit",
+      "kind": "prompt-limit"
+    },
+    {
+      "id": "pause-offscreen",
+      "kind": "pause-offscreen"
+    },
+    {
+      "id": "dismissible",
+      "kind": "dismissible"
+    },
+    {
+      "id": "reduced-motion",
+      "kind": "reduced-motion"
+    },
+    {
+      "id": "focus",
+      "kind": "focus"
+    }
+  ]
+}

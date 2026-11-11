@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Time is up</title>
+  <rect id="sky" data-hsvg-layer="backdrop" x="0" y="0" width="400" height="300" fill="#fbe9d0"/>
+  <circle cx="200" cy="90" r="40" fill="#d7312b"/>
+  <text x="200" y="175" text-anchor="middle" font-family="sans-serif" font-size="26" fill="#5a2a10">Time is up!</text>
+  <text id="final" data-hsvg-kind="part" x="200" y="220" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#5a2a10">You caught 0 apples</text>
+</svg>

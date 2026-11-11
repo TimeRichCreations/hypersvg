@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "round-harbour",
+  "kit": {
+    "id": "robin-delivery",
+    "version": "2.1.0"
+  },
+  "story": {
+    "start": "intro",
+    "scenes": {
+      "intro": "scenes/intro/scene.json"
+    }
+  },
+  "with": {}
+}

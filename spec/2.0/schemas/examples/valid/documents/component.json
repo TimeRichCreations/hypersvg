@@ -1,0 +1,36 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "cta",
+  "drawing": "cta.svg",
+  "inputs": {
+    "label": {
+      "kind": "content",
+      "type": "string",
+      "maxLength": 18,
+      "initial": "Order now",
+      "editableBy": [
+        "copywriter"
+      ]
+    }
+  },
+  "outputs": {
+    "pressed": {
+      "kind": "event"
+    }
+  },
+  "bindings": [
+    {
+      "id": "label-text",
+      "target": "label",
+      "text": "{{ label }}"
+    }
+  ],
+  "rules": [
+    {
+      "id": "label-fits",
+      "kind": "fits",
+      "subject": "field:label"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "robins-rounds",
+  "kit": {
+    "id": "robin-delivery",
+    "version": "2.1.0"
+  },
+  "experiences": [
+    {
+      "id": "round-harbour",
+      "file": "experiences/round-harbour/experience.json"
+    }
+  ]
+}

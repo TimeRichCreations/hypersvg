@@ -1,0 +1,26 @@
+{
+ "about": "Words that must not appear in a public file of the hypersvg export. release/verify.mjs reads this file from the export and refuses any file, or file name, that matches a pattern, unless an allow entry covers the match. It names the file, the line and the reason. This file is the only one it does not scan, because it lists the words. Private PC paths and secrets are refused by release/scan.mjs as before.",
+ "refuse": [
+  {"pattern": "\\b(?:Sol|Rio)\\b", "reason": "a review-round label; say what the fix does instead"},
+  {"pattern": "\\b[Ll]anes? [A-Z0-9]", "reason": "a lane name: an internal work label"},
+  {"pattern": "\\blane-[a-z][0-9]", "reason": "a lane branch name: an internal work label"},
+  {"pattern": "\\b[Ww]aves? [0-9]", "reason": "a wave name: an internal work label"},
+  {"pattern": "workshop", "flags": "i", "reason": "the private working repository; public files speak of this repository"},
+  {"pattern": "percy|pelican|lighthouse", "flags": "i", "reason": "an unreleased showcase; it is not in this repository"},
+  {"pattern": "\\b(?:Claude|Anthropic|OpenAI|ChatGPT|GPT|Codex|Gemini|Copilot|Sonnet|Haiku|Opus|Fable|Astra|Grok|Llama|Mistral|DeepSeek)\\b", "reason": "an AI vendor, agent or model name"},
+  {"pattern": "docs/(?:briefs|reports|tasks|reviews)/|spec/2\\.0/private", "flags": "i", "reason": "a private path of the working repository (release/scan.mjs refuses private PC paths)"}
+ ],
+ "allow": [
+  {"text": "Opus audio", "reason": "Opus, the audio format of WebM video"},
+  {"text": "Ogg Opus", "reason": "Opus, the audio format in an Ogg file"},
+  {"text": "Vorbis or Opus", "reason": "Opus, the audio format in an Ogg file"},
+  {"text": "Vorbis, Opus", "reason": "Opus, the audio format in an Ogg file"},
+  {"file": "release/leak.test.mjs", "text": "'spec/2.0/private/terms.json'", "reason": "the leak test checks that the private folder is refused"},
+  {"file": "release/leak.test.mjs", "text": "'docs/briefs/a.md'", "reason": "the leak test checks that the private folder is refused"},
+  {"file": "release/leak.test.mjs", "text": "'docs/reports/a.md'", "reason": "the leak test checks that the private folder is refused"},
+  {"file": "release/policy.mjs", "text": "rio[^/]*|percy[^/]*|pelican[^/]*|lighthouse[^/]*", "reason": "the export's hard rule that keeps showcase art out by name"},
+  {"file": "release/EXPORT-POLICY.txt", "text": "- engine/v2/tests/browser/percy-suite/**", "reason": "the policy names a private folder it leaves out"},
+  {"file": "release/EXPORT-POLICY.txt", "text": "- engine/v2/tests/browser/percy-browser.mjs", "reason": "the policy names a private file it leaves out"},
+  {"file": "release/EXPORT-POLICY.txt", "text": "- engine/v2/tests/browser/percy-behaviour/**", "reason": "the policy names a private folder it leaves out"}
+ ]
+}

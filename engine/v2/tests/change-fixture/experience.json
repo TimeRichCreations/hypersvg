@@ -1,0 +1,25 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "change-fixture",
+  "about": { "title": "Change requests fixture", "version": "1.0.0", "trust": { "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000" } },
+  "language": "en",
+  "rights": {
+    "copywriter": { "label": "Copywriter", "may": ["edit"] },
+    "designer": { "label": "Designer", "may": ["edit", "changeKit"] },
+    "brand-owner": { "label": "Brand owner", "may": ["edit", "review", "publish"] },
+    "reviewer": { "label": "Reviewer", "may": ["review"] }
+  },
+  "inputs": {
+    "headline": { "kind": "content", "contentType": "text", "type": "string", "maxLength": 20, "initial": "Fresh bread", "editableBy": ["copywriter"] },
+    "speed": { "kind": "knob", "type": "number", "minimum": 1, "maximum": 5, "step": 1, "initial": 2, "editableBy": ["designer"] },
+    "start": { "kind": "trigger" }
+  },
+  "values": { "score": { "type": "number", "initial": 0, "minimum": 0, "maximum": 10 } },
+  "rules": [
+    { "id": "headline-short", "kind": "limit", "subject": "input:headline", "maxLength": 14, "waivableBy": ["brand-owner"] },
+    { "id": "headline-upper", "kind": "limit", "subject": "input:headline", "case": "upper", "strength": "should" },
+    { "id": "keys", "kind": "keyboard", "proof": "playing" }
+  ],
+  "story": { "start": "one", "scenes": { "one": "scenes/one/scene.json" }, "ends": ["one"] }
+}

@@ -1,0 +1,33 @@
+{
+  "door": 2,
+  "id": "example.tint",
+  "version": "1.0.0",
+  "kind": "capability",
+  "title": "Tint",
+  "description": "Paints a drawn part with a colour. A binding {\"target\": \"<part>\", \"example.tint\": {\"color\": \"<value>\"}} names it; the value holds #rrggbb. An input of content type example.tint.shade holds such a colour. Settings under addons.example.tint give the fade time.",
+  "adds": {
+    "keys": {
+      "type": "object",
+      "properties": {
+        "fadeMs": { "type": "number", "step": 1, "minimum": 0, "maximum": 2000, "description": "how long a change of colour takes, in ms" }
+      },
+      "required": ["fadeMs"],
+      "additionalProperties": false
+    },
+    "draws": {
+      "binding": {
+        "type": "object",
+        "properties": {
+          "color": { "type": "string", "maxLength": 200, "description": "the name of a value of the block that holds a colour #rrggbb" }
+        },
+        "required": ["color"],
+        "additionalProperties": false
+      },
+      "text": false,
+      "description": "the fill of the target part"
+    },
+    "contentTypes": {
+      "shade": { "type": "string", "maxLength": 7, "description": "a colour #rrggbb" }
+    }
+  }
+}

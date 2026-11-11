@@ -1,0 +1,407 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "capability",
+  "id": "remote-seats",
+  "about": {
+    "title": "Remote seats",
+    "description": "A 2.1 draft, outside the 2.0 registry (D11, 10.7): seats on different devices, run by a host-run authority.",
+    "version": "2.1.0-draft"
+  },
+  "core": ">=2.1 <3",
+  "adds": [
+    "seats on different devices: a host-run authority holds the experience's store and runs every input through the same checked path as a local input (A4.1)",
+    "the wire verbs reuse the agent door (A4.1): join, view, legal, act and leave; a client sends {sessionId, seat, requestId, verb, key?}; sessionId and requestId are 1..64 portable characters, seat is a seat id, and key (only for act) is a key of the seat's legal list; the exports below give each verb's request (with) and reply (returns) and are the authority's wire verbs, not calls that content makes",
+    "the request carries no identity: the authority uses the identity the host bound to the connection; it carries no expected revision: legal-list keys are single-use and tied to view, occupant and turn, and a used or stale key is refused with E-CHANGE-STALE",
+    "the authority ignores a requestId it has seen in the last 256 from that seat; it replies {requestId, ok, revision, error?} and broadcasts {revision, public, view} per seat; join returns the latest snapshot, so a client that reconnects joins again",
+    "no content grammar of its own: the same seats, turns and legal lists work locally or remotely",
+    "privileged capability (10.7): the authority is host code and its network port is the host's own; the host turns remote seats on in its profile, and content changes nothing and needs no new grant (the fillers grant is still needed only for filler kinds beyond human)"
+  ],
+  "grammar": {
+    "exports": {
+      "join": {
+        "with": {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "seat": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 48
+            },
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            }
+          },
+          "required": [
+            "sessionId",
+            "seat",
+            "requestId"
+          ],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "error": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "maxLength": 48
+                },
+                "message": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "additionalProperties": false
+            },
+            "public": {
+              "type": "object"
+            },
+            "view": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "requestId",
+            "ok",
+            "revision"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "view": {
+        "with": {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "seat": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 48
+            },
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            }
+          },
+          "required": [
+            "sessionId",
+            "seat",
+            "requestId"
+          ],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "error": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "maxLength": 48
+                },
+                "message": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "additionalProperties": false
+            },
+            "public": {
+              "type": "object"
+            },
+            "view": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "requestId",
+            "ok",
+            "revision"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "legal": {
+        "with": {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "seat": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 48
+            },
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            }
+          },
+          "required": [
+            "sessionId",
+            "seat",
+            "requestId"
+          ],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "error": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "maxLength": 48
+                },
+                "message": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "additionalProperties": false
+            },
+            "entries": {
+              "type": "array",
+              "maxItems": 256,
+              "x-hsvg-limit": "legalEntries"
+            }
+          },
+          "required": [
+            "requestId",
+            "ok",
+            "revision"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "act": {
+        "with": {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "seat": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 48
+            },
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32
+            }
+          },
+          "required": [
+            "sessionId",
+            "seat",
+            "requestId",
+            "key"
+          ],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "error": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "maxLength": 48
+                },
+                "message": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "requestId",
+            "ok",
+            "revision"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "leave": {
+        "with": {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "seat": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 48
+            },
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            }
+          },
+          "required": [
+            "sessionId",
+            "seat",
+            "requestId"
+          ],
+          "additionalProperties": false
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "error": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "maxLength": 48
+                },
+                "message": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "requestId",
+            "ok",
+            "revision"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "grants": []
+}

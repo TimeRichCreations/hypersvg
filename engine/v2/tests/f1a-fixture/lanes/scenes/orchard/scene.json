@@ -1,0 +1,40 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "orchard",
+  "drawing": "orchard.svg",
+  "values": {
+    "basketLane": {"type": "number", "initial": 1, "minimum": 0, "maximum": 2},
+    "appleLane": {"type": "number", "initial": 0, "minimum": 0, "maximum": 2},
+    "seed": {"type": "number", "initial": 7, "minimum": 0, "maximum": 100000}
+  },
+  "controls": {
+    "move": {"kind": "slider", "target": "basket", "value": "basketLane", "label": "Basket", "positions": 3}
+  },
+  "entry": [{"play": "fall"}],
+  "machines": [
+    {"id": "round", "initial": "playing", "states": {
+      "playing": {"after": [{"delayMs": 15000, "target": "over", "actions": [{"emit": "timeUp"}]}]},
+      "over": {}
+    }},
+    {"id": "drop", "initial": "falling", "states": {
+      "falling": {"after": [{"delayMs": 1200, "target": "falling", "actions": [
+        {"set": "score", "to": "basketLane === appleLane ? min(99, score + 1) : score"},
+        {"set": "seed", "to": "(seed * 7 + 3) % 100000"},
+        {"set": "appleLane", "to": "floor(random(0, 3, seed))"},
+        {"play": "fall"}
+      ]}]}
+    }}
+  ],
+  "clips": {
+    "fall": {"durationMs": 1200, "reducedMotion": "rest", "tracks": [
+      {"target": "apples", "channel": "move", "axis": "y", "keys": [[0, 0], [1200, 200, "ease-in"]]}
+    ]}
+  },
+  "bindings": [
+    {"target": "apple-0", "visible": "appleLane === 0"},
+    {"target": "apple-1", "visible": "appleLane === 1"},
+    {"target": "apple-2", "visible": "appleLane === 2"},
+    {"target": "score-text", "text": "Score {{ score }}"}
+  ]
+}

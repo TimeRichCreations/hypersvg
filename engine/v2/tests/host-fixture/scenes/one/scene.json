@@ -1,0 +1,13 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "one",
+  "drawing": "one.svg",
+  "controls": { "order": { "kind": "button", "target": "button", "event": "order", "label": "Order" } },
+  "on": {
+    "order": [ { "id": "open-order", "actions": [
+      { "id": "note", "emit": "orders", "as": "record", "with": { "item": "'bread'" } },
+      {"id": "open", "call": "player.openUrl", "with": {"field": "'clickUrl'", "from": "'fixture'"}}
+    ] } ]
+  }
+}

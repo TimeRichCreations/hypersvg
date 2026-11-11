@@ -1,0 +1,211 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "noughts",
+  "language": "en",
+  "about": {
+    "title": "Noughts and crosses",
+    "description": "Play noughts and crosses against Bolt, a desk robot who thinks, reaches across the paper and draws its O. A logic module chooses the move; a capability makes the win glow; a preset shakes the paper when a cell is taken.",
+    "trust": {
+      "pins": {
+        "example.glow@1.0.0": "sha256:05a036c5632d4c09f04045a78cc981d1214eb6836f075a6a03de8ed42969add7",
+        "example.noughts@1.0.0": "sha256:de1c156bf6d73ad9bc2375f2347b8a44fc48946c896f71f7adc80f03e054af1b",
+        "example.shake@1.0.0": "sha256:c4e17c272977cbcd8c887832fa1d4cd3b93bd619db2713aea4c93eea8c90ad93"
+      }
+    }
+  },
+  "needs": [
+    "example.noughts@1.0.0",
+    "example.glow@1.0.0"
+  ],
+  "resources": {
+    "words-en": {
+      "kind": "words",
+      "file": "words/en.csv",
+      "language": "en",
+      "digest": "sha256:127982a01a2a2097ae74e5aac34ce5bf94793bce42367860aef0b790e61fac4d"
+    },
+    "lines": {
+      "kind": "data",
+      "file": "data/lines.csv",
+      "digest": "sha256:0935ce6cb195f4841db701a4305a21b4a5e72fa83da0daf610e5243d6b22403c"
+    }
+  },
+  "data": {
+    "lines": {
+      "resource": "lines",
+      "key": "id",
+      "maxRows": 8,
+      "columns": {
+        "id": {
+          "type": "string",
+          "maxLength": 5
+        },
+        "a": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "b": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "c": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 8
+        }
+      }
+    }
+  },
+  "axes": [
+    {
+      "axis": "shape",
+      "select": "space",
+      "shapes": {
+        "wide": {
+          "minAspect": 1
+        },
+        "tall": {
+          "maxAspect": 1
+        }
+      }
+    }
+  ],
+  "values": {
+    "level": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 3,
+      "initial": 2
+    },
+    "wins": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99,
+      "initial": 0
+    },
+    "losses": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99,
+      "initial": 0
+    },
+    "draws": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99,
+      "initial": 0
+    }
+  },
+  "audioSynths": {
+    "tap": {
+      "wave": "triangle",
+      "from": 520,
+      "to": 400,
+      "durationMs": 80,
+      "gain": 0.3,
+      "releaseMs": 40
+    },
+    "inkX": {
+      "wave": "noise",
+      "from": 3000,
+      "to": 2200,
+      "durationMs": 160,
+      "gain": 0.16,
+      "attackMs": 10,
+      "releaseMs": 60
+    },
+    "inkO": {
+      "wave": "noise",
+      "from": 2600,
+      "to": 1800,
+      "durationMs": 260,
+      "gain": 0.16,
+      "attackMs": 10,
+      "releaseMs": 100
+    },
+    "nope": {
+      "wave": "square",
+      "from": 190,
+      "to": 120,
+      "durationMs": 170,
+      "gain": 0.18,
+      "releaseMs": 70
+    },
+    "win": {
+      "wave": "sine",
+      "from": 523,
+      "to": 1046,
+      "durationMs": 420,
+      "gain": 0.3,
+      "attackMs": 10,
+      "releaseMs": 240
+    },
+    "lose": {
+      "wave": "sine",
+      "from": 330,
+      "to": 196,
+      "durationMs": 460,
+      "gain": 0.26,
+      "attackMs": 10,
+      "releaseMs": 260
+    },
+    "even": {
+      "wave": "triangle",
+      "from": 392,
+      "to": 370,
+      "durationMs": 300,
+      "gain": 0.24,
+      "releaseMs": 160
+    },
+    "sweep": {
+      "wave": "noise",
+      "from": 1200,
+      "to": 900,
+      "durationMs": 1000,
+      "gain": 0.1,
+      "attackMs": 80,
+      "releaseMs": 400
+    },
+    "hum": {
+      "wave": "sine",
+      "from": 330,
+      "to": 360,
+      "durationMs": 220,
+      "gain": 0.12,
+      "attackMs": 40,
+      "releaseMs": 120
+    }
+  },
+  "story": {
+    "start": "pick",
+    "scenes": {
+      "pick": "scenes/pick/scene.json",
+      "game": "scenes/game/scene.json"
+    },
+    "ends": [
+      "game"
+    ],
+    "links": [
+      {
+        "id": "pick-to-game",
+        "from": "pick",
+        "on": "play",
+        "to": "game",
+        "transition": "slide",
+        "transitionMs": 450
+      },
+      {
+        "id": "game-to-pick",
+        "from": "game",
+        "on": "changeLevel",
+        "to": "pick",
+        "transition": "slide",
+        "transitionMs": 450,
+        "slideFrom": "start"
+      }
+    ]
+  }
+}

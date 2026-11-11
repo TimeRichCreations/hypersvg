@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "change",
+  "id": "edit-1",
+  "at": "edit",
+  "target": "harbour-ad",
+  "expected": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "reason": "shorter headline",
+  "changes": [
+    {
+      "address": "harbour-ad/headline",
+      "old": "Rain? Bring it on.",
+      "new": "Rain? Go!"
+    }
+  ]
+}

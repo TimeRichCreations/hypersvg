@@ -1,0 +1,80 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "knob",
+  "about": {
+    "title": "A knob that turns 270 degrees"
+  },
+  "drawing": "knob.svg",
+  "inputs": {
+    "label": {
+      "kind": "content",
+      "type": "string",
+      "maxLength": 32,
+      "initial": "Knob"
+    },
+    "start": {
+      "kind": "knob",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "initial": 0
+    }
+  },
+  "values": {
+    "share": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "initial": 0
+    },
+    "holding": {
+      "type": "boolean",
+      "initial": false
+    }
+  },
+  "outputs": {
+    "value": {
+      "kind": "result",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "value": "share"
+    },
+    "changed": {
+      "kind": "event"
+    }
+  },
+  "controls": {
+    "turn": {
+      "kind": "dial",
+      "target": "knob",
+      "value": "share",
+      "range": [
+        -135,
+        135
+      ],
+      "positions": 11,
+      "event": "changed",
+      "label": "{{ label }}",
+      "held": "holding"
+    }
+  },
+  "entry": [
+    {
+      "set": "share",
+      "to": "start"
+    }
+  ],
+  "bindings": [
+    {"target": "knob", "rotate": "-135 + share * 270"},
+    {
+      "target": "readout",
+      "text": "{{ numberText(share * 10, 0) }}"
+    },
+    {
+      "target": "bubble",
+      "visible": "holding"
+    }
+  ]
+}

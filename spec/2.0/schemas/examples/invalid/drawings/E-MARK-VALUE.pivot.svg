@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" data-hsvg-version="2.0">
+  <title>Button</title>
+  <g id="cta" data-hsvg-kind="component" data-hsvg-role="action">
+    <rect id="cta__s" data-hsvg-kind="part" data-hsvg-pivot="center" width="1" height="1"/>
+  </g>
+</svg>

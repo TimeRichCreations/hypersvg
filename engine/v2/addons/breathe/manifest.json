@@ -1,0 +1,69 @@
+{
+  "door": 1,
+  "id": "breathe",
+  "version": "1.0.0",
+  "kind": "preset",
+  "title": "Breathe",
+  "description": "A slow looping clip that swells and shrinks a part, played on entry. Under reduced motion it rests. The part needs a scale motion range up to 1 + amount.",
+  "adds": {
+    "inputs": {
+      "target": {
+        "type": "part",
+        "description": "the part that breathes"
+      },
+      "amount": {
+        "type": "number",
+        "minimum": 0.01,
+        "maximum": 0.5,
+        "initial": 0.06,
+        "description": "how much it swells: 0.06 is six per cent"
+      },
+      "periodMs": {
+        "type": "integer",
+        "minimum": 800,
+        "maximum": 20000,
+        "initial": 3200,
+        "description": "one breath, in and out"
+      }
+    },
+    "provides": {
+      "clips": {
+        "{{as}}": {
+          "durationMs": 1000,
+          "speed": "1000 / {{periodMs}}",
+          "loop": true,
+          "reducedMotion": "rest",
+          "tracks": [
+            {
+              "id": "{{as}}-swell",
+              "target": "{{target}}",
+              "channel": "scale",
+              "keys": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  500,
+                  "1 + {{amount}}",
+                  "ease-in-out"
+                ],
+                [
+                  1000,
+                  1,
+                  "ease-in-out"
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "entry": [
+        {
+          "id": "{{as}}-start",
+          "play": "{{as}}"
+        }
+      ]
+    }
+  }
+}

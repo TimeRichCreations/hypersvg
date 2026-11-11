@@ -1,0 +1,11 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "crate",
+  "drawing": "crate.svg",
+  "inputs": {"name": {"kind": "content", "type": "string", "maxLength": 12, "initial": "Crate"}, "shake": {"kind": "trigger"}},
+  "places": {"lid-point": {"kind": "slot"}},
+  "clips": {"wobble": {"durationMs": 300, "tracks": [{"target": "lid", "channel": "move", "axis": "y", "keys": [[0, 0], [150, -8], [300, 0]]}]}},
+  "on": {"shake": [{"actions": [{"play": "wobble"}]}]},
+  "bindings": [{"target": "name", "text": "{{ name }}"}]
+}

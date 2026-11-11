@@ -1,0 +1,29 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "k2b-fixture",
+  "about": {
+    "title": "K2b: icons by id and attach points"
+  },
+  "language": "en",
+  "resources": {
+    "icons": {
+      "kind": "icon-set",
+      "file": "resources/icons.svg",
+      "digest": "sha256:8f4ff88854f97eba52772847904ccdddb3fb51b9fa22dd2ee0a3ec141fd8749c"
+    }
+  },
+  "story": {
+    "start": "s",
+    "scenes": {
+      "s": "scenes/s/scene.json"
+    },
+    "ends": [
+      "s"
+    ]
+  },
+  "blocks": {
+    "bike": "components/bike/component.json",
+    "parcel": "components/parcel/component.json"
+  }
+}

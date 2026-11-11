@@ -1,0 +1,29 @@
+id,text
+title,Noughts and crosses
+subtitle,"Play against Bolt, the desk robot"
+pickLevel,Pick how clever Bolt is
+easy,Easy
+fair,Fair
+hard,Hard
+easyNote,Bolt takes it slow.
+fairNote,Bolt plays a fair game.
+hardNote,Bolt never loses.
+play,Play
+you,You (X)
+bolt,Bolt (O)
+draws,Draws
+newGame,New game
+changeLevel,Change level
+level,Level
+yourMove,Your move
+thinking,Bolt is thinking
+youWin,You win!
+boltWins,Bolt wins.
+aDraw,A draw.
+clearing,Rubbing out
+cell,Cell
+markX,X
+markO,O
+markEmpty,empty
+board,Board
+levelGroup,Bolt's level

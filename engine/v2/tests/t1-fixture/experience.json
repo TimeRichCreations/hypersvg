@@ -1,0 +1,23 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "t1-fixture",
+  "about": {
+    "title": "T1: planted problems for the test tool"
+  },
+  "language": "en",
+  "story": {
+    "start": "a",
+    "scenes": {
+      "a": "scenes/a/scene.json",
+      "b": "scenes/b/scene.json"
+    },
+    "links": [
+      {"id": "a-b", "from": "a", "to": "b", "on": "next"},
+      {"id": "b-a", "from": "b", "to": "a", "on": "back"}
+    ],
+    "ends": [
+      "b"
+    ]
+  }
+}

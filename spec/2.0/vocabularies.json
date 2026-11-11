@@ -1,0 +1,3128 @@
+{
+  "format": "hsvg/2.0",
+  "registry": "vocabularies",
+  "description": "Machine copy of the word lists of HyperSVG 2.0: roles and their schemas, drawing marks, allowed SVG, portable file names, colour roles, standard shapes, keys and cue letters. Where this file and the section text differ, the section text decides.",
+  "jobGroups": [
+    "identity",
+    "message",
+    "media",
+    "info",
+    "event",
+    "utility",
+    "action",
+    "contact",
+    "legal",
+    "backdrop"
+  ],
+  "roles": [
+    {
+      "id": "identity",
+      "aliases": [
+        "brand",
+        "logo",
+        "brand-identity"
+      ],
+      "jobGroup": "identity",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "identity",
+      "attachTo": [
+        "media"
+      ],
+      "schema": {
+        "brand": {
+          "type": "string",
+          "maxLength": 120,
+          "required": true,
+          "tier": "short"
+        },
+        "logo": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "medium"
+        },
+        "tagline": {
+          "type": "string",
+          "maxLength": 180,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "message",
+      "aliases": [
+        "headline",
+        "title",
+        "supporting-copy"
+      ],
+      "jobGroup": "message",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "message",
+      "schema": {
+        "headline": {
+          "type": "string",
+          "maxLength": 180,
+          "required": true,
+          "tier": "short"
+        },
+        "kicker": {
+          "type": "string",
+          "maxLength": 80,
+          "required": false,
+          "tier": "medium"
+        },
+        "subheadline": {
+          "type": "string",
+          "maxLength": 360,
+          "required": false,
+          "tier": "medium"
+        },
+        "accentText": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "question",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "instruction",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "explanation",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "feedback",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "speech-balloon",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "narration",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "caption",
+      "aliases": [],
+      "jobGroup": "message",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "media",
+      "aliases": [
+        "image",
+        "hero",
+        "product-media"
+      ],
+      "jobGroup": "media",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "media",
+      "schema": {
+        "url": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": true,
+          "tier": "short"
+        },
+        "alt": {
+          "type": "string",
+          "maxLength": 240,
+          "required": false,
+          "tier": "medium"
+        },
+        "focalPoint": {
+          "type": "array",
+          "contentType": "point",
+          "required": false,
+          "tier": "medium"
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 240,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "gallery",
+      "aliases": [],
+      "jobGroup": "media",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "gallery",
+      "schema": {
+        "items": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "media": {
+              "type": "string",
+              "contentType": "picture",
+              "maxLength": 48,
+              "required": true,
+              "tier": "short"
+            },
+            "caption": {
+              "type": "string",
+              "maxLength": 180,
+              "required": false,
+              "tier": "medium"
+            },
+            "credit": {
+              "type": "string",
+              "maxLength": 160,
+              "required": false,
+              "tier": "rich"
+            }
+          }
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "medium"
+        }
+      }
+    },
+    {
+      "id": "before-after",
+      "aliases": [
+        "transformation"
+      ],
+      "jobGroup": "media",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "beforeAfter",
+      "schema": {
+        "before": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": true,
+          "tier": "short"
+        },
+        "after": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": true,
+          "tier": "short"
+        },
+        "beforeLabel": {
+          "type": "string",
+          "maxLength": 80,
+          "required": false,
+          "tier": "medium"
+        },
+        "afterLabel": {
+          "type": "string",
+          "maxLength": 80,
+          "required": false,
+          "tier": "medium"
+        },
+        "result": {
+          "type": "string",
+          "maxLength": 180,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "mascot",
+      "aliases": [],
+      "jobGroup": "media",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "player",
+      "aliases": [],
+      "jobGroup": "media",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "guide",
+      "aliases": [],
+      "jobGroup": "media",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "features",
+      "aliases": [
+        "feature-list",
+        "benefits"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "features",
+      "schema": {
+        "items": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "title": {
+              "type": "string",
+              "maxLength": 120,
+              "required": true,
+              "tier": "short"
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 280,
+              "required": false,
+              "tier": "medium"
+            },
+            "media": {
+              "type": "string",
+              "contentType": "picture",
+              "maxLength": 48,
+              "required": false,
+              "tier": "rich"
+            }
+          }
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "medium"
+        },
+        "groupMedia": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "highlights",
+      "aliases": [
+        "callouts"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "highlights",
+      "attachTo": [
+        "media"
+      ],
+      "schema": {
+        "items": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "title": {
+              "type": "string",
+              "maxLength": 100,
+              "required": true,
+              "tier": "short"
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 180,
+              "required": false,
+              "tier": "medium"
+            },
+            "media": {
+              "type": "string",
+              "contentType": "picture",
+              "maxLength": 48,
+              "required": false,
+              "tier": "rich"
+            }
+          }
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 100,
+          "required": false,
+          "tier": "medium"
+        },
+        "groupMedia": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "pricing",
+      "aliases": [
+        "offer",
+        "price"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "pricing",
+      "schema": {
+        "amount": {
+          "type": "number",
+          "contentType": "number",
+          "minimum": 0,
+          "maximum": 999999,
+          "required": true,
+          "tier": "short"
+        },
+        "currency": {
+          "type": "string",
+          "maxLength": 12,
+          "required": false,
+          "tier": "short"
+        },
+        "qualifier": {
+          "type": "string",
+          "maxLength": 100,
+          "required": false,
+          "tier": "medium"
+        },
+        "previousAmount": {
+          "type": "number",
+          "contentType": "number",
+          "minimum": 0,
+          "maximum": 999999,
+          "required": false,
+          "tier": "medium"
+        },
+        "terms": {
+          "type": "string",
+          "maxLength": 280,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "proof",
+      "aliases": [
+        "result",
+        "rating"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "proof",
+      "attachTo": [
+        "media"
+      ],
+      "schema": {
+        "value": {
+          "type": "string",
+          "maxLength": 80,
+          "required": true,
+          "tier": "short"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "short"
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 160,
+          "required": false,
+          "tier": "medium"
+        },
+        "badge": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "testimonial",
+      "aliases": [
+        "quote",
+        "review"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "testimonial",
+      "schema": {
+        "quote": {
+          "type": "string",
+          "maxLength": 560,
+          "required": true,
+          "tier": "short"
+        },
+        "author": {
+          "type": "string",
+          "maxLength": 120,
+          "required": true,
+          "tier": "short"
+        },
+        "authorRole": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "medium"
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "medium"
+        },
+        "rating": {
+          "type": "string",
+          "maxLength": 40,
+          "required": false,
+          "tier": "rich"
+        },
+        "portrait": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "comparison",
+      "aliases": [
+        "versus"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "comparison",
+      "schema": {
+        "columns": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "title": {
+              "type": "string",
+              "maxLength": 100,
+              "required": true,
+              "tier": "short"
+            }
+          }
+        },
+        "rows": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "label": {
+              "type": "string",
+              "maxLength": 100,
+              "required": true,
+              "tier": "short"
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "maxItems": 16,
+              "required": true,
+              "tier": "short"
+            }
+          }
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 140,
+          "required": false,
+          "tier": "medium"
+        },
+        "targetColumnId": {
+          "type": "string",
+          "maxLength": 100,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "specifications",
+      "aliases": [
+        "specs"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "specifications",
+      "schema": {
+        "items": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "label": {
+              "type": "string",
+              "maxLength": 100,
+              "required": true,
+              "tier": "short"
+            },
+            "value": {
+              "type": "string",
+              "maxLength": 140,
+              "required": true,
+              "tier": "short"
+            },
+            "unit": {
+              "type": "string",
+              "maxLength": 40,
+              "required": false,
+              "tier": "medium"
+            },
+            "note": {
+              "type": "string",
+              "maxLength": 220,
+              "required": false,
+              "tier": "rich"
+            }
+          }
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 140,
+          "required": false,
+          "tier": "medium"
+        }
+      }
+    },
+    {
+      "id": "timeline",
+      "aliases": [
+        "steps",
+        "schedule"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "timeline",
+      "schema": {
+        "items": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "title": {
+              "type": "string",
+              "maxLength": 120,
+              "required": true,
+              "tier": "short"
+            },
+            "date": {
+              "type": "string",
+              "maxLength": 80,
+              "required": false,
+              "tier": "medium"
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 260,
+              "required": false,
+              "tier": "medium"
+            },
+            "media": {
+              "type": "string",
+              "contentType": "picture",
+              "maxLength": 48,
+              "required": false,
+              "tier": "rich"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "badge",
+      "aliases": [
+        "status",
+        "tag",
+        "credential"
+      ],
+      "jobGroup": "info",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "badge",
+      "attachTo": [
+        "media"
+      ],
+      "schema": {
+        "label": {
+          "type": "string",
+          "maxLength": 100,
+          "required": true,
+          "tier": "short"
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 80,
+          "required": false,
+          "tier": "medium"
+        },
+        "issuer": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "rich"
+        },
+        "media": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "hint",
+      "aliases": [],
+      "jobGroup": "info",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "score",
+      "aliases": [],
+      "jobGroup": "info",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "progress",
+      "aliases": [],
+      "jobGroup": "info",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "timer",
+      "aliases": [],
+      "jobGroup": "info",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "event",
+      "aliases": [
+        "date",
+        "venue"
+      ],
+      "jobGroup": "event",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "utility",
+      "aliases": [
+        "details",
+        "hours"
+      ],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "utility",
+      "schema": {
+        "items": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "value": {
+              "type": "string",
+              "maxLength": 180,
+              "required": true,
+              "tier": "short"
+            },
+            "label": {
+              "type": "string",
+              "maxLength": 100,
+              "required": false,
+              "tier": "medium"
+            },
+            "icon": {
+              "type": "string",
+              "contentType": "icon",
+              "maxLength": 80,
+              "required": false,
+              "tier": "rich"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "settings",
+      "aliases": [],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "help",
+      "aliases": [],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "map",
+      "aliases": [],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "sound",
+      "aliases": [],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "menu",
+      "aliases": [],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "close",
+      "aliases": [],
+      "jobGroup": "utility",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "action",
+      "aliases": [
+        "cta",
+        "primary-action",
+        "secondary-action",
+        "command"
+      ],
+      "jobGroup": "action",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "action",
+      "attachTo": [
+        "media"
+      ],
+      "schema": {
+        "text": {
+          "type": "string",
+          "maxLength": 100,
+          "required": true,
+          "tier": "short"
+        },
+        "supportingText": {
+          "type": "string",
+          "maxLength": 180,
+          "required": false,
+          "tier": "medium"
+        },
+        "url": {
+          "type": "string",
+          "contentType": "url",
+          "maxLength": 500,
+          "required": false,
+          "tier": "medium"
+        },
+        "media": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "answer",
+      "aliases": [],
+      "jobGroup": "action",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "next",
+      "aliases": [],
+      "jobGroup": "action",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "back",
+      "aliases": [],
+      "jobGroup": "action",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "restart",
+      "aliases": [],
+      "jobGroup": "action",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "contact",
+      "aliases": [
+        "agent",
+        "contact-card"
+      ],
+      "jobGroup": "contact",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "contact",
+      "attachTo": [
+        "media"
+      ],
+      "schema": {
+        "name": {
+          "type": "string",
+          "maxLength": 120,
+          "required": true,
+          "tier": "short"
+        },
+        "contactItems": {
+          "type": "array",
+          "contentType": "rows",
+          "maxItems": 16,
+          "required": true,
+          "tier": "short",
+          "columns": {
+            "value": {
+              "type": "string",
+              "maxLength": 180,
+              "required": true,
+              "tier": "short"
+            },
+            "kind": {
+              "type": "string",
+              "maxLength": 24,
+              "required": false,
+              "tier": "short"
+            },
+            "label": {
+              "type": "string",
+              "maxLength": 80,
+              "required": false,
+              "tier": "medium"
+            }
+          }
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120,
+          "required": false,
+          "tier": "medium"
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 160,
+          "required": false,
+          "tier": "medium"
+        },
+        "portrait": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        },
+        "logo": {
+          "type": "string",
+          "contentType": "picture",
+          "maxLength": 48,
+          "required": false,
+          "tier": "rich"
+        },
+        "licenseId": {
+          "type": "string",
+          "maxLength": 100,
+          "required": false,
+          "tier": "rich"
+        },
+        "disclosure": {
+          "type": "string",
+          "maxLength": 600,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "legal",
+      "aliases": [
+        "disclosure",
+        "terms"
+      ],
+      "jobGroup": "legal",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ],
+      "prefix": "legal",
+      "schema": {
+        "text": {
+          "type": "string",
+          "maxLength": 1200,
+          "required": true,
+          "tier": "short"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 100,
+          "required": false,
+          "tier": "medium"
+        },
+        "url": {
+          "type": "string",
+          "contentType": "url",
+          "maxLength": 500,
+          "required": false,
+          "tier": "rich"
+        }
+      }
+    },
+    {
+      "id": "backdrop",
+      "aliases": [
+        "background",
+        "canvas-background"
+      ],
+      "jobGroup": "backdrop",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "ornament",
+      "aliases": [
+        "decoration",
+        "decorative-glow"
+      ],
+      "jobGroup": "backdrop",
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "divider",
+      "aliases": [],
+      "jobGroup": "backdrop",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "mount",
+      "aliases": [],
+      "jobGroup": "backdrop",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "scenery",
+      "aliases": [],
+      "jobGroup": "backdrop",
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "goal",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "collectible",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "prop",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part",
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "panel",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "stage",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "widget",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "component",
+        "slot"
+      ]
+    },
+    {
+      "id": "body",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "head",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "face",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "eye",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "pupil",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "eyelid",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "brow",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "ear",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "mouth",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "nose",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "whiskers",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "hair",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "neck",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "arm",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "hand",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "leg",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "foot",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "paw",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "tail",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "wing",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "accessory",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "surface",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "rim",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "ribbon",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "label",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "value",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "icon",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "shine",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "shadow",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "photo",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "symbol",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "wordmark",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "tagline",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    },
+    {
+      "id": "glyph",
+      "aliases": [],
+      "jobGroup": null,
+      "appliesTo": [
+        "part"
+      ]
+    }
+  ],
+  "partRoles": {
+    "characters": [
+      "body",
+      "head",
+      "face",
+      "eye",
+      "pupil",
+      "eyelid",
+      "brow",
+      "ear",
+      "mouth",
+      "nose",
+      "whiskers",
+      "hair",
+      "neck",
+      "arm",
+      "hand",
+      "leg",
+      "foot",
+      "paw",
+      "tail",
+      "wing",
+      "accessory",
+      "prop"
+    ],
+    "components": [
+      "surface",
+      "rim",
+      "ribbon",
+      "label",
+      "value",
+      "caption",
+      "icon",
+      "shine",
+      "shadow",
+      "photo",
+      "symbol",
+      "wordmark",
+      "tagline",
+      "glyph"
+    ],
+    "movingBits": {
+      "rule": "any plain word; valid, and reported (W-ROLE-UNKNOWN) until a kit lists it",
+      "examples": [
+        "wheel",
+        "door",
+        "needle",
+        "steam",
+        "gear",
+        "leaf"
+      ]
+    }
+  },
+  "drawingKinds": [
+    "part",
+    "component",
+    "screen"
+  ],
+  "contentTiers": [
+    "short",
+    "medium",
+    "rich"
+  ],
+  "layerPaints": [
+    "content",
+    "backdrop",
+    "overlay",
+    "decoration"
+  ],
+  "marks": {
+    "data-hsvg-version": {
+      "section": "2.10",
+      "on": {
+        "kinds": [
+          "root"
+        ],
+        "elements": [
+          "svg"
+        ]
+      },
+      "value": {
+        "type": "enum",
+        "values": [
+          "2.0"
+        ]
+      },
+      "codes": [
+        "E-SVG-ROOT"
+      ]
+    },
+    "data-hsvg-kind": {
+      "section": "4.1",
+      "on": {
+        "kinds": [
+          "part",
+          "component",
+          "screen"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "enum",
+        "values": [
+          "part",
+          "component",
+          "screen"
+        ]
+      },
+      "placement": {
+        "part": "an element or <g> inside a component or a screen drawing",
+        "component": "the top-level <g> of a component drawing, or a <g> in a screen drawing",
+        "screen": "the root <svg> of a screen drawing"
+      },
+      "codes": [
+        "E-KIND",
+        "W-KIND-MISSING"
+      ]
+    },
+    "data-hsvg-role": {
+      "section": "6.3",
+      "on": {
+        "kinds": [
+          "part",
+          "component"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "role-words",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*( [a-z][a-z0-9]*(-[a-z0-9]+)*){0,3}$",
+        "maxLength": 96,
+        "registry": "roles",
+        "sides": [
+          "left",
+          "right",
+          "near",
+          "far"
+        ],
+        "keeps": [
+          "keep-inside",
+          "keep-clear",
+          "keep-empty"
+        ],
+        "keepPairs": [
+          "keep-inside keep-clear"
+        ],
+        "keepOn": "rect",
+        "note": "one role word, then a side (left, right as the viewer sees it; near, far); or protected-area words on an unpainted <rect>: keep-inside, keep-clear, keep-empty, or keep-inside with keep-clear; decoration is ornament screen readers skip (D35)"
+      },
+      "codes": [
+        "E-MARK-VALUE",
+        "W-ROLE-UNKNOWN"
+      ]
+    },
+    "data-hsvg-label": {
+      "section": "6.5",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "text",
+        "minLength": 1,
+        "note": "plain text, the part's name for people"
+      },
+      "codes": [
+        "E-MARK-VALUE"
+      ]
+    },
+    "data-hsvg-pivot": {
+      "section": "6.2.1",
+      "on": {
+        "kinds": [
+          "part",
+          "component"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "point",
+        "pattern": "^-?(?:[0-9]+\\.?[0-9]*|\\.[0-9]+) -?(?:[0-9]+\\.?[0-9]*|\\.[0-9]+)$",
+        "note": "x y, two finite decimal numbers"
+      },
+      "codes": [
+        "E-MARK-VALUE",
+        "E-PIVOT"
+      ]
+    },
+    "data-hsvg-motion": {
+      "section": "6.2.1",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "channel-ranges",
+        "separator": "semicolon",
+        "atMostOnePerChannel": true,
+        "scaleExcludes": [
+          "scale-x",
+          "scale-y"
+        ],
+        "channels": {
+          "move-x": {
+            "forms": [
+              "move-x min..max"
+            ],
+            "unit": "drawing coordinates",
+            "contains": 0
+          },
+          "move-y": {
+            "forms": [
+              "move-y min..max"
+            ],
+            "unit": "drawing coordinates",
+            "contains": 0
+          },
+          "rotate": {
+            "forms": [
+              "rotate min..max",
+              "rotate *"
+            ],
+            "unit": "degrees",
+            "contains": 0,
+            "needsPivot": true,
+            "note": "rotate * turns without limit"
+          },
+          "lean": {
+            "forms": [
+              "lean min..max"
+            ],
+            "unit": "degrees",
+            "minimum": -85,
+            "maximum": 85,
+            "contains": 0,
+            "needsPivot": true
+          },
+          "scale": {
+            "forms": [
+              "scale min..max"
+            ],
+            "unit": "factor",
+            "contains": 1,
+            "needsPivot": true,
+            "minimum": 0,
+            "note": "covers both axes"
+          },
+          "scale-x": {
+            "forms": [
+              "scale-x min..max"
+            ],
+            "unit": "factor",
+            "contains": 1,
+            "needsPivot": true,
+            "minimum": 0
+          },
+          "scale-y": {
+            "forms": [
+              "scale-y min..max"
+            ],
+            "unit": "factor",
+            "contains": 1,
+            "needsPivot": true,
+            "minimum": 0
+          },
+          "opacity": {
+            "forms": [
+              "opacity min..max"
+            ],
+            "minimum": 0,
+            "maximum": 1,
+            "contains": "drawn"
+          },
+          "draw": {
+            "forms": [
+              "draw min..max"
+            ],
+            "minimum": 0,
+            "maximum": 1,
+            "requires": "pathLength=\"1\" on the element, a stroked <path>, <circle>, <ellipse>, <line>, <polyline>, <polygon> or <rect>",
+            "note": "the drawn share of the line's length (the binding word draw, 6.8)"
+          },
+          "line": {
+            "forms": [
+              "line min..max"
+            ],
+            "unit": "drawing coordinates",
+            "minimum": 0,
+            "maximum": 1000,
+            "contains": "drawn",
+            "note": "the line thickness (stroke-width)"
+          },
+          "wipe": {
+            "forms": [
+              "wipe min..max"
+            ],
+            "minimum": 0,
+            "maximum": 1,
+            "contains": "drawn",
+            "note": "the share of the part shown, from the left (6.7)"
+          }
+        }
+      },
+      "codes": [
+        "E-MARK-VALUE",
+        "E-PIVOT",
+        "E-MOTION-RANGE",
+        "E-MOVER-TRANSFORM"
+      ]
+    },
+    "data-hsvg-follow": {
+      "section": "6.2.1",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "id",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+        "maxLength": 48,
+        "note": "the local id of its leader part"
+      },
+      "codes": [
+        "E-MARK-VALUE",
+        "E-FOLLOWS"
+      ]
+    },
+    "data-hsvg-color": {
+      "section": "6.2.3",
+      "on": {
+        "kinds": [
+          "group",
+          "shape",
+          "text"
+        ],
+        "elements": [
+          "g",
+          "path",
+          "rect",
+          "circle",
+          "ellipse",
+          "line",
+          "polyline",
+          "polygon",
+          "text",
+          "tspan",
+          "use"
+        ]
+      },
+      "value": {
+        "type": "color-role",
+        "paints": [
+          "fill",
+          "stroke"
+        ],
+        "bareMeans": "fill",
+        "eachPaintAtMostOnce": true,
+        "mixBareAndQualified": false,
+        "roles": {
+          "core": "colorRoles.core",
+          "kit": "any other id-grammar word a kit theme defines"
+        },
+        "pattern": "^[ \\t\\r\\n]*(?:R|fill:R(?:[ \\t\\r\\n]+stroke:R)?|stroke:R(?:[ \\t\\r\\n]+fill:R)?)[ \\t\\r\\n]*$",
+        "patternWhere": {
+          "R": "[a-z][a-z0-9]*(?:-[a-z0-9]+)*"
+        }
+      },
+      "codes": [
+        "E-COLOR-ROLE",
+        "W-COLOR-ROLE-THEME"
+      ]
+    },
+    "data-hsvg-text-style": {
+      "section": "6.2.3",
+      "on": {
+        "kinds": [
+          "group",
+          "text"
+        ],
+        "elements": [
+          "g",
+          "text",
+          "tspan"
+        ]
+      },
+      "value": {
+        "type": "type-role",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+        "maxLength": 48,
+        "roles": {
+          "core": "typeRoles.core",
+          "kit": "any other id-grammar word a kit theme defines"
+        },
+        "note": "a theme text style for a text (heading, body, caption, or a kit's own, D37); a <g> passes it down"
+      },
+      "codes": [
+        "E-MARK-VALUE",
+        "E-THEME-ROLES",
+        "W-COLOR-ROLE-THEME"
+      ]
+    },
+    "data-hsvg-slot": {
+      "section": "5.10",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "g",
+          "rect"
+        ]
+      },
+      "value": {
+        "type": "id",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+        "maxLength": 48,
+        "unique": "in the drawing",
+        "note": "the slot's name; an empty <g> or an unpainted <rect>"
+      },
+      "codes": [
+        "E-PLACE",
+        "E-MARK-VALUE"
+      ]
+    },
+    "data-hsvg-fit": {
+      "section": "5.10",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "rect"
+        ]
+      },
+      "value": {
+        "type": "enum",
+        "values": [
+          "",
+          "text",
+          "items",
+          "video"
+        ],
+        "note": "the box a text stays inside: no value or text; items: a layout plan's box (the layout add-on); video: a video's box. The box may be painted (D38)."
+      },
+      "codes": [
+        "E-PLACE",
+        "E-MARK-VALUE"
+      ]
+    },
+    "data-hsvg-repeat": {
+      "section": "5.10",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "g"
+        ]
+      },
+      "value": {
+        "type": "text",
+        "note": "any value, or none: a group whose child slots hold one item each"
+      },
+      "codes": [
+        "E-PLACE"
+      ]
+    },
+    "data-hsvg-route": {
+      "section": "5.10",
+      "on": {
+        "kinds": [
+          "part"
+        ],
+        "elements": [
+          "path",
+          "line",
+          "polyline"
+        ]
+      },
+      "value": {
+        "type": "enum",
+        "values": [
+          "track",
+          "surface"
+        ]
+      },
+      "codes": [
+        "E-PLACE",
+        "E-MARK-VALUE"
+      ]
+    },
+    "data-hsvg-variant": {
+      "section": "6.2.4",
+      "on": {
+        "kinds": [
+          "look-child"
+        ],
+        "elements": [
+          "g"
+        ],
+        "note": "each look: a direct child <g> of a part with looks"
+      },
+      "value": {
+        "type": "id",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+        "maxLength": 48,
+        "unique": "in the part",
+        "note": "the look name; the rest look is the one shown (no display=\"none\")"
+      },
+      "codes": [
+        "E-LOOK"
+      ]
+    },
+    "data-hsvg-layer": {
+      "section": "6.4",
+      "on": {
+        "kinds": [
+          "group",
+          "part",
+          "component"
+        ],
+        "elements": [
+          "*"
+        ]
+      },
+      "value": {
+        "type": "enum",
+        "values": [
+          "content",
+          "backdrop",
+          "overlay",
+          "decoration"
+        ]
+      },
+      "default": "content",
+      "codes": [
+        "E-PAINT",
+        "E-MARK-VALUE"
+      ]
+    }
+  },
+  "markAliases": {
+    "section": "A13.9",
+    "note": "Readable in 2.0 drawings without an upgrade; writers never write them.",
+    "data-hsvg-states": {
+      "means": "dropped",
+      "note": "the look names come from the look children; checked to agree"
+    },
+    "data-hsvg-state": {
+      "means": "dropped",
+      "note": "the rest look is the look shown without display=\"none\""
+    },
+    "data-hsvg-state-name": {
+      "aliasOf": "data-hsvg-variant"
+    },
+    "code": "W-MARK-ALIAS"
+  },
+  "markTiers": {
+    "section": "6.1",
+    "rootSvg": {
+      "required": [
+        "viewBox",
+        "data-hsvg-version"
+      ],
+      "recommended": [
+        "<title>"
+      ],
+      "optional": [
+        "<desc>",
+        "<metadata> (the tool record, 6.6)"
+      ]
+    },
+    "componentOrCompoundRoot": {
+      "required": [
+        "data-hsvg-kind",
+        "id (the namespace)"
+      ],
+      "recommended": [
+        "data-hsvg-role"
+      ],
+      "optional": [
+        "data-hsvg-pivot",
+        "data-hsvg-layer"
+      ]
+    },
+    "part": {
+      "required": [
+        "data-hsvg-kind=part",
+        "id"
+      ],
+      "recommended": [
+        "data-hsvg-role",
+        "data-hsvg-label",
+        "data-hsvg-pivot (if it turns or scales)"
+      ],
+      "optional": [
+        "data-hsvg-motion",
+        "data-hsvg-follow",
+        "data-hsvg-color",
+        "data-hsvg-layer"
+      ]
+    },
+    "screenDrawingRoot": {
+      "required": [
+        "data-hsvg-kind=screen"
+      ],
+      "recommended": [
+        "layers (6.4)"
+      ],
+      "optional": [
+        "width and height for an exact size"
+      ]
+    },
+    "place": {
+      "required": [
+        "its place mark"
+      ],
+      "recommended": [
+        "data-hsvg-role on slots"
+      ],
+      "optional": []
+    },
+    "looks": {
+      "required": [
+        "data-hsvg-variant on every look"
+      ],
+      "recommended": [],
+      "optional": []
+    }
+  },
+  "hostPageMarks": {
+    "section": "A3.1",
+    "note": "Marks on a host page, never in a drawing (E-MARK-UNKNOWN in a drawing).",
+    "data-hsvg-hook": {
+      "value": {
+        "type": "tokens",
+        "separator": "space",
+        "token": "kind:name",
+        "kinds": [
+          "spot",
+          "surface",
+          "target",
+          "control",
+          "grab",
+          "obstacle"
+        ],
+        "namePattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+      },
+      "resolvesTo": {
+        "spot": "exactly one element",
+        "surface": "exactly one element",
+        "target": "exactly one element",
+        "control": "exactly one element",
+        "grab": "exactly one element",
+        "obstacle": "any number of elements"
+      },
+      "codes": [
+        "E-HOOK-MARK",
+        "W-HOOK-MISSING"
+      ]
+    },
+    "earlierMarks": {
+      "note": "earlier spellings of data-hsvg-hook; the upgrade tool converts them at import, the reader does not read them, and a drawing may not carry them",
+      "marks": {
+        "data-hsvg-target": "target",
+        "data-hsvg-spot": "spot",
+        "data-hsvg-grab": "grab",
+        "data-hsvg-action": "control"
+      }
+    }
+  },
+  "svgElements": {
+    "structure": [
+      "svg",
+      "g",
+      "defs",
+      "symbol",
+      "use",
+      "title",
+      "desc",
+      "metadata"
+    ],
+    "shapes": [
+      "path",
+      "rect",
+      "circle",
+      "ellipse",
+      "line",
+      "polyline",
+      "polygon"
+    ],
+    "text": [
+      "text",
+      "tspan",
+      "textPath"
+    ],
+    "pictures": [
+      "image"
+    ],
+    "paint": [
+      "linearGradient",
+      "radialGradient",
+      "stop",
+      "pattern",
+      "marker"
+    ],
+    "clipping": [
+      "clipPath",
+      "mask"
+    ],
+    "filters": [
+      "filter",
+      "feBlend",
+      "feColorMatrix",
+      "feComponentTransfer",
+      "feFuncR",
+      "feFuncG",
+      "feFuncB",
+      "feFuncA",
+      "feComposite",
+      "feDropShadow",
+      "feFlood",
+      "feGaussianBlur",
+      "feMerge",
+      "feMergeNode",
+      "feMorphology",
+      "feOffset",
+      "feTurbulence",
+      "feDisplacementMap"
+    ],
+    "all": [
+      "svg",
+      "g",
+      "defs",
+      "symbol",
+      "use",
+      "title",
+      "desc",
+      "metadata",
+      "path",
+      "rect",
+      "circle",
+      "ellipse",
+      "line",
+      "polyline",
+      "polygon",
+      "text",
+      "tspan",
+      "textPath",
+      "image",
+      "linearGradient",
+      "radialGradient",
+      "stop",
+      "pattern",
+      "marker",
+      "clipPath",
+      "mask",
+      "filter",
+      "feBlend",
+      "feColorMatrix",
+      "feComponentTransfer",
+      "feFuncR",
+      "feFuncG",
+      "feFuncB",
+      "feFuncA",
+      "feComposite",
+      "feDropShadow",
+      "feFlood",
+      "feGaussianBlur",
+      "feMerge",
+      "feMergeNode",
+      "feMorphology",
+      "feOffset",
+      "feTurbulence",
+      "feDisplacementMap"
+    ]
+  },
+  "svgAttributes": {
+    "section": "2.11",
+    "common": [
+      "id",
+      "class",
+      "href",
+      "style",
+      "xmlns",
+      "xmlns:xlink"
+    ],
+    "aliases": {
+      "xlink:href": "href"
+    },
+    "presentation": [
+      "alignment-baseline",
+      "baseline-shift",
+      "clip-path",
+      "clip-rule",
+      "color",
+      "color-interpolation",
+      "color-interpolation-filters",
+      "direction",
+      "display",
+      "dominant-baseline",
+      "fill",
+      "fill-opacity",
+      "fill-rule",
+      "filter",
+      "flood-color",
+      "flood-opacity",
+      "font-family",
+      "font-size",
+      "font-size-adjust",
+      "font-stretch",
+      "font-style",
+      "font-variant",
+      "font-weight",
+      "image-rendering",
+      "letter-spacing",
+      "marker-end",
+      "marker-mid",
+      "marker-start",
+      "mask",
+      "opacity",
+      "overflow",
+      "paint-order",
+      "pathLength",
+      "pointer-events",
+      "preserveAspectRatio",
+      "shape-rendering",
+      "stop-color",
+      "stop-opacity",
+      "stroke",
+      "stroke-dasharray",
+      "stroke-dashoffset",
+      "stroke-linecap",
+      "stroke-linejoin",
+      "stroke-miterlimit",
+      "stroke-opacity",
+      "stroke-width",
+      "text-anchor",
+      "text-decoration",
+      "text-rendering",
+      "transform",
+      "unicode-bidi",
+      "vector-effect",
+      "visibility",
+      "word-spacing",
+      "writing-mode"
+    ],
+    "styleOnly": [
+      "mix-blend-mode",
+      "isolation",
+      "touch-action"
+    ],
+    "styleRootOnly": [
+      "background-color"
+    ],
+    "byElement": {
+      "svg": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "viewBox",
+        "preserveAspectRatio"
+      ],
+      "g": [],
+      "defs": [],
+      "title": [],
+      "desc": [],
+      "symbol": [
+        "viewBox",
+        "preserveAspectRatio"
+      ],
+      "use": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "path": [
+        "d",
+        "pathLength"
+      ],
+      "rect": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "rx",
+        "ry",
+        "pathLength"
+      ],
+      "circle": [
+        "cx",
+        "cy",
+        "r",
+        "pathLength"
+      ],
+      "ellipse": [
+        "cx",
+        "cy",
+        "rx",
+        "ry",
+        "pathLength"
+      ],
+      "line": [
+        "x1",
+        "y1",
+        "x2",
+        "y2",
+        "pathLength"
+      ],
+      "polyline": [
+        "points",
+        "pathLength"
+      ],
+      "polygon": [
+        "points",
+        "pathLength"
+      ],
+      "text": [
+        "x",
+        "y",
+        "dx",
+        "dy",
+        "rotate",
+        "textLength",
+        "lengthAdjust"
+      ],
+      "tspan": [
+        "x",
+        "y",
+        "dx",
+        "dy",
+        "rotate",
+        "textLength",
+        "lengthAdjust"
+      ],
+      "textPath": [
+        "startOffset",
+        "method",
+        "spacing",
+        "textLength",
+        "lengthAdjust"
+      ],
+      "image": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "preserveAspectRatio"
+      ],
+      "linearGradient": [
+        "x1",
+        "y1",
+        "x2",
+        "y2",
+        "gradientUnits",
+        "gradientTransform",
+        "spreadMethod"
+      ],
+      "radialGradient": [
+        "cx",
+        "cy",
+        "r",
+        "fx",
+        "fy",
+        "fr",
+        "gradientUnits",
+        "gradientTransform",
+        "spreadMethod"
+      ],
+      "stop": [
+        "offset"
+      ],
+      "pattern": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "patternUnits",
+        "patternContentUnits",
+        "patternTransform",
+        "viewBox",
+        "preserveAspectRatio"
+      ],
+      "marker": [
+        "markerWidth",
+        "markerHeight",
+        "refX",
+        "refY",
+        "orient",
+        "markerUnits",
+        "viewBox",
+        "preserveAspectRatio"
+      ],
+      "clipPath": [
+        "clipPathUnits"
+      ],
+      "mask": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "maskUnits",
+        "maskContentUnits"
+      ],
+      "filter": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "filterUnits",
+        "primitiveUnits"
+      ],
+      "feBlend": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "in2",
+        "mode"
+      ],
+      "feColorMatrix": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "type",
+        "values"
+      ],
+      "feComponentTransfer": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in"
+      ],
+      "feFuncR": [
+        "type",
+        "tableValues",
+        "slope",
+        "intercept",
+        "amplitude",
+        "exponent",
+        "offset"
+      ],
+      "feFuncG": [
+        "type",
+        "tableValues",
+        "slope",
+        "intercept",
+        "amplitude",
+        "exponent",
+        "offset"
+      ],
+      "feFuncB": [
+        "type",
+        "tableValues",
+        "slope",
+        "intercept",
+        "amplitude",
+        "exponent",
+        "offset"
+      ],
+      "feFuncA": [
+        "type",
+        "tableValues",
+        "slope",
+        "intercept",
+        "amplitude",
+        "exponent",
+        "offset"
+      ],
+      "feComposite": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "in2",
+        "operator",
+        "k1",
+        "k2",
+        "k3",
+        "k4"
+      ],
+      "feDropShadow": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "dx",
+        "dy",
+        "stdDeviation"
+      ],
+      "feFlood": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result"
+      ],
+      "feGaussianBlur": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "stdDeviation",
+        "edgeMode"
+      ],
+      "feMerge": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result"
+      ],
+      "feMergeNode": [
+        "in"
+      ],
+      "feMorphology": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "operator",
+        "radius"
+      ],
+      "feOffset": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "dx",
+        "dy"
+      ],
+      "feTurbulence": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "baseFrequency",
+        "numOctaves",
+        "seed",
+        "stitchTiles",
+        "type"
+      ],
+      "feDisplacementMap": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "result",
+        "in",
+        "in2",
+        "scale",
+        "xChannelSelector",
+        "yChannelSelector"
+      ]
+    },
+    "marks": "marks (every data-hsvg-* attribute of 6.1)",
+    "toolData": {
+      "pattern": "^data-(?!hsvg-)[a-z][a-z0-9-]*$",
+      "note": "data-<tool>-*: never read by players, never data-hsvg-"
+    },
+    "classNote": "class is inert: no stylesheet reads it",
+    "rule": "an attribute that is in none of these lists, the marks or toolData is refused (E-SVG-UNSAFE); styleOnly and styleRootOnly name style properties, not attributes: they count only inside a style attribute (styleRootOnly on the root only)"
+  },
+  "svgRefused": {
+    "section": "2.11",
+    "elements": [
+      "script",
+      "foreignObject",
+      "style",
+      "a",
+      "animate",
+      "animateTransform",
+      "animateMotion",
+      "set",
+      "mpath",
+      "feImage",
+      "switch",
+      "view",
+      "font",
+      "font-face",
+      "font-face-format",
+      "font-face-name",
+      "font-face-src",
+      "font-face-uri",
+      "glyph",
+      "glyphRef",
+      "hkern",
+      "missing-glyph",
+      "vkern"
+    ],
+    "elementRule": "any element not in svgElements.all is refused; HTML elements included",
+    "attributePatterns": {
+      "events": "^on",
+      "playerOwned": "^(role|tabindex|aria-.+)$"
+    },
+    "attributeCodes": {
+      "events": "E-SVG-UNSAFE",
+      "playerOwned": "E-A11Y-OWNED"
+    },
+    "otherRefused": [
+      "DOCTYPE",
+      "entity declarations",
+      "processing instructions (the XML declaration is allowed)",
+      "other XML namespaces"
+    ]
+  },
+  "svgLimits": {
+    "section": "2.11",
+    "elementsPerDrawing": 30000,
+    "charactersPerDrawing": 4000000,
+    "useNesting": 8,
+    "expandedElements": 100000,
+    "filterPrimitives": 32,
+    "filterOrMaskApplications": 64,
+    "stdDeviationRange": [
+      0,
+      32
+    ],
+    "morphologyRadiusRange": [
+      0,
+      32
+    ],
+    "numOctavesRange": [
+      0,
+      4
+    ],
+    "styleUnits": 65536,
+    "dataUriDepth": 4,
+    "imageDataTypes": [
+      "image/png",
+      "image/jpeg",
+      "image/gif",
+      "image/webp",
+      "image/svg+xml"
+    ],
+    "code": "E-SVG-LIMIT",
+    "overLimit": "refused, never clamped",
+    "addresses": "href on <use> and every url(...) is a local #id; href on <image> is a data: URI of an image type or the relative path of a declared image resource; no other scheme",
+    "css": {
+      "only": "style attributes with plain declarations of the presentation properties, svgAttributes.styleOnly and, on the root, svgAttributes.styleRootOnly",
+      "refused": [
+        "@import",
+        "comments",
+        "url() except a local url(#id)",
+        "position",
+        "z-index",
+        "inset",
+        "top",
+        "left",
+        "right",
+        "bottom",
+        "custom properties (--name)"
+      ]
+    }
+  },
+  "portableNames": {
+    "id": "portable-names/1",
+    "section": "10.8",
+    "separator": "/",
+    "maxPathBytes": 240,
+    "encoding": "utf-8",
+    "allowed": {
+      "ascii": [
+        "A-Z",
+        "a-z",
+        "0-9",
+        "_",
+        "-",
+        "."
+      ],
+      "codePointRanges": [
+        "00C0-00D6",
+        "00D8-00F6",
+        "00F8-00FF",
+        "0178",
+        "0391-03A1",
+        "03A3-03AB",
+        "03B1-03C9"
+      ],
+      "note": "precomposed Latin and Greek letters; every accepted sequence is already NFC; combining marks and every other character fail (including 1C89 and 105C0); a runtime's Unicode categories never enlarge the set"
+    },
+    "caseFold": {
+      "add32": [
+        "0041-005A",
+        "00C0-00D6",
+        "00D8-00DE",
+        "0391-03A1",
+        "03A3-03AB"
+      ],
+      "map": {
+        "0178": "00FF",
+        "03C2": "03C3",
+        "00DF": "ss"
+      },
+      "otherwise": "unchanged",
+      "appliedTo": "every member path and every directory prefix; two paths with one key collide"
+    },
+    "reservedWindowsNames": [
+      "CON",
+      "PRN",
+      "AUX",
+      "NUL",
+      "COM1",
+      "COM2",
+      "COM3",
+      "COM4",
+      "COM5",
+      "COM6",
+      "COM7",
+      "COM8",
+      "COM9",
+      "LPT1",
+      "LPT2",
+      "LPT3",
+      "LPT4",
+      "LPT5",
+      "LPT6",
+      "LPT7",
+      "LPT8",
+      "LPT9"
+    ],
+    "reservedMatch": "after the case fold, a whole segment or a segment before its first dot (with or without an extension)",
+    "refuse": [
+      "segments . and ..",
+      "absolute paths",
+      "backslashes",
+      "URLs",
+      "drive prefixes",
+      "control characters",
+      "trailing dots",
+      "Windows device names",
+      "case-fold collisions",
+      "a file that is also another file's parent",
+      "one directory prefix written with two spellings"
+    ],
+    "code": "E-PATH"
+  },
+  "colorRoles": {
+    "section": "6.2.3",
+    "core": [
+      "surface",
+      "ink",
+      "accent",
+      "accent-2",
+      "muted",
+      "success",
+      "warning",
+      "danger"
+    ],
+    "focus": "accent-2",
+    "paints": [
+      "fill",
+      "stroke"
+    ],
+    "bareMeans": "fill",
+    "kitRoles": "other roles a kit theme defines (7.7): id grammar, never a core name",
+    "contrast": {
+      "section": "7.7",
+      "inkOnSurface": 4.5,
+      "mutedOnSurface": 4.5,
+      "successOnSurface": 4.5,
+      "warningOnSurface": 4.5,
+      "dangerOnSurface": 4.5,
+      "focusOnSurface": 3,
+      "kitOnRoleOnRole": 4.5
+    }
+  },
+  "typeRoles": {
+    "section": "6.2.3, 7.7",
+    "core": [
+      "heading",
+      "body",
+      "caption"
+    ],
+    "kitRoles": "other type roles a kit theme defines (7.7): id grammar, never a core name"
+  },
+  "standardShapes": {
+    "section": "7.2",
+    "aspect": "width / height; minimums inclusive, maximums exclusive",
+    "shapes": [
+      {
+        "id": "skyscraper",
+        "maxAspect": 0.45,
+        "exampleSize": "160x600"
+      },
+      {
+        "id": "tall",
+        "minAspect": 0.45,
+        "maxAspect": 0.7,
+        "exampleSize": "300x600"
+      },
+      {
+        "id": "portrait",
+        "minAspect": 0.7,
+        "maxAspect": 0.9,
+        "exampleSize": "1080x1350"
+      },
+      {
+        "id": "square",
+        "minAspect": 0.9,
+        "maxAspect": 1.3,
+        "exampleSize": "300x250"
+      },
+      {
+        "id": "landscape",
+        "minAspect": 1.3,
+        "maxAspect": 2.5,
+        "exampleSize": "1200x630"
+      },
+      {
+        "id": "banner",
+        "minAspect": 2.5,
+        "maxAspect": 5,
+        "exampleSize": "970x250"
+      },
+      {
+        "id": "strip",
+        "minAspect": 5,
+        "maxAspect": 10,
+        "exampleSize": "728x90"
+      },
+      {
+        "id": "superwide",
+        "minAspect": 10,
+        "exampleSize": "970x90"
+      }
+    ]
+  },
+  "keys": {
+    "section": "5.12",
+    "codes": [
+      "KeyA",
+      "KeyB",
+      "KeyC",
+      "KeyD",
+      "KeyE",
+      "KeyF",
+      "KeyG",
+      "KeyH",
+      "KeyI",
+      "KeyJ",
+      "KeyK",
+      "KeyL",
+      "KeyM",
+      "KeyN",
+      "KeyO",
+      "KeyP",
+      "KeyQ",
+      "KeyR",
+      "KeyS",
+      "KeyT",
+      "KeyU",
+      "KeyV",
+      "KeyW",
+      "KeyX",
+      "KeyY",
+      "KeyZ",
+      "Digit0",
+      "Digit1",
+      "Digit2",
+      "Digit3",
+      "Digit4",
+      "Digit5",
+      "Digit6",
+      "Digit7",
+      "Digit8",
+      "Digit9",
+      "Space",
+      "Enter",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "ArrowDown",
+      "ShiftLeft",
+      "ShiftRight"
+    ],
+    "eventNames": [
+      "key:<code>",
+      "keyUp:<code>"
+    ],
+    "reservedForNavigation": [
+      "Tab",
+      "Escape"
+    ],
+    "note": "Tab and Escape are never control keys (5.11); there is no repeated keydown"
+  },
+  "cueLetters": {
+    "section": "6.11",
+    "letters": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "X"
+    ],
+    "rest": "X",
+    "note": "mouth.cues maps all nine letters to look names of the mouth part"
+  },
+  "clipChannels": {
+    "section": "6.7",
+    "core": [
+      "move",
+      "rotate",
+      "scale",
+      "opacity",
+      "color",
+      "draw",
+      "variant"
+    ],
+    "addedBy": {
+      "motion": [
+        "motion.morph"
+      ]
+    }
+  },
+  "toolRecord": {
+    "section": "6.6",
+    "element": "metadata",
+    "on": "a direct child of the root <svg>; at most one",
+    "value": "one JSON object",
+    "keys": {
+      "derived": {
+        "enum": [
+          "derived",
+          "edited"
+        ]
+      },
+      "steps": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*:[a-z]+(-[a-z]+)*( [a-z][a-z0-9]*(-[a-z0-9]+)*:[a-z]+(-[a-z]+)*)*$",
+        "maxLength": 4096,
+        "note": "the give-way steps a bake took for this derived frame, in the order taken: <rule id>:<step>, once per time, space-separated; written by the packer"
+      },
+      "asset": {
+        "type": "object",
+        "note": "a HyperSVG's record (D45, 2.13, 10.14): format, id, drawing, members and files; written by pack --asset, read by unpack and the asset player, which check it (src/asset.mjs)"
+      }
+    },
+    "codes": [
+      "E-MARK-VALUE"
+    ]
+  }
+}

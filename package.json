@@ -1,0 +1,67 @@
+{
+  "name": "@hypersvg/core",
+  "version": "2.0.0-next.0",
+  "description": "Interactive pictures from an SVG drawing and JSON decisions: the player, the checker, the packer and one hypersvg command.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimeRichCreations/hypersvg.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TimeRichCreations/hypersvg/issues"
+  },
+  "homepage": "https://github.com/TimeRichCreations/hypersvg#readme",
+  "bin": {
+    "hypersvg": "bin/hypersvg.mjs"
+  },
+  "exports": {
+    "./player": "./engine/v2/web/player-web.mjs",
+    "./mount": "./engine/v2/web/mount-web.mjs",
+    "./asset": "./engine/v2/web/asset-web.mjs",
+    "./frame-host": "./engine/v2/web/frame-host.mjs",
+    "./schemas": "./engine/v2/schema/load.mjs",
+    "./schemas/*": "./spec/2.0/schemas/*",
+    "./pack": "./engine/v2/tools/pack.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "llms.txt",
+    "engine/v2/README.md",
+    "engine/v2/src/",
+    "engine/v2/web/",
+    "engine/v2/check/",
+    "engine/v2/schema/",
+    "engine/v2/tools/",
+    "!engine/v2/tools/proof/tests/",
+    "engine/v2/modules/",
+    "engine/v2/addons/",
+    "!engine/v2/addons/examples/noughts/tests/",
+    "spec/2.0/*.json",
+    "spec/2.0/*.md",
+    "spec/2.0/reference/",
+    "spec/2.0/schemas/",
+    "spec/2.0/packs/",
+    "docs/one-page/example/",
+    "docs/guide/examples/",
+    "docs/browser-embedding.md",
+    "docs/readme/",
+    "GUIDE.md",
+    "AGENTS.md",
+    "EXTENDING.md",
+    "CONTRIBUTING.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "svg",
+    "interactive",
+    "animation",
+    "player",
+    "json"
+  ]
+}

@@ -1,0 +1,259 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 960" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Noughts and crosses: pick a level</title>
+  <desc>Art direction: a wooden desk lit from the window at the top right; Bolt, a rounded teal robot with a dark screen face and cyan eyes, stands behind three paper level cards. Round caps, outlines 3 to 4 units, soft shadows fall to the bottom left.</desc>
+  <defs>
+    <linearGradient id="g-wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9a06a"/><stop offset="0.5" stop-color="#c48a55"/><stop offset="1" stop-color="#a86f40"/></linearGradient>
+    <pattern id="p-grain" width="420" height="300" patternUnits="userSpaceOnUse"><path d="M-11 72.1C104.8 68.7 220.6 75.5 375 71.1" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.2" stroke-linecap="round"/><path d="M74.5 215.3C155.6 212.8 236.7 217.8 344.9 214.6" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.8" stroke-linecap="round"/><path d="M37.5 155.5C149.6 150.3 261.7 160.7 411.3 153.9" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.3" stroke-linecap="round"/><path d="M-382.5 155.5C-270.4 150.3 -158.3 160.7 -8.7 153.9" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M16.5 219.8C86.2 214 156 225.7 249 218.1" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.1" stroke-linecap="round"/><path d="M67.4 108.4C202.9 101.8 338.3 115.1 518.9 106.5" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="1.8" stroke-linecap="round"/><path d="M-352.6 108.4C-217.1 101.8 -81.7 115.1 98.9 106.5" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M83.1 232.7C156.9 230.5 230.7 234.8 329.1 232" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.9" stroke-linecap="round"/><path d="M-1.4 225.2C94.6 218.6 190.6 231.9 318.7 223.2" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="2.3" stroke-linecap="round"/><path d="M34.7 123.8C98.3 120.5 162 127.1 246.9 122.8" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.3" stroke-linecap="round"/><path d="M49.9 10.7C131.7 5.2 213.5 16.1 322.6 9" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.3" stroke-linecap="round"/><path d="M13.4 49.3C98.6 47.1 183.9 51.5 297.6 48.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.1" stroke-linecap="round"/><path d="M54.2 60.7C144.2 56 234.3 65.5 354.3 59.3" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.1" stroke-linecap="round"/><path d="M10.9 209.4C99.6 202.5 188.3 216.3 306.6 207.4" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.8" stroke-linecap="round"/><path d="M64.4 95.7C190.2 88.8 316 102.6 483.8 93.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.4" stroke-linecap="round"/><path d="M-355.6 95.7C-229.8 88.8 -104 102.6 63.8 93.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M87.5 114.5C185.4 111.7 283.2 117.3 413.7 113.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.4" stroke-linecap="round"/><path d="M-332.5 114.5C-234.6 111.7 -136.8 117.3 -6.3 113.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M34.6 273.6C103.1 270.4 171.6 276.7 262.9 272.6" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.7" stroke-linecap="round"/><path d="M37.4 70.7C145.1 66.1 252.9 75.3 396.5 69.3" fill="none" stroke="#f0c796" stroke-opacity="0.3" stroke-width="2.4" stroke-linecap="round"/><path d="M65.6 165.8C182.9 163.3 300.2 168.3 456.6 165.1" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="2" stroke-linecap="round"/><path d="M-354.4 165.8C-237.1 163.3 -119.8 168.3 36.6 165.1" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M-12.8 108.1C54.4 105.7 121.6 110.4 211.1 107.3" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="3" stroke-linecap="round"/><path d="M30.2 129.4C160.7 125.4 291.3 133.3 465.4 128.2" fill="none" stroke="#f0c796" stroke-opacity="0.3" stroke-width="1.9" stroke-linecap="round"/><path d="M-389.8 129.4C-259.3 125.4 -128.7 133.3 45.4 128.2" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M24.9 45.1C96.1 39.9 167.4 50.4 262.4 43.5" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.1" stroke-linecap="round"/><path d="M51.7 150.5C132.1 146.4 212.6 154.5 319.8 149.2" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="2.1" stroke-linecap="round"/><path d="M72.1 191.3C190.7 185.9 309.3 196.7 467.5 189.7" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="1.2" stroke-linecap="round"/><path d="M-347.9 191.3C-229.3 185.9 -110.7 196.7 47.5 189.7" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M16.9 215.1C131 210 245.1 220.2 397.1 213.6" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.9" stroke-linecap="round"/><path d="M77 41.7C144.4 36.1 211.8 47.3 301.7 40" fill="none" stroke="#f0c796" stroke-opacity="0.3" stroke-width="2.9" stroke-linecap="round"/><path d="M99 67.8C169.5 63.7 240 71.8 334 66.6" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.3" stroke-linecap="round"/><path d="M-9.7 196C111.8 189.5 233.2 202.4 395.1 194" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1" stroke-linecap="round"/><path d="M30.1 298.2C91.6 293.5 153.1 302.9 235.2 296.8" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.2" stroke-linecap="round"/><path d="M19.9 45.7C90.3 42.7 160.6 48.7 254.4 44.8" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.4" stroke-linecap="round"/><path d="M62.8 144.4C199.4 141.5 335.9 147.3 518 143.5" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round"/><path d="M-357.2 144.4C-220.6 141.5 -84.1 147.3 98 143.5" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M-17.4 195.8C44.7 189.7 106.8 201.9 189.7 194" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.3" stroke-linecap="round"/><path d="M89.4 154.1C198.6 149.1 307.8 159.2 453.3 152.6" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/><path d="M-330.6 154.1C-221.4 149.1 -112.2 159.2 33.3 152.6" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M41.2 231.4C175 225.9 308.9 236.9 487.4 229.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round"/><path d="M-378.8 231.4C-245 225.9 -111.1 236.9 67.4 229.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M23.1 208C84.9 201.5 146.7 214.4 229 206" fill="none" stroke="#f0c796" stroke-opacity="0.3" stroke-width="3.2" stroke-linecap="round"/><path d="M9.8 282.1C95 275.4 180.2 288.8 293.8 280.1" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/><path d="M69.7 115C173.9 110.6 278.1 119.3 417 113.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.4" stroke-linecap="round"/><path d="M-350.3 115C-246.1 110.6 -141.9 119.3 -3 113.7" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M-16.5 192.3C87.2 188.9 190.9 195.7 329.1 191.3" fill="none" stroke="#f0c796" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round"/><path d="M62.7 241.1C196.3 238.7 330 243.4 508.2 240.4" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="1.6" stroke-linecap="round"/><path d="M-357.3 241.1C-223.7 238.7 -90 243.4 88.2 240.4" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M25 137.6C127.7 130.7 230.4 144.6 367.3 135.5" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.2" stroke-linecap="round"/><path d="M98.6 263.7C232.9 261.3 367.2 266.2 546.3 263" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="3" stroke-linecap="round"/><path d="M-321.4 263.7C-187.1 261.3 -52.8 266.2 126.3 263" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M30 170.6C153.3 164.2 276.5 176.9 440.8 168.7" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="1.1" stroke-linecap="round"/><path d="M-390 170.6C-266.7 164.2 -143.5 176.9 20.8 168.7" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M35.9 161.1C116.8 154.9 197.7 167.3 305.5 159.2" fill="none" stroke="#f0c796" stroke-opacity="0.3" stroke-width="1.3" stroke-linecap="round"/><path d="M60.2 279.5C123.3 273.4 186.4 285.5 270.5 277.6" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="3.2" stroke-linecap="round"/><path d="M55.8 277.9C186 273.5 316.2 282.2 489.7 276.5" fill="none" stroke="#f0c796" stroke-opacity="0.2" stroke-width="2.3" stroke-linecap="round"/><path d="M-364.2 277.9C-234 273.5 -103.8 282.2 69.7 276.5" fill="none" stroke="#f0c796" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M25.6 43.6C135.2 41.4 244.7 45.7 390.8 42.9" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.9" stroke-linecap="round"/><path d="M16.9 264.6C136.4 260.5 255.9 268.7 415.3 263.4" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round"/><path d="M-403.1 264.6C-283.6 260.5 -164.1 268.7 -4.7 263.4" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><path d="M29 16.7C146.8 13.8 264.7 19.7 421.9 15.8" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.9" stroke-linecap="round"/><path d="M-391 16.7C-273.2 13.8 -155.3 19.7 1.9 15.8" fill="none" stroke="#6b3f1c" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/><ellipse cx="90" cy="60" rx="15" ry="7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.5"/><ellipse cx="90" cy="60" rx="8" ry="3.5" fill="#6b3f1c" fill-opacity="0.14"/><ellipse cx="310" cy="210" rx="15" ry="7" fill="none" stroke="#6b3f1c" stroke-opacity="0.2" stroke-width="2.5"/><ellipse cx="310" cy="210" rx="8" ry="3.5" fill="#6b3f1c" fill-opacity="0.14"/></pattern>
+    <radialGradient id="g-vignette" cx="0.62" cy="0.3" r="0.9"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#2a1608" stop-opacity="0.5"/></radialGradient>
+    <linearGradient id="g-window" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c9" stop-opacity="0.55"/><stop offset="0.5" stop-color="#fff3c9" stop-opacity="0"/></linearGradient>
+    <linearGradient id="g-paper" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f0eee1"/></linearGradient>
+    <pattern id="p-squares" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M0 0H18M0 0V18" fill="none" stroke="#cfdcef" stroke-width="1.2"/></pattern>
+    <linearGradient id="g-teal" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fe6df"/><stop offset="0.45" stop-color="#5bb6b0"/><stop offset="1" stop-color="#357f7b"/></linearGradient>
+    <linearGradient id="g-tube" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fe6df"/><stop offset="0.35" stop-color="#5bb6b0"/><stop offset="1" stop-color="#2f716d"/></linearGradient>
+    <linearGradient id="g-tube-v" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f716d"/><stop offset="0.5" stop-color="#5bb6b0"/><stop offset="1" stop-color="#9fe6df"/></linearGradient>
+    <radialGradient id="g-screen" cx="0.5" cy="0.4" r="0.8"><stop offset="0" stop-color="#1d4350"/><stop offset="1" stop-color="#10242c"/></radialGradient>
+    <radialGradient id="g-eye" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stop-color="#d8fcff"/><stop offset="1" stop-color="#7ef3ff"/></radialGradient>
+    <radialGradient id="g-halo" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffe9a0" stop-opacity="0.9"/><stop offset="1" stop-color="#ffd34d" stop-opacity="0"/></radialGradient>
+    <linearGradient id="g-metal" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f7f8"/><stop offset="1" stop-color="#a9b6bb"/></linearGradient>
+    <linearGradient id="g-glove" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd9dc"/></linearGradient>
+    <linearGradient id="g-eraser" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc2cf"/><stop offset="1" stop-color="#e8809a"/></linearGradient>
+    <linearGradient id="g-card" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf5"/><stop offset="1" stop-color="#efe9d5"/></linearGradient>
+    <linearGradient id="g-note" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff9d6"/><stop offset="1" stop-color="#f4e7a8"/></linearGradient>
+    <linearGradient id="g-button" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#f0b429"/></linearGradient>
+    <linearGradient id="g-button-down" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b429"/><stop offset="1" stop-color="#d99a14"/></linearGradient>
+    <linearGradient id="g-button-teal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fded7"/><stop offset="1" stop-color="#4aa39d"/></linearGradient>
+    <filter id="f-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="f-soft-sm" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <g id="desk" data-hsvg-layer="backdrop">
+    <rect x="-600" y="-960" width="1800" height="2880" fill="url(#g-wood)"/>
+    <rect x="-600" y="-960" width="1800" height="2880" fill="url(#p-grain)"/>
+    <path d="M-600 -1050H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -1047H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 -1050v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 -900H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -897H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 -900v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 -750H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -747H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 -750v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 -600H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -597H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 -600v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 -450H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -447H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 -450v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 -300H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -297H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 -300v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 -150H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 -147H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 -150v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 0H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 3H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 0v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 150H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 153H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 150v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 300H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 303H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 300v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 450H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 453H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 450v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 600H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 603H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 600v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 750H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 753H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 750v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 900H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 903H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 900v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 1050H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 1053H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 1050v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 1200H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 1203H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 1200v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 1350H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 1353H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 1350v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 1500H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 1503H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 1500v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 1650H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 1653H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M402 1650v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <path d="M-600 1800H1200" stroke="#5e3a1b" stroke-opacity="0.45" stroke-width="3" fill="none"/>
+    <path d="M-600 1803H1200" stroke="#efc08f" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <path d="M186 1800v150" stroke="#5e3a1b" stroke-opacity="0.4" stroke-width="3" fill="none"/>
+    <rect x="-600" y="-960" width="1800" height="2880" fill="url(#g-window)"/>
+    <rect x="-600" y="-960" width="1800" height="2880" fill="url(#g-vignette)"/>
+  </g>
+  <g id="content" data-hsvg-layer="content">
+    <g transform="translate(15 141) scale(0.95)">
+      
+      <g id="bolt" data-hsvg-kind="part" data-hsvg-pivot="300 360" data-hsvg-motion="move-y -16..4">
+        <ellipse cx="274" cy="372" rx="132" ry="16" fill="#3d2410" opacity="0.38" filter="url(#f-soft)"/>
+        <rect x="262" y="342" width="76" height="28" rx="10" fill="#2c6a67"/>
+        <rect x="230" y="354" width="140" height="26" rx="13" fill="#24605d"/>
+        <path d="M230 360a13 13 0 0 1 13 -6h114a13 13 0 0 1 13 6" fill="none" stroke="#9fe6df" stroke-width="2.5" opacity="0.8"/>
+        <g id="bolt-torso" data-hsvg-kind="part">
+          <rect x="200" y="170" width="200" height="190" rx="40" fill="url(#g-teal)" stroke="#24605d" stroke-width="3.5"/>
+          <path d="M218 186a30 30 0 0 1 30 -10h104" fill="none" stroke="#e8fffb" stroke-width="5" stroke-linecap="round" opacity="0.65"/>
+          <rect x="200" y="288" width="200" height="6" fill="#24605d" opacity="0.45"/>
+          <circle cx="230" cy="320" r="5" fill="#d9fbf7" stroke="#24605d" stroke-width="2"/><circle cx="370" cy="320" r="5" fill="#d9fbf7" stroke="#24605d" stroke-width="2"/>
+          <g id="bolt-chest" data-hsvg-kind="part" data-hsvg-pivot="300 220" data-hsvg-motion="scale 1..1.06">
+            <rect x="248" y="192" width="104" height="58" rx="16" fill="#1b4a52" stroke="#24605d" stroke-width="3"/>
+            <rect x="254" y="198" width="92" height="20" rx="9" fill="#2a6a72" opacity="0.8"/>
+            <circle cx="272" cy="228" r="7" fill="#ffd34d"/><circle cx="272" cy="226" r="2.6" fill="#fff6cf"/>
+            <circle cx="300" cy="228" r="7" fill="#7ef3ff"/><circle cx="300" cy="226" r="2.6" fill="#ffffff"/>
+            <circle cx="328" cy="228" r="7" fill="#ef7d2d"/><circle cx="328" cy="226" r="2.6" fill="#ffe8cf"/>
+          </g>
+        </g>
+        <path d="M370 190v120" stroke="#2f716d" stroke-width="3" opacity="0.5"/>
+        <rect x="278" y="148" width="44" height="30" rx="8" fill="#2f716d" stroke="#24605d" stroke-width="3"/>
+        <path d="M278 160h44M278 168h44" stroke="#1b4a52" stroke-width="2" opacity="0.7"/>
+        <g id="bolt-shoulder-r" data-hsvg-kind="part">
+          <rect x="384" y="202" width="28" height="120" rx="14" fill="url(#g-tube-v)" stroke="#24605d" stroke-width="3"/>
+          <circle cx="398" cy="214" r="30" fill="url(#g-teal)" stroke="#24605d" stroke-width="3.5"/>
+          <circle cx="398" cy="214" r="11" fill="url(#g-metal)" stroke="#24605d" stroke-width="2.5"/>
+        </g>
+        <g id="bolt-head" data-hsvg-kind="part" data-hsvg-pivot="300 162" data-hsvg-motion="rotate -14..14">
+          <g id="bolt-head-bob" data-hsvg-kind="part" data-hsvg-pivot="300 162" data-hsvg-motion="rotate -12..12; move-y -10..0">
+            <path d="M300 38V20" stroke="#24605d" stroke-width="4" stroke-linecap="round"/>
+            <g id="bolt-bulb" data-hsvg-kind="part" data-hsvg-pivot="300 14" data-hsvg-motion="scale 1..1.25; opacity 0.55..1">
+              <circle cx="300" cy="14" r="22" fill="url(#g-halo)"/>
+              <circle cx="300" cy="14" r="9" fill="#ffd34d" stroke="#24605d" stroke-width="3"/>
+              <circle cx="298" cy="11" r="3" fill="#fffbe0"/>
+            </g>
+            <rect x="213" y="74" width="14" height="44" rx="7" fill="#2f716d" stroke="#24605d" stroke-width="3"/>
+            <rect x="373" y="74" width="14" height="44" rx="7" fill="url(#g-teal)" stroke="#24605d" stroke-width="3"/>
+            <rect x="225" y="38" width="150" height="116" rx="36" fill="url(#g-teal)" stroke="#24605d" stroke-width="3.5"/>
+            <path d="M245 56a22 22 0 0 1 22 -9h62" fill="none" stroke="#e8fffb" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+            <rect x="242" y="52" width="116" height="84" rx="24" fill="url(#g-screen)" stroke="#0a171c" stroke-width="3"/>
+            <path d="M252 66q30 -14 80 -6l-6 16q-34 -8 -68 4z" fill="#ffffff" opacity="0.1"/>
+            <g id="bolt-eyes" data-hsvg-kind="part" data-hsvg-pivot="300 88" data-hsvg-motion="move-x -6..6; move-y -5..5; scale-y 0.05..1">
+          <g data-hsvg-variant="idle"><ellipse cx="278" cy="88" rx="10" ry="12" fill="url(#g-eye)"/><circle cx="281" cy="83.8" r="2.8" fill="#ffffff"/><ellipse cx="322" cy="88" rx="10" ry="12" fill="url(#g-eye)"/><circle cx="325" cy="83.8" r="2.8" fill="#ffffff"/></g>
+          <g data-hsvg-variant="thinking" display="none"><ellipse cx="281" cy="85" rx="9" ry="8" fill="url(#g-eye)"/><circle cx="284" cy="82.2" r="2.5" fill="#ffffff"/><ellipse cx="325" cy="85" rx="9" ry="8" fill="url(#g-eye)"/><circle cx="328" cy="82.2" r="2.5" fill="#ffffff"/><path d="M268 70l16 -5" stroke="#7ef3ff" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M316 68l16 4" stroke="#7ef3ff" stroke-width="3.5" stroke-linecap="round" fill="none"/></g>
+          <g data-hsvg-variant="happy" display="none"><path d="M267 94Q278 76 289 94" fill="none" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round"/><path d="M311 94Q322 76 333 94" fill="none" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round"/></g>
+          <g data-hsvg-variant="dizzy" display="none"><path d="M279 88m0 -2a2 2 0 1 1 -2 2a5 5 0 1 1 5 5a8 8 0 1 1 -8 -8a11 11 0 1 1 11 11" fill="none" stroke="#7ef3ff" stroke-width="3" stroke-linecap="round"/><path d="M323 88m0 -2a2 2 0 1 1 -2 2a5 5 0 1 1 5 5a8 8 0 1 1 -8 -8a11 11 0 1 1 11 11" fill="none" stroke="#7ef3ff" stroke-width="3" stroke-linecap="round"/></g>
+          <g data-hsvg-variant="shrug" display="none"><ellipse cx="278" cy="85" rx="10" ry="13" fill="url(#g-eye)"/><circle cx="281" cy="80.45" r="2.8" fill="#ffffff"/><path d="M311 90h22" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M266 64q12 -8 24 0" stroke="#7ef3ff" stroke-width="3.5" stroke-linecap="round" fill="none"/></g>
+          <g data-hsvg-variant="sleepy" display="none"><path d="M267 86Q278 102 289 86" fill="none" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round"/><path d="M311 86Q322 102 333 86" fill="none" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round"/><path d="M266 78l-6 -6M334 78l6 -6" stroke="#7ef3ff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/></g>
+          <g data-hsvg-variant="determined" display="none"><path d="M267 80h22v10a11 10 0 0 1 -22 0z" fill="url(#g-eye)"/><path d="M311 80h22v10a11 10 0 0 1 -22 0z" fill="url(#g-eye)"/><path d="M264 70l26 8" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M336 70l-26 8" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" fill="none"/></g>
+            </g>
+            <g id="bolt-mouth" data-hsvg-kind="part">
+          <g data-hsvg-variant="idle"><path d="M286 120Q300 129 314 120" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <g data-hsvg-variant="thinking" display="none"><path d="M290 122h20" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <g data-hsvg-variant="happy" display="none"><path d="M282 116Q300 140 318 116z" fill="#7ef3ff" stroke="#7ef3ff" stroke-width="3" stroke-linejoin="round"/><path d="M291 126Q300 132 309 126" fill="none" stroke="#10242c" stroke-width="3" stroke-linecap="round"/></g>
+          <g data-hsvg-variant="dizzy" display="none"><path d="M282 122l6 -6l6 8l6 -8l6 8l6 -8l6 6" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <g data-hsvg-variant="shrug" display="none"><path d="M284 124q8 -8 16 0q8 8 16 0" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <g data-hsvg-variant="sleepy" display="none"><ellipse cx="300" cy="123" rx="6" ry="7" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <g data-hsvg-variant="determined" display="none"><path d="M285 123h30" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M285 123v-4M315 123v-4" fill="none" stroke="#7ef3ff" stroke-width="3.5" stroke-linecap="round"/></g>
+            </g>
+            
+          </g>
+        </g>
+        <g id="bolt-shoulder-l" data-hsvg-kind="part">
+          <circle cx="216" cy="214" r="31" fill="url(#g-teal)" stroke="#24605d" stroke-width="3.5"/>
+          <path d="M202 194a24 24 0 0 1 30 -4" fill="none" stroke="#e8fffb" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+        </g>
+      </g>
+      <g id="pick-arm" data-hsvg-kind="part" data-hsvg-pivot="216 214" data-hsvg-motion="rotate -12..40">
+        <path d="M216 214l-34 112" fill="none" stroke="#24605d" stroke-width="32" stroke-linecap="round"/>
+        <path d="M216 214l-34 112" fill="none" stroke="#5bb6b0" stroke-width="25" stroke-linecap="round"/>
+        <path d="M208 218l-32 104" fill="none" stroke="#2f716d" stroke-opacity="0.75" stroke-width="8" stroke-linecap="round"/>
+        <path d="M222 218l-32 104" fill="none" stroke="#e8fffb" stroke-opacity="0.8" stroke-width="5" stroke-linecap="round"/>
+        <g transform="rotate(16 182 326)">
+          <rect x="162" y="292" width="40" height="12" rx="5" fill="url(#g-metal)" stroke="#24605d" stroke-width="3"/>
+          <path d="M160 328a22 19 0 0 1 44 0v9a22 19 0 0 1 -44 0z" fill="url(#g-glove)" stroke="#24605d" stroke-width="3"/>
+          <path d="M168 330a5 4 0 0 1 8 -2M179 328a5 4 0 0 1 8 0M190 330a5 4 0 0 1 8 2" fill="none" stroke="#9fb0b5" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <circle cx="216" cy="214" r="18" fill="url(#g-metal)" stroke="#24605d" stroke-width="3.5"/>
+        <circle cx="216" cy="214" r="6.5" fill="#7ea0a8" stroke="#24605d" stroke-width="2"/>
+      </g>
+      <path d="M376 332a22 19 0 0 1 44 0v9a22 19 0 0 1 -44 0z" fill="url(#g-glove)" stroke="#24605d" stroke-width="3"/>
+      <path d="M384 334a5 4 0 0 1 8 -2M395 332a5 4 0 0 1 8 0M406 334a5 4 0 0 1 8 2" fill="none" stroke="#9fb0b5" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g id="pick-paper" transform="rotate(-1.4 300 700)">
+      <rect x="8" y="520" width="584" height="330" rx="6" fill="#3d2410" opacity="0.3" filter="url(#f-soft)" transform="translate(-6 8)"/>
+      <rect x="8" y="520" width="584" height="330" rx="6" fill="url(#g-paper)" stroke="#d8d3c0" stroke-width="2"/>
+      <rect x="8" y="520" width="584" height="330" rx="6" fill="url(#p-squares)"/>
+    </g>
+    <g id="banner" data-hsvg-kind="part">
+      <rect x="28" y="32" width="552" height="104" rx="18" fill="#3d2410" opacity="0.32" filter="url(#f-soft-sm)"/>
+      <rect x="24" y="24" width="552" height="104" rx="18" fill="url(#g-note)" stroke="#a8903a" stroke-width="3"/>
+      <rect x="260" y="12" width="80" height="24" rx="4" fill="#ffffff" opacity="0.55" stroke="#c9c3ac" stroke-width="2"/>
+      <text id="title" data-hsvg-kind="part" data-hsvg-role="message" x="300" y="78" text-anchor="middle" font-family="sans-serif" font-size="38" font-weight="700" fill="#2b3036">Noughts and crosses</text>
+      <text id="subtitle" data-hsvg-kind="part" x="300" y="110" text-anchor="middle" font-family="sans-serif" font-size="21" fill="#4a4f57">Play against Bolt</text>
+    </g>
+    <g id="pick-label-wrap" data-hsvg-kind="part">
+      <rect x="44" y="518" width="512" height="40" rx="12" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/>
+      <text id="pick-label" data-hsvg-kind="part" x="300" y="546" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="#2b3036">Pick how clever Bolt is</text>
+    </g>
+    <g id="level-1" data-hsvg-kind="part" data-hsvg-role="action">
+        <g data-hsvg-variant="idle"><rect x="28" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="24" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/></g>
+        <g data-hsvg-variant="hover" display="none"><rect x="28" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="24" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#b98a14" stroke-width="3"/><rect x="24" y="580" width="168" height="214" rx="18" fill="#ffd34d" opacity="0.18"/></g>
+        <g data-hsvg-variant="pressed" display="none"><rect x="24" y="585" width="168" height="209" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/><rect x="24" y="585" width="168" height="209" rx="18" fill="#000" opacity="0.08"/></g>
+        <g data-hsvg-variant="focus" display="none"><rect x="28" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="24" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/><rect x="18" y="574" width="180" height="226" rx="22" fill="none" stroke="#2456c8" stroke-width="3.5" stroke-dasharray="9 6" stroke-linecap="round"/></g>
+        <g transform="translate(-138 557.4) scale(0.8)">
+          <rect x="242" y="52" width="116" height="84" rx="24" fill="url(#g-screen)" stroke="#0a171c" stroke-width="3.5"/>
+          <path d="M267 86Q278 102 289 86" fill="none" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round"/><path d="M311 86Q322 102 333 86" fill="none" stroke="#7ef3ff" stroke-width="5" stroke-linecap="round"/><path d="M266 78l-6 -6M334 78l6 -6" stroke="#7ef3ff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/><ellipse cx="300" cy="123" rx="6" ry="7" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <text id="level-1-name" data-hsvg-kind="part" x="108" y="724" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="700" fill="#2b3036" >Easy</text>
+        <rect id="level-1-note-box" data-hsvg-kind="part" data-hsvg-fit="" x="36" y="738" width="144" height="44" fill="none"/>
+        <text id="level-1-note" data-hsvg-kind="part" x="108" y="760" text-anchor="middle" font-family="sans-serif" font-size="17" fill="#4a4f57">note</text>
+        <g id="level-1-on" data-hsvg-kind="part">
+          <rect x="20" y="576" width="176" height="222" rx="21" fill="none" stroke="#ffd34d" stroke-width="6"/>
+          <circle cx="186" cy="586" r="19" fill="#ffd34d" stroke="#8a5a0a" stroke-width="3"/>
+          <path d="M177 587l7 7l12 -15" fill="none" stroke="#5d3a12" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </g>
+    <g id="level-2" data-hsvg-kind="part" data-hsvg-role="action">
+        <g data-hsvg-variant="idle"><rect x="220" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="216" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/></g>
+        <g data-hsvg-variant="hover" display="none"><rect x="220" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="216" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#b98a14" stroke-width="3"/><rect x="216" y="580" width="168" height="214" rx="18" fill="#ffd34d" opacity="0.18"/></g>
+        <g data-hsvg-variant="pressed" display="none"><rect x="216" y="585" width="168" height="209" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/><rect x="216" y="585" width="168" height="209" rx="18" fill="#000" opacity="0.08"/></g>
+        <g data-hsvg-variant="focus" display="none"><rect x="220" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="216" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/><rect x="210" y="574" width="180" height="226" rx="22" fill="none" stroke="#2456c8" stroke-width="3.5" stroke-dasharray="9 6" stroke-linecap="round"/></g>
+        <g transform="translate(54 557.4) scale(0.8)">
+          <rect x="242" y="52" width="116" height="84" rx="24" fill="url(#g-screen)" stroke="#0a171c" stroke-width="3.5"/>
+          <ellipse cx="278" cy="88" rx="10" ry="12" fill="url(#g-eye)"/><circle cx="281" cy="83.8" r="2.8" fill="#ffffff"/><ellipse cx="322" cy="88" rx="10" ry="12" fill="url(#g-eye)"/><circle cx="325" cy="83.8" r="2.8" fill="#ffffff"/><path d="M286 120Q300 129 314 120" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <text id="level-2-name" data-hsvg-kind="part" x="300" y="724" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="700" fill="#2b3036" >Easy</text>
+        <rect id="level-2-note-box" data-hsvg-kind="part" data-hsvg-fit="" x="228" y="738" width="144" height="44" fill="none"/>
+        <text id="level-2-note" data-hsvg-kind="part" x="300" y="760" text-anchor="middle" font-family="sans-serif" font-size="17" fill="#4a4f57">note</text>
+        <g id="level-2-on" data-hsvg-kind="part">
+          <rect x="212" y="576" width="176" height="222" rx="21" fill="none" stroke="#ffd34d" stroke-width="6"/>
+          <circle cx="378" cy="586" r="19" fill="#ffd34d" stroke="#8a5a0a" stroke-width="3"/>
+          <path d="M369 587l7 7l12 -15" fill="none" stroke="#5d3a12" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </g>
+    <g id="level-3" data-hsvg-kind="part" data-hsvg-role="action">
+        <g data-hsvg-variant="idle"><rect x="412" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="408" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/></g>
+        <g data-hsvg-variant="hover" display="none"><rect x="412" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="408" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#b98a14" stroke-width="3"/><rect x="408" y="580" width="168" height="214" rx="18" fill="#ffd34d" opacity="0.18"/></g>
+        <g data-hsvg-variant="pressed" display="none"><rect x="408" y="585" width="168" height="209" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/><rect x="408" y="585" width="168" height="209" rx="18" fill="#000" opacity="0.08"/></g>
+        <g data-hsvg-variant="focus" display="none"><rect x="412" y="589" width="168" height="214" rx="18" fill="#3d2410" opacity="0.32"/><rect x="408" y="580" width="168" height="214" rx="18" fill="url(#g-card)" stroke="#8a7a50" stroke-width="3"/><rect x="402" y="574" width="180" height="226" rx="22" fill="none" stroke="#2456c8" stroke-width="3.5" stroke-dasharray="9 6" stroke-linecap="round"/></g>
+        <g transform="translate(246 557.4) scale(0.8)">
+          <rect x="242" y="52" width="116" height="84" rx="24" fill="url(#g-screen)" stroke="#0a171c" stroke-width="3.5"/>
+          <path d="M267 80h22v10a11 10 0 0 1 -22 0z" fill="url(#g-eye)"/><path d="M311 80h22v10a11 10 0 0 1 -22 0z" fill="url(#g-eye)"/><path d="M264 70l26 8" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M336 70l-26 8" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M285 123h30" fill="none" stroke="#7ef3ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M285 123v-4M315 123v-4" fill="none" stroke="#7ef3ff" stroke-width="3.5" stroke-linecap="round"/>
+        </g>
+        <text id="level-3-name" data-hsvg-kind="part" x="492" y="724" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="700" fill="#2b3036" >Easy</text>
+        <rect id="level-3-note-box" data-hsvg-kind="part" data-hsvg-fit="" x="420" y="738" width="144" height="44" fill="none"/>
+        <text id="level-3-note" data-hsvg-kind="part" x="492" y="760" text-anchor="middle" font-family="sans-serif" font-size="17" fill="#4a4f57">note</text>
+        <g id="level-3-on" data-hsvg-kind="part">
+          <rect x="404" y="576" width="176" height="222" rx="21" fill="none" stroke="#ffd34d" stroke-width="6"/>
+          <circle cx="570" cy="586" r="19" fill="#ffd34d" stroke="#8a5a0a" stroke-width="3"/>
+          <path d="M561 587l7 7l12 -15" fill="none" stroke="#5d3a12" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </g>
+    <g id="play" data-hsvg-kind="part" data-hsvg-role="action">
+        <g data-hsvg-variant="idle"><rect x="24" y="832" width="552" height="82" rx="26" fill="#5d3a12"/><rect x="24" y="826" width="552" height="82" rx="26" fill="url(#g-button)" stroke="#8a5a0a" stroke-width="3"/><path d="M50 834h500" stroke="#fff8d8" stroke-width="3" stroke-linecap="round" opacity="0.8"/></g>
+        <g data-hsvg-variant="hover" display="none"><rect x="24" y="832" width="552" height="82" rx="26" fill="#5d3a12"/><rect x="24" y="826" width="552" height="82" rx="26" fill="url(#g-button)" stroke="#8a5a0a" stroke-width="3"/><rect x="24" y="826" width="552" height="82" rx="26" fill="#ffffff" opacity="0.22"/><path d="M50 834h500" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/></g>
+        <g data-hsvg-variant="pressed" display="none"><rect x="24" y="834" width="552" height="80" rx="26" fill="#5d3a12"/><rect x="24" y="832" width="552" height="82" rx="26" fill="url(#g-button-down)" stroke="#8a5a0a" stroke-width="3"/></g>
+        <g data-hsvg-variant="focus" display="none"><rect x="24" y="832" width="552" height="82" rx="26" fill="#5d3a12"/><rect x="24" y="826" width="552" height="82" rx="26" fill="url(#g-button)" stroke="#8a5a0a" stroke-width="3"/><rect x="19" y="821" width="562" height="92" rx="31" fill="none" stroke="#2456c8" stroke-width="3.5" stroke-dasharray="9 6" stroke-linecap="round"/></g>
+        <g data-hsvg-variant="disabled" display="none"><rect x="24" y="832" width="552" height="82" rx="26" fill="#7b7468"/><rect x="24" y="829" width="552" height="82" rx="26" fill="#cfc8b6" stroke="#8d8672" stroke-width="3" stroke-dasharray="9 6"/></g>
+        <text id="play-label" data-hsvg-kind="part" x="300" y="881" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="700" fill="#2b3036" >Play</text>
+      </g>
+    
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "one",
+  "drawing": "one.svg",
+  "values": {
+    "on": {"type": "boolean", "initial": true},
+    "level": {"type": "number", "minimum": 0, "maximum": 10, "initial": 0},
+    "turn": {"type": "number", "minimum": 0, "maximum": 1, "initial": 0},
+    "taps": {"type": "number", "minimum": 0, "maximum": 99, "initial": 0}
+  },
+  "on": {
+    "flip": [{"actions": [{"set": "on", "to": "!on"}]}],
+    "acted": [{"actions": [{"set": "taps", "to": "taps + 1"}]}]
+  },
+  "bindings": [
+    {"target": "lev", "move": "level * 20", "axis": "x"},
+    {"target": "knob", "rotate": "-135 + turn * 270"}
+  ],
+  "controls": {
+    "next": {"kind": "button", "target": "next", "event": "next", "label": "Next"},
+    "flip": {"kind": "button", "target": "flip", "event": "flip", "label": "Controls on or off"},
+    "act": {"kind": "button", "target": "act", "event": "acted", "label": "Act", "enabled": "on"},
+    "lev": {"kind": "slider", "target": "lev", "value": "level", "axis": "x", "range": [0, 200], "positions": 11, "label": "Level", "enabled": "on"},
+    "knob": {"kind": "dial", "target": "knob", "value": "turn", "range": [-135, 135], "label": "Knob", "enabled": "on"},
+    "chip": {"kind": "drag", "target": "chip", "drops": ["slot"], "label": "Chip", "enabled": "on"}
+  }
+}

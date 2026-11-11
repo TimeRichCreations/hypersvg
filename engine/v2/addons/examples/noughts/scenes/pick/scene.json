@@ -1,0 +1,320 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "pick",
+  "layouts": [
+    {
+      "id": "wide",
+      "shape": "wide",
+      "drawing": "pick.svg"
+    },
+    {
+      "id": "tall",
+      "shape": "tall",
+      "drawing": "pick.tall.svg"
+    }
+  ],
+  "outputs": {
+    "play": {
+      "kind": "event"
+    }
+  },
+  "controls": {
+    "levels": {
+      "kind": "choice",
+      "value": "level",
+      "event": "levelled",
+      "label": "{{ words.levelGroup }}",
+      "options": {
+        "easy": {
+          "target": "level-1",
+          "value": "1",
+          "label": "{{ words.easy }}",
+          "keys": [
+            "Digit1"
+          ]
+        },
+        "fair": {
+          "target": "level-2",
+          "value": "2",
+          "label": "{{ words.fair }}",
+          "keys": [
+            "Digit2"
+          ]
+        },
+        "hard": {
+          "target": "level-3",
+          "value": "3",
+          "label": "{{ words.hard }}",
+          "keys": [
+            "Digit3"
+          ]
+        }
+      }
+    },
+    "go": {
+      "kind": "button",
+      "target": "play",
+      "event": "play",
+      "label": "{{ words.play }}"
+    }
+  },
+  "on": {
+    "levelled": [
+      {
+        "id": "level-chosen",
+        "actions": [
+          {
+            "id": "tap-level",
+            "play": "'tap'", "as": "sound",
+            "group": "sounds"
+          }
+        ]
+      }
+    ],
+    "play": [
+      {
+        "id": "play-chosen",
+        "actions": [
+          {
+            "id": "tap-play",
+            "play": "'tap'", "as": "sound",
+            "group": "sounds"
+          }
+        ]
+      }
+    ]
+  },
+  "entry": [
+    {
+      "id": "bulb-on",
+      "play": "bulb"
+    },
+    {
+      "id": "breathe-on",
+      "play": "breathe"
+    },
+    {
+      "id": "blink-on",
+      "play": "blink"
+    },
+    {
+      "id": "sway-on",
+      "play": "sway"
+    },
+    {
+      "id": "wave-on",
+      "play": "wave"
+    }
+  ],
+  "clips": {
+    "bulb": {
+      "durationMs": 1500,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "bulb-grows",
+          "target": "bolt-bulb",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              1500,
+              1.2,
+              "ease-in-out"
+            ]
+          ]
+        },
+        {
+          "id": "bulb-glows",
+          "target": "bolt-bulb",
+          "channel": "opacity",
+          "keys": [
+            [
+              0,
+              0.6
+            ],
+            [
+              1500,
+              1,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "breathe": {
+      "durationMs": 2400,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "chest-swells",
+          "target": "bolt-chest",
+          "channel": "scale",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              2400,
+              1.05,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "blink": {
+      "durationMs": 3800,
+      "loop": true,
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "eyes-blink",
+          "target": "bolt-eyes",
+          "channel": "scale", "axis": "y",
+          "keys": [
+            [
+              0,
+              1
+            ],
+            [
+              3500,
+              1
+            ],
+            [
+              3580,
+              0.1,
+              "ease-in"
+            ],
+            [
+              3700,
+              1,
+              "ease-out"
+            ],
+            [
+              3800,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "sway": {
+      "durationMs": 2600,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "head-bobs",
+          "target": "bolt-head-bob",
+          "channel": "move", "axis": "y",
+          "keys": [
+            [
+              0,
+              0
+            ],
+            [
+              2600,
+              -3,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    },
+    "wave": {
+      "durationMs": 1800,
+      "loop": true,
+      "loopMode": "ping-pong",
+      "reducedMotion": "rest",
+      "tracks": [
+        {
+          "id": "arm-waves",
+          "target": "pick-arm",
+          "channel": "rotate",
+          "keys": [
+            [
+              0,
+              -8
+            ],
+            [
+              1800,
+              24,
+              "ease-in-out"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "id": "title-text",
+      "target": "title",
+      "text": "{{ words.title }}"
+    },
+    {
+      "id": "subtitle-text",
+      "target": "subtitle",
+      "text": "{{ words.subtitle }}"
+    },
+    {
+      "id": "pick-label-text",
+      "target": "pick-label",
+      "text": "{{ words.pickLevel }}"
+    },
+    {
+      "id": "play-label-text",
+      "target": "play-label",
+      "text": "{{ words.play }}"
+    },
+    {
+      "id": "level-1-name-text",
+      "target": "level-1-name",
+      "text": "{{ words.easy }}"
+    },
+    {"id": "level-1-note-text", "target": "level-1-note", "text": "{{ words.easyNote }}", "fit": {"box": "level-1-note-box", "minFontPx": 13, "maxLines": 2}},
+    {
+      "id": "level-1-ticks",
+      "target": "level-1-on",
+      "visible": "level === 1"
+    },
+    {
+      "id": "level-2-name-text",
+      "target": "level-2-name",
+      "text": "{{ words.fair }}"
+    },
+    {"id": "level-2-note-text", "target": "level-2-note", "text": "{{ words.fairNote }}", "fit": {"box": "level-2-note-box", "minFontPx": 13, "maxLines": 2}},
+    {
+      "id": "level-2-ticks",
+      "target": "level-2-on",
+      "visible": "level === 2"
+    },
+    {
+      "id": "level-3-name-text",
+      "target": "level-3-name",
+      "text": "{{ words.hard }}"
+    },
+    {"id": "level-3-note-text", "target": "level-3-note", "text": "{{ words.hardNote }}", "fit": {"box": "level-3-note-box", "minFontPx": 13, "maxLines": 2}},
+    {
+      "id": "level-3-ticks",
+      "target": "level-3-on",
+      "visible": "level === 3"
+    },
+    {"id": "eyes-mood", "target": "bolt-eyes", "variant": "level === 1 ? 'sleepy' : (level === 3 ? 'determined' : 'idle')"},
+    {"id": "mouth-mood", "target": "bolt-mouth", "variant": "level === 1 ? 'sleepy' : (level === 3 ? 'determined' : 'idle')"},
+    {"id": "eyes-follow", "target": "bolt-eyes", "move": "clamp(1.5 + level * 1.4, -6, 6)", "axis": "x", "glide": {"durationMs": 320, "easing": "ease-in-out"}},
+    {"id": "eyes-look-down", "target": "bolt-eyes", "move": "clamp(1 + level * 0.6, -5, 5)", "axis": "y", "glide": {"durationMs": 320, "easing": "ease-in-out"}},
+    {"id": "head-leans", "target": "bolt-head", "rotate": "clamp((level - 2) * 4, -14, 14)", "glide": {"durationMs": 380, "easing": "ease-in-out"}}
+  ]
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>T1 fixture, scene b</title>
+<rect width="640" height="400" fill="#f3f4f6" data-hsvg-layer="backdrop"/>
+<text id="title" x="20" y="40" font-size="24" fill="#111827">Scene B</text>
+<g id="back" data-hsvg-kind="part"><rect x="20" y="320" width="140" height="56" rx="8" fill="#1d4ed8"/><text x="90" y="355" text-anchor="middle" font-size="20" fill="#ffffff">Back</text></g>
+</svg>

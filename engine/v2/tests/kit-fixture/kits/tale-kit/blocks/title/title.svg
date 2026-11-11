@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 50" width="360" height="50" data-hsvg-version="2.0">
+<title>Title</title>
+<g id="title" data-hsvg-kind="component">
+<text id="title__line" data-hsvg-kind="part" data-hsvg-role="message" data-hsvg-color="ink" x="180" y="34" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#2b2a4c">Once upon a time</text>
+</g>
+</svg>

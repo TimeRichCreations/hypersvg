@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Lamp</title>
+<desc>A lamp with a switch, a dimmer and two shades.</desc>
+<rect width="400" height="300" fill="#f3f4f6" data-hsvg-layer="backdrop" data-hsvg-color="surface"/>
+<g id="lamp" data-hsvg-kind="part" data-hsvg-label="Lamp">
+  <g id="glow" data-hsvg-kind="part" data-hsvg-role="decoration" data-hsvg-motion="opacity 0..1" opacity="0"><circle cx="120" cy="100" r="70" fill="#fde68a"/></g>
+  <g id="bulb" data-hsvg-kind="part" data-hsvg-label="Bulb"><circle cx="120" cy="100" r="36" fill="#f59e0b" data-hsvg-color="sun"/></g>
+  <rect x="112" y="136" width="16" height="90" fill="#6b7280"/>
+  <rect x="70" y="226" width="100" height="16" rx="8" fill="#374151"/>
+</g>
+<g id="switch" data-hsvg-kind="part" data-hsvg-label="Lamp on">
+  <rect x="240" y="40" width="120" height="56" rx="28" fill="#e5e7eb"/>
+  <circle cx="268" cy="68" r="20" fill="#2563eb"/>
+</g>
+<text id="state" x="300" y="222" text-anchor="middle" font-size="24" fill="#111827">Off</text>
+<g id="pick-sun" data-hsvg-kind="part" data-hsvg-label="Sun"><rect x="240" y="120" width="56" height="56" rx="12" fill="#f59e0b"/></g>
+<g id="pick-sky" data-hsvg-kind="part" data-hsvg-label="Sky"><rect x="304" y="120" width="56" height="56" rx="12" fill="#38bdf8"/></g>
+<rect x="100" y="270" width="200" height="8" rx="4" fill="#9ca3af"/>
+<g id="dimmer" data-hsvg-kind="part" data-hsvg-label="Brightness" data-hsvg-motion="move-x 0..200"><circle cx="100" cy="274" r="22" fill="#2563eb"/></g>
+</svg>

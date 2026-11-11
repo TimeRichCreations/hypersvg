@@ -1,0 +1,571 @@
+{
+ "engine/v2/tests/a1-fit.test.mjs": {
+  "tests": [
+   "a page that needs fit solves live; one that does not carries no solver",
+   "the fit capability's code (the module and the solver) is within capabilityBundleBytes, gzip level 9 (10.11)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/a2-audio-web.test.mjs": {
+  "tests": [
+   "a character runs its own mouth: only while its when is true, and with a channel it gives numbers (6.11)",
+   "the mouth follows the voice loudness, and closes when the voice stops"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/a2-mouth-drawing.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/a2-mouth.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/ai-check.test.mjs": {
+  "tests": [
+   "a quoted seat of ai.ask names a character seat in addons.ai.seats (E-REF-UNKNOWN)",
+   "a session or saved value, or an experience run value, may not hold an answer",
+   "derived values: a computed value of the answer, then a reaction to its change",
+   "events emitted from an answer carry the taint; an output event is refused",
+   "free text: only the with of a call ai.ask may read it",
+   "link when and carry may not read a tainted value",
+   "machines and timers: a tainted transition taints the machine, its states and active()",
+   "outputs, records, the host API, page actions and module calls are refused",
+   "the value a reaction to ai:answered sets must be a moment value",
+   "uses' inputs and triggers are refused"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/ai-engine.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/b1a-format.test.mjs": {
+  "tests": [
+   "D28: a call is checked against the manifest: verb, inputs, literals, the body it names",
+   "D28: an unknown key in the physics pocket names the capability and where its words are listed",
+   "D28: physics controls are keyed by a drag control of the block",
+   "D28: physics through the door: addons.physics and physics.throw check clean and play",
+   "D28: physics.throw without physics in needs faults E-NEEDS-MISSING at play",
+   "D28: the old words are gone from the core: physics, physicsThrow, releaseVelocity"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/b1b-door.test.mjs": {
+  "tests": [
+   "item 3: a built-in humanOnly call (snapshot.save) runs from a press and is refused from a timer, in the engine and the checker",
+   "item 3: the checker flags a built-in humanOnly call on a timer path (W-HUMAN-ONLY-PATH)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/b4b-engine.test.mjs": {
+  "tests": [
+   "item 2: a call's string input is a text slot in the checker too: words, {{ }}, and the old quoted form refused"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/check-budgets.test.mjs": {
+  "tests": [
+   "effectsPerBlock: more effects in one block than the limit is E-RANGE (A1)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/check-formula.test.mjs": {
+  "tests": [
+   "effect parameters are proven inside their stated range (E-RANGE)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/check-refs.test.mjs": {
+  "tests": [
+   "a setting that no play item names is E-WRITE-INPUT",
+   "a synth is a sound"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/check-story.test.mjs": {
+  "tests": [
+   "a capability event needs the capability in needs (E-NEEDS-MISSING)",
+   "a declared need no content uses is W-NEEDS-UNUSED",
+   "a link on a capability event needs the capability",
+   "a link on a signal must be granted",
+   "a link on lines:ended:<line> names a line of the scene (afterLine before D31)",
+   "a page action and its hook must be granted (E-GRANT)",
+   "a scene has at most 16 choice links (E-RANGE)",
+   "a scene with choice links needs a way on when none is eligible",
+   "a seat filler beyond human must be granted",
+   "a signal heard must be granted (E-GRANT)",
+   "choice links need a place and a way on"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/d1-data.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/e1-fixes.test.mjs": {
+  "tests": [
+   "a kit experience whose scenes are uses (not files) has no places read, and does not fail",
+   "size limits come from limits.json: 10,000 a capability, 120,000 the core (D7, D8)",
+   "the packer reports the engine sizes of the page it packs"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/e2-joins.test.mjs": {
+  "tests": [
+   "E-CONTENT-REQUIRED: a required field never has an empty wording, in its initial or a use's with (7.9)",
+   "a contrast rule's own ratio applies to each text style; without one, 4.5:1 (8.9)",
+   "a line mouth blends its from look at 1 - mix and its look at mix, by group opacity (6.11)",
+   "a richText initial per language mounts, and reads in the active language",
+   "a run without a style is accepted when the field's items do not require one",
+   "checkContent: richText styles and markup; each wording of a tier or language object (5.3.1)",
+   "media: attachMedia in a srcdoc frame does not throw",
+   "setInput on a richText field checks its styles and its markup at play (5.3.1)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/e2-text.test.mjs": {
+  "tests": [
+   "rich text: lines in one part are kept apart by a space at size 0 (6.8.1)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/e3-lean.test.mjs": {
+  "tests": [
+   "a packed kit experience carries the flattened form and no kit loader; a kit finding stops the pack",
+   "a theme's type role naming a font the package does not carry is E-REF-UNKNOWN; a font resource passes",
+   "host.seat gives a seat to a filler through the seats port; an unknown seat or filler is refused",
+   "kits flattened at pack time: the flattened studio ad is what the kit loader gives, without its drawings' texts",
+   "ladder: a package that needs fit and has a fits, limit or keep give-way rule needs ladder (checker and engine)",
+   "lines: without it in needs the checker says E-NEEDS-MISSING and the engine stops with it; with it a line runs",
+   "rich-text: without it the checker refuses its settings, rich-text bindings and richText fields; the engine stops at mount",
+   "shell outputs: host.on hears a shell's declared output event, with no page wrapper",
+   "sizes: the packer refuses when the core is over coreBundleBytes, as for a capability (E-ENGINE-SIZE)",
+   "union of needs: a page that names none of the three carries none of their code, and the core carries no checker or kit loader"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/e4-joins.test.mjs": {
+  "tests": [
+   "ambient layout: a built-in a formula reads (the player writes it, 7.1, 5.5); a value of the author named layout hides it (D22)",
+   "changes: --previous-kit gives the checker the kit before a version change (E-KIT-VERSION, 4.8)",
+   "changes: check.mjs --rights prints the rights table (A9.1)",
+   "checker: W-MOUNT-LIMIT when the estimated filter surface is over the mount limit (9.8)",
+   "checker: limit rules hold on the values in initial, with and words (E-RULE), as the change tool says",
+   "kits: a one-name formula with keeps the input's declaration; the block holds the tier object (A4 Request 1)",
+   "kits: the checker sees the declaration: field:<name> resolves for a fed input",
+   "modules: a module needs names that no package or host carries is E-MODULE-REVIEW at mount",
+   "modules: chess-opponent is a registered module with its manifest; the board game names it in needs",
+   "plan steps live: the fit capability's solver applies the block's rules",
+   "plan steps live: with fit, the drawing re-solves the plan as a column",
+   "seats: an input from the agent door goes through requestAtPlay and leaves a receipt",
+   "seats: with the page's own lock, the black seat starts with its program and plays (a packed page)",
+   "size: each logic module is measured against capabilityBundleBytes",
+   "spoken holds line, text and word when idle: \"\", \"\" and -1 (5.5)",
+   "tiers: a component's initial takes a tier object; the block reads its tier's wording",
+   "tiers: an empty initial of a required text field is E-CONTENT-REQUIRED; required: false is fine",
+   "tiers: host.set accepts a tier or language object on a content field, each wording checked (10.6)",
+   "tiers: resolveRuns takes the nearest longer tier, else the nearer shorter, as wordingAt does (7.9)"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/e5-freeze.test.mjs": {
+  "tests": [
+   "a person's setting can turn on reducedMotion; it stays on while the system asks for it",
+   "dash: a share of 0 hides the part whatever its caps, and a share above 0 shows it again",
+   "door refusals: seat o, which sees only turn, open and count, does not learn handX from a refusal or its receipt",
+   "fed rows: a text column takes tier and language objects; a word column is checked against the words in scope",
+   "records and the seat log only grow: resetSaved keeps the published rows and the accepted inputs",
+   "seats: act checks that the entry is still allowed, not only that the view, occupant and turn are the same",
+   "turns: simultaneous turns refuse value (E-TYPE); alternating checks that the value can hold each seat",
+   "turns: the seats run state lives with the graph memory, so a resumed run keeps the turn and the moves",
+   "turns: with alternating turns the engine writes the seat on turn into turns.value"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/l1-lines-check.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/l1-lines.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/limits-runtime.test.mjs": {
+  "tests": [
+   "capabilityBundleBytes: each capability's runtime code is at most capabilityBundleBytes gzip level 9 (10.11); fit is its own files, not core text fitting",
+   "deliveriesPerTransaction: more deliveries than the limit in one transaction fault (E-EVENT-LOOP)",
+   "effectsPerBlock: a block with more effects than the limit is refused when it mounts (E-RANGE, A1)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/limits.test.mjs": {
+  "tests": [
+   "physics refuses more bodies than the player's limit"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/q1-plan-fitbox.test.mjs": {
+  "tests": [
+   "baked: the derived frames carry the moved region; a baked page shows it where the live one does"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/q1-player.test.mjs": {
+  "tests": [
+   "widgets: colours by role, type roles, radius and border from the theme",
+   "widgets: every gap and padding is a multiple of 8 units",
+   "widgets: no theme keeps the browser look (no CSS)",
+   "widgets: outline shapes give the corner radius; extends applies"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/r1-richtext-check.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/r1-richtext.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/s1-board.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/s1-check.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/s1-seats.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/skill.test.mjs": {
+  "tests": [
+   "skill charts.test.mjs :: charts: every chart example is what make-charts writes",
+   "skill charts.test.mjs :: live-dashboard: sample at start; a host feed moves the bars; a refused feed plays the sample",
+   "skill examples-play.test.mjs :: ad-300x250: hook, bake, offer, end card in 15 s; Order asks the host to open clickUrl; Replay",
+   "skill examples-play.test.mjs :: ad: hook, offer, end card on time; the loop runs twice more, then holds",
+   "skill examples-play.test.mjs :: board game: the right move mates, a wrong move does not, reset starts over",
+   "skill examples-play.test.mjs :: chat: a quick reply gives its written answer, typed text matches an intent, else the fallback",
+   "skill examples-play.test.mjs :: kit ads: each size starts, tells its 15 s story, and shows Order only on the end card",
+   "skill examples-play.test.mjs :: page mascot: a bad email makes Pip point; a pay signal makes Pip cheer; hello waves back",
+   "skill examples-play.test.mjs :: settings: the gear opens the dialog; Apply changes three knobs and the scene follows",
+   "skill examples-play.test.mjs :: toss: soft falls short, medium lands in the bin, hard flies over; three throws end the round",
+   "skill examples-play.test.mjs :: video chapters: Next walks intro, film, outro; the film plays and its marker ends the film",
+   "skill shots.test.mjs :: shots: every scene at rest, reduced, and three control states, in story order",
+   "skill shots.test.mjs :: shots: sizes come from --sizes, then the declared sizes, then layout shapes, then 960x600",
+   "skill wave7-recipes.test.mjs :: adaptive ad: starts, and baked (fit left out of needs) it holds a derived frame per size",
+   "skill wave7-recipes.test.mjs :: rich text: runs draw as one paragraph, the price lights by a value, the headline field is a richText field",
+   "skill wave7-recipes.test.mjs :: spoken lines: a line gives captions, a word event and the mouth; Spanish uses its own voice",
+   "skill wave7-recipes.test.mjs :: typing over a scene: the form writes the field, the drawing shows it"
+  ],
+  "why": "the skill tests of examples that need a built-in capability, run through the engine suite (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/stage5-effects.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/stage5-physics.test.mjs": {
+  "tests": [
+   "a body whose target has no translate ranges is refused at mount (E-MOTION-RANGE)",
+   "a deadline at the same time goes before a physics tick; events run as their own step",
+   "a moving body hits a peer: both report hit, with the other id; contacts filter what is reported",
+   "a static body cannot be thrown; an unknown body is a fault; the step rolls back",
+   "a thrown body rises, falls, reports each contact once on entry and rests; bodies start asleep",
+   "one advance of 20 s equals many small advances: the same world, events and log (9.4)",
+   "one large advance runs every 120 Hz step it covers (9.4)",
+   "reduced motion: the simulation runs and its events fire; the body is drawn at rest",
+   "the same configuration and commands give the same motion"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/stage5-snapshot.test.mjs": {
+  "tests": [
+   "a person's press delivers the request; padding defaults to 8; the press's reaction goes on",
+   "a timer, host or seat cannot save (E-HUMAN-ONLY); a disabled control does nothing",
+   "the host writes progress into the status value, at most 200 characters",
+   "without the snapshot capability the call is refused (E-NEEDS-MISSING)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/v1-change.test.mjs": {
+  "tests": [
+   "cli: make, then apply with the authenticated by; exit codes 0, 1 and 2; rights prints the table",
+   "kit change: the kit's sample kit experiences are checked with the changed kit",
+   "make: a request from two folders, and from a studio's edited values; it applies",
+   "proof: a copywriter shortens an ad headline; it passes, the digest changes, the receipt lists every check",
+   "proof: a headline that breaks a must rule is E-RULE, and passes once a waiver covers it",
+   "proof: a kit change renames an input, then moves the kit version",
+   "proof: the same request without the right is E-RIGHTS, and nothing is written",
+   "proof: with a stale expected it is E-CHANGE-STALE; a stale old is too",
+   "reach: a kit pin moves by publish, and the full checker runs on the copy",
+   "reach: kit inputs and literal scene inputs are written into with as plain words; formulas, inner paths and unknown names are refused",
+   "replay: a retry with the same id returns the first receipt and writes nothing; other content is E-CHANGE-SHAPE",
+   "rights: the table of a kit experience and of an experience made without a kit",
+   "shape: a refused request writes nothing and its receipt says which check failed"
+  ],
+  "why": "needs an ad the core release does not ship (the ad template, the ad kind, the ad recipes or the kit ads; release/core-examples.json, \"addons\"); runs in the hypersvg-addons checks. The tests named \"core kit: ...\" run in the core on engine/v2/tests/kit-fixture."
+ },
+ "engine/v2/tests/w2e-pack.test.mjs": {
+  "tests": [
+   "csp: every capability of the spec has an entry, and the policy denies the network whatever needs say"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/w3c-capabilities.test.mjs": {
+  "tests": [
+   "a capability in needs that is not installed: its field, action and control are E-NEEDS-MISSING",
+   "a capability not in needs stays E-NEEDS-MISSING although the dev player registered it",
+   "a packed page lists its capability modules and registers them before the player boots",
+   "only capabilities in needs are installed, even when registered",
+   "the AI fixture bundles ai and widgets, not physics, effects or snapshot",
+   "the core imports no capability module"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/w4r-runtime.test.mjs": {
+  "tests": [
+   "a made sound plays without the synth module (core, D31.2); the module gives only the mouth page part",
+   "the audio capability: synths and the loudness mouth ship only when needs names audio (W3-C Request 4)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/w4s-boundaries.test.mjs": {
+  "tests": [
+   "the engine installs a capability that only a scene or a block names in its needs",
+   "the packer bundles and declares the union of needs"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/w5c-checker.test.mjs": {
+  "tests": [
+   "E-WIDGET-PAINT: an overlay slot after a declared widget slot that it crosses",
+   "W-NEEDS-UNUSED: a need named by a scene and used by no document is judged at the scene; the message says union",
+   "a character seat and an ask check clean (the AI fixture)",
+   "a character seat with keys missing is checked as a character, not refused for its kind",
+   "an ask with inputs missing names the inputs, not the page capability",
+   "an ask with the ai need missing is blamed on ai",
+   "an unknown action is named as unknown, not blamed on a capability"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/w5f-runtime.test.mjs": {
+  "tests": [
+   "a page part gets a page door: copies to read, whole steps to write, faults on the page's stop path",
+   "ai.mjs works on its door: no aiView, no engine reference, its state rolls back (10.11)"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/w5k-kits.test.mjs": {
+  "tests": [
+   "E-KIT-BODY: a kit experience with values of its own, or a scene file",
+   "E-KIT-PIN: a missing kit, a wrong version, a wrong digest; the right digest passes",
+   "E-KIT-VERSION through the checker: opts.previousKit",
+   "E-KIT-VERSION: each change needs its class; a smaller step is refused",
+   "E-RIGHTS-UNKNOWN: an editableBy that names a right the kit does not declare",
+   "E-RIGHTS: a kit experience may set only inputs an editor may change",
+   "E-ROLE-KIT: a kit role word that is a core role or alias is refused, in the kit file",
+   "E-SEAL-DIGEST: a sealed definition in a reviewed kit needs its digest; a draft kit does not",
+   "E-SEAL-LEAK: a sealed body that reads or writes outside itself",
+   "E-SEAL: a promotion of a sealed body value; W-RIGHTS-WIDEN: a promotion that adds a right",
+   "E-SEAL: a with that names a sealed body value; open definitions are not sealed",
+   "E-THEME-ROLES: a theme without a role the kit uses",
+   "a kit block is used like an experience block; its words are the kit words",
+   "a kit experience plays: scenes are uses of kit definitions, its with and the kit inputs reach the drawing",
+   "a kit experience's settings name a kit knob, and the setting changes it",
+   "a kit inside the experience folder (the package layout) is packed once, not twice",
+   "a scene use of a definition the kit lacks is E-REF-UNKNOWN; a kit path that leaves the kit is E-PATH",
+   "a second theme in the kit changes the colours of all three ads",
+   "applyKit is pure data: the kit document is not changed",
+   "each ad packs with its kit: kits, members with digests, and the page plays from the packed files",
+   "kit roles are known: a drawing's kit role is not unknown; without the kit role it is",
+   "the 15 s story: three timed links of 5 s, the end at 15 s",
+   "the kit's needs join the union",
+   "the three ads check with 0 findings, from their folders (the kit is found in a parent kits/ folder)",
+   "with: a literal becomes the input initial, a formula becomes a computed value of the scene"
+  ],
+  "why": "needs an ad the core release does not ship (the ad template, the ad kind, the ad recipes or the kit ads; release/core-examples.json, \"addons\"); runs in the hypersvg-addons checks. The tests named \"core kit: ...\" run in the core on engine/v2/tests/kit-fixture."
+ },
+ "engine/v2/tests/w5m-motion.test.mjs": {
+  "tests": [
+   "morph blends paths of the same structure, and refuses others (6.7)",
+   "the checker: a morph without needs motion is refused; route needs nothing (D31)",
+   "the checker: morph paths of another structure, points on a rect (6.7, 6.8)",
+   "the packer ships the motion module only when needs names motion (10.11)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/w5p-page-check.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/w5p-page.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/w6l-board.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/w6l-chess.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/w6l-modules.test.mjs": {
+  "tests": [
+   "a call runs at entry and writes its outputs",
+   "a malformed position faults the call (E-MODULE-RESULT)",
+   "admission: a port the host made itself does not confine (E-MODULE-CONFINEMENT)",
+   "admission: needs, pin and the reviewed lock (E-MODULE-REVIEW)",
+   "an illegal move faults the transaction and nothing is written",
+   "calls in a reaction: apply a move, then read the status",
+   "confinement: the chess code runs the same in a context with no globals at all",
+   "inputs are checked against the export before the call",
+   "modulePort checks its lock and limits",
+   "review: the chess code imports nothing and names no global, clock, random source or catch",
+   "the chess exports are the manifest beside the spec, and the version is the manifest's",
+   "the reviewed lock and the module digest are fresh (make-lock.mjs)",
+   "with and to must match the export exactly (E-MODULE-CALL, also at play)"
+  ],
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
+ "engine/v2/tests/w6v-media-check.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "engine/v2/tests/w6v-media.test.mjs": {
+  "tests": "all",
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/x2-speed.test.mjs": {
+  "tests": [
+   "item 1: 1024 rows (dataTableRows) take a feed that changes every row, and one with all new keys",
+   "item 1: a key press and an ambient change with more than 100 live blocks do not fault",
+   "item 1: a real loop still faults; a fan-out counts once per cause, not once per block",
+   "item 1: the valid 60-row dashboard takes a feed that changes every row (was E-EVENT-LOOP from 50 rows)",
+   "item 2: a binding that reads elapsed keeps its block live",
+   "item 2: a change paints the changed rows and their scene only, and draws what a whole paint draws",
+   "item 2: with nothing changed, a paint evaluates no binding; idle, no block reads time",
+   "item 5: admitting and removing 512 repeated uses walks the live blocks a fixed number of times, not once per mount",
+   "item 5: the running counts still refuse the use over liveRepeatedUses, after a rollback too"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/x3-correctness.test.mjs": {
+  "tests": [
+   "X3.8 destroy removes the caption box; a resize after it never brings it back (10.6)",
+   "X3.9 one kit digest: the checker and the change tool agree, and a sample's scene moves it (A9.3)",
+   "X3.9 the change tool with --out: a retry returns the first receipt; a refused replay never overwrites it (9.10)",
+   "X3.9 the rich-text editor indexes text by UTF-16 units: typing, styling and deleting next to an emoji (6.8.1)"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/x4-truth.test.mjs": {
+  "tests": [
+   "X4 architecture 7: own needs, plus the experience's for scenes and the shell; the checker and the engine agree",
+   "X4 power 3: maxItems 7 or 500 over a 6-slot repeat region is E-REPEAT-CAPACITY, 6 passes"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/x6-addons.test.mjs": {
+  "tests": [
+   "every add-on the engine ships checks clean: the eight starters and the three examples",
+   "the eight starter presets expand into content that checks with no finding"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/x7a-library.test.mjs": {
+  "tests": [
+   "a package of picked items carries only what they reach, and the page plays it flattened",
+   "a pick that cannot be used is refused, with what to do",
+   "an experience picks items of the starter: a component, a layout, a shell, a resource and a theme, and checks clean",
+   "hsvg new makes each of the six starter templates: new id, derivedFrom, the kit brought, checked and packed",
+   "hsvg new refuses a folder that exists, a bad name and an unknown template",
+   "picks keep the kit's pin, seals and rights"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/y1-fixes.test.mjs": {
+  "tests": [
+   "item 7: a reserved event name is refused as an emitted event, as in every author-chosen producer",
+   "item 7: the checker accepts changed:hsvg.<name> for a built-in value and refuses it for an unknown one"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/y2-change.test.mjs": {
+  "tests": [
+   "Y2.7 a failed receipt write leaves nothing written, so the same request passes on retry",
+   "Y2.7 two changes against the same revision: one commits, the other is refused as stale"
+  ],
+  "why": "needs an ad the core release does not ship (the ad template, the ad kind, the ad recipes or the kit ads; release/core-examples.json, \"addons\"); runs in the hypersvg-addons checks. The tests named \"core kit: ...\" run in the core on engine/v2/tests/kit-fixture."
+ },
+ "engine/v2/tests/y3-fixes.test.mjs": {
+  "tests": [
+   "item 1: a nested component whose required text cannot fit at a must size stops the pack",
+   "item 1: a nested placement shared by a must and a should size keeps the must class",
+   "item 2: a component rule on field:<its id>.<field> applies to its own field, as the bare form does",
+   "item 4: a declared limits.liveRepeatedUses a host can admit is accepted by the checker; the default still refuses",
+   "item 6: change.mjs apply never trusts a request's own by; with no --right/--who/--source it is refused"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/y3-resize.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
+ },
+ "examples/2.0-ad-studio/tests/studio.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests the ad studio example, which needs fit, ladder, rich-text and shell (D30); it moves to hypersvg-addons with the example."
+ },
+ "skill/2.0/tests/charts.test.mjs": {
+  "tests": [
+   "charts: every chart example is what make-charts writes",
+   "live-dashboard: sample at start; a host feed moves the bars; a refused feed plays the sample"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "skill/2.0/tests/examples-play.test.mjs": {
+  "tests": [
+   "ad-300x250: hook, bake, offer, end card in 15 s; Order asks the host to open clickUrl; Replay",
+   "ad: hook, offer, end card on time; the loop runs twice more, then holds",
+   "board game: the right move mates, a wrong move does not, reset starts over",
+   "chat: a quick reply gives its written answer, typed text matches an intent, else the fallback",
+   "kit ads: each size starts, tells its 15 s story, and shows Order only on the end card",
+   "page mascot: a bad email makes Pip point; a pay signal makes Pip cheer; hello waves back",
+   "settings: the gear opens the dialog; Apply changes three knobs and the scene follows",
+   "toss: soft falls short, medium lands in the bin, hard flies over; three throws end the round",
+   "video chapters: Next walks intro, film, outro; the film plays and its marker ends the film"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "skill/2.0/tests/shots.test.mjs": {
+  "tests": [
+   "shots: every scene at rest, reduced, and three control states, in story order",
+   "shots: sizes come from --sizes, then the declared sizes, then layout shapes, then 960x600"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "skill/2.0/tests/wave7-recipes.test.mjs": {
+  "tests": [
+   "adaptive ad: starts, and baked (fit left out of needs) it holds a derived frame per size",
+   "rich text: runs draw as one paragraph, the price lights by a value, the headline field is a richText field",
+   "spoken lines: a line gives captions, a word event and the mouth; Spanish uses its own voice",
+   "typing over a scene: the form writes the field, the drawing shows it"
+  ],
+  "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ }
+}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Traffic light</title>
+  <rect x="-200" y="-200" width="800" height="1000" fill="#1d2b36" data-hsvg-layer="backdrop"/>
+  <g data-hsvg-layer="content">
+    <rect x="120" y="30" width="160" height="420" rx="30" fill="#263238"/>
+    <g id="lamp-red" data-hsvg-kind="part" data-hsvg-label="Red light">
+      <g data-hsvg-variant="off"><circle cx="200" cy="110" r="50" fill="#4a1f1f"/></g>
+      <g data-hsvg-variant="on" display="none"><circle cx="200" cy="110" r="50" fill="#e53935"/></g>
+    </g>
+    <g id="lamp-amber" data-hsvg-kind="part" data-hsvg-label="Amber light">
+      <g data-hsvg-variant="off"><circle cx="200" cy="240" r="50" fill="#4a3a12"/></g>
+      <g data-hsvg-variant="on" display="none"><circle cx="200" cy="240" r="50" fill="#ffb300"/></g>
+    </g>
+    <g id="lamp-green" data-hsvg-kind="part" data-hsvg-label="Green light">
+      <g data-hsvg-variant="off"><circle cx="200" cy="370" r="50" fill="#163a1f"/></g>
+      <g data-hsvg-variant="on" display="none"><circle cx="200" cy="370" r="50" fill="#43a047"/></g>
+    </g>
+    <g id="next" data-hsvg-kind="part">
+      <rect x="100" y="490" width="200" height="80" rx="40" fill="#d84315"/>
+      <text x="200" y="540" text-anchor="middle" font-size="28" fill="#ffffff">Next light</text>
+    </g>
+  </g>
+</svg>

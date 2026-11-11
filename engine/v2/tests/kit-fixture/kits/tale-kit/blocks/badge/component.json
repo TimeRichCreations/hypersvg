@@ -1,0 +1,16 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "badge",
+  "drawing": "badge.svg",
+  "inputs": {
+    "label": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 12, "initial": "Page",
+              "editableBy": ["copywriter"]},
+    "count": {"kind": "content", "contentType": "text", "type": "string", "maxLength": 4, "initial": "1",
+              "editableBy": ["publisher"]}
+  },
+  "bindings": [
+    {"id": "badge-label", "target": "label", "text": "{{ label }}"},
+    {"id": "badge-count", "target": "count", "text": "{{ count }}"}
+  ]
+}

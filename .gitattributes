@@ -1,0 +1,19 @@
+# Every text file here keeps LF line endings on every system, so file digests, packed pages and HyperSVGs
+# are the same everywhere (Git for Windows converts text to CRLF otherwise).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.wav binary
+*.ogg binary
+*.mp3 binary
+*.mp4 binary
+*.webm binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.tgz binary
+*.zip binary

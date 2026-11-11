@@ -1,0 +1,92 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "desk",
+  "drawing": "desk.svg",
+  "values": {
+    "answer": {
+      "type": "string",
+      "maxLength": 200,
+      "initial": ""
+    },
+    "answerFrom": {
+      "type": "string",
+      "maxLength": 16,
+      "initial": ""
+    }
+  },
+  "controls": {
+    "ask-btn": {
+      "kind": "button",
+      "target": "ask-btn",
+      "event": "openAsk",
+      "label": "Ask the guide"
+    }
+  },
+  "on": {
+    "openAsk": [
+      {
+        "id": "open-ask",
+        "actions": [
+          {
+            "id": "open-ask-dialog",
+            "open": "ask"
+          }
+        ]
+      }
+    ],
+    "askGuide": [
+      {
+        "id": "ask-guide",
+        "actions": [
+          {
+            "id": "ask-the-guide",
+            "call": "ai.ask",
+            "with": {
+              "seat": "'guide'",
+              "question": "askText",
+              "timeoutMs": 8000,
+              "fallback": "'Let us look at the bike together.'"
+            }
+          }
+        ]
+      }
+    ],
+    "guideAnswered": [
+      {
+        "id": "label-answer",
+        "actions": [
+          {
+            "id": "label-answer-set",
+            "set": "answerFrom",
+            "to": "event.source"
+          }
+        ]
+      }
+    ],
+    "ai:answered": [
+      {
+        "id": "ask-the-guide-answered",
+        "actions": [
+          {
+            "set": "answer",
+            "to": "event.answer"
+          },
+          {
+            "emit": "guideAnswered",
+            "with": {
+              "source": "event.source"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "id": "answer-text",
+      "target": "answer-line",
+      "text": "{{ answer }}"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "lesson",
+  "story": {
+    "start": {
+      "stage-left": "lesson",
+      "stage-right": "diagram"
+    },
+    "scenes": {
+      "lesson": "scenes/lesson/scene.json",
+      "diagram": "scenes/diagram/scene.json"
+    }
+  }
+}

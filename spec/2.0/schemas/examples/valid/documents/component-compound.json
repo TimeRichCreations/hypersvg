@@ -1,0 +1,7 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "offer-box",
+  "drawing": "offer-box.svg",
+  "parts": {}
+}

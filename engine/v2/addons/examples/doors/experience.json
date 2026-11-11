@@ -1,0 +1,29 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "doors",
+  "language": "en",
+  "about": {
+    "title": "Windy yard",
+    "description": "A flag swings with the wind, and a pennant swings in a gust. Two outside add-ons open the D39 growth slots: example.steps adds a control kind (the wind stepper) and example.sway a channel (swing), in a binding and in a clip track.",
+    "trust": {
+      "pins": {
+        "example.steps@1.0.0": "sha256:79fc697221594d6c0cce22c6b91b9bdb68fc391c5017069f2652b5ae99876cf1",
+        "example.sway@1.0.0": "sha256:47c6772222bec8669228ed83c98b4814d6fc8870077d967774a60c5c76be9c04"
+      }
+    }
+  },
+  "needs": [
+    "example.steps@1.0.0",
+    "example.sway@1.0.0"
+  ],
+  "story": {
+    "start": "yard",
+    "scenes": {
+      "yard": "scenes/yard/scene.json"
+    },
+    "ends": [
+      "yard"
+    ]
+  }
+}

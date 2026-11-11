@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Press and reset</title>
+  <g id="sky" data-hsvg-layer="backdrop">
+    <rect x="-200" y="-150" width="800" height="600" fill="#fff4d8"/>
+  </g>
+  <g id="content" data-hsvg-layer="content">
+    <text id="count" data-hsvg-kind="part" x="200" y="80" text-anchor="middle"
+          font-family="sans-serif" font-size="28" fill="#153b4b">Pressed 0 times</text>
+    <g id="press-button" data-hsvg-kind="part" data-hsvg-role="action">
+      <rect x="40" y="150" width="150" height="64" rx="32" fill="#168e91"/>
+      <text x="115" y="190" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#ffffff">Press</text>
+    </g>
+    <g id="reset-button" data-hsvg-kind="part" data-hsvg-role="action">
+      <rect x="210" y="150" width="150" height="64" rx="32" fill="#153b4b"/>
+      <text x="285" y="190" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#ffffff">Reset</text>
+    </g>
+  </g>
+</svg>
