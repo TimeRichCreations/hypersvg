@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="HyperSVG turns an SVG into a hyper drawing: parts that respond, with behavior you can read, check, change and reuse. Try the real player.">
+<title>HyperSVG playground</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='12' r='8' fill='%23f2b632'/%3E%3Crect x='10' y='23' width='12' height='5' rx='2.5' fill='%230f6b66'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="playground.css">
+<script type="importmap">{"imports": {"hypersvg/": "./vendor/hypersvg/"}}</script>
+<script type="module" src="./vendor/hypersvg/engine/v2/web/asset-web.mjs"></script>
+<script type="module" src="playground.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the playground</a>
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="#idea" aria-label="HyperSVG, back to the top">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="12" r="8"/><rect x="10" y="23" width="12" height="5" rx="2.5"/></svg>
+      <span>HyperSVG</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#files">Files</a>
+      <a href="#change">Change</a>
+      <a href="#settings">Settings</a>
+      <a href="#outputs">Outputs</a>
+      <a href="#cars">Cars</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- 1. The idea -->
+<section id="idea" class="section hero" aria-labelledby="idea-title">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="eyebrow">HyperSVG <span class="version">2.0.0-next.0</span></p>
+      <h1 id="idea-title">Turn an SVG into a hyper drawing.</h1>
+      <p class="lead">Parts that respond, with behavior you can read, check, change and reuse.</p>
+      <p>The lamp on this page is one <code>.svg</code> file. In a plain picture it stands still. Here the HyperSVG
+        player runs it: press its switch, or Tab to it and press Enter.</p>
+      <p class="hero-links"><a class="button" href="#files">See the two files</a> <a class="button quiet" href="#change">Change it yourself</a></p>
+    </div>
+    <figure class="stage-card">
+      <hypersvg-asset id="lamp-hero" class="lamp" src="assets/lamp.svg"><img src="assets/lamp.svg" alt="A lamp with a grey bulb above an orange button that says Turn on"></hypersvg-asset>
+      <figcaption>The live lamp. Its switch is a real control.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 2. Two files -->
+<section id="files" class="section" aria-labelledby="files-title">
+  <div class="wrap">
+    <p class="step">01</p>
+    <h2 id="files-title">Two files: a drawing and its decisions</h2>
+    <p class="intro">The SVG holds the artwork. A few marks name the parts that respond. The JSON says what a person can
+      do and what each part shows. There is no program code in either file.</p>
+    <p class="hint" id="files-hint">Hover or focus a highlighted word to see the part it drives.</p>
+    <div class="files-grid">
+      <div class="files-code">
+      <div class="code-card">
+        <div class="code-head"><span class="file-name">lamp.svg</span><span class="file-kind">drawing</span></div>
+        <pre class="code" id="code-svg" aria-label="lamp.svg"><code>Loading…</code></pre>
+      </div>
+      <div class="code-card">
+        <div class="code-head"><span class="file-name">lamp.json</span><span class="file-kind">scene</span></div>
+        <pre class="code" id="code-json" aria-label="lamp.json"><code>Loading…</code></pre>
+      </div>
+      </div>
+      <figure class="stage-card sticky">
+        <div class="lamp-frame">
+          <hypersvg-asset id="lamp-files" class="lamp" src="assets/lamp.svg"><img src="assets/lamp.svg" alt="The lamp at rest"></hypersvg-asset>
+          <svg class="spot" id="spot" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        </div>
+        <figcaption id="files-note" aria-live="polite">Pick a word to light up its part.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Change it -->
+<section id="change" class="section alt" aria-labelledby="change-title">
+  <div class="wrap">
+    <p class="step">02</p>
+    <h2 id="change-title">Change it</h2>
+    <p class="intro">Edit the files, then press Apply. The player checks the raw files before it plays them, just as it
+      does for any file it is handed. A mistake comes back as the engine's own code and message.</p>
+    <div class="examples" role="group" aria-label="One-click changes">
+      <span class="examples-label">Try:</span>
+      <button type="button" class="chip" data-example="words">The button's words</button>
+      <button type="button" class="chip" data-example="colour">The bulb's colour</button>
+      <button type="button" class="chip" data-example="height">A taller lamp</button>
+      <button type="button" class="chip warn" data-example="unsafe">Add an onclick</button>
+      <button type="button" class="chip warn" data-example="typo">Misspell a word</button>
+    </div>
+    <div class="editor-grid">
+      <div class="editor">
+        <div class="tabs" role="tablist" aria-label="Files to edit">
+          <button type="button" role="tab" id="tab-scene" aria-controls="panel-scene" aria-selected="true" data-file="lamp.json">lamp.json</button>
+          <button type="button" role="tab" id="tab-drawing" aria-controls="panel-drawing" aria-selected="false" tabindex="-1" data-file="lamp.svg">lamp.svg</button>
+          <button type="button" role="tab" id="tab-entry" aria-controls="panel-entry" aria-selected="false" tabindex="-1" data-file="experience.json">experience.json</button>
+        </div>
+        <div role="tabpanel" id="panel-scene" aria-labelledby="tab-scene">
+          <label class="visually-hidden" for="edit-scene">lamp.json, the scene</label>
+          <textarea id="edit-scene" class="code-edit" spellcheck="false" autocapitalize="off" autocomplete="off" data-file="lamp.json"></textarea>
+        </div>
+        <div role="tabpanel" id="panel-drawing" aria-labelledby="tab-drawing" hidden>
+          <label class="visually-hidden" for="edit-drawing">lamp.svg, the drawing</label>
+          <textarea id="edit-drawing" class="code-edit" spellcheck="false" autocapitalize="off" autocomplete="off" data-file="lamp.svg"></textarea>
+        </div>
+        <div role="tabpanel" id="panel-entry" aria-labelledby="tab-entry" hidden>
+          <label class="visually-hidden" for="edit-entry">experience.json, the entry point</label>
+          <textarea id="edit-entry" class="code-edit" spellcheck="false" autocapitalize="off" autocomplete="off" data-file="experience.json"></textarea>
+        </div>
+        <div class="editor-actions">
+          <button type="button" class="button" id="apply">Apply</button>
+          <button type="button" class="button quiet" id="reset">Reset</button>
+          <span class="kbd-hint">or Ctrl+Enter in the editor</span>
+        </div>
+      </div>
+      <div class="result">
+        <figure class="stage-card">
+          <div class="lamp-frame"><div id="edit-stage" class="lamp edit-stage" role="region" aria-label="Your lamp"></div></div>
+          <figcaption id="edit-status" aria-live="polite">Your lamp, from the files in the editor.</figcaption>
+        </figure>
+        <div id="edit-error" class="error" role="alert" hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Settings and events -->
+<section id="settings" class="section" aria-labelledby="settings-title">
+  <div class="wrap">
+    <p class="step">03</p>
+    <h2 id="settings-title">Settings and events</h2>
+    <p class="intro">A HyperSVG lists its inputs, so a page can build its own panel. This panel comes from
+      <code>element.inputs()</code>. The page and the lamp's own switch change the same <code>lit</code>; the latest
+      change wins. Every change arrives as <code>hsvg:changed</code>, and the switch also sends <code>hsvg:switched</code>.</p>
+    <div class="settings-grid">
+      <figure class="stage-card">
+        <hypersvg-asset id="lamp-panel" class="lamp" src="assets/lamp.svg"><img src="assets/lamp.svg" alt="The lamp at rest"></hypersvg-asset>
+        <figcaption>Press the drawn switch, or use the panel.</figcaption>
+      </figure>
+      <div class="panel-card">
+        <h3>Inputs</h3>
+        <form id="panel" class="panel" aria-label="Lamp inputs"><p class="muted">Loading the inputs…</p></form>
+        <h3 class="log-title">Events <button type="button" class="link-button" id="log-clear">Clear</button></h3>
+        <ol id="log" class="log" aria-live="polite" aria-label="Event log"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Two outputs -->
+<section id="outputs" class="section alt" aria-labelledby="outputs-title">
+  <div class="wrap">
+    <p class="step">04</p>
+    <h2 id="outputs-title">Two outputs from one source</h2>
+    <p class="intro"><strong>A HyperSVG</strong> is for inside a page. <strong>An Experience</strong> is for something
+      a person opens on its own.</p>
+    <div class="outputs-grid">
+      <figure class="stage-card">
+        <img class="lamp still" id="lamp-img" src="assets/lamp.svg" alt="The lamp as a still picture: a grey bulb above an orange button">
+        <figcaption><code>&lt;img src="lamp.svg"&gt;</code> A still picture. Any SVG viewer shows it.</figcaption>
+      </figure>
+      <figure class="stage-card">
+        <hypersvg-asset id="lamp-live" class="lamp" src="assets/lamp.svg"><img src="assets/lamp.svg" alt="The lamp at rest"></hypersvg-asset>
+        <figcaption><code>&lt;hypersvg-asset src="lamp.svg"&gt;</code> The same file, live.</figcaption>
+      </figure>
+    </div>
+    <div class="experience-card">
+      <div class="experience-head">
+        <div>
+          <h3>Pelican Post, as an Experience</h3>
+          <p>One <code>.html</code> page with the player inside. It runs on its own, even offline: fourteen scenes
+            around one hub, with a four-page comic, a lesson and a quiz, a race and a bike to build.</p>
+        </div>
+        <a class="button quiet" href="experiences/pelican-post.html" target="_blank" rel="noopener">Open the full page<span class="visually-hidden"> (opens in a new tab)</span></a>
+      </div>
+      <div class="frame-box">
+        <iframe id="showcase" title="The Pelican Post Experience" data-src="experiences/pelican-post.html" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. One file, three cars -->
+<section id="cars" class="section" aria-labelledby="cars-title">
+  <div class="wrap">
+    <p class="step">05</p>
+    <h2 id="cars-title">One file, three cars</h2>
+    <p class="intro">The same <code>car.svg</code>, placed three times with different settings. The three share one
+      player, and each keeps its own state. Turn a key, press Start, fold a roof.</p>
+    <div class="cars-grid" id="cars-grid" data-state="waiting">
+      <figure class="car-card" data-length="1" data-colour="cherry" data-roof="false">
+        <div class="car-slot"><img src="assets/car.svg" alt="A red roadster at rest" loading="lazy"></div>
+        <figcaption><span class="swatch cherry" aria-hidden="true"></span>Length 1, cherry, roof closed</figcaption>
+      </figure>
+      <figure class="car-card" data-length="1.4" data-colour="ocean" data-roof="true">
+        <div class="car-slot"><img src="assets/car.svg" alt="A roadster at rest" loading="lazy"></div>
+        <figcaption><span class="swatch ocean" aria-hidden="true"></span>Length 1.4, ocean, roof open</figcaption>
+      </figure>
+      <figure class="car-card" data-length="1.8" data-colour="mint" data-roof="false">
+        <div class="car-slot"><img src="assets/car.svg" alt="A roadster at rest" loading="lazy"></div>
+        <figcaption><span class="swatch mint" aria-hidden="true"></span>Length 1.8, mint, roof closed</figcaption>
+      </figure>
+    </div>
+    <pre class="code small" aria-label="The markup for the second car"><code>&lt;hypersvg-asset src="car.svg" length="1.4" colour="ocean" roof-open&gt;&lt;/hypersvg-asset&gt;</code></pre>
+  </div>
+</section>
+
+<!-- 7. Next -->
+<section id="next" class="section alt" aria-labelledby="next-title">
+  <div class="wrap">
+    <p class="step">06</p>
+    <h2 id="next-title">Next</h2>
+    <div class="next-grid">
+      <a class="next-card" href="https://www.npmjs.com/package/@hypersvg/core"><strong>README</strong><span>What HyperSVG is, and the lamp in three commands.</span></a>
+      <a class="next-card" href="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.0/GUIDE.md"><strong>Guide</strong><span>The whole format: every word and mark, with an example.</span></a>
+      <a class="next-card" href="https://www.npmjs.com/package/@hypersvg/core"><strong>@hypersvg/core</strong><span>The npm package: the player, the checker and the packer.</span></a>
+    </div>
+    <pre class="code small" aria-label="Start a lamp of your own"><code>npx @hypersvg/core init my-lamp
+npx @hypersvg/core check my-lamp
+npx @hypersvg/core pack my-lamp out</code></pre>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <div class="wrap">This page runs the real HyperSVG player. It loads only files from this site. HyperSVG is licensed under Apache-2.0.</div>
+</footer>
+</body>
+</html>

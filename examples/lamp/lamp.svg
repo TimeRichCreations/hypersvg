@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+  <title>Lamp</title>
+  <rect x="-200" y="-150" width="800" height="600" fill="#1d2b36" data-hsvg-layer="backdrop"/>
+  <g data-hsvg-layer="content">
+    <g id="lamp" data-hsvg-kind="part" data-hsvg-role="lamp" data-hsvg-pivot="200 180" data-hsvg-motion="scale 0.5..1.5">
+      <g id="bulb" data-hsvg-kind="part" data-hsvg-label="Bulb">
+        <g data-hsvg-variant="off"><circle cx="200" cy="110" r="50" fill="#555555"/></g>
+        <g data-hsvg-variant="on" display="none"><circle cx="200" cy="110" r="50" fill="#ffd45e"/></g>
+      </g>
+      <rect x="185" y="160" width="30" height="20" fill="#8d6e63"/>
+    </g>
+    <g id="switch" data-hsvg-kind="part" data-hsvg-role="action">
+      <rect x="140" y="220" width="120" height="50" rx="25" fill="#d84315"/>
+      <text id="switch-words" data-hsvg-kind="part" x="200" y="252" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">Turn on</text>
+    </g>
+  </g>
+</svg>

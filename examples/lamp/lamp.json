@@ -1,0 +1,15 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "lamp",
+  "drawing": "lamp.svg",
+  "controls": {"switch": {"kind": "toggle", "target": "switch", "value": "lit", "event": "flip"}},
+  "on": {
+    "flip": [{"actions": [{"emit": "switched"}]}]
+  },
+  "bindings": [
+    {"target": "lamp", "scale": "height"},
+    {"target": "bulb", "variant": "lit ? 'on' : 'off'"},
+    {"target": "switch-words", "text": "Turn {{ lit ? 'off' : 'on' }}"}
+  ]
+}

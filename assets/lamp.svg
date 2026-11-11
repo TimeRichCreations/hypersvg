@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<metadata>{"asset":{"format":"hsvg/2.0","id":"lamp","drawing":"lamp.svg","members":{"experience.json":"sha256:8d51040446878602950bad84c8b5e80355c766e2a2701c37c65fb14a2b5524bc","lamp.json":"sha256:6183600c86ca809417626695608ad62671ad6ecf0a88e7099b4fa2d5ee2a5682","lamp.svg":"sha256:c20685696e23e403e343b6f6cfa83210457d27f4d158415be77d40ed03a1c1cd"},"files":{"experience.json":"{\n  \"format\": \"hsvg/2.0\",\n  \"kind\": \"experience\",\n  \"id\": \"lamp\",\n  \"language\": \"en\",\n  \"about\": {\"title\": \"Lamp\", \"description\": \"A lamp with a switch. Knobs: lit and height. It sends switched.\"},\n  \"inputs\": {\n    \"lit\":    {\"kind\": \"knob\", \"type\": \"boolean\", \"initial\": false},\n    \"height\": {\"kind\": \"knob\", \"type\": \"number\", \"minimum\": 0.5, \"maximum\": 1.5, \"initial\": 1}\n  },\n  \"outputs\": {\"switched\": {\"kind\": \"event\"}},\n  \"roles\": {\"lamp\": {\"appliesTo\": [\"part\"]}},\n  \"story\": {\"start\": \"lamp\", \"scenes\": {\"lamp\": \"lamp.json\"}, \"endless\": true}\n}\n","lamp.json":"{\n  \"format\": \"hsvg/2.0\",\n  \"kind\": \"scene\",\n  \"id\": \"lamp\",\n  \"drawing\": \"lamp.svg\",\n  \"controls\": {\"switch\": {\"kind\": \"toggle\", \"target\": \"switch\", \"value\": \"lit\", \"event\": \"flip\"}},\n  \"on\": {\n    \"flip\": [{\"actions\": [{\"emit\": \"switched\"}]}]\n  },\n  \"bindings\": [\n    {\"target\": \"lamp\", \"scale\": \"height\"},\n    {\"target\": \"bulb\", \"variant\": \"lit ? 'on' : 'off'\"},\n    {\"target\": \"switch-words\", \"text\": \"Turn {{ lit ? 'off' : 'on' }}\"}\n  ]\n}\n"}}}</metadata>
+  <title>Lamp</title>
+  <rect x="-200" y="-150" width="800" height="600" fill="#1d2b36" data-hsvg-layer="backdrop"/>
+  <g data-hsvg-layer="content">
+    <g id="lamp" data-hsvg-kind="part" data-hsvg-role="lamp" data-hsvg-pivot="200 180" data-hsvg-motion="scale 0.5..1.5">
+      <g id="bulb" data-hsvg-kind="part" data-hsvg-label="Bulb">
+        <g data-hsvg-variant="off"><circle cx="200" cy="110" r="50" fill="#555555"/></g>
+        <g data-hsvg-variant="on" display="none"><circle cx="200" cy="110" r="50" fill="#ffd45e"/></g>
+      </g>
+      <rect x="185" y="160" width="30" height="20" fill="#8d6e63"/>
+    </g>
+    <g id="switch" data-hsvg-kind="part" data-hsvg-role="action">
+      <rect x="140" y="220" width="120" height="50" rx="25" fill="#d84315"/>
+      <text id="switch-words" data-hsvg-kind="part" x="200" y="252" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">Turn on</text>
+    </g>
+  </g>
+</svg>
