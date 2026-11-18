@@ -20,6 +20,7 @@ import { isTierObject, wordingAt, wordingsDown, fieldShown, tierEntry, chooseTie
 import { watchArt, bboxOf } from './limits-runtime.mjs';
 import { chooseLayout, shapeMapsOf, aspectsOf, directionOf, pickedLayout, picksFor, resizedBox, sizeValue, nearestSize } from './layout.mjs';
 import { roleOf, boxOf, recordOf } from './marks.mjs';
+import { IDENTITY, mul, parseTransform } from './transform.mjs';
 
 const clone = (n) => (n.name ? { name: n.name, attrs: { ...n.attrs }, attrOrder: [...n.attrOrder], children: n.children.map(clone) } : { text: n.text });
 const PAINT_ATTR = { fill: 'fill', stroke: 'stroke' };
@@ -120,7 +121,8 @@ export class Drawing {
     this.frames = {}; // address -> { root, byLocal: Map(localId -> node), layout, scale }
     // opts.layouts: address -> the layout chosen last (kept across drawings, so a resize keeps the current one, 7.3).
     // opts.choices: address -> {id, why} of this drawing's choices, for tests and the player.
-    // opts.picks: what the input selectors pick now (layout.mjs inputPicks, 7.1); opts.theme: the theme they pick.
+    // opts.picks: what the input selectors pick now (layout.mjs inputPicks, 7.1); opts.theme: the theme they pick;
+    // opts.colors: the host's checked colours (7.7.1), or null.
     // opts.onSpace(address, target, box): called when a size binding gives a slot or region a box (6.8), at mount
     // and when it changes; lanes that solve again for a new space hook here.
     this.choices = {};
@@ -134,8 +136,9 @@ export class Drawing {
     const d = this.engine.exp.doc;
     const name = this.opts.theme ?? d.theme;
     const t = d.themes?.[name] || Object.values(d.themes || {})[0] || {};
-    if (t.extends && d.themes?.[t.extends]) return { ...d.themes[t.extends], ...t, colorRoles: { ...d.themes[t.extends].colorRoles, ...t.colorRoles } };
-    return t;
+    const out = t.extends && d.themes?.[t.extends] ? { ...d.themes[t.extends], ...t, colorRoles: { ...d.themes[t.extends].colorRoles, ...t.colorRoles } } : t;
+    // opts.colors: the host's colours, already checked (src/host-colors.mjs, 7.7.1), on top of the theme's roles.
+    return this.opts.colors && out.colorRoles ? { ...out, colorRoles: { ...out.colorRoles, ...this.opts.colors } } : out;
   }
 
   // Mounts a scene's frame (by layout id, or the single drawing) with its uses, and returns the root node.
@@ -893,7 +896,8 @@ export class Drawing {
   // Control targets get their names from the input layer (5.11).
   names(addr, f, doc) {
     if (!f.root?.dom) return;
-    const controls = f.controlTargets ??= new Set(Object.values(doc.controls || {}).map(c => c?.target));
+    // Every control target, a choice's option targets too: the input layer gives them their roles (5.11).
+    const controls = f.controlTargets ??= new Set(Object.values(doc.controls || {}).flatMap(c => [c?.target, ...Object.values(c?.options || {}).map(o => o?.target)]));
     const dom = (n, k, v) => { if (!n.dom) return; if (v === null) n.dom.removeAttribute(k); else if (n.dom.getAttribute(k) !== v) n.dom.setAttribute(k, v); };
     if (!f.named) {
       f.named = [];
@@ -1561,7 +1565,8 @@ export class Drawing {
   toDom(doc, n = this.root) {
     if (!n.name) return doc.createTextNode(n.text);
     const el = doc.createElementNS('http://www.w3.org/2000/svg', n.name);
-    for (const k of n.attrOrder) if (k in n.attrs) { if (k === 'xlink:href') el.setAttributeNS('http://www.w3.org/1999/xlink', k, n.attrs[k]); else if (k !== 'xmlns') el.setAttribute(k, n.attrs[k]); }
+    for (const k of n.attrOrder) if (k in n.attrs) { if (k === 'xlink:href') el.setAttributeNS('http://www.w3.org/1999/xlink', k, n.attrs[k]); else if (k === 'style' && this.opts.nonce) el.style.cssText = n.attrs[k]; else if (k !== 'xmlns') el.setAttribute(k, n.attrs[k]); }
+    if (n.name === 'style' && this.opts.nonce) el.nonce = this.opts.nonce; // a strict CSP page (added after 2.0.0-next.0)
     for (const c of n.children) el.appendChild(this.toDom(doc, c));
     n.dom = el;
     return el;
@@ -1599,29 +1604,11 @@ function mirrored(ch) { return !!ch && (ch.scale ?? ch['scale-x'] ?? 1) < 0; }
 const fmt = (x) => String(Math.round(x * 1e6) / 1e6);
 
 // ---------- 2D matrices [a, b, c, d, e, f], as SVG ----------
-const IDENTITY = [1, 0, 0, 1, 0, 0];
-const mul = (m, n) => [m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1], m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3], m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5]];
 function invert(m) {
   const det = m[0] * m[3] - m[1] * m[2];
   if (Math.abs(det) < 1e-12) return null;
   return [m[3] / det, -m[1] / det, -m[2] / det, m[0] / det, (m[2] * m[5] - m[3] * m[4]) / det, (m[1] * m[4] - m[0] * m[5]) / det];
 }
 // An SVG transform attribute as one matrix: translate, scale, rotate (with a centre), skewX, skewY, matrix.
-export function parseTransform(s) {
-  let m = IDENTITY;
-  if (!s) return m;
-  const rad = (a) => (a * Math.PI) / 180;
-  for (const [, fn, args] of String(s).matchAll(/([a-zA-Z]+)\s*\(([^)]*)\)/g)) {
-    const v = args.trim().split(/[\s,]+/).filter(Boolean).map(Number);
-    let k = IDENTITY;
-    if (fn === 'translate') k = [1, 0, 0, 1, v[0] || 0, v[1] || 0];
-    else if (fn === 'scale') k = [v[0], 0, 0, v[1] ?? v[0], 0, 0];
-    else if (fn === 'rotate') { const c = Math.cos(rad(v[0])); const n = Math.sin(rad(v[0])); k = [c, n, -n, c, 0, 0]; if (v.length === 3) k = mul(mul([1, 0, 0, 1, v[1], v[2]], k), [1, 0, 0, 1, -v[1], -v[2]]); }
-    else if (fn === 'skewX') k = [1, 0, Math.tan(rad(v[0])), 1, 0, 0];
-    else if (fn === 'skewY') k = [1, Math.tan(rad(v[0])), 0, 1, 0, 0];
-    else if (fn === 'matrix') k = v.slice(0, 6);
-    m = mul(m, k);
-  }
-  return m;
-}
 export { clone };
+export { parseTransform }; // moved to src/transform.mjs; still exported here for older importers

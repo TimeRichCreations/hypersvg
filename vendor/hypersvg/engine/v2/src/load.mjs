@@ -3,37 +3,16 @@
 // (read.mjs), which only parses. The schemas are the objects in spec/2.0/schemas, given by the host or the packer.
 // The checking code is the engine's schema tools (engine/v2/schema), which the spec's tools use too, so they agree.
 // With schemas null files are only parsed (and a kit is still read and applied).
-import { makeDocumentChecker } from '../schema/check-document.mjs';
 import { withUsedGrants } from './grants-asked.mjs';
-import { experienceResources } from './host-profile.mjs';
-import { checkDrawing } from '../schema/drawing-check.mjs';
 import { parseStrict } from '../schema/json-strict.mjs';
-import { raisedLimits, SVG_LIMIT } from './limits.mjs';
+import { raisedLimits } from './limits.mjs';
+import { CHECKERS, raiseSchemas, undeclaredImages, checkCells } from './load-checks.mjs';
 import { kitPin, applyKit, readKit, readPicks } from './kit.mjs';
 import { readExperience, UPGRADE_TOOL, parseWords, parseCsv } from './read.mjs';
-import { checkValue } from './runtime.mjs';
 import { checkManifest, expandPresets, namePresets, parseName, isOutside } from './addons.mjs';
 
-export { UPGRADE_TOOL, parseWords, parseCsv };
-const CHECKERS = Object.freeze({ makeDocumentChecker, checkDrawing, checkCells });
+export { UPGRADE_TOOL, parseWords, parseCsv, raiseSchemas, checkCells };
 const KITS = Object.freeze({ kitPin, applyKit, readKit, readPicks });
-
-const LIMIT_KEYWORDS = ['maxItems', 'maxLength', 'maxProperties', 'maximum'];
-// The schemas with the capacity limits a package raises (9.8.1): every node marked x-hsvg-limit with a raised id, and
-// the drawing rules' limits. Returns the schemas unchanged when nothing is raised.
-export function raiseSchemas(schemas, raised) {
-  if (!schemas || !Object.keys(raised).length) return schemas;
-  const out = structuredClone(schemas);
-  (function walk(node) {
-    if (Array.isArray(node)) { node.forEach(walk); return; }
-    if (!node || typeof node !== 'object') return;
-    const id = node['x-hsvg-limit'];
-    if (id in raised) for (const k of LIMIT_KEYWORDS) if (typeof node[k] === 'number') node[k] = raised[id];
-    Object.values(node).forEach(walk);
-  })(out);
-  for (const [id, v] of Object.entries(raised)) if (SVG_LIMIT[id] && out.drawing?.limits) out.drawing.limits[SVG_LIMIT[id]] = v;
-  return out;
-}
 
 // Returns { ok, diags: [{file, code, path, message}], experience } where experience holds parsed documents and
 // drawing texts: { doc, scenes: {id: {file, doc, drawings: {layoutId|'main': {file, text}}}}, blocks: {id: {...}} }.
@@ -50,30 +29,6 @@ export function loadExperience(source, schemas, opts = {}) {
   // The openUrl and storage requests come from use (10.5, D31.4): the experience asks for them as if written.
   if (r.experience?.doc) { const g = withUsedGrants(r.experience); r.experience.derivedGrants = g.derived; if (Object.keys(g.derived).length) r.experience.doc.grants = g.grants; }
   return { ...r, ok: !diags.some(d => d.code.startsWith('E-')), diags };
-}
-
-// An <image> in a drawing holds a data: URI or names a declared image resource by its path from the drawing
-// (vocabularies.json svgLimits.addresses, 2.6). Anything else would make a mounted page ask its server for an address
-// nobody declared or checked: E-REF-UNKNOWN, so neither the checker nor mount lets it play.
-const IMAGE_HREF = /<image\b[^>]*?\s(?:xlink:)?href\s*=\s*(["'])([^"']*)\1/g;
-function undeclaredImages(e) {
-  const declared = new Set(experienceResources(e).filter(r => r.kind === 'image').map(r => r.path));
-  const out = [];
-  const seen = new Set();
-  for (const owner of [e.shell, ...Object.values(e.scenes || {}), ...Object.values(e.blocks || {})]) {
-    for (const d of Object.values(owner?.drawings || {})) {
-      if (!d?.text || seen.has(d.file)) continue;
-      seen.add(d.file);
-      const dir = String(d.file || '').split('/').slice(0, -1);
-      for (const [, , href] of d.text.matchAll(IMAGE_HREF)) {
-        if (/^data:/i.test(href.trim()) || href.startsWith('#')) continue;
-        const parts = [...dir];
-        for (const p of href.split('/')) { if (p === '..') parts.pop(); else if (p && p !== '.') parts.push(p); }
-        if (!declared.has(parts.join('/'))) out.push({ code: 'E-REF-UNKNOWN', file: d.file, path: `<image href="${href}">`, message: `the image ${href} is not a declared image resource: declare it in resources ({"kind": "image", "file": "..."}) or embed it as a data: URI` });
-      }
-    }
-  }
-  return out;
 }
 
 // The add-on door (D23, chapter 12; src/addons.mjs). The outside add-ons a package uses are the ones its experience
@@ -144,27 +99,6 @@ function openDoor(source, top) {
   return { addons, diags, origins, expanded, presets, schemas };
 }
 
-// Every cell is checked against its column before play (2.8): its type and bounds (minimum, maximum, step, maxLength,
-// enum, and the rest of 5.1.1), as a value is. JSON rows are closed objects with every column. A broken rule throws
-// (the loader gives E-DATA).
-export function checkCells(rows, columns, json = true) {
-  if (!Array.isArray(rows)) throw new Error('a data table is an array of rows');
-  const names = Object.keys(columns);
-  rows.forEach((row, ri) => {
-    const where = `row ${ri + 1}`;
-    if (row === null || typeof row !== 'object' || Array.isArray(row)) throw new Error(`${where}: a row is an object`);
-    if (json) {
-      const extra = Object.keys(row).filter(k => !(k in columns));
-      const missing = names.filter(k => !(k in row));
-      if (extra.length || missing.length) throw new Error(`${where}: a row has exactly the declared columns${missing.length ? `; missing ${missing.join(', ')}` : ''}${extra.length ? `; not declared ${extra.join(', ')}` : ''}`);
-    }
-    for (const c of names) {
-      const bad = checkValue(columns[c], row[c]);
-      if (bad) throw new Error(`${where}, column ${c}: ${bad[1]} (${bad[0]})`);
-    }
-  });
-  return rows;
-}
 // A source over a folder on disk (Node only; the browser uses a packed map). bytes(rel) gives a file's bytes, for the
 // resource checks. A kit's files are read as `kits/<id>/<path>` (the package layout, 10.8): from the folder's own
 // `kits/<id>/`, else from the nearest parent folder that has `kits/<id>/kit.json` or `<id>/kit.json` (a kit beside

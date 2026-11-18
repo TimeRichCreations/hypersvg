@@ -58,6 +58,8 @@ const SKIP_TOP = new Set(['now', 'seq', 'revision', 'blocks', 'records', 'timers
 const AMBIENT = ['now', 'elapsed', 'reducedMotion', 'timeLimits', 'inputMode', 'language', 'size', 'muted', 'volume', 'voice', 'spoken', 'visits', 'canReturn', 'chapter', 'hooks', 'layout'];
 
 // Own names only (5.9): a name from Object.prototype (toString, valueOf, __proto__) is never a value or a member.
+// The inputs that reach the logic as moves (9.6): each is a method of the player, fed again with its payload.
+export const MOVES = Object.freeze(['activate', 'hold', 'key', 'send', 'trigger', 'setInput', 'hostPicture', 'applySettings', 'setPause', 'setSize', 'pick', 'seatInput', 'start', 'restart', 'clearStorage', 'snap', 'closeDialog', 'setLanguage', 'motion', 'shellEvent', 'firstInput', 'advance']);
 export const own = (o, k) => o != null && typeof o === 'object' && Object.hasOwn(o, k);
 // A url value is an absolute https: address of at most 2048 characters (5.3.1). Returns why it is not, or null.
 export function urlProblem(v) {
@@ -215,6 +217,27 @@ export class Engine {
     // Spoken lines (6.11): the lines capability's runner, or null; without it spoken stays idle and lines are refused.
     this.lines = this.caps.runner('lines', this, fault);
     this.resetEngine();
+    // The move hook (9.6, added after 2.0.0-next.0): with opts.onMove, every input in MOVES is heard before it runs.
+    // advance is no move: what runs inside it is the clock's.
+    if (opts.onMove) for (const k of MOVES) { const f = this[k]; this[k] = (...a) => (k === 'advance' ? this.moveIn(0, 0, () => f.apply(this, a)) : this.moveIn(k, this.movePayload(k, a), () => f.apply(this, a))); }
+  }
+  // Runs fn as a move: opts.onMove hears {t, source, payload} first (engine time, the input's name, its arguments as
+  // JSON), unless a move or the clock is already running, so an input made inside another is part of it. source 0:
+  // nothing is heard. A hook that throws goes to the deliver-error path.
+  moveIn(source, payload, fn) {
+    const h = this.opts.onMove;
+    if (!h || this.moving) return fn();
+    this.moving = 1;
+    try {
+      if (source) try { h(JSON.parse(JSON.stringify({ t: this.state.now, source, payload: payload.map(x => x ?? null) }))); } catch (e) { this.deliveryError(e, 'listener'); }
+      return fn();
+    } finally { this.moving = 0; }
+  }
+  // A move's payload: start carries the ambient values it starts with; a freeText value only its length (5.3.1).
+  movePayload(k, a) {
+    if (k === 'start') return [this.state.ambient];
+    if (k === 'setInput' && this.exp.doc.inputs?.[a[0]]?.contentType === 'freeText' && typeof a[1] === 'string') return [a[0], { freeText: a[1].length }, ...a.slice(2)];
+    return a;
   }
   // A fresh run: empty state, stored values read again, the experience block mounted. Listeners stay (10.6 restart).
   resetEngine() {
@@ -1573,9 +1596,25 @@ export class Engine {
     const b = this.state.blocks[address];
     if (!b) return;
     const snaps = { ...(b.snaps || {}) };
-    if (drop === undefined) delete snaps[id]; else snaps[id] = drop;
+    if (drop == null) delete snaps[id]; else snaps[id] = drop;
     b.snaps = snaps;
   }
+  // The page's inputs as steps of their own (each a move, 9.6): a snap drag at rest on a drop (none: home), a dialog
+  // closed, the language an axis picks, the system's reduced-motion preference, a shell widget's event.
+  step(source, fn) { const r = this.transaction(source, fn); this.afterCommit?.(); return r; }
+  snap(address, id, drop) { return this.step('person', () => this.setSnap(address, id, drop)); }
+  closeDialog(slot) { return this.step('person', () => this.dialog(slot, false)); }
+  // firstInput (10.4, 5.12): a person's first trusted press, key press or pointer-down of the run. The page sends it
+  // at that moment, before the press itself runs, so it comes before openUrl on a click-area press. The engine reports
+  // the built-in output firstInput once per run: state.firstInput holds that it was reported (a restart clears it),
+  // and a later call is ignored.
+  firstInput() {
+    if (this.state.firstInput) return { ok: true, ignored: 'reported' };
+    return this.step('person', () => { this.state.firstInput = true; this.state.outputs.push({ name: 'firstInput' }); });
+  }
+  setLanguage(lang) { return this.step('host', () => { this.state.ambient.language = lang; this.queueAll('changed:language'); }); }
+  motion(on) { return this.step('host', () => this.motionPreference(on)); }
+  shellEvent(name) { return this.step('widget', () => { this.emit('experience', name); this.queueAll(name); }); }
   // A key of the fixed set reaches every block as key:<code>, its release as keyUp:<code> (5.12). The host sends
   // no repeated keydown.
   key(code, up = false, source = 'person') {
@@ -1599,8 +1638,8 @@ export class Engine {
     if (this.exp.doc.inputs?.[c.value]?.kind === 'knob') return this.state.blocks.experience.inputs[c.value];
     return this.read(address, c.value);
   }
-  // A slider's travel maps onto its value's bounds; with positions the value snaps to that many even steps (5.11).
-  // t is the share of the travel, 0..1. Returns the value, or null when the slider has no number value.
+  // A slider's travel maps onto its value's bounds; with positions the value snaps to that many even steps, else to
+  // a knob's step, else to a round number (5.11). t is the share of the travel, 0..1. Returns the value, or null when the slider has no number value.
   sliderValueAt(address, id, t) {
     const c = this.def(address)?.controls?.[id];
     const d = this.controlValueDecl(address, id);
@@ -1610,6 +1649,8 @@ export class Engine {
     if (n) s = Math.round(s * (n - 1)) / (n - 1);
     let v = d.minimum + s * (d.maximum - d.minimum);
     if (d.step) v = d.minimum + Math.round((v - d.minimum) / d.step) * d.step;
+    // Neither positions nor a step: round to the largest power of ten that leaves at least 100 values (5.11).
+    else if (!n && d.maximum > d.minimum) { const u = 10 ** Math.floor(Math.log10((d.maximum - d.minimum) / 100)); v = Math.round(v / u) * u; }
     return Math.max(d.minimum, Math.min(d.maximum, +v.toFixed(10)));
   }
   // One keyboard step of a slider: a position, or a tenth of the range without positions (5.11).
@@ -1800,7 +1841,7 @@ export class Engine {
   // (opts.wallClock, a function giving UTC ms) is read; with neither, the epoch is 0.
   epochBase() {
     if (typeof this.opts.epochMs === 'number') return this.opts.epochMs;
-    if (typeof this.opts.wallClock === 'function') return this.opts.wallClock() - this.state.now;
+    if (typeof this.opts.wallClock === 'function') return this.opts.wallClock(this.state.now) - this.state.now;
     return 0;
   }
   nowValue() { return Math.floor((this.epochBase() + this.state.now) / 1000) * 1000; }

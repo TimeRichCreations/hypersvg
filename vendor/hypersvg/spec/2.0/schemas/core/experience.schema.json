@@ -2818,7 +2818,7 @@
                 "const": "video"
               }
             },
-            "description": "a video resource (2.6; D31: core, as the video region describes the drawing); the media checks read its keys"
+            "description": "a video resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"
           },
           {
             "type": "object",
@@ -2830,7 +2830,7 @@
                 "const": "captions"
               }
             },
-            "description": "a captions resource (2.6; D31: core, as the video region describes the drawing); the media checks read its keys"
+            "description": "a captions resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"
           }
         ]
       },
@@ -4719,8 +4719,8 @@
         },
         "slideFrom": {
           "enum": [
-            "start",
-            "end"
+            "end",
+            "start"
           ]
         }
       },
@@ -4855,8 +4855,8 @@
         },
         "slideFrom": {
           "enum": [
-            "start",
-            "end"
+            "end",
+            "start"
           ]
         }
       },

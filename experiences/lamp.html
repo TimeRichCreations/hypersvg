@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aISu305K5xIJS0aR0THyF/vNqKbRQy6EjvFepLh937s='; style-src 'unsafe-inline'; img-src data: blob:; media-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QVka9ZgAk/xfKlTvNzZgJMIZ81LPD3S3PCHXth6vB3M='; style-src 'unsafe-inline'; img-src data: blob:; media-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lamp</title>
 <style>html, body { margin: 0; height: 100%; background: #fff4d8; } #stage { position: fixed; inset: 0; }</style>
@@ -48,16 +48,16 @@ async function run(pack) {
 
 };
 defs[1] = function (exp) { 'use strict'; // engine/v2/web/player-web.mjs
-exp.reducedUnder = reducedUnder; exp.chooseFrame = chooseFrame; exp.learnFits = learnFits; exp.boot = boot; exp.linkWithoutHostLine = linkWithoutHostLine; exp.play = play;
-const { readExperience } = req(2);
-const { Player } = req(5);
-const { checkSetting } = req(6);
-const { Drawing, narrowLayouts } = req(12);
-const { hostApi } = req(24);
-const { attachAudio } = req(25);
+exp.reducedUnder = reducedUnder; exp.chooseFrame = chooseFrame; exp.learnFits = learnFits; exp.useAudio = useAudio; exp.boot = boot; exp.linkWithoutHostLine = linkWithoutHostLine; exp.play = play;
+const { readExperience } = req(3);
+const { Player } = req(6);
+const { checkSetting } = req(7);
+const { Drawing, narrowLayouts } = req(19);
+const { hostApi } = req(26);
 const { attachInput } = req(27);
-const { packageMeasures, experienceResources } = req(11);
-const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } = req(21);
+const { packageMeasures, experienceResources } = req(12);
+const __reexport2_0 = req(2);
+const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } = req(17);
 function reducedUnder(d, addr) {
   for (const [a, r] of Object.entries(d?.ladder || {})) {
     if (r.baked || (a !== addr && !a.startsWith(`${addr}/`))) continue;
@@ -109,12 +109,16 @@ function learnFits(d, roots, memory) {
   }
   return out;
 }
+let attachAudio = null;
+function useAudio(attach) { attachAudio = attach; }
+const SILENT = { log: [], lines: [], advance() {}, destroy() {}, stats: async () => ({ armed: false, requests: 0, started: 0, decoded: 0, failed: [], music: null }) };
 async function boot(container, { filesUrl, files: givenFiles = null, schemasUrl, checked = false, ...rest } = {}) {
   let framed = false;
   try { framed = window.top !== window.self; } catch { framed = true; }
   const files = givenFiles || await fetch(filesUrl).then(r => r.json());
   const schemas = checked ? null : await fetch(schemasUrl).then(r => r.json());
   if (!checked && !rest.modules) await import('../src/capabilities/all.mjs');
+  if (!checked) await import('./audio-web.mjs');
   const load = checked ? null : (await import('../src/load.mjs')).loadExperience;
   return play(container, { files, schemas, test: true, wholePage: !framed, ...(load ? { load } : {}), ...rest });
 }
@@ -154,7 +158,7 @@ function linkWithoutHost(state, container, host) {
       box = document.createElement('div');
       box.setAttribute('role', 'status');
       box.setAttribute('data-hsvg-notice', 'openUrl');
-      box.setAttribute('style', 'position:absolute;left:0;right:0;top:0;padding:8px 12px;background:#1f3a5f;color:#fff;font:14px/1.4 system-ui,sans-serif;z-index:9');
+      box.style.cssText = 'position:absolute;left:0;right:0;top:0;padding:8px 12px;background:#1f3a5f;color:#fff;font:14px/1.4 system-ui,sans-serif;z-index:9';
       if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
       container.appendChild(box);
     }
@@ -171,7 +175,8 @@ function linkWithoutHost(state, container, host) {
   });
   return (f) => { if (f?.code === 'E-GRANT' && /openUrl/.test(String(f?.message ?? ''))) tell(linkWithoutHostLine(state.player)); };
 }
-function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null }) {
+function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null }) {
+  const onError = givenOnError && ((d) => givenOnError({ ...d, code: d.code || 'E-HOST-ERROR' }));
   const sequence = Symbol.for('hypersvg.mountSequence');
   const namespace = `hsvg${globalThis[sequence] = (globalThis[sequence] || 0) + 1}__`;
   const source = { read: (rel) => (rel in files ? files[rel] : null) };
@@ -187,8 +192,8 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
   const measures = members ? packageMeasures(members, experienceResources(loaded.experience)) : undefined;
   let player = null;
   let made = null;
-  try { player = new Player(loaded.experience, { capabilities, storage, host, options, measures, modules, wallClock: () => Date.now() }); } catch (e) { if (!e?.code) throw e; made = e; }
-  const state = { player, namespace, drawing: null, scene: null, loaded, errors: [], stopped: null };
+  try { player = new Player(loaded.experience, { capabilities, storage, host, options, measures, modules, wallClock: clock || (() => Date.now()), onMove }); } catch (e) { if (!e?.code) throw e; made = e; }
+  const state = { player, namespace, drawing: null, scene: null, loaded, errors: [], stopped: null, nonce };
   let running = true;
   let linkRefused = null;
   const halt = (f, source) => {
@@ -203,10 +208,11 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     player?.stop?.(f, source);
     onError?.({ code, address, message, source });
     try { state.audio?.destroy(); } catch {   }
+    if (faultBox === false) return;
     const box = document.createElement('div');
     box.setAttribute('role', 'alert');
     box.setAttribute('data-hsvg-fault', code || 'fault');
-    box.setAttribute('style', 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:#7a1010;color:#fff;font:15px/1.4 system-ui,sans-serif;z-index:10');
+    box.style.cssText = 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:#7a1010;color:#fff;font:15px/1.4 system-ui,sans-serif;z-index:10';
     box.textContent = `This experience stopped: ${code || 'fault'} in ${address || 'the experience'}. ${message}`;
     if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
     container.appendChild(box);
@@ -228,7 +234,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     if (!soundWarned) { soundWarned = true; console.warn(`hsvg: ${d.message}`); }
     onError?.(d);
   };
-  state.audio = attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed });
+  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed }) : SILENT;
   const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   if (motionQuery) { player.state.ambient.motionSystem = motionQuery.matches === true; player.state.ambient.reducedMotion = motionQuery.matches === true || player.state.ambient.motionChosen === true; }
   const sizeNow = () => { const b = container.getBoundingClientRect(); const sp = { width: b.width, height: b.height }; return { ...sp, shape: activeShape({ ...sp, direction: directionOf(player.exp.doc, player.state.ambient?.language) }, shapeMapsOf(null, player.exp.doc)) }; };
@@ -237,6 +243,28 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     if (bad) { halt({ code: bad[0], address: 'experience', message: `timeLimits: ${bad[1]}` }, 'start'); return stoppedAtStart(); }
     player.state.ambient.timeLimits = timeLimits;
   }
+  if (language) player.state.ambient.language = language;
+  const hostSet = { theme: theme ?? undefined }; const hostDefault = {};
+  for (const a of player.exp.doc.axes || []) {
+    const id = a?.id ?? a?.axis;
+    if ((a?.axis !== 'language' && a?.axis !== 'theme') || player.options?.[id] === undefined) continue;
+    const made = Object.hasOwn(options || {}, id) || Object.hasOwn(player.host?.profile?.options || {}, id);
+    (made ? hostSet : hostDefault)[a.axis] ??= player.options[id];
+  }
+  if (language) { delete hostSet.language; delete hostDefault.language; }
+  const hostTheme = hostSet.theme;
+  if (hostTheme !== undefined && !Object.hasOwn(player.exp.doc.themes || {}, hostTheme)) {
+    halt({ code: 'E-AXIS-INPUT', address: 'experience', message: `theme ${JSON.stringify(hostTheme)} is not one of the experience's themes (${Object.keys(player.exp.doc.themes || {}).join(', ') || 'it declares none'})` }, 'start');
+    return stoppedAtStart();
+  }
+  if (hostSet.theme === undefined) delete hostSet.theme;
+  if (colors !== null && colors !== undefined && checkColors) {
+    const hc = checkColors(player.exp, colors, hostSet.theme);
+    state.colors = hc.roles;
+    for (const w of hc.warnings) { state.errors.push(w.message); if (onError) onError(w); else console.warn(`hsvg: ${w.code} ${w.message}`); }
+  }
+  const hostLanguage = hostSet.language ?? hostDefault.language;
+  if (hostLanguage !== undefined) player.state.ambient.language = hostLanguage;
   player.setSize(sizeNow());
   state.fault(player.start(), 'start');
   if (state.stopped && !player.scene) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
@@ -267,14 +295,15 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
   const spaceKey = (sp) => `${Math.round(sp.width)}x${Math.round(sp.height)}`;
   const readPicks = () => {
     const blocks = Object.keys(player.state.blocks).map(a => [a, player.def(a)]).filter(([, d]) => d?.axes);
-    return inputPicks(blocks, (a, n) => player.read(a, n));
+    const p = inputPicks(blocks, (a, n) => player.read(a, n));
+    p.experience = { ...hostDefault, ...p.experience, ...hostSet };
+    for (const axis of Object.keys(hostSet)) for (const b of Object.values(p.blocks)) delete b[axis];
+    return p;
   };
   state.picks = readPicks();
   const bootLanguage = state.picks.experience.language;
   if (bootLanguage && bootLanguage !== player.state.ambient.language && !state.picks.bad.length) {
-    const r = player.transaction('host', () => { player.state.ambient.language = bootLanguage; player.queueAll('changed:language'); });
-    player.afterCommit?.();
-    state.fault(r, 'start');
+    state.fault(player.setLanguage(bootLanguage), 'start');
     if (state.stopped) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
     state.picks = readPicks();
   }
@@ -291,7 +320,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
   const shellId = player.shellId;
   const blockOf = (address) => (address === shellId ? player.exp.shell : player.exp.scenes[address]);
   const build = (memory, space) => {
-    const d = new Drawing(player, { namespace, layouts: memory, picks: state.picks, theme: state.picks.experience.theme, stageSizes });
+    const d = new Drawing(player, { namespace, layouts: memory, picks: state.picks, theme: state.picks.experience.theme, colors: state.colors || null, stageSizes, nonce });
     if (shellId) {
       d.mountShell(shellId, choose(memory, shellId, blockOf(shellId), space), space);
       const st = d.stageSpace();
@@ -343,7 +372,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
   announcer.setAttribute('data-hsvg-announce', '');
   announcer.setAttribute('role', 'status');
   announcer.setAttribute('aria-live', 'polite');
-  announcer.setAttribute('style', 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0');
+  announcer.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0';
   const announce = (text) => {
     if (!text) return;
     if (!announcer.isConnected) container.appendChild(announcer);
@@ -467,9 +496,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     state.picks = next;
     const lang = next.experience.language;
     if (lang && lang !== player.state.ambient.language) {
-      const r = player.transaction('host', () => { player.state.ambient.language = lang; player.queueAll('changed:language'); });
-      player.afterCommit?.();
-      state.fault(r, 'host');
+      state.fault(player.setLanguage(lang), 'host');
       if (state.stopped) return true;
     }
     relayout(true, true);
@@ -543,9 +570,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     if (state.destroyed || state.stopped) return;
     const on = ev.matches === true;
     if (player.state.ambient.motionSystem === on) return;
-    const r = player.transaction('host', () => player.motionPreference(on));
-    player.afterCommit?.();
-    state.fault(r, 'host');
+    state.fault(player.motion(on), 'host');
     if (!state.stopped) after();
   };
   motionQuery?.addEventListener?.('change', motionChanged);
@@ -589,12 +614,18 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
   return state;
 }
 
-
+exp.VERSION = __reexport2_0.VERSION;
 };
-defs[2] = function (exp) { 'use strict'; // engine/v2/src/read.mjs
+defs[2] = function (exp) { 'use strict'; // engine/v2/src/version.mjs
+
+const VERSION = '2.0.0-next.1';
+
+exp.VERSION = VERSION;
+};
+defs[3] = function (exp) { 'use strict'; // engine/v2/src/read.mjs
 exp.readExperience = readExperience; exp.parseWords = parseWords; exp.parseCsv = parseCsv;
-const { parseStrict } = req(3);
-const { raisedLimits, activeLimits } = req(4);
+const { parseStrict } = req(4);
+const { raisedLimits, activeLimits } = req(5);
 const join = (dir, rel) => {
   const parts = (dir ? dir.split('/') : []).concat(rel.split('/'));
   const out = [];
@@ -792,7 +823,7 @@ function parseCsvRows(text) {
 
 exp.UPGRADE_TOOL = UPGRADE_TOOL;
 };
-defs[3] = function (exp) { 'use strict'; // engine/v2/schema/json-strict.mjs
+defs[4] = function (exp) { 'use strict'; // engine/v2/schema/json-strict.mjs
 exp.parseStrict = parseStrict;
 const UNSAFE = new Set(['__proto__', 'prototype', 'constructor']);
 class JsonError extends Error {
@@ -896,7 +927,7 @@ function toPlain(o) {
 
 exp.JsonError = JsonError;
 };
-defs[4] = function (exp) { 'use strict'; // engine/v2/src/limits.mjs
+defs[5] = function (exp) { 'use strict'; // engine/v2/src/limits.mjs
 exp.raisedLimits = raisedLimits; exp.activeLimits = activeLimits; exp.refusedLimits = refusedLimits; exp.refusalMessage = refusalMessage;
 const FORMAT = Object.freeze({
   soundBytesEach: 200000,
@@ -1080,11 +1111,11 @@ function refusalMessage(refused) {
 
 exp.FORMAT = FORMAT; exp.UP_TO = UP_TO; exp.SVG_LIMIT = SVG_LIMIT;
 };
-defs[5] = function (exp) { 'use strict'; // engine/v2/src/story.mjs
+defs[6] = function (exp) { 'use strict'; // engine/v2/src/story.mjs
 
-const { Engine, EngineFault, OFF } = req(6);
-const { FORMAT } = req(4);
-const { endsOf } = req(23);
+const { Engine, EngineFault, OFF } = req(7);
+const { FORMAT } = req(5);
+const { endsOf } = req(18);
 
 const fault = (code, msg, addr) => { throw new EngineFault(code, msg, addr); };
 class Player extends Engine {
@@ -1167,7 +1198,8 @@ class Player extends Engine {
     if (!c) return to;
     return this.presentStep(c, 0, 1) ?? this.resolveTo(c.after);
   }
-  start() {
+  start(ambient) {
+    if (ambient) this.state.ambient = structuredClone(ambient);
     const r = this.transaction('host', () => {
       const s = this.state.story;
       let to = s.resume;
@@ -1385,15 +1417,15 @@ class Player extends Engine {
 
 exp.endsOf = endsOf; exp.Player = Player;
 };
-defs[6] = function (exp) { 'use strict'; // engine/v2/src/runtime.mjs
+defs[7] = function (exp) { 'use strict'; // engine/v2/src/runtime.mjs
 exp.overflowFault = overflowFault; exp.checkSetting = checkSetting; exp.urlProblem = urlProblem; exp.checkValue = checkValue; exp.wordingOf = wordingOf; exp.markTextColumns = markTextColumns; exp.checkContent = checkContent;
-const { channelOf } = req(7);
-const { parse, evaluate, renderTemplate, deepEqual, FormulaError, oneName, slotFormula } = req(8);
-const { Stored } = req(9);
-const { FORMAT, raisedLimits, activeLimits, refusedLimits, refusalMessage } = req(4);
-const { installLimits } = req(10);
-const { installCapabilities, packageNeeds, needsGap, capabilityNames, registered } = req(16);
-const { isTierObject, wordingAt, fieldShown, giveWayRules } = req(20);
+const { channelOf } = req(8);
+const { parse, evaluate, renderTemplate, deepEqual, FormulaError, oneName, slotFormula } = req(9);
+const { Stored } = req(10);
+const { FORMAT, raisedLimits, activeLimits, refusedLimits, refusalMessage } = req(5);
+const { installLimits } = req(11);
+const { installCapabilities, packageNeeds, needsGap, capabilityNames, registered } = req(14);
+const { isTierObject, wordingAt, fieldShown, giveWayRules } = req(16);
 const { entryKey } = req(15);
 const REFUSED_ONLY = new Set(['host', 'seat', 'widget']);
 const WHOLE_FIELD = /^\s*\{\{\s*[A-Za-z_][\w.]*\s*\}\}\s*$/;
@@ -1422,6 +1454,7 @@ const URL_PARAM_ID = /^[a-z][a-z0-9-]{0,63}$/;
 const HOST_OUTPUTS = Object.freeze(['entered', 'ended', 'openUrl', 'firstInput', 'hookHealth']);
 const SKIP_TOP = new Set(['now', 'seq', 'revision', 'blocks', 'records', 'timers', 'outputs', 'deliveries']);
 const AMBIENT = ['now', 'elapsed', 'reducedMotion', 'timeLimits', 'inputMode', 'language', 'size', 'muted', 'volume', 'voice', 'spoken', 'visits', 'canReturn', 'chapter', 'hooks', 'layout'];
+const MOVES = Object.freeze(['activate', 'hold', 'key', 'send', 'trigger', 'setInput', 'hostPicture', 'applySettings', 'setPause', 'setSize', 'pick', 'seatInput', 'start', 'restart', 'clearStorage', 'snap', 'closeDialog', 'setLanguage', 'motion', 'shellEvent', 'firstInput', 'advance']);
 const own = (o, k) => o != null && typeof o === 'object' && Object.hasOwn(o, k);
 function urlProblem(v) {
   if ([...v].length > 2048) return 'a url is at most 2048 characters';
@@ -1543,6 +1576,21 @@ class Engine {
     this.seatHook?.bind(Object.freeze({ input: (actor, name, payload) => this.seatInput(actor, name, payload) }));
     this.lines = this.caps.runner('lines', this, fault);
     this.resetEngine();
+    if (opts.onMove) for (const k of MOVES) { const f = this[k]; this[k] = (...a) => (k === 'advance' ? this.moveIn(0, 0, () => f.apply(this, a)) : this.moveIn(k, this.movePayload(k, a), () => f.apply(this, a))); }
+  }
+  moveIn(source, payload, fn) {
+    const h = this.opts.onMove;
+    if (!h || this.moving) return fn();
+    this.moving = 1;
+    try {
+      if (source) try { h(JSON.parse(JSON.stringify({ t: this.state.now, source, payload: payload.map(x => x ?? null) }))); } catch (e) { this.deliveryError(e, 'listener'); }
+      return fn();
+    } finally { this.moving = 0; }
+  }
+  movePayload(k, a) {
+    if (k === 'start') return [this.state.ambient];
+    if (k === 'setInput' && this.exp.doc.inputs?.[a[0]]?.contentType === 'freeText' && typeof a[1] === 'string') return [a[0], { freeText: a[1].length }, ...a.slice(2)];
+    return a;
   }
   resetEngine() {
     const ambient = this.state?.ambient;
@@ -2666,9 +2714,19 @@ class Engine {
     const b = this.state.blocks[address];
     if (!b) return;
     const snaps = { ...(b.snaps || {}) };
-    if (drop === undefined) delete snaps[id]; else snaps[id] = drop;
+    if (drop == null) delete snaps[id]; else snaps[id] = drop;
     b.snaps = snaps;
   }
+  step(source, fn) { const r = this.transaction(source, fn); this.afterCommit?.(); return r; }
+  snap(address, id, drop) { return this.step('person', () => this.setSnap(address, id, drop)); }
+  closeDialog(slot) { return this.step('person', () => this.dialog(slot, false)); }
+  firstInput() {
+    if (this.state.firstInput) return { ok: true, ignored: 'reported' };
+    return this.step('person', () => { this.state.firstInput = true; this.state.outputs.push({ name: 'firstInput' }); });
+  }
+  setLanguage(lang) { return this.step('host', () => { this.state.ambient.language = lang; this.queueAll('changed:language'); }); }
+  motion(on) { return this.step('host', () => this.motionPreference(on)); }
+  shellEvent(name) { return this.step('widget', () => { this.emit('experience', name); this.queueAll(name); }); }
   key(code, up = false, source = 'person') {
     if (!KEY_CODE.test(code)) return { ok: true, ignored: 'not a key of the set' };
     const r = this.transaction(source, () => this.queueAll(`${up ? 'keyUp' : 'key'}:${code}`));
@@ -2697,6 +2755,7 @@ class Engine {
     if (n) s = Math.round(s * (n - 1)) / (n - 1);
     let v = d.minimum + s * (d.maximum - d.minimum);
     if (d.step) v = d.minimum + Math.round((v - d.minimum) / d.step) * d.step;
+    else if (!n && d.maximum > d.minimum) { const u = 10 ** Math.floor(Math.log10((d.maximum - d.minimum) / 100)); v = Math.round(v / u) * u; }
     return Math.max(d.minimum, Math.min(d.maximum, +v.toFixed(10)));
   }
   sliderStep(address, id) {
@@ -2843,7 +2902,7 @@ class Engine {
   }
   epochBase() {
     if (typeof this.opts.epochMs === 'number') return this.opts.epochMs;
-    if (typeof this.opts.wallClock === 'function') return this.opts.wallClock() - this.state.now;
+    if (typeof this.opts.wallClock === 'function') return this.opts.wallClock(this.state.now) - this.state.now;
     return 0;
   }
   nowValue() { return Math.floor((this.epochBase() + this.state.now) / 1000) * 1000; }
@@ -2895,11 +2954,11 @@ class Engine {
   }
 }
 
-exp.EngineFault = EngineFault; exp.AMBIENT_SETTINGS = AMBIENT_SETTINGS; exp.OFF = OFF; exp.HOST_OUTPUTS = HOST_OUTPUTS; exp.own = own; exp.onBound = onBound; exp.CONTENT_TYPES = CONTENT_TYPES; exp.Engine = Engine;
+exp.EngineFault = EngineFault; exp.AMBIENT_SETTINGS = AMBIENT_SETTINGS; exp.OFF = OFF; exp.HOST_OUTPUTS = HOST_OUTPUTS; exp.MOVES = MOVES; exp.own = own; exp.onBound = onBound; exp.CONTENT_TYPES = CONTENT_TYPES; exp.Engine = Engine;
 };
-defs[7] = function (exp) { 'use strict'; // engine/v2/src/binding-words.mjs
+defs[8] = function (exp) { 'use strict'; // engine/v2/src/binding-words.mjs
 exp.wordOf = wordOf; exp.channelOf = channelOf; exp.propOf = propOf; exp.isMirror = isMirror;
-const { parse } = req(8);
+const { parse } = req(9);
 const BINDING_WORDS = Object.freeze(['text', 'label', 'visible', 'variant', 'color', 'move', 'rotate', 'scale', 'opacity', 'draw']);
 function wordOf(o) {
   if (!o || typeof o !== 'object') return null;
@@ -2951,9 +3010,9 @@ function isMirror(b) {
 
 exp.BINDING_WORDS = BINDING_WORDS; exp.valueOf = valueOf;
 };
-defs[8] = function (exp) { 'use strict'; // engine/v2/src/formula.mjs
+defs[9] = function (exp) { 'use strict'; // engine/v2/src/formula.mjs
 exp.parse = parse; exp.mix = mix; exp.pluralForm = pluralForm; exp.pointOrder = pointOrder; exp.evaluate = evaluate; exp.printNumber = printNumber; exp.numberText = numberText; exp.parseTemplate = parseTemplate; exp.renderTemplate = renderTemplate; exp.oneName = oneName; exp.textSlot = textSlot; exp.slotFormula = slotFormula;
-const { FORMAT } = req(4);
+const { FORMAT } = req(5);
 class FormulaError extends Error {
   constructor(code, message) { super(message); this.code = code; }
 }
@@ -3288,7 +3347,7 @@ function evaluate(tree, scope, budget = { steps: 0 }) {
       case 'clamp': { const [v, lo, hi] = a.map(x => num(x, 'clamp')); if (lo > hi) fault('clamp low is above high'); return Math.min(hi, Math.max(lo, v)); }
       case 'floor': return Math.floor(num(a[0], 'floor'));
       case 'ceil': return Math.ceil(num(a[0], 'ceil'));
-      case 'round': return Math.floor(num(a[0], 'round') + 0.5);
+      case 'round': { const v = num(a[0], 'round'); const r = Math.floor(v); return v - r < 0.5 ? r + 0 : r + 1; }
       case 'pow': return finite(Math.pow(num(a[0], 'pow'), num(a[1], 'pow')));
       case 'sqrt': { const v = num(a[0], 'sqrt'); if (v < 0) fault('sqrt needs a number 0 or more'); return Math.sqrt(v); }
       case 'exp': return finite(Math.exp(num(a[0], 'exp')));
@@ -3308,14 +3367,14 @@ function evaluate(tree, scope, budget = { steps: 0 }) {
         for (const r of rowsList) { work(1); if (r && typeof r === 'object' && Object.prototype.hasOwnProperty.call(r, a[1]) && same(r[a[1]], a[2])) return r; }
         return a[3];
       }
-      case 'append': { const max = num(a[2], 'append'); if (max < 1 || max > FORMAT.listItems) fault(`append maximum is 1..${FORMAT.listItems}`); const from = arr(a[0], 'append'); bulk(from.length + 1); const out = [...from, a[1]]; return out.slice(Math.max(0, out.length - max)); }
+      case 'append': { const max = num(a[2], 'append'); if (max < 1 || max > FORMAT.listItems) fault(`append maximum is 1..${FORMAT.listItems}`); const from = arr(a[0], 'append'); bulk(from.length + 1); const out = [...from, a[1]]; return out.slice(Math.max(0, Math.ceil(out.length - max))); }
       case 'pick': { const list = arr(a[0], 'pick'); if (!list.length) fault('pick needs a non-empty array'); return list[mix(num(a[1], 'pick')) % list.length]; }
       case 'shuffle': {
         const list = [...arr(a[0], 'shuffle')]; work(list.length); const seed = num(a[1], 'shuffle'); const len = list.length;
         for (let i = len - 1; i >= 1; i--) { const j = mix(seed + (len - 1 - i)) % (i + 1); [list[i], list[j]] = [list[j], list[i]]; }
         return list;
       }
-      case 'random': { const [lo, hi, seed] = a.map(x => num(x, 'random')); return lo + ((hi - lo) * mix(seed)) / 4294967296; }
+      case 'random': { const [lo, hi, seed] = a.map(x => num(x, 'random')); return finite(lo + ((hi - lo) * mix(seed)) / 4294967296); }
       case 'range': {
         const c = Math.trunc(num(a[0], 'range'));
         if (c < 0 || c > FORMAT.formulaArrayItems) fault(`range takes 0..${FORMAT.formulaArrayItems}, found ${c}`, 'E-RANGE');
@@ -3438,10 +3497,10 @@ function slotFormula(decl, src) { return src; }
 
 exp.FormulaError = FormulaError; exp.FUNCTIONS = FUNCTIONS; exp.BUILTIN_ROOT = BUILTIN_ROOT; exp.deepEqual = deepEqual; exp.isTextDecl = isTextDecl; exp.quoteText = quoteText;
 };
-defs[9] = function (exp) { 'use strict'; // engine/v2/src/storage.mjs
+defs[10] = function (exp) { 'use strict'; // engine/v2/src/storage.mjs
 
-const { checkValue } = req(6);
-const { storageGrant, restoredRecord } = req(10);
+const { checkValue } = req(7);
+const { storageGrant, restoredRecord } = req(11);
 const SCOPES = ['session', 'saved'];
 const clone = (v) => (v === undefined ? undefined : structuredClone(v));
 const PARTITION = /^[A-Za-z0-9._-]{1,128}$/;
@@ -3534,10 +3593,10 @@ class Stored {
 
 exp.Stored = Stored;
 };
-defs[10] = function (exp) { 'use strict'; // engine/v2/src/limits-runtime.mjs
+defs[11] = function (exp) { 'use strict'; // engine/v2/src/limits-runtime.mjs
 exp.imageSize = imageSize; exp.imagePixels = imagePixels; exp.storageGrant = storageGrant; exp.restoredRecord = restoredRecord; exp.installLimits = installLimits; exp.jsonUnits = jsonUnits; exp.bboxOf = bboxOf; exp.filterSurface = filterSurface; exp.watchArt = watchArt;
-const { admitHost, budgetResults, expired } = req(11);
-const { parseTransform } = req(12);
+const { admitHost, budgetResults, expired } = req(12);
+const { parseTransform } = req(13);
 let EngineFault = class extends Error { constructor(code, m, a) { super(`${code} ${a || ''}: ${m}`); this.code = code; this.address = a; } };
 const fault = (code, msg, addr) => { throw new EngineFault(code, msg, addr); };
 const utf8 = (s) => new TextEncoder().encode(s).length;
@@ -3853,7 +3912,7 @@ function watchArt(drawing) {
 
 
 };
-defs[11] = function (exp) { 'use strict'; // engine/v2/src/host-profile.mjs
+defs[12] = function (exp) { 'use strict'; // engine/v2/src/host-profile.mjs
 exp.profileProblems = profileProblems; exp.effectiveGrants = effectiveGrants; exp.steeringCeiling = steeringCeiling; exp.readableFloor = readableFloor; exp.hostBudget = hostBudget; exp.budgetResults = budgetResults; exp.packageMeasures = packageMeasures; exp.hostOptions = hostOptions; exp.expired = expired; exp.admitHost = admitHost; exp.experienceResources = experienceResources;
 const STEERING = ['none', 'ask', 'guided', 'open'];
 const READABLE_DEFAULT = 12;
@@ -4012,23 +4071,659 @@ function experienceResources(e) {
 
 exp.STEERING = STEERING; exp.READABLE_DEFAULT = READABLE_DEFAULT;
 };
-defs[12] = function (exp) { 'use strict'; // engine/v2/src/drawing.mjs
-exp.ease = ease; exp.sampleKeys = sampleKeys; exp.narrowLayouts = narrowLayouts; exp.parseTransform = parseTransform;
-const { parseXml } = req(13);
-const { parseMotion } = req(14);
+defs[13] = function (exp) { 'use strict'; // engine/v2/src/transform.mjs
+exp.parseTransform = parseTransform;
+const IDENTITY = [1, 0, 0, 1, 0, 0];
+const mul = (m, n) => [m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1], m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3], m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5]];
+function parseTransform(s) {
+  let m = IDENTITY;
+  if (!s) return m;
+  const rad = (a) => (a * Math.PI) / 180;
+  for (const [, fn, args] of String(s).matchAll(/([a-zA-Z]+)\s*\(([^)]*)\)/g)) {
+    const v = args.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+    let k = IDENTITY;
+    if (fn === 'translate') k = [1, 0, 0, 1, v[0] || 0, v[1] || 0];
+    else if (fn === 'scale') k = [v[0], 0, 0, v[1] ?? v[0], 0, 0];
+    else if (fn === 'rotate') { const c = Math.cos(rad(v[0])); const n = Math.sin(rad(v[0])); k = [c, n, -n, c, 0, 0]; if (v.length === 3) k = mul(mul([1, 0, 0, 1, v[1], v[2]], k), [1, 0, 0, 1, -v[1], -v[2]]); }
+    else if (fn === 'skewX') k = [1, 0, Math.tan(rad(v[0])), 1, 0, 0];
+    else if (fn === 'skewY') k = [1, Math.tan(rad(v[0])), 0, 1, 0, 0];
+    else if (fn === 'matrix') k = v.slice(0, 6);
+    m = mul(m, k);
+  }
+  return m;
+}
+
+exp.IDENTITY = IDENTITY; exp.mul = mul;
+};
+defs[14] = function (exp) { 'use strict'; // engine/v2/src/capabilities.mjs
+exp.register = register; exp.unregister = unregister; exp.registered = registered; exp.packageNeeds = packageNeeds; exp.capabilityNames = capabilityNames; exp.timerView = timerView; exp.makeDoor = makeDoor; exp.makePageDoor = makePageDoor; exp.installCapabilities = installCapabilities; exp.needsGap = needsGap;
 const { entryKey } = req(15);
-const { OWNED_BINDING_KEYS, TEXT_BINDING_KEYS } = req(16);
+const { slotFormula, quoteText } = req(9);
+const registry = new Map();
+function register(cap) {
+  if (!cap || typeof cap.id !== 'string') throw new Error('a capability needs an id');
+  registry.set(cap.id, cap);
+  return cap;
+}
+function unregister(id) { return registry.delete(id); }
+function registered() { return new Map(registry); }
+const OWNED_FIELDS = Object.freeze({});
+const OWNED_EFFECT_KINDS = Object.freeze({});
+const OWNED_BINDING_KEYS = Object.freeze({ media: 'media', "rich-text": 'rich-text' });
+const OWNED_CONTENT_TYPES = Object.freeze({ richText: 'rich-text' });
+const HUMAN_ONLY_CALLS = Object.freeze({ "page.invoke": 'page', "snapshot.save": 'snapshot' });
+const TEXT_BINDING_KEYS = Object.freeze({ "rich-text": 'rich-text' });
+const TEXT_CALL_INPUTS = Object.freeze({ "ai.ask": ['fallback', 'question', 'seat'], "effects.play": ['effect'], "effects.stop": ['effect'], "lines.say": ['line'], "media.pause": ['place'], "media.play": ['place'], "media.seek": ['place'], "page.focus": ['hook'], "page.highlight": ['hook'], "page.invoke": ['hook'], "page.point": ['hook'], "page.scroll": ['hook'], "physics.kick": ['body'], "physics.throw": ['body'], "snapshot.save": ['save'] });
+const TEXT_DECL = Object.freeze({ type: 'string' });
+function textInputs(a, S) {
+  const c = copy(a);
+  const keys = Object.hasOwn(TEXT_CALL_INPUTS, a.call) ? TEXT_CALL_INPUTS[a.call] : [];
+  if (!keys.length || !c.with || typeof c.with !== 'object') return c;
+  for (const k of keys) {
+    const src = c.with[k];
+    if (typeof src !== 'string') continue;
+    c.with[k] = slotFormula(TEXT_DECL, src) ?? quoteText(S(TEXT_DECL, src));
+  }
+  return c;
+}
+function packageNeeds(experience) {
+  const out = [];
+  const add = (doc) => { for (const n of Array.isArray(doc?.needs) ? doc.needs : []) if (typeof n === 'string' && !out.includes(n)) out.push(n); };
+  add(experience?.doc);
+  for (const s of Object.values(experience?.scenes || {})) add(s?.doc);
+  add(experience?.shell?.doc);
+  for (const b of Object.values(experience?.blocks || {})) add(b?.doc);
+  return out;
+}
+function capabilityNames(needs) {
+  const out = [];
+  for (const n of needs) {
+    if (n.startsWith('font:')) continue;
+    const name = n.includes('@') ? n.slice(0, n.indexOf('@')) : n;
+    if (!out.includes(name)) out.push(name);
+  }
+  return out;
+}
+const FROZEN = new WeakMap();
+const deepFreeze = (x) => { if (x && typeof x === 'object' && !Object.isFrozen(x)) { Object.freeze(x); for (const v of Object.values(x)) deepFreeze(v); } return x; };
+const frozenCopy = (x) => {
+  if (!x || typeof x !== 'object') return x;
+  let f = FROZEN.get(x);
+  if (!f) { f = deepFreeze(structuredClone(x)); FROZEN.set(x, f); }
+  return f;
+};
+const copy = (v) => (v === undefined ? undefined : structuredClone(v));
+const CORE_BLOCK_KEYS = new Set(['kind', 'def', 'parent', 'values', 'inputs', 'machines', 'uses', 'clips', 'attach', 'born']);
+const SCOPES = new WeakMap();
+const scopeOf = (engine) => { let t = SCOPES.get(engine); if (!t) { t = Object.freeze({}); SCOPES.set(engine, t); } return t; };
+function timerView(t) { return { ...copy(t.data || {}), due: t.due, seq: t.seq, owner: t.owner, cap: t.cap }; }
+function makeDoor(engine, id, EngineFault) {
+  if (CORE_BLOCK_KEYS.has(id)) throw new Error(`a capability cannot be called ${id}`);
+  const fault = (code, message, address) => { throw new EngineFault(code, message, address); };
+  const blockOf = (address) => engine.state.blocks[address];
+  const mine = (t) => t.cap === id;
+  const inStep = (what) => { if (engine.source === null) throw new Error(`${id}: ${what} outside a step`); };
+  const door = {
+    id,
+    EngineFault,
+    fault,
+    get experience() { return frozenCopy(engine.exp.doc); },
+    scope: scopeOf(engine),
+    get host() { return frozenCopy(engine.opts.host ?? null); },
+    get port() { return engine.capabilities?.[id] ?? null; },
+    get limits() { return engine.limits; },
+    now: () => engine.state.now,
+    source: () => engine.source,
+    ambient: (name) => copy(engine.state.ambient[name]),
+    block(address) { const b = blockOf(address); return b ? { kind: b.kind, def: b.def, parent: b.parent ?? null, born: b.born } : null; },
+    addresses: () => Object.keys(engine.state.blocks),
+    def: (address) => frozenCopy(engine.def(address)),
+    settings: (address) => frozenCopy(engine.def(address))?.addons?.[id] ?? null,
+    entryKey: (address, entry) => { const k = entryKey(engine.def(address), entry); return k === '(no id)' ? entryKey(frozenCopy(engine.def(address)), entry) : k; },
+    drawings(address) {
+      const b = blockOf(address);
+      const src = !b ? null : b.kind === 'scene' ? engine.exp.scenes[b.def] : b.kind === 'shell' ? engine.exp.shell : b.kind === 'component' ? engine.defs[b.def] : null;
+      return Object.fromEntries(Object.entries(src?.drawings || {}).map(([k, d]) => [k, d.text]));
+    },
+    eval: (address, formula, extra = engine.eventExtra) => copy(engine.eval(address, formula, extra)),
+    read: (address, name) => copy(engine.read(address, name)),
+    wordIds: (address) => Object.keys(engine.words(address) || {}),
+    event: () => copy(engine.eventExtra?.event),
+    write(address, name, value) {
+      inStep('write');
+      if (!blockOf(address)) fault('E-REF-UNKNOWN', `no block ${address}`, address);
+      engine.withEvent({ event: { value: copy(value) } }, () => engine.runActions(address, [{ id: `${id}-write`, set: name, value: copy(value) }], `${id} write`));
+    },
+    emit(address, name, payload = {}) { inStep('emit'); engine.emit(address, name, copy(payload)); },
+    own: (address) => blockOf(address)?.[id],
+    setOwn(address, data) {
+      inStep('setOwn');
+      const b = blockOf(address);
+      if (!b) fault('E-REF-UNKNOWN', `no block ${address}`, address);
+      if (data === undefined) delete b[id]; else b[id] = data;
+    },
+    timers: {
+      add(owner, due, fields = {}) {
+        inStep('a timer');
+        if (typeof due !== 'number' || !Number.isFinite(due)) fault('E-RANGE', `${id}: a timer needs a finite due time`, owner);
+        engine.state.timers.push({ data: copy(fields), due, seq: engine.state.seq++, owner, cap: id });
+      },
+      drop(match) { inStep('a timer'); engine.state.timers = engine.state.timers.filter(t => !(mine(t) && match(timerView(t)))); },
+      list: () => engine.state.timers.filter(mine).map(timerView),
+    },
+    deliver(d) {
+      inStep('deliver');
+      if (d?.kind !== id) fault('E-NEEDS-MISSING', `${id} may deliver only kind ${id}`, d?.address);
+      engine.state.deliveries.push(copy(d));
+    },
+    humanOnly: (address, what) => engine.humanOnly(address, what),
+    transaction(source, fn, move) {
+      if (engine.source !== null) throw new Error(`${id}: a transaction is already running`);
+      return engine.moveIn(move ? move[0] : 'door', move ? move.slice(1) : [id, source], () => engine.step(source, fn));
+    },
+    fed: () => engine.fed === true,
+    note: (kind, address, message) => engine.note(kind, address, message),
+    onCommit: (fn) => engine.on(fn),
+    expose(name, value) {
+      if (name in engine) throw new Error(`${id} cannot expose ${name}: the engine has it`);
+      Object.defineProperty(engine, name, { value, enumerable: false, configurable: false, writable: false });
+      (engine.exposedNames ??= new Set()).add(name);
+    },
+  };
+  return Object.freeze(door);
+}
+function makePageDoor(player, id, page) {
+  const copy2 = (v) => (v === undefined ? undefined : structuredClone(v));
+  const report = (r, source = 'widget') => {
+    if (r && r.ok === false) {
+      if (page.fault) page.fault(r, source === 'widget' ? 'control' : source);
+      else page.errors?.push(r.fault.message);
+    }
+    return r;
+  };
+  const repaint = () => page.after?.();
+  const step = (r, source) => { report(r, source); repaint(); return r; };
+  const door = {
+    id,
+    get experience() { return frozenCopy(player.exp.doc); },
+    get shell() { return player.exp.shell?.doc ? frozenCopy(player.exp.shell.doc) : null; },
+    get shellId() { return player.shellId ?? null; },
+    scene: (sceneId) => (player.exp.scenes?.[sceneId]?.doc ? frozenCopy(player.exp.scenes[sceneId].doc) : null),
+    scenes: () => Object.keys(player.exp.scenes || {}),
+    block(address) { const b = player.state.blocks[address]; return b ? { kind: b.kind, def: b.def, parent: b.parent ?? null, born: b.born } : null; },
+    words: (address) => ({ ...(player.words(address) || {}) }),
+    template: (address, text) => String(player.template(address, text)),
+    eval: (address, formula) => copy2(player.eval(address, formula)),
+    read: (address, name) => copy2(player.read(address, name)),
+    input: (name) => copy2(player.state.blocks.experience.inputs[name]),
+    ambient: (name) => copy2(player.state.ambient[name]),
+    revision: () => player.state.revision,
+    choices: () => copy2(player.choices?.() ?? []),
+    exposed: (name) => (player.exposedNames?.has(name) ? player[name] : null),
+    setInput: (name, value) => step(player.setInput(name, copy2(value), 'widget')),
+    applySettings: (pairs) => step(player.applySettings(copy2(pairs), 'widget')),
+    send(address, name, payload = {}) { const r = player.send(address, name, copy2(payload), 'widget'); return step(r); },
+    fire: (name) => step(player.shellEvent(name)),
+    closeDialog: (slot) => step(player.closeDialog(slot), 'control'),
+    pick: (linkId) => step(player.pick(linkId), 'control'),
+    slot: (slotId) => page.drawing?.slots?.[slotId]?.dom ?? null,
+    part: (address, local) => page.drawing?.frames?.[address]?.byLocal?.get(local)?.dom ?? null,
+    colorRoles: () => ({ ...(page.drawing?.theme?.colorRoles || {}) }),
+    onDeliveries(fn) { return player.on(({ deliveries }) => fn({ deliveries: copy2(deliveries), source: player.source })); },
+    host: () => page.host ?? null,
+    report,
+    repaint,
+  };
+  return Object.freeze(door);
+}
+const HOOKS = ['actions', 'controls', 'access', 'paints', 'calls', 'timer', 'mount', 'entered', 'play', 'stop', 'hold', 'keep', 'clock', 'input', 'seatHook'];
+function installCapabilities(engine, EngineFault, modules = null) {
+  const pool = modules ? new Map(modules.map(m => [m.id, m])) : registry;
+  const needs = capabilityNames(packageNeeds(engine.exp));
+  const doors = new Map();
+  const doorFor = (id) => { if (!needs.includes(id)) return null; if (!doors.has(id)) doors.set(id, makeDoor(engine, id, EngineFault)); return doors.get(id); };
+  const list = [];
+  for (const id of needs) {
+    const cap = pool.get(id);
+    if (!cap) continue;
+    const hooks = cap.install?.(doorFor(id)) || {};
+    const entry = { id, record: cap };
+    for (const k of HOOKS) if (hooks[k] !== undefined) entry[k] = hooks[k];
+    list.push(entry);
+  }
+  return new Installed(list, doorFor);
+}
+function ownedMissing(doc, has) {
+  for (const [field, id] of Object.entries(OWNED_FIELDS)) if (doc?.[field] !== undefined && !has(id)) return { field, id };
+  for (const id of Object.keys(doc?.addons && typeof doc.addons === 'object' ? doc.addons : {})) if (!id.includes('.') && !has(id)) return { field: `addons.${id}`, id };
+  for (const bd of Array.isArray(doc?.bindings) ? doc.bindings : []) for (const [key, id] of Object.entries(OWNED_BINDING_KEYS)) if (bd?.[key] !== undefined && !has(id)) return { field: `bindings (${key})`, id };
+  for (const k of ['inputs', 'values']) for (const [name, d] of Object.entries(doc?.[k] || {})) { const id = OWNED_CONTENT_TYPES[d?.contentType]; if (id && !has(id)) return { field: `${k}.${name} (${d.contentType})`, id }; }
+  for (const ef of Object.values(doc?.effects || {})) {
+    const id = OWNED_EFFECT_KINDS[ef?.kind];
+    if (id && !has(id)) return { field: `effects (kind ${ef.kind})`, id };
+  }
+  return null;
+}
+function needsGap(experience, installed = () => true) {
+  const top = capabilityNames(Array.isArray(experience?.doc?.needs) ? experience.doc.needs : []);
+  const own = (doc) => capabilityNames(Array.isArray(doc?.needs) ? doc.needs : []);
+  const docs = [['experience', experience?.doc, true], ...Object.entries(experience?.scenes || {}).map(([id, s]) => [id, s?.doc, true]),
+    ...(experience?.shell ? [[experience.shell.doc?.id ?? 'shell', experience.shell.doc, true]] : []),
+    ...Object.entries(experience?.blocks || {}).map(([id, b]) => [id, b?.doc, ['scene', 'shell'].includes(b?.doc?.kind)])];
+  for (const [address, doc, inherits] of docs) {
+    if (!doc) continue;
+    const have = new Set([...own(doc), ...(inherits && doc !== experience.doc ? top : [])]);
+    const gap = ownedMissing(doc, (id) => have.has(id) || !installed(id));
+    if (gap) return { address, ...gap };
+  }
+  return null;
+}
+class Installed {
+  constructor(list, doorFor) { this.list = list; this.ids = list.map(c => c.id); this.doorFor = doorFor; }
+  has(id) { return this.ids.includes(id); }
+  plugin(id) { return this.doorFor(id); }
+  attach(ctx) {
+    const parts = {};
+    for (const c of this.list) {
+      if (!c.record.attach) continue;
+      const door = makePageDoor(ctx.player, c.id, ctx.state);
+      const part = c.record.attach({ door, container: ctx.container, win: ctx.win, options: ctx.options || {}, player: ctx.player, state: ctx.state });
+      if (part) parts[c.id] = part;
+    }
+    return parts;
+  }
+  runner(id, engine, fault) {
+    const c = this.list.find(x => x.id === id);
+    const r = c?.record.runner ? c.record.runner(engine, fault) : null;
+    if (r?.calls && !c.calls) c.calls = r.calls;
+    return r;
+  }
+  drawing(id) { return this.list.find(x => x.id === id)?.record.drawing ?? null; }
+  missingField(doc) { return ownedMissing(doc, (id) => this.has(id)); }
+  missingContentType(doc) {
+    for (const k of ['inputs', 'values']) for (const [name, d] of Object.entries(doc?.[k] || {})) { const id = OWNED_CONTENT_TYPES[d?.contentType]; if (id && !this.has(id)) return { field: `${k}.${name} (${d.contentType})`, id }; }
+    return null;
+  }
+  inputHook(kind, ...args) { for (const c of this.list) { const v = c.input?.[kind]?.(...args); if (v !== undefined && v !== null) return v; } return kind === 'check' ? null : undefined; }
+  phase(name, address, doc) { for (const c of this.list) c[name]?.(address, frozenCopy(doc)); }
+  action(address, a, E, S = (decl, f) => E(f)) {
+    if (typeof a.call === 'string') {
+      const dot = a.call.lastIndexOf('.');
+      const c = dot > 0 ? this.list.find(x => x.calls && x.id === a.call.slice(0, dot)) : null;
+      if (c) {
+        const verb = a.call.slice(dot + 1);
+        const fn = Object.hasOwn(c.calls, verb) ? c.calls[verb] : c.calls['*'];
+        if (Object.hasOwn(HUMAN_ONLY_CALLS, a.call)) this.doorFor(c.id).humanOnly(address, `call ${a.call}`);
+        if (!fn) this.doorFor(c.id).fault('E-ADDON', `call ${a.call}: ${c.id} has no call ${verb}; it has ${Object.keys(c.calls).join(', ') || 'none'}`, address);
+        fn(address, textInputs(a, S), E, S); return true;
+      }
+    }
+    for (const c of this.list) for (const [key, fn] of Object.entries(c.actions || {})) if (key in a) { fn(address, copy(a), E); return true; }
+    return false;
+  }
+  control(address, id, c, arg) {
+    for (const cap of this.list) { const fn = cap.controls?.[c.kind]; if (fn) { fn(address, id, copy(c), copy(arg)); return true; } }
+    return false;
+  }
+  access(address, id, c) { for (const cap of this.list) { const fn = cap.access?.[c.kind]; if (fn) return fn(address, id, copy(c)); } return null; }
+  paint(word) { for (const c of this.list) if (c.paints?.[word]) return c.paints[word]; return null; }
+  timer(t) {
+    if (t.cap === undefined) return false;
+    const c = this.list.find(x => x.id === t.cap);
+    if (c?.timer) c.timer(timerView(t));
+    return true;
+  }
+  play(address, id) { return this.list.some(c => c.play?.(address, id) === true); }
+  stop(address, id, interrupted) { return this.list.some(c => c.stop?.(address, id, interrupted) === true); }
+  hold(address, ms) { for (const c of this.list) c.hold?.(address, ms); }
+  kept(block) {
+    const out = {};
+    for (const c of this.list) if (c.keep && block?.[c.id] !== undefined) { const d = c.keep.save(copy(block[c.id])); if (d !== null && d !== undefined) out[c.id] = d; }
+    return out;
+  }
+  restoreKept(block, data) {
+    if (!block || !data || typeof data !== 'object') return;
+    for (const c of this.list) if (c.keep && data[c.id] !== undefined) { const o = c.keep.load(copy(data[c.id])); if (o) block[c.id] = o; }
+  }
+  clockBegin() { for (const c of this.list) c.clock?.begin?.(); }
+  clockNext(end, engine) {
+    let best = null;
+    for (const c of this.list) { const n = c.clock?.next(end); if (n && (!best || n.due < best.due)) best = n; }
+    return best && { due: best.due, run: (results) => { engine.state.now = best.due; best.run(results); } };
+  }
+  clockEnd(end) { for (const c of this.list) c.clock?.end?.(end); }
+}
+
+exp.OWNED_FIELDS = OWNED_FIELDS; exp.OWNED_EFFECT_KINDS = OWNED_EFFECT_KINDS; exp.OWNED_BINDING_KEYS = OWNED_BINDING_KEYS; exp.OWNED_CONTENT_TYPES = OWNED_CONTENT_TYPES; exp.HUMAN_ONLY_CALLS = HUMAN_ONLY_CALLS; exp.TEXT_BINDING_KEYS = TEXT_BINDING_KEYS; exp.TEXT_CALL_INPUTS = TEXT_CALL_INPUTS;
+};
+defs[15] = function (exp) { 'use strict'; // engine/v2/src/entry-key.mjs
+exp.entryKey = entryKey;
+const known = new WeakMap();
+function walk(node, at, map) {
+  if (!node || typeof node !== 'object') return;
+  if (Array.isArray(node)) { node.forEach((x, i) => walk(x, `${at}[${i}]`, map)); return; }
+  if (at && !map.has(node)) map.set(node, at);
+  for (const k of Object.keys(node)) walk(node[k], at ? `${at}.${k}` : k, map);
+}
+function entryKey(owner, entry) {
+  if (typeof entry?.id === 'string') return entry.id;
+  if (!owner || typeof owner !== 'object') return '(no id)';
+  let map = known.get(owner);
+  if (!map) { map = new Map(); walk(owner, '', map); known.set(owner, map); }
+  return map.get(entry) ?? '(no id)';
+}
+
+
+};
+defs[16] = function (exp) { 'use strict'; // engine/v2/src/tiers.mjs
+exp.isTierObject = isTierObject; exp.wordingAt = wordingAt; exp.wordingsDown = wordingsDown; exp.fieldShown = fieldShown; exp.tierEntry = tierEntry; exp.chooseTier = chooseTier; exp.badSteps = badSteps; exp.giveWayRules = giveWayRules; exp.ladderOrder = ladderOrder; exp.runLadder = runLadder;
+const { inRange, rangeOf } = req(17);
+const TIERS = ['short', 'medium', 'rich'];
+const tierRank = (t) => TIERS.indexOf(t);
+const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+function isTierObject(v) {
+  if (!isObj(v)) return false;
+  const keys = Object.keys(v);
+  return keys.length > 0 && keys.every(k => TIERS.includes(k));
+}
+function wordingAt(v, tier) {
+  if (!isTierObject(v)) return v;
+  return v[TIERS[sourceTier(v, tier)]];
+}
+function sourceTier(v, tier) {
+  const r = Math.max(0, tierRank(tier));
+  for (let i = r; i < TIERS.length; i++) if (TIERS[i] in v) return i;
+  for (let i = r - 1; i >= 0; i--) if (TIERS[i] in v) return i;
+  return -1;
+}
+function wordingsDown(v, tier) {
+  if (!isTierObject(v)) return [v];
+  const s = sourceTier(v, tier);
+  const out = [v[TIERS[s]]];
+  for (let i = s - 1; i >= 0; i--) {
+    const w = v[TIERS[i]];
+    if (w === undefined || w === '' || w === out[out.length - 1]) continue;
+    out.push(w);
+  }
+  return out;
+}
+function fieldShown(decl, tier) {
+  const own = decl && decl.required !== false ? 'short' : (decl?.tier ?? 'short');
+  return tierRank(own) <= tierRank(tier);
+}
+function tierEntry(docs) {
+  for (const d of docs) for (const a of d?.axes || []) {
+    if (!isObj(a) || a.axis !== 'content' || a.subject !== undefined) continue;
+    if (Array.isArray(a.tiers) || a.select === 'input') return a;
+  }
+  return null;
+}
+function chooseTier(entry, { space = null, maps = [], valueOf = () => undefined } = {}) {
+  if (!entry) return { tier: 'rich', why: 'none' };
+  const fallback = TIERS.includes(entry.default) ? entry.default : 'rich';
+  const select = entry.select ?? 'space';
+  if (select === 'input') {
+    const v = valueOf(entry.value);
+    return TIERS.includes(v) ? { tier: v, why: 'input' } : { tier: fallback, why: 'default' };
+  }
+  if (select === 'space' && Array.isArray(entry.tiers)) {
+    if (space) for (const t of entry.tiers) if (t?.shape !== undefined && inRange(rangeOf(t.shape, maps), space)) return { tier: t.tier, why: 'space' };
+    const last = entry.tiers.find(t => t && t.shape === undefined);
+    if (last) return { tier: last.tier, why: 'space' };
+  }
+  return { tier: fallback, why: 'default' };
+}
+const STEPS = ['short', 'wrap', 'one-line', 'shrink', 'ellipsis', 'column', 'crop', 'minimum-share', 'mark-only', 'simplify', 'remove'];
+const STEPS_BY_KIND = {
+  fits: ['short', 'wrap', 'one-line', 'shrink', 'ellipsis', 'remove'],
+  limit: ['short', 'wrap', 'one-line', 'shrink', 'ellipsis', 'remove'],
+  keep: ['shrink', 'mark-only', 'simplify'],
+  inside: ['column', 'crop', 'minimum-share', 'shrink'],
+  relation: ['column', 'crop', 'minimum-share', 'shrink'],
+  clear: [], 'reading-order': [], intrinsic: [],
+};
+const FIT_STEPS = [...STEPS_BY_KIND.fits];
+const DEFAULT_FIT_STEPS = ['short', 'wrap', 'shrink'];
+function badSteps(rule) {
+  const allowed = STEPS_BY_KIND[rule?.kind];
+  if (!allowed || !Array.isArray(rule.steps)) return [];
+  return rule.steps.map((step, index) => ({ step, index })).filter(x => STEPS.includes(x.step) && !allowed.includes(x.step));
+}
+function giveWayRules(docs) {
+  const out = [];
+  for (const d of docs) for (const r of Array.isArray(d?.rules) ? d.rules : []) if (isObj(r) && r.strength === 'give-way' && Array.isArray(r.steps)) out.push(r);
+  return out;
+}
+function ladderOrder(rules) {
+  const p = (r) => (typeof r.priority === 'number' ? r.priority : 0.5);
+  return rules.map((r, i) => [r, i]).sort((a, b) => p(a[0]) - p(b[0]) || a[1] - b[1]).map(x => x[0]);
+}
+function runLadder(rules, { holds, apply, related = () => false, maxMoves = 512 } = {}) {
+  const used = [];
+  let moves = 0;
+  const failing = () => rules.filter(r => !holds(r));
+  if (!failing().length) return { outcome: 'unchanged', used, moves };
+  for (const r of ladderOrder(rules)) {
+    for (const step of r.steps) {
+      for (;;) {
+        const bad = failing();
+        if (!bad.length) return { outcome: 'reduced', used, moves };
+        if (!bad.some(x => x === r || related(r, x))) break;
+        if (moves >= maxMoves) return { outcome: 'incomplete', used, moves, ranOut: true };
+        if (!apply(r, step)) break;
+        moves++;
+        const last = used[used.length - 1];
+        if (last && last.rule === r.id && last.step === step) last.times++; else used.push({ rule: r.id, step, times: 1 });
+      }
+    }
+  }
+  return { outcome: failing().length ? 'incomplete' : 'reduced', used, moves };
+}
+
+exp.TIERS = TIERS; exp.tierRank = tierRank; exp.STEPS = STEPS; exp.STEPS_BY_KIND = STEPS_BY_KIND; exp.FIT_STEPS = FIT_STEPS; exp.DEFAULT_FIT_STEPS = DEFAULT_FIT_STEPS;
+};
+defs[17] = function (exp) { 'use strict'; // engine/v2/src/layout.mjs
+exp.activeShape = activeShape; exp.parseSize = parseSize; exp.inRange = inRange; exp.shapeMapsOf = shapeMapsOf; exp.rangeOf = rangeOf; exp.applies = applies; exp.viewBoxAspect = viewBoxAspect; exp.directionOf = directionOf; exp.chooseLayout = chooseLayout; exp.aspectsOf = aspectsOf; exp.axisOptions = axisOptions; exp.inputAxes = inputAxes; exp.inputPicks = inputPicks; exp.picksFor = picksFor; exp.pickedLayout = pickedLayout; exp.trueSizes = trueSizes; exp.nearestSize = nearestSize; exp.resizedBox = resizedBox; exp.sizeValue = sizeValue;
+const STANDARD_SHAPES = {
+  skyscraper: { maxAspect: 0.45 },
+  tall: { minAspect: 0.45, maxAspect: 0.7 },
+  portrait: { minAspect: 0.7, maxAspect: 0.9 },
+  square: { minAspect: 0.9, maxAspect: 1.3 },
+  landscape: { minAspect: 1.3, maxAspect: 2.5 },
+  banner: { minAspect: 2.12, maxAspect: 5 },
+  strip: { minAspect: 5, maxAspect: 10 },
+  superwide: { minAspect: 10 },
+};
+function activeShape(space, maps = []) {
+  for (const m of [...maps, STANDARD_SHAPES]) for (const [id, range] of Object.entries(m || {})) if (inRange(range, space)) return id;
+  return '';
+}
+function parseSize(s) {
+  const m = /^(\d+)x(\d+)$/.exec(String(s ?? ''));
+  return m ? { width: Number(m[1]), height: Number(m[2]) } : null;
+}
+function inRange(range, space) {
+  if (!range || typeof range !== 'object' || !space) return false;
+  const { width: w, height: h } = space;
+  if (!(w > 0 && h > 0)) return false;
+  const v = { Aspect: w / h, Width: w, Height: h, Pixels: w * h };
+  for (const [k, limit] of Object.entries(range)) {
+    if (k === 'direction') { if ((space.direction || 'ltr') !== limit) return false; continue; }
+    const m = /^(min|max)(Aspect|Width|Height|Pixels)$/.exec(k);
+    if (!m) continue;
+    if (m[1] === 'min' ? !(v[m[2]] >= limit) : !(v[m[2]] < limit)) return false;
+  }
+  return true;
+}
+function shapeMapsOf(blockDoc, experienceDoc) {
+  const maps = [];
+  for (const d of [blockDoc, experienceDoc]) for (const a of d?.axes || []) if (a?.axis === 'shape' && a.shapes) maps.push(a.shapes);
+  return maps;
+}
+function rangeOf(shape, maps = []) {
+  if (shape && typeof shape === 'object') return shape;
+  for (const m of maps) if (m[shape]) return m[shape];
+  return STANDARD_SHAPES[shape] || null;
+}
+function applies(layout, space, maps = []) {
+  if (!space) return false;
+  if (layout.size != null) { const s = parseSize(layout.size); return !!s && s.width === Math.round(space.width) && s.height === Math.round(space.height); }
+  if (layout.shape != null) return inRange(rangeOf(layout.shape, maps), space);
+  return false;
+}
+function viewBoxAspect(svgText) {
+  const m = /<svg\b[^>]*?\sviewBox\s*=\s*["']([^"']+)["']/.exec(String(svgText || ''));
+  if (!m) return null;
+  const v = m[1].trim().split(/[\s,]+/).map(Number);
+  return v.length === 4 && v[2] > 0 && v[3] > 0 ? v[2] / v[3] : null;
+}
+function directionOf(experienceDoc, language) {
+  for (const a of experienceDoc?.axes || []) {
+    if (a?.axis !== 'language' || !a.options || Array.isArray(a.options)) continue;
+    const o = a.options[language] || a.options[String(language || '').split('-')[0]];
+    if (o?.direction) return o.direction;
+  }
+  return 'ltr';
+}
+function chooseLayout(layouts, space, { forced = null, input = null, current = null, fits = () => undefined, aspectOf = () => null, maps = [] } = {}) {
+  const list = (layouts || []).filter(l => l && typeof l.id === 'string');
+  if (!list.length) return { id: null, why: 'none' };
+  const has = (id) => list.some(l => l.id === id);
+  if (forced != null && has(forced)) return { id: forced, why: 'use' };
+  if (input != null && has(input)) return { id: input, why: 'input' };
+  if (!space) return { id: list[0].id, why: 'first' };
+  const ok = (l) => fits(l.id) !== false;
+  const exact = list.find(l => l.size != null && applies(l, space, maps));
+  if (exact) return { id: exact.id, why: 'size' };
+  const applying = list.filter(l => applies(l, space, maps));
+  const cur = applying.find(l => l.id === current);
+  if (cur && ok(cur)) return { id: cur.id, why: 'current' };
+  const first = applying.find(ok);
+  if (first) return { id: first.id, why: 'order' };
+  if (applying.length) return { id: applying[0].id, why: 'incomplete' };
+  const target = Math.log(space.width / space.height);
+  let best = null; let bestD = Infinity;
+  for (const l of list) {
+    const a = aspectOf(l.id);
+    if (!(a > 0)) continue;
+    const d = Math.abs(Math.log(a) - target);
+    if (d < bestD - 1e-12) { best = l; bestD = d; }
+  }
+  return { id: (best || list[0]).id, why: 'nearest' };
+}
+function aspectsOf(block) {
+  const main = block?.drawings?.main?.text;
+  return (id) => viewBoxAspect(block?.drawings?.[id]?.text ?? main);
+}
+function axisOptions(a, block = null) {
+  if (!a || typeof a !== 'object') return null;
+  if (Array.isArray(a.options)) return a.options.map(String);
+  if (a.options && typeof a.options === 'object') return Object.keys(a.options);
+  if (a.axis === 'shape') { const out = [...Object.keys(a.sizes || {}), ...Object.keys(a.shapes || {})]; return out.length ? out : null; }
+  if (a.axis === 'content' && Array.isArray(a.tiers)) return a.tiers.map(t => t?.tier).filter(Boolean);
+  if (a.axis === 'layout' && Array.isArray(block?.layouts)) return block.layouts.map(l => l?.id).filter(Boolean);
+  if (a.axis === 'theme' && block?.themes && typeof block.themes === 'object') return Object.keys(block.themes);
+  return null;
+}
+function inputAxes(doc) {
+  const out = [];
+  for (const a of doc?.axes || []) {
+    if (a?.select !== 'input' || typeof a.value !== 'string' || a.axis === 'look') continue;
+    out.push({ entry: a, id: a.id ?? a.axis, options: axisOptions(a, doc) });
+  }
+  return out;
+}
+function inputPicks(blocks, read) {
+  const out = { experience: {}, blocks: {}, bad: [] };
+  for (const [address, doc] of blocks) {
+    for (const { entry, id, options } of inputAxes(doc)) {
+      let v;
+      try { v = read(address, entry.value); } catch { v = undefined; }
+      if (v === undefined || v === null) continue;
+      if (options && !options.includes(v)) { out.bad.push({ address, id, value: v, options }); continue; }
+      const into = address === 'experience' ? out.experience : (out.blocks[address] ??= {});
+      into[entry.axis] = v;
+    }
+  }
+  return out;
+}
+function picksFor(picks, address) {
+  return { ...(picks?.experience || {}), ...(picks?.blocks?.[address] || {}) };
+}
+function pickedLayout(layouts, pick, maps = []) {
+  const list = (layouts || []).filter(l => l && typeof l.id === 'string');
+  if (pick?.layout != null && list.some(l => l.id === pick.layout)) return pick.layout;
+  const s = pick?.shape;
+  if (s == null) return null;
+  if (parseSize(s)) return list.find(l => l.size === s)?.id ?? null;
+  const named = list.find(l => l.shape === s);
+  if (named) return named.id;
+  const range = rangeOf(s, maps);
+  return (range && list.find(l => l.shape && typeof l.shape === 'object' && JSON.stringify(l.shape) === JSON.stringify(range))?.id) ?? null;
+}
+function trueSizes(experienceDoc) {
+  const shapes = (experienceDoc?.axes || []).filter(a => a?.axis === 'shape' && (a.id ?? 'shape') === 'shape');
+  const a = shapes[shapes.length - 1];
+  if (!a || a.shapes || !a.sizes || typeof a.sizes !== 'object') return null;
+  const out = Object.keys(a.sizes).map(parseSize).filter(Boolean);
+  return out.length ? out : null;
+}
+function nearestSize(sizes, win) {
+  if (!sizes?.length) return null;
+  let best = sizes[0];
+  if (win?.width > 0 && win?.height > 0) {
+    const t = Math.log(win.width / win.height);
+    let d = Infinity;
+    for (const s of sizes) { const x = Math.abs(Math.log(s.width / s.height) - t); if (x < d - 1e-12) { d = x; best = s; } }
+  }
+  const scale = win?.width > 0 && win?.height > 0 ? Math.min(1, win.width / best.width, win.height / best.height) : 1;
+  return { width: best.width, height: best.height, scale };
+}
+const SHARE = { start: 0, middle: 0.5, end: 1 };
+function resizedBox(drawn, size, anchor = null) {
+  const [w, h] = size;
+  const fx = SHARE[anchor?.[0]] ?? 0.5; const fy = SHARE[anchor?.[1]] ?? 0.5;
+  return { x: drawn.x + (drawn.width - w) * fx, y: drawn.y + (drawn.height - h) * fy, width: w, height: h };
+}
+function sizeValue(v) {
+  const fail = (code, msg) => { const e = new Error(msg); e.code = code; throw e; };
+  if (!Array.isArray(v) || v.length !== 2 || !v.every(x => typeof x === 'number' && Number.isFinite(x))) fail('E-TYPE', `a size is [width, height], two numbers; got ${JSON.stringify(v)}`);
+  if (!(v[0] >= 1 && v[1] >= 1)) fail('E-RANGE', `a size is at least 1 each way; got ${JSON.stringify(v)}`);
+  return v;
+}
+
+exp.STANDARD_SHAPES = STANDARD_SHAPES;
+};
+defs[18] = function (exp) { 'use strict'; // engine/v2/src/ends.mjs
+exp.endsOf = endsOf;
+function endsOf(story, links = story?.links || [], shellId = null) {
+  if (Array.isArray(story?.ends)) return story.ends;
+  if (story?.endless === true) return [];
+  const ids = Object.keys(story?.scenes || {});
+  if (shellId && links.some(l => l?.from === shellId)) return [];
+  return ids.filter(id => !links.some(l => l?.from === id));
+}
+
+
+};
+defs[19] = function (exp) { 'use strict'; // engine/v2/src/drawing.mjs
+exp.ease = ease; exp.sampleKeys = sampleKeys; exp.narrowLayouts = narrowLayouts;
+const { parseXml } = req(20);
+const { parseMotion } = req(21);
+const { entryKey } = req(15);
+const { OWNED_BINDING_KEYS, TEXT_BINDING_KEYS } = req(14);
 const drawsBox = (bd) => Object.keys(bd).some(k => Object.hasOwn(OWNED_BINDING_KEYS, k) && !Object.hasOwn(TEXT_BINDING_KEYS, k) && bd[k] && typeof bd[k] === 'object' && !Array.isArray(bd[k]));
 const richOf = (bd) => { for (const k of Object.keys(TEXT_BINDING_KEYS)) if (bd[k] && typeof bd[k] === 'object' && !Array.isArray(bd[k])) return bd[k]; return null; };
-const { isHex, mixColour, dashOf } = req(17);
-const { channelOf, valueOf, wordOf, isMirror } = req(7);
-const { routePoint } = req(18);
+const { isHex, mixColour, dashOf } = req(22);
+const { channelOf, valueOf, wordOf, isMirror } = req(8);
+const { routePoint } = req(23);
 const faultCode = (err) => err?.code || (err instanceof RangeError || err?.name === 'InternalError' ? 'E-EVENT-LOOP' : 'E-FORMULA');
-const { fitText, drawnState } = req(19);
-const { isTierObject, wordingAt, wordingsDown, fieldShown, tierEntry, chooseTier, giveWayRules, badSteps } = req(20);
-const { watchArt, bboxOf } = req(10);
-const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, pickedLayout, picksFor, resizedBox, sizeValue, nearestSize } = req(21);
-const { roleOf, boxOf, recordOf } = req(22);
+const { fitText, drawnState } = req(24);
+const { isTierObject, wordingAt, wordingsDown, fieldShown, tierEntry, chooseTier, giveWayRules, badSteps } = req(16);
+const { watchArt, bboxOf } = req(11);
+const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, pickedLayout, picksFor, resizedBox, sizeValue, nearestSize } = req(17);
+const { roleOf, boxOf, recordOf } = req(25);
+const { IDENTITY, mul, parseTransform } = req(13);
 const clone = (n) => (n.name ? { name: n.name, attrs: { ...n.attrs }, attrOrder: [...n.attrOrder], children: n.children.map(clone) } : { text: n.text });
 const PAINT_ATTR = { fill: 'fill', stroke: 'stroke' };
 const caseOf = (text, kase, language) => (kase === 'upper' ? text.toLocaleUpperCase(language) : kase === 'lower' ? text.toLocaleLowerCase(language) : text);
@@ -4113,8 +4808,8 @@ class Drawing {
     const d = this.engine.exp.doc;
     const name = this.opts.theme ?? d.theme;
     const t = d.themes?.[name] || Object.values(d.themes || {})[0] || {};
-    if (t.extends && d.themes?.[t.extends]) return { ...d.themes[t.extends], ...t, colorRoles: { ...d.themes[t.extends].colorRoles, ...t.colorRoles } };
-    return t;
+    const out = t.extends && d.themes?.[t.extends] ? { ...d.themes[t.extends], ...t, colorRoles: { ...d.themes[t.extends].colorRoles, ...t.colorRoles } } : t;
+    return this.opts.colors && out.colorRoles ? { ...out, colorRoles: { ...out.colorRoles, ...this.opts.colors } } : out;
   }
   mountScene(sceneId, layoutId, space = null) {
     const sc = this.engine.exp.scenes[sceneId];
@@ -4762,7 +5457,7 @@ class Drawing {
   }
   names(addr, f, doc) {
     if (!f.root?.dom) return;
-    const controls = f.controlTargets ??= new Set(Object.values(doc.controls || {}).map(c => c?.target));
+    const controls = f.controlTargets ??= new Set(Object.values(doc.controls || {}).flatMap(c => [c?.target, ...Object.values(c?.options || {}).map(o => o?.target)]));
     const dom = (n, k, v) => { if (!n.dom) return; if (v === null) n.dom.removeAttribute(k); else if (n.dom.getAttribute(k) !== v) n.dom.setAttribute(k, v); };
     if (!f.named) {
       f.named = [];
@@ -5330,7 +6025,8 @@ class Drawing {
   toDom(doc, n = this.root) {
     if (!n.name) return doc.createTextNode(n.text);
     const el = doc.createElementNS('http://www.w3.org/2000/svg', n.name);
-    for (const k of n.attrOrder) if (k in n.attrs) { if (k === 'xlink:href') el.setAttributeNS('http://www.w3.org/1999/xlink', k, n.attrs[k]); else if (k !== 'xmlns') el.setAttribute(k, n.attrs[k]); }
+    for (const k of n.attrOrder) if (k in n.attrs) { if (k === 'xlink:href') el.setAttributeNS('http://www.w3.org/1999/xlink', k, n.attrs[k]); else if (k === 'style' && this.opts.nonce) el.style.cssText = n.attrs[k]; else if (k !== 'xmlns') el.setAttribute(k, n.attrs[k]); }
+    if (n.name === 'style' && this.opts.nonce) el.nonce = this.opts.nonce;
     for (const c of n.children) el.appendChild(this.toDom(doc, c));
     n.dom = el;
     return el;
@@ -5359,42 +6055,26 @@ function viewBoxAspectOf(text) {
 }
 function mirrored(ch) { return !!ch && (ch.scale ?? ch['scale-x'] ?? 1) < 0; }
 const fmt = (x) => String(Math.round(x * 1e6) / 1e6);
-const IDENTITY = [1, 0, 0, 1, 0, 0];
-const mul = (m, n) => [m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1], m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3], m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5]];
 function invert(m) {
   const det = m[0] * m[3] - m[1] * m[2];
   if (Math.abs(det) < 1e-12) return null;
   return [m[3] / det, -m[1] / det, -m[2] / det, m[0] / det, (m[2] * m[5] - m[3] * m[4]) / det, (m[1] * m[4] - m[0] * m[5]) / det];
 }
-function parseTransform(s) {
-  let m = IDENTITY;
-  if (!s) return m;
-  const rad = (a) => (a * Math.PI) / 180;
-  for (const [, fn, args] of String(s).matchAll(/([a-zA-Z]+)\s*\(([^)]*)\)/g)) {
-    const v = args.trim().split(/[\s,]+/).filter(Boolean).map(Number);
-    let k = IDENTITY;
-    if (fn === 'translate') k = [1, 0, 0, 1, v[0] || 0, v[1] || 0];
-    else if (fn === 'scale') k = [v[0], 0, 0, v[1] ?? v[0], 0, 0];
-    else if (fn === 'rotate') { const c = Math.cos(rad(v[0])); const n = Math.sin(rad(v[0])); k = [c, n, -n, c, 0, 0]; if (v.length === 3) k = mul(mul([1, 0, 0, 1, v[1], v[2]], k), [1, 0, 0, 1, -v[1], -v[2]]); }
-    else if (fn === 'skewX') k = [1, 0, Math.tan(rad(v[0])), 1, 0, 0];
-    else if (fn === 'skewY') k = [1, Math.tan(rad(v[0])), 0, 1, 0, 0];
-    else if (fn === 'matrix') k = v.slice(0, 6);
-    m = mul(m, k);
-  }
-  return m;
-}
 
 
-exp.clone = clone; exp.SETTLE_MS = SETTLE_MS; exp.Drawing = Drawing;
+
+exp.clone = clone; exp.parseTransform = parseTransform; exp.SETTLE_MS = SETTLE_MS; exp.Drawing = Drawing;
 };
-defs[13] = function (exp) { 'use strict'; // engine/v2/schema/xml.mjs
+defs[20] = function (exp) { 'use strict'; // engine/v2/schema/xml.mjs
 exp.decodeEntities = decodeEntities; exp.parseXml = parseXml;
 class XmlError extends Error {
   constructor(message, at) { super(message); this.code = 'E-SVG-PARSE'; this.at = at; }
 }
-const NAME = /^[A-Za-z_][A-Za-z0-9_.:-]*/;
+const NAME = /[A-Za-z_][A-Za-z0-9_.:-]*/y;
+const nameAt = (src, i) => { NAME.lastIndex = i; const m = NAME.exec(src); return m ? m[0].slice(0, 200) : null; };
 const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
 function decodeEntities(s, at = 0) {
+  if (!s.includes('&')) return s;
   return s.replace(/&([^;&\s]*);?/g, (m, name) => {
     if (!m.endsWith(';')) throw new XmlError(`bare "&" at ${at}`, at);
     if (name in ENT) return ENT[name];
@@ -5410,9 +6090,10 @@ function parseXml(src) {
   if (src.charCodeAt(0) === 0xfeff) src = src.slice(1);
   let i = 0;
   let line = 1;
-  const adv = (n) => { for (let k = 0; k < n; k++) if (src[i + k] === '\n') line++; i += n; };
+  let nl = src.indexOf('\n');
+  const adv = (n) => { const end = i + n; while (nl >= 0 && nl < end) { line++; nl = src.indexOf('\n', nl + 1); } i = end; };
   const fail = (m) => { throw new XmlError(`${m} (line ${line})`, i); };
-  const ws = () => { while (i < src.length && ' \t\r\n'.includes(src[i])) adv(1); };
+  const ws = () => { for (;;) { const c = src.charCodeAt(i); if (c === 32 || c === 9 || c === 13) i++; else if (c === 10) { line++; i++; nl = src.indexOf('\n', i); } else return; } };
   const misc = () => {
     for (;;) {
       ws();
@@ -5436,9 +6117,8 @@ function parseXml(src) {
   function element() {
     const startLine = line;
     adv(1);
-    const m = NAME.exec(src.slice(i, i + 200));
-    if (!m) fail('bad element name');
-    const name = m[0];
+    const name = nameAt(src, i);
+    if (!name) fail('bad element name');
     adv(name.length);
     const attrs = {};
     const attrOrder = [];
@@ -5448,9 +6128,8 @@ function parseXml(src) {
       if (src.startsWith('/>', i)) { adv(2); return { name, attrs, attrOrder, children: [], line: startLine }; }
       if (src[i] === '>') { adv(1); break; }
       if (i === before) fail(`expected whitespace in <${name}>`);
-      const am = NAME.exec(src.slice(i, i + 200));
-      if (!am) fail(`bad attribute in <${name}>`);
-      const an = am[0];
+      const an = nameAt(src, i);
+      if (!an) fail(`bad attribute in <${name}>`);
       adv(an.length);
       ws();
       if (src[i] !== '=') fail(`attribute ${an} has no value`);
@@ -5494,7 +6173,7 @@ function parseXml(src) {
 
 exp.XmlError = XmlError;
 };
-defs[14] = function (exp) { 'use strict'; // engine/v2/src/physics.mjs
+defs[21] = function (exp) { 'use strict'; // engine/v2/src/physics.mjs
 exp.motionRanges = motionRanges; exp.motionEntries = motionEntries; exp.parseMotion = parseMotion; exp.motionDots = motionDots;
 function motionRanges(text, id) {
   const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -5542,336 +6221,7 @@ function motionDots(value) {
 
 exp.MOTION_INNER = MOTION_INNER; exp.markChannel = markChannel;
 };
-defs[15] = function (exp) { 'use strict'; // engine/v2/src/entry-key.mjs
-exp.entryKey = entryKey;
-const known = new WeakMap();
-function walk(node, at, map) {
-  if (!node || typeof node !== 'object') return;
-  if (Array.isArray(node)) { node.forEach((x, i) => walk(x, `${at}[${i}]`, map)); return; }
-  if (at && !map.has(node)) map.set(node, at);
-  for (const k of Object.keys(node)) walk(node[k], at ? `${at}.${k}` : k, map);
-}
-function entryKey(owner, entry) {
-  if (typeof entry?.id === 'string') return entry.id;
-  if (!owner || typeof owner !== 'object') return '(no id)';
-  let map = known.get(owner);
-  if (!map) { map = new Map(); walk(owner, '', map); known.set(owner, map); }
-  return map.get(entry) ?? '(no id)';
-}
-
-
-};
-defs[16] = function (exp) { 'use strict'; // engine/v2/src/capabilities.mjs
-exp.register = register; exp.unregister = unregister; exp.registered = registered; exp.packageNeeds = packageNeeds; exp.capabilityNames = capabilityNames; exp.timerView = timerView; exp.makeDoor = makeDoor; exp.makePageDoor = makePageDoor; exp.installCapabilities = installCapabilities; exp.needsGap = needsGap;
-const { entryKey } = req(15);
-const { slotFormula, quoteText } = req(8);
-const registry = new Map();
-function register(cap) {
-  if (!cap || typeof cap.id !== 'string') throw new Error('a capability needs an id');
-  registry.set(cap.id, cap);
-  return cap;
-}
-function unregister(id) { return registry.delete(id); }
-function registered() { return new Map(registry); }
-const OWNED_FIELDS = Object.freeze({});
-const OWNED_EFFECT_KINDS = Object.freeze({});
-const OWNED_BINDING_KEYS = Object.freeze({ media: 'media', "rich-text": 'rich-text' });
-const OWNED_CONTENT_TYPES = Object.freeze({ richText: 'rich-text' });
-const HUMAN_ONLY_CALLS = Object.freeze({ "page.invoke": 'page', "snapshot.save": 'snapshot' });
-const TEXT_BINDING_KEYS = Object.freeze({ "rich-text": 'rich-text' });
-const TEXT_CALL_INPUTS = Object.freeze({ "ai.ask": ['fallback', 'question', 'seat'], "effects.play": ['effect'], "effects.stop": ['effect'], "lines.say": ['line'], "media.pause": ['place'], "media.play": ['place'], "media.seek": ['place'], "page.focus": ['hook'], "page.highlight": ['hook'], "page.invoke": ['hook'], "page.point": ['hook'], "page.scroll": ['hook'], "physics.kick": ['body'], "physics.throw": ['body'], "snapshot.save": ['save'] });
-const TEXT_DECL = Object.freeze({ type: 'string' });
-function textInputs(a, S) {
-  const c = copy(a);
-  const keys = Object.hasOwn(TEXT_CALL_INPUTS, a.call) ? TEXT_CALL_INPUTS[a.call] : [];
-  if (!keys.length || !c.with || typeof c.with !== 'object') return c;
-  for (const k of keys) {
-    const src = c.with[k];
-    if (typeof src !== 'string') continue;
-    c.with[k] = slotFormula(TEXT_DECL, src) ?? quoteText(S(TEXT_DECL, src));
-  }
-  return c;
-}
-function packageNeeds(experience) {
-  const out = [];
-  const add = (doc) => { for (const n of Array.isArray(doc?.needs) ? doc.needs : []) if (typeof n === 'string' && !out.includes(n)) out.push(n); };
-  add(experience?.doc);
-  for (const s of Object.values(experience?.scenes || {})) add(s?.doc);
-  add(experience?.shell?.doc);
-  for (const b of Object.values(experience?.blocks || {})) add(b?.doc);
-  return out;
-}
-function capabilityNames(needs) {
-  const out = [];
-  for (const n of needs) {
-    if (n.startsWith('font:')) continue;
-    const name = n.includes('@') ? n.slice(0, n.indexOf('@')) : n;
-    if (!out.includes(name)) out.push(name);
-  }
-  return out;
-}
-const FROZEN = new WeakMap();
-const deepFreeze = (x) => { if (x && typeof x === 'object' && !Object.isFrozen(x)) { Object.freeze(x); for (const v of Object.values(x)) deepFreeze(v); } return x; };
-const frozenCopy = (x) => {
-  if (!x || typeof x !== 'object') return x;
-  let f = FROZEN.get(x);
-  if (!f) { f = deepFreeze(structuredClone(x)); FROZEN.set(x, f); }
-  return f;
-};
-const copy = (v) => (v === undefined ? undefined : structuredClone(v));
-const CORE_BLOCK_KEYS = new Set(['kind', 'def', 'parent', 'values', 'inputs', 'machines', 'uses', 'clips', 'attach', 'born']);
-const SCOPES = new WeakMap();
-const scopeOf = (engine) => { let t = SCOPES.get(engine); if (!t) { t = Object.freeze({}); SCOPES.set(engine, t); } return t; };
-function timerView(t) { return { ...copy(t.data || {}), due: t.due, seq: t.seq, owner: t.owner, cap: t.cap }; }
-function makeDoor(engine, id, EngineFault) {
-  if (CORE_BLOCK_KEYS.has(id)) throw new Error(`a capability cannot be called ${id}`);
-  const fault = (code, message, address) => { throw new EngineFault(code, message, address); };
-  const blockOf = (address) => engine.state.blocks[address];
-  const mine = (t) => t.cap === id;
-  const inStep = (what) => { if (engine.source === null) throw new Error(`${id}: ${what} outside a step`); };
-  const door = {
-    id,
-    EngineFault,
-    fault,
-    get experience() { return frozenCopy(engine.exp.doc); },
-    scope: scopeOf(engine),
-    get host() { return frozenCopy(engine.opts.host ?? null); },
-    get port() { return engine.capabilities?.[id] ?? null; },
-    get limits() { return engine.limits; },
-    now: () => engine.state.now,
-    source: () => engine.source,
-    ambient: (name) => copy(engine.state.ambient[name]),
-    block(address) { const b = blockOf(address); return b ? { kind: b.kind, def: b.def, parent: b.parent ?? null, born: b.born } : null; },
-    addresses: () => Object.keys(engine.state.blocks),
-    def: (address) => frozenCopy(engine.def(address)),
-    settings: (address) => frozenCopy(engine.def(address))?.addons?.[id] ?? null,
-    entryKey: (address, entry) => { const k = entryKey(engine.def(address), entry); return k === '(no id)' ? entryKey(frozenCopy(engine.def(address)), entry) : k; },
-    drawings(address) {
-      const b = blockOf(address);
-      const src = !b ? null : b.kind === 'scene' ? engine.exp.scenes[b.def] : b.kind === 'shell' ? engine.exp.shell : b.kind === 'component' ? engine.defs[b.def] : null;
-      return Object.fromEntries(Object.entries(src?.drawings || {}).map(([k, d]) => [k, d.text]));
-    },
-    eval: (address, formula, extra = engine.eventExtra) => copy(engine.eval(address, formula, extra)),
-    read: (address, name) => copy(engine.read(address, name)),
-    wordIds: (address) => Object.keys(engine.words(address) || {}),
-    event: () => copy(engine.eventExtra?.event),
-    write(address, name, value) {
-      inStep('write');
-      if (!blockOf(address)) fault('E-REF-UNKNOWN', `no block ${address}`, address);
-      engine.withEvent({ event: { value: copy(value) } }, () => engine.runActions(address, [{ id: `${id}-write`, set: name, value: copy(value) }], `${id} write`));
-    },
-    emit(address, name, payload = {}) { inStep('emit'); engine.emit(address, name, copy(payload)); },
-    own: (address) => blockOf(address)?.[id],
-    setOwn(address, data) {
-      inStep('setOwn');
-      const b = blockOf(address);
-      if (!b) fault('E-REF-UNKNOWN', `no block ${address}`, address);
-      if (data === undefined) delete b[id]; else b[id] = data;
-    },
-    timers: {
-      add(owner, due, fields = {}) {
-        inStep('a timer');
-        if (typeof due !== 'number' || !Number.isFinite(due)) fault('E-RANGE', `${id}: a timer needs a finite due time`, owner);
-        engine.state.timers.push({ data: copy(fields), due, seq: engine.state.seq++, owner, cap: id });
-      },
-      drop(match) { inStep('a timer'); engine.state.timers = engine.state.timers.filter(t => !(mine(t) && match(timerView(t)))); },
-      list: () => engine.state.timers.filter(mine).map(timerView),
-    },
-    deliver(d) {
-      inStep('deliver');
-      if (d?.kind !== id) fault('E-NEEDS-MISSING', `${id} may deliver only kind ${id}`, d?.address);
-      engine.state.deliveries.push(copy(d));
-    },
-    humanOnly: (address, what) => engine.humanOnly(address, what),
-    transaction(source, fn) {
-      if (engine.source !== null) throw new Error(`${id}: a transaction is already running`);
-      const r = engine.transaction(source, fn);
-      engine.afterCommit?.();
-      return r;
-    },
-    note: (kind, address, message) => engine.note(kind, address, message),
-    onCommit: (fn) => engine.on(fn),
-    expose(name, value) {
-      if (name in engine) throw new Error(`${id} cannot expose ${name}: the engine has it`);
-      Object.defineProperty(engine, name, { value, enumerable: false, configurable: false, writable: false });
-      (engine.exposedNames ??= new Set()).add(name);
-    },
-  };
-  return Object.freeze(door);
-}
-function makePageDoor(player, id, page) {
-  const copy2 = (v) => (v === undefined ? undefined : structuredClone(v));
-  const report = (r, source = 'widget') => {
-    if (r && r.ok === false) {
-      if (page.fault) page.fault(r, source === 'widget' ? 'control' : source);
-      else page.errors?.push(r.fault.message);
-    }
-    return r;
-  };
-  const repaint = () => page.after?.();
-  const step = (r, source) => { report(r, source); repaint(); return r; };
-  const door = {
-    id,
-    get experience() { return frozenCopy(player.exp.doc); },
-    get shell() { return player.exp.shell?.doc ? frozenCopy(player.exp.shell.doc) : null; },
-    get shellId() { return player.shellId ?? null; },
-    scene: (sceneId) => (player.exp.scenes?.[sceneId]?.doc ? frozenCopy(player.exp.scenes[sceneId].doc) : null),
-    scenes: () => Object.keys(player.exp.scenes || {}),
-    block(address) { const b = player.state.blocks[address]; return b ? { kind: b.kind, def: b.def, parent: b.parent ?? null, born: b.born } : null; },
-    words: (address) => ({ ...(player.words(address) || {}) }),
-    template: (address, text) => String(player.template(address, text)),
-    eval: (address, formula) => copy2(player.eval(address, formula)),
-    read: (address, name) => copy2(player.read(address, name)),
-    input: (name) => copy2(player.state.blocks.experience.inputs[name]),
-    ambient: (name) => copy2(player.state.ambient[name]),
-    revision: () => player.state.revision,
-    choices: () => copy2(player.choices?.() ?? []),
-    exposed: (name) => (player.exposedNames?.has(name) ? player[name] : null),
-    setInput: (name, value) => step(player.setInput(name, copy2(value), 'widget')),
-    applySettings: (pairs) => step(player.applySettings(copy2(pairs), 'widget')),
-    send(address, name, payload = {}) { const r = player.send(address, name, copy2(payload), 'widget'); return step(r); },
-    fire(name) {
-      const r = player.transaction('widget', () => { player.emit('experience', name); player.queueAll(name); });
-      player.afterCommit?.();
-      return step(r);
-    },
-    closeDialog(slot) {
-      const r = player.transaction('person', () => player.dialog(slot, false));
-      player.afterCommit?.();
-      return step(r, 'control');
-    },
-    pick: (linkId) => step(player.pick(linkId), 'control'),
-    slot: (slotId) => page.drawing?.slots?.[slotId]?.dom ?? null,
-    part: (address, local) => page.drawing?.frames?.[address]?.byLocal?.get(local)?.dom ?? null,
-    colorRoles: () => ({ ...(page.drawing?.theme?.colorRoles || {}) }),
-    onDeliveries(fn) { return player.on(({ deliveries }) => fn({ deliveries: copy2(deliveries), source: player.source })); },
-    host: () => page.host ?? null,
-    report,
-    repaint,
-  };
-  return Object.freeze(door);
-}
-const HOOKS = ['actions', 'controls', 'access', 'paints', 'calls', 'timer', 'mount', 'entered', 'play', 'stop', 'hold', 'keep', 'clock', 'input', 'seatHook'];
-function installCapabilities(engine, EngineFault, modules = null) {
-  const pool = modules ? new Map(modules.map(m => [m.id, m])) : registry;
-  const needs = capabilityNames(packageNeeds(engine.exp));
-  const doors = new Map();
-  const doorFor = (id) => { if (!needs.includes(id)) return null; if (!doors.has(id)) doors.set(id, makeDoor(engine, id, EngineFault)); return doors.get(id); };
-  const list = [];
-  for (const id of needs) {
-    const cap = pool.get(id);
-    if (!cap) continue;
-    const hooks = cap.install?.(doorFor(id)) || {};
-    const entry = { id, record: cap };
-    for (const k of HOOKS) if (hooks[k] !== undefined) entry[k] = hooks[k];
-    list.push(entry);
-  }
-  return new Installed(list, doorFor);
-}
-function ownedMissing(doc, has) {
-  for (const [field, id] of Object.entries(OWNED_FIELDS)) if (doc?.[field] !== undefined && !has(id)) return { field, id };
-  for (const id of Object.keys(doc?.addons && typeof doc.addons === 'object' ? doc.addons : {})) if (!id.includes('.') && !has(id)) return { field: `addons.${id}`, id };
-  for (const bd of Array.isArray(doc?.bindings) ? doc.bindings : []) for (const [key, id] of Object.entries(OWNED_BINDING_KEYS)) if (bd?.[key] !== undefined && !has(id)) return { field: `bindings (${key})`, id };
-  for (const k of ['inputs', 'values']) for (const [name, d] of Object.entries(doc?.[k] || {})) { const id = OWNED_CONTENT_TYPES[d?.contentType]; if (id && !has(id)) return { field: `${k}.${name} (${d.contentType})`, id }; }
-  for (const ef of Object.values(doc?.effects || {})) {
-    const id = OWNED_EFFECT_KINDS[ef?.kind];
-    if (id && !has(id)) return { field: `effects (kind ${ef.kind})`, id };
-  }
-  return null;
-}
-function needsGap(experience, installed = () => true) {
-  const top = capabilityNames(Array.isArray(experience?.doc?.needs) ? experience.doc.needs : []);
-  const own = (doc) => capabilityNames(Array.isArray(doc?.needs) ? doc.needs : []);
-  const docs = [['experience', experience?.doc, true], ...Object.entries(experience?.scenes || {}).map(([id, s]) => [id, s?.doc, true]),
-    ...(experience?.shell ? [[experience.shell.doc?.id ?? 'shell', experience.shell.doc, true]] : []),
-    ...Object.entries(experience?.blocks || {}).map(([id, b]) => [id, b?.doc, ['scene', 'shell'].includes(b?.doc?.kind)])];
-  for (const [address, doc, inherits] of docs) {
-    if (!doc) continue;
-    const have = new Set([...own(doc), ...(inherits && doc !== experience.doc ? top : [])]);
-    const gap = ownedMissing(doc, (id) => have.has(id) || !installed(id));
-    if (gap) return { address, ...gap };
-  }
-  return null;
-}
-class Installed {
-  constructor(list, doorFor) { this.list = list; this.ids = list.map(c => c.id); this.doorFor = doorFor; }
-  has(id) { return this.ids.includes(id); }
-  plugin(id) { return this.doorFor(id); }
-  attach(ctx) {
-    const parts = {};
-    for (const c of this.list) {
-      if (!c.record.attach) continue;
-      const door = makePageDoor(ctx.player, c.id, ctx.state);
-      const part = c.record.attach({ door, container: ctx.container, win: ctx.win, options: ctx.options || {}, player: ctx.player, state: ctx.state });
-      if (part) parts[c.id] = part;
-    }
-    return parts;
-  }
-  runner(id, engine, fault) {
-    const c = this.list.find(x => x.id === id);
-    const r = c?.record.runner ? c.record.runner(engine, fault) : null;
-    if (r?.calls && !c.calls) c.calls = r.calls;
-    return r;
-  }
-  drawing(id) { return this.list.find(x => x.id === id)?.record.drawing ?? null; }
-  missingField(doc) { return ownedMissing(doc, (id) => this.has(id)); }
-  missingContentType(doc) {
-    for (const k of ['inputs', 'values']) for (const [name, d] of Object.entries(doc?.[k] || {})) { const id = OWNED_CONTENT_TYPES[d?.contentType]; if (id && !this.has(id)) return { field: `${k}.${name} (${d.contentType})`, id }; }
-    return null;
-  }
-  inputHook(kind, ...args) { for (const c of this.list) { const v = c.input?.[kind]?.(...args); if (v !== undefined && v !== null) return v; } return kind === 'check' ? null : undefined; }
-  phase(name, address, doc) { for (const c of this.list) c[name]?.(address, frozenCopy(doc)); }
-  action(address, a, E, S = (decl, f) => E(f)) {
-    if (typeof a.call === 'string') {
-      const dot = a.call.lastIndexOf('.');
-      const c = dot > 0 ? this.list.find(x => x.calls && x.id === a.call.slice(0, dot)) : null;
-      if (c) {
-        const verb = a.call.slice(dot + 1);
-        const fn = Object.hasOwn(c.calls, verb) ? c.calls[verb] : c.calls['*'];
-        if (Object.hasOwn(HUMAN_ONLY_CALLS, a.call)) this.doorFor(c.id).humanOnly(address, `call ${a.call}`);
-        if (!fn) this.doorFor(c.id).fault('E-ADDON', `call ${a.call}: ${c.id} has no call ${verb}; it has ${Object.keys(c.calls).join(', ') || 'none'}`, address);
-        fn(address, textInputs(a, S), E, S); return true;
-      }
-    }
-    for (const c of this.list) for (const [key, fn] of Object.entries(c.actions || {})) if (key in a) { fn(address, copy(a), E); return true; }
-    return false;
-  }
-  control(address, id, c, arg) {
-    for (const cap of this.list) { const fn = cap.controls?.[c.kind]; if (fn) { fn(address, id, copy(c), copy(arg)); return true; } }
-    return false;
-  }
-  access(address, id, c) { for (const cap of this.list) { const fn = cap.access?.[c.kind]; if (fn) return fn(address, id, copy(c)); } return null; }
-  paint(word) { for (const c of this.list) if (c.paints?.[word]) return c.paints[word]; return null; }
-  timer(t) {
-    if (t.cap === undefined) return false;
-    const c = this.list.find(x => x.id === t.cap);
-    if (c?.timer) c.timer(timerView(t));
-    return true;
-  }
-  play(address, id) { return this.list.some(c => c.play?.(address, id) === true); }
-  stop(address, id, interrupted) { return this.list.some(c => c.stop?.(address, id, interrupted) === true); }
-  hold(address, ms) { for (const c of this.list) c.hold?.(address, ms); }
-  kept(block) {
-    const out = {};
-    for (const c of this.list) if (c.keep && block?.[c.id] !== undefined) { const d = c.keep.save(copy(block[c.id])); if (d !== null && d !== undefined) out[c.id] = d; }
-    return out;
-  }
-  restoreKept(block, data) {
-    if (!block || !data || typeof data !== 'object') return;
-    for (const c of this.list) if (c.keep && data[c.id] !== undefined) { const o = c.keep.load(copy(data[c.id])); if (o) block[c.id] = o; }
-  }
-  clockBegin() { for (const c of this.list) c.clock?.begin?.(); }
-  clockNext(end, engine) {
-    let best = null;
-    for (const c of this.list) { const n = c.clock?.next(end); if (n && (!best || n.due < best.due)) best = n; }
-    return best && { due: best.due, run: (results) => { engine.state.now = best.due; best.run(results); } };
-  }
-  clockEnd(end) { for (const c of this.list) c.clock?.end?.(end); }
-}
-
-exp.OWNED_FIELDS = OWNED_FIELDS; exp.OWNED_EFFECT_KINDS = OWNED_EFFECT_KINDS; exp.OWNED_BINDING_KEYS = OWNED_BINDING_KEYS; exp.OWNED_CONTENT_TYPES = OWNED_CONTENT_TYPES; exp.HUMAN_ONLY_CALLS = HUMAN_ONLY_CALLS; exp.TEXT_BINDING_KEYS = TEXT_BINDING_KEYS; exp.TEXT_CALL_INPUTS = TEXT_CALL_INPUTS;
-};
-defs[17] = function (exp) { 'use strict'; // engine/v2/src/paint-channels.mjs
+defs[22] = function (exp) { 'use strict'; // engine/v2/src/paint-channels.mjs
 exp.blendHex = blendHex; exp.mixColour = mixColour; exp.dashOf = dashOf;
 const fmt = (v) => String(Math.round(v * 1e6) / 1e6);
 const HEX = /^#[0-9a-fA-F]{6}$/;
@@ -5892,7 +6242,7 @@ function dashOf(v, s = 0) {
 
 exp.isHex = isHex;
 };
-defs[18] = function (exp) { 'use strict'; // engine/v2/src/route.mjs
+defs[23] = function (exp) { 'use strict'; // engine/v2/src/route.mjs
 exp.tokens = tokens; exp.flatten = flatten; exp.routeSegments = routeSegments; exp.pointAt = pointAt; exp.routePoint = routePoint;
 const TOKEN = /[MmLlHhVvCcSsQqTtAaZz]|[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?/g;
 const ARGS = { m: 2, l: 2, h: 1, v: 1, c: 6, s: 4, q: 4, t: 2, a: 7, z: 0 };
@@ -5995,7 +6345,7 @@ function routePoint(node, p) {
 
 
 };
-defs[19] = function (exp) { 'use strict'; // engine/v2/src/fit.mjs
+defs[24] = function (exp) { 'use strict'; // engine/v2/src/fit.mjs
 exp.fontSizes = fontSizes; exp.breakLines = breakLines; exp.searchFit = searchFit; exp.fitText = fitText; exp.gap = gap; exp.drawnState = drawnState; exp.fitGeometry = fitGeometry; exp.textMeasurer = textMeasurer; exp.drawFit = drawFit; exp.restoreDrawn = restoreDrawn; exp.replays = replays;
 const NS = 'http://www.w3.org/2000/svg';
 function fontSizes(max, min) {
@@ -6131,286 +6481,7 @@ function replays(textEl, regionEl, value, drawn) {
 
 
 };
-defs[20] = function (exp) { 'use strict'; // engine/v2/src/tiers.mjs
-exp.isTierObject = isTierObject; exp.wordingAt = wordingAt; exp.wordingsDown = wordingsDown; exp.fieldShown = fieldShown; exp.tierEntry = tierEntry; exp.chooseTier = chooseTier; exp.badSteps = badSteps; exp.giveWayRules = giveWayRules; exp.ladderOrder = ladderOrder; exp.runLadder = runLadder;
-const { inRange, rangeOf } = req(21);
-const TIERS = ['short', 'medium', 'rich'];
-const tierRank = (t) => TIERS.indexOf(t);
-const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
-function isTierObject(v) {
-  if (!isObj(v)) return false;
-  const keys = Object.keys(v);
-  return keys.length > 0 && keys.every(k => TIERS.includes(k));
-}
-function wordingAt(v, tier) {
-  if (!isTierObject(v)) return v;
-  return v[TIERS[sourceTier(v, tier)]];
-}
-function sourceTier(v, tier) {
-  const r = Math.max(0, tierRank(tier));
-  for (let i = r; i < TIERS.length; i++) if (TIERS[i] in v) return i;
-  for (let i = r - 1; i >= 0; i--) if (TIERS[i] in v) return i;
-  return -1;
-}
-function wordingsDown(v, tier) {
-  if (!isTierObject(v)) return [v];
-  const s = sourceTier(v, tier);
-  const out = [v[TIERS[s]]];
-  for (let i = s - 1; i >= 0; i--) {
-    const w = v[TIERS[i]];
-    if (w === undefined || w === '' || w === out[out.length - 1]) continue;
-    out.push(w);
-  }
-  return out;
-}
-function fieldShown(decl, tier) {
-  const own = decl && decl.required !== false ? 'short' : (decl?.tier ?? 'short');
-  return tierRank(own) <= tierRank(tier);
-}
-function tierEntry(docs) {
-  for (const d of docs) for (const a of d?.axes || []) {
-    if (!isObj(a) || a.axis !== 'content' || a.subject !== undefined) continue;
-    if (Array.isArray(a.tiers) || a.select === 'input') return a;
-  }
-  return null;
-}
-function chooseTier(entry, { space = null, maps = [], valueOf = () => undefined } = {}) {
-  if (!entry) return { tier: 'rich', why: 'none' };
-  const fallback = TIERS.includes(entry.default) ? entry.default : 'rich';
-  const select = entry.select ?? 'space';
-  if (select === 'input') {
-    const v = valueOf(entry.value);
-    return TIERS.includes(v) ? { tier: v, why: 'input' } : { tier: fallback, why: 'default' };
-  }
-  if (select === 'space' && Array.isArray(entry.tiers)) {
-    if (space) for (const t of entry.tiers) if (t?.shape !== undefined && inRange(rangeOf(t.shape, maps), space)) return { tier: t.tier, why: 'space' };
-    const last = entry.tiers.find(t => t && t.shape === undefined);
-    if (last) return { tier: last.tier, why: 'space' };
-  }
-  return { tier: fallback, why: 'default' };
-}
-const STEPS = ['short', 'wrap', 'one-line', 'shrink', 'ellipsis', 'column', 'crop', 'minimum-share', 'mark-only', 'simplify', 'remove'];
-const STEPS_BY_KIND = {
-  fits: ['short', 'wrap', 'one-line', 'shrink', 'ellipsis', 'remove'],
-  limit: ['short', 'wrap', 'one-line', 'shrink', 'ellipsis', 'remove'],
-  keep: ['shrink', 'mark-only', 'simplify'],
-  inside: ['column', 'crop', 'minimum-share', 'shrink'],
-  relation: ['column', 'crop', 'minimum-share', 'shrink'],
-  clear: [], 'reading-order': [], intrinsic: [],
-};
-const FIT_STEPS = [...STEPS_BY_KIND.fits];
-const DEFAULT_FIT_STEPS = ['short', 'wrap', 'shrink'];
-function badSteps(rule) {
-  const allowed = STEPS_BY_KIND[rule?.kind];
-  if (!allowed || !Array.isArray(rule.steps)) return [];
-  return rule.steps.map((step, index) => ({ step, index })).filter(x => STEPS.includes(x.step) && !allowed.includes(x.step));
-}
-function giveWayRules(docs) {
-  const out = [];
-  for (const d of docs) for (const r of Array.isArray(d?.rules) ? d.rules : []) if (isObj(r) && r.strength === 'give-way' && Array.isArray(r.steps)) out.push(r);
-  return out;
-}
-function ladderOrder(rules) {
-  const p = (r) => (typeof r.priority === 'number' ? r.priority : 0.5);
-  return rules.map((r, i) => [r, i]).sort((a, b) => p(a[0]) - p(b[0]) || a[1] - b[1]).map(x => x[0]);
-}
-function runLadder(rules, { holds, apply, related = () => false, maxMoves = 512 } = {}) {
-  const used = [];
-  let moves = 0;
-  const failing = () => rules.filter(r => !holds(r));
-  if (!failing().length) return { outcome: 'unchanged', used, moves };
-  for (const r of ladderOrder(rules)) {
-    for (const step of r.steps) {
-      for (;;) {
-        const bad = failing();
-        if (!bad.length) return { outcome: 'reduced', used, moves };
-        if (!bad.some(x => x === r || related(r, x))) break;
-        if (moves >= maxMoves) return { outcome: 'incomplete', used, moves, ranOut: true };
-        if (!apply(r, step)) break;
-        moves++;
-        const last = used[used.length - 1];
-        if (last && last.rule === r.id && last.step === step) last.times++; else used.push({ rule: r.id, step, times: 1 });
-      }
-    }
-  }
-  return { outcome: failing().length ? 'incomplete' : 'reduced', used, moves };
-}
-
-exp.TIERS = TIERS; exp.tierRank = tierRank; exp.STEPS = STEPS; exp.STEPS_BY_KIND = STEPS_BY_KIND; exp.FIT_STEPS = FIT_STEPS; exp.DEFAULT_FIT_STEPS = DEFAULT_FIT_STEPS;
-};
-defs[21] = function (exp) { 'use strict'; // engine/v2/src/layout.mjs
-exp.activeShape = activeShape; exp.parseSize = parseSize; exp.inRange = inRange; exp.shapeMapsOf = shapeMapsOf; exp.rangeOf = rangeOf; exp.applies = applies; exp.viewBoxAspect = viewBoxAspect; exp.directionOf = directionOf; exp.chooseLayout = chooseLayout; exp.aspectsOf = aspectsOf; exp.axisOptions = axisOptions; exp.inputAxes = inputAxes; exp.inputPicks = inputPicks; exp.picksFor = picksFor; exp.pickedLayout = pickedLayout; exp.trueSizes = trueSizes; exp.nearestSize = nearestSize; exp.resizedBox = resizedBox; exp.sizeValue = sizeValue;
-const STANDARD_SHAPES = {
-  skyscraper: { maxAspect: 0.45 },
-  tall: { minAspect: 0.45, maxAspect: 0.7 },
-  portrait: { minAspect: 0.7, maxAspect: 0.9 },
-  square: { minAspect: 0.9, maxAspect: 1.3 },
-  landscape: { minAspect: 1.3, maxAspect: 2.5 },
-  banner: { minAspect: 2.12, maxAspect: 5 },
-  strip: { minAspect: 5, maxAspect: 10 },
-  superwide: { minAspect: 10 },
-};
-function activeShape(space, maps = []) {
-  for (const m of [...maps, STANDARD_SHAPES]) for (const [id, range] of Object.entries(m || {})) if (inRange(range, space)) return id;
-  return '';
-}
-function parseSize(s) {
-  const m = /^(\d+)x(\d+)$/.exec(String(s ?? ''));
-  return m ? { width: Number(m[1]), height: Number(m[2]) } : null;
-}
-function inRange(range, space) {
-  if (!range || typeof range !== 'object' || !space) return false;
-  const { width: w, height: h } = space;
-  if (!(w > 0 && h > 0)) return false;
-  const v = { Aspect: w / h, Width: w, Height: h, Pixels: w * h };
-  for (const [k, limit] of Object.entries(range)) {
-    if (k === 'direction') { if ((space.direction || 'ltr') !== limit) return false; continue; }
-    const m = /^(min|max)(Aspect|Width|Height|Pixels)$/.exec(k);
-    if (!m) continue;
-    if (m[1] === 'min' ? !(v[m[2]] >= limit) : !(v[m[2]] < limit)) return false;
-  }
-  return true;
-}
-function shapeMapsOf(blockDoc, experienceDoc) {
-  const maps = [];
-  for (const d of [blockDoc, experienceDoc]) for (const a of d?.axes || []) if (a?.axis === 'shape' && a.shapes) maps.push(a.shapes);
-  return maps;
-}
-function rangeOf(shape, maps = []) {
-  if (shape && typeof shape === 'object') return shape;
-  for (const m of maps) if (m[shape]) return m[shape];
-  return STANDARD_SHAPES[shape] || null;
-}
-function applies(layout, space, maps = []) {
-  if (!space) return false;
-  if (layout.size != null) { const s = parseSize(layout.size); return !!s && s.width === Math.round(space.width) && s.height === Math.round(space.height); }
-  if (layout.shape != null) return inRange(rangeOf(layout.shape, maps), space);
-  return false;
-}
-function viewBoxAspect(svgText) {
-  const m = /<svg\b[^>]*?\sviewBox\s*=\s*["']([^"']+)["']/.exec(String(svgText || ''));
-  if (!m) return null;
-  const v = m[1].trim().split(/[\s,]+/).map(Number);
-  return v.length === 4 && v[2] > 0 && v[3] > 0 ? v[2] / v[3] : null;
-}
-function directionOf(experienceDoc, language) {
-  for (const a of experienceDoc?.axes || []) {
-    if (a?.axis !== 'language' || !a.options || Array.isArray(a.options)) continue;
-    const o = a.options[language] || a.options[String(language || '').split('-')[0]];
-    if (o?.direction) return o.direction;
-  }
-  return 'ltr';
-}
-function chooseLayout(layouts, space, { forced = null, input = null, current = null, fits = () => undefined, aspectOf = () => null, maps = [] } = {}) {
-  const list = (layouts || []).filter(l => l && typeof l.id === 'string');
-  if (!list.length) return { id: null, why: 'none' };
-  const has = (id) => list.some(l => l.id === id);
-  if (forced != null && has(forced)) return { id: forced, why: 'use' };
-  if (input != null && has(input)) return { id: input, why: 'input' };
-  if (!space) return { id: list[0].id, why: 'first' };
-  const ok = (l) => fits(l.id) !== false;
-  const exact = list.find(l => l.size != null && applies(l, space, maps));
-  if (exact) return { id: exact.id, why: 'size' };
-  const applying = list.filter(l => applies(l, space, maps));
-  const cur = applying.find(l => l.id === current);
-  if (cur && ok(cur)) return { id: cur.id, why: 'current' };
-  const first = applying.find(ok);
-  if (first) return { id: first.id, why: 'order' };
-  if (applying.length) return { id: applying[0].id, why: 'incomplete' };
-  const target = Math.log(space.width / space.height);
-  let best = null; let bestD = Infinity;
-  for (const l of list) {
-    const a = aspectOf(l.id);
-    if (!(a > 0)) continue;
-    const d = Math.abs(Math.log(a) - target);
-    if (d < bestD - 1e-12) { best = l; bestD = d; }
-  }
-  return { id: (best || list[0]).id, why: 'nearest' };
-}
-function aspectsOf(block) {
-  const main = block?.drawings?.main?.text;
-  return (id) => viewBoxAspect(block?.drawings?.[id]?.text ?? main);
-}
-function axisOptions(a, block = null) {
-  if (!a || typeof a !== 'object') return null;
-  if (Array.isArray(a.options)) return a.options.map(String);
-  if (a.options && typeof a.options === 'object') return Object.keys(a.options);
-  if (a.axis === 'shape') { const out = [...Object.keys(a.sizes || {}), ...Object.keys(a.shapes || {})]; return out.length ? out : null; }
-  if (a.axis === 'content' && Array.isArray(a.tiers)) return a.tiers.map(t => t?.tier).filter(Boolean);
-  if (a.axis === 'layout' && Array.isArray(block?.layouts)) return block.layouts.map(l => l?.id).filter(Boolean);
-  if (a.axis === 'theme' && block?.themes && typeof block.themes === 'object') return Object.keys(block.themes);
-  return null;
-}
-function inputAxes(doc) {
-  const out = [];
-  for (const a of doc?.axes || []) {
-    if (a?.select !== 'input' || typeof a.value !== 'string' || a.axis === 'look') continue;
-    out.push({ entry: a, id: a.id ?? a.axis, options: axisOptions(a, doc) });
-  }
-  return out;
-}
-function inputPicks(blocks, read) {
-  const out = { experience: {}, blocks: {}, bad: [] };
-  for (const [address, doc] of blocks) {
-    for (const { entry, id, options } of inputAxes(doc)) {
-      let v;
-      try { v = read(address, entry.value); } catch { v = undefined; }
-      if (v === undefined || v === null) continue;
-      if (options && !options.includes(v)) { out.bad.push({ address, id, value: v, options }); continue; }
-      const into = address === 'experience' ? out.experience : (out.blocks[address] ??= {});
-      into[entry.axis] = v;
-    }
-  }
-  return out;
-}
-function picksFor(picks, address) {
-  return { ...(picks?.experience || {}), ...(picks?.blocks?.[address] || {}) };
-}
-function pickedLayout(layouts, pick, maps = []) {
-  const list = (layouts || []).filter(l => l && typeof l.id === 'string');
-  if (pick?.layout != null && list.some(l => l.id === pick.layout)) return pick.layout;
-  const s = pick?.shape;
-  if (s == null) return null;
-  if (parseSize(s)) return list.find(l => l.size === s)?.id ?? null;
-  const named = list.find(l => l.shape === s);
-  if (named) return named.id;
-  const range = rangeOf(s, maps);
-  return (range && list.find(l => l.shape && typeof l.shape === 'object' && JSON.stringify(l.shape) === JSON.stringify(range))?.id) ?? null;
-}
-function trueSizes(experienceDoc) {
-  const shapes = (experienceDoc?.axes || []).filter(a => a?.axis === 'shape' && (a.id ?? 'shape') === 'shape');
-  const a = shapes[shapes.length - 1];
-  if (!a || a.shapes || !a.sizes || typeof a.sizes !== 'object') return null;
-  const out = Object.keys(a.sizes).map(parseSize).filter(Boolean);
-  return out.length ? out : null;
-}
-function nearestSize(sizes, win) {
-  if (!sizes?.length) return null;
-  let best = sizes[0];
-  if (win?.width > 0 && win?.height > 0) {
-    const t = Math.log(win.width / win.height);
-    let d = Infinity;
-    for (const s of sizes) { const x = Math.abs(Math.log(s.width / s.height) - t); if (x < d - 1e-12) { d = x; best = s; } }
-  }
-  const scale = win?.width > 0 && win?.height > 0 ? Math.min(1, win.width / best.width, win.height / best.height) : 1;
-  return { width: best.width, height: best.height, scale };
-}
-const SHARE = { start: 0, middle: 0.5, end: 1 };
-function resizedBox(drawn, size, anchor = null) {
-  const [w, h] = size;
-  const fx = SHARE[anchor?.[0]] ?? 0.5; const fy = SHARE[anchor?.[1]] ?? 0.5;
-  return { x: drawn.x + (drawn.width - w) * fx, y: drawn.y + (drawn.height - h) * fy, width: w, height: h };
-}
-function sizeValue(v) {
-  const fail = (code, msg) => { const e = new Error(msg); e.code = code; throw e; };
-  if (!Array.isArray(v) || v.length !== 2 || !v.every(x => typeof x === 'number' && Number.isFinite(x))) fail('E-TYPE', `a size is [width, height], two numbers; got ${JSON.stringify(v)}`);
-  if (!(v[0] >= 1 && v[1] >= 1)) fail('E-RANGE', `a size is at least 1 each way; got ${JSON.stringify(v)}`);
-  return v;
-}
-
-exp.STANDARD_SHAPES = STANDARD_SHAPES;
-};
-defs[22] = function (exp) { 'use strict'; // engine/v2/src/marks.mjs
+defs[25] = function (exp) { 'use strict'; // engine/v2/src/marks.mjs
 exp.recordOf = recordOf;
 const SIDES = ['left', 'right', 'near', 'far'];
 const KEEPS = ['keep-inside', 'keep-clear', 'keep-empty'];
@@ -6426,22 +6497,10 @@ function recordOf(root) {
 
 exp.SIDES = SIDES; exp.KEEPS = KEEPS; exp.roleOf = roleOf; exp.sideOf = sideOf; exp.keepOf = keepOf; exp.boxOf = boxOf;
 };
-defs[23] = function (exp) { 'use strict'; // engine/v2/src/ends.mjs
-exp.endsOf = endsOf;
-function endsOf(story, links = story?.links || [], shellId = null) {
-  if (Array.isArray(story?.ends)) return story.ends;
-  if (story?.endless === true) return [];
-  const ids = Object.keys(story?.scenes || {});
-  if (shellId && links.some(l => l?.from === shellId)) return [];
-  return ids.filter(id => !links.some(l => l?.from === id));
-}
-
-
-};
-defs[24] = function (exp) { 'use strict'; // engine/v2/src/host.mjs
+defs[26] = function (exp) { 'use strict'; // engine/v2/src/host.mjs
 exp.hostPicture = hostPicture; exp.modulePort = modulePort; exp.parseHookMark = parseHookMark; exp.marksOf = marksOf; exp.findHooks = findHooks; exp.pagePort = pagePort; exp.aiPort = aiPort; exp.hostApi = hostApi;
-const { checkValue, checkContent } = req(6);
-const { FORMAT } = req(4);
+const { checkValue, checkContent } = req(7);
+const { FORMAT } = req(5);
 function hostPicture(b, type, limits) {
   const no = (m) => refuse('E-HOST-PICTURE', `the picture ${m}`);
   if (!(b instanceof Uint8Array)) no('is bytes: give a Uint8Array');
@@ -6637,7 +6696,16 @@ function hostApi(player, { onError = null, test = false, onRestart = null } = {}
       const payload = own(given, name);
       if (Object.keys(payload).length && !inp.payload) refuse('E-TYPE', `the trigger ${name} takes no payload`);
       if (inp.payload) { const bad = checkValue(inp.payload, payload); if (bad) refuse(bad[0], `${name}: ${bad[1]}`); }
-      return change(() => check(player.trigger(name, payload, 'host')));
+      let done, fail;
+      const p = new Promise((y, n) => { done = y; fail = n; });
+      p.catch(() => {});
+      change(() => {
+        try {
+          const r = check(player.trigger(name, payload, 'host'));
+          done(frozen({ name, payload, outputs: r.outputs.filter(o => BUILT_IN.includes(o.name) || outputs[o.name]).map(({ name: n, ...d }) => ({ name: n, detail: d })) }));
+        } catch (e) { fail(e); throw e; }
+      });
+      return p;
     },
     picture(name, bytes, type) {
       alive();
@@ -6672,328 +6740,8 @@ function hostApi(player, { onError = null, test = false, onRestart = null } = {}
 
 exp.isModulePort = isModulePort; exp.HOOK_KINDS = HOOK_KINDS;
 };
-defs[25] = function (exp) { 'use strict'; // engine/v2/web/audio-web.mjs
-exp.startSynth = startSynth; exp.synthNode = synthNode; exp.assetsBase = assetsBase; exp.attachAudio = attachAudio;
-const { createMixer } = req(26);
-function startSynth(node, ctx, durationMs) { node.start(); node.stop(ctx.currentTime + durationMs / 1000); return node; }
-function synthNode(ctx, s, env) {
-  const now = ctx.currentTime;
-  const len = s.durationMs / 1000;
-  let node;
-  if (s.wave === 'noise') {
-    const buf = ctx.createBuffer(1, Math.max(1, Math.ceil(len * ctx.sampleRate)), ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-    node = ctx.createBufferSource();
-    node.buffer = buf;
-  } else {
-    node = ctx.createOscillator();
-    node.type = s.wave;
-    node.frequency.setValueAtTime(s.from, now);
-    node.frequency.linearRampToValueAtTime(s.to, now + len);
-  }
-  const attack = Math.min(len, (s.attackMs ?? 5) / 1000);
-  const release = Math.min(len - attack, (s.releaseMs ?? 20) / 1000);
-  env.gain.setValueAtTime(0, now);
-  env.gain.linearRampToValueAtTime(s.gain, now + attack);
-  env.gain.setValueAtTime(s.gain, now + len - release);
-  env.gain.linearRampToValueAtTime(0, now + len);
-  return node;
-}
-function assetsBase(assetsUrl, win) {
-  try { return new URL(assetsUrl || './', win.location.href); } catch { return null; }
-}
-function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
-  let ctx = null;
-  let gone = false;
-  let out = null;
-  let voiceBus = null;
-  let analyser = null;
-  let analyserData = null;
-  const buffers = new Map();
-  const log = [];
-  const failed = new Set();
-  const base = assetsBase(assetsUrl, win);
-  const extras = player.audioPage || null;
-  const decode = (path) => {
-    if (!buffers.has(path)) {
-      const bytes = assets ? Promise.resolve().then(() => assets(path)) : fetch(base ? new URL(path, base) : path).then(r => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(`${r.status}`))));
-      buffers.set(path, bytes
-        .then(b => ctx.decodeAudioData(b)).catch((err) => { failed.add(path); try { onFail?.(path, err); } catch {   } return null; }));
-    }
-    return buffers.get(path);
-  };
-  const start = (name, { loop, group, owner, source }) => {
-    const src = source || player.soundSource(player.scene, name);
-    const entry = { name, group, owner, started: false };
-    log.push(entry);
-    if (!ctx || win.document.hidden || !src) return null;
-    entry.started = true;
-    const local = ctx.createGain();
-    const env = ctx.createGain();
-    env.connect(local);
-    local.connect(group === 'voice' ? voiceBus : out);
-    local.gain.value = 0;
-    let node = null;
-    let finished = false;
-    let paused = false;
-    let ready = null;
-    let elapsed = 0;
-    let began = 0;
-    const drop = () => { if (!node) return; node.onended = null; try { node.stop(); } catch {   } try { node.disconnect(); } catch {   } node = null; };
-    const end = () => { finished = true; drop(); env.disconnect(); local.disconnect(); };
-    const play = () => {
-      if (finished || paused || !ready || node) return;
-      let n; let synth = null;
-      if (src.synth) {
-        const s = src.synth; const len = s.durationMs / 1000; const left = len - elapsed;
-        if (left < 0.001) { end(); return; }
-        synth = elapsed > 0 ? { ...s, from: s.from + (s.to - s.from) * (elapsed / len), durationMs: Math.max(1, Math.round(left * 1000)), attackMs: 0 } : s;
-        n = synthNode(ctx, synth, env);
-      } else {
-        n = ctx.createBufferSource();
-        n.buffer = ready;
-        n.loop = loop;
-      }
-      n.connect(env);
-      n.onended = () => { if (node === n && !loop) end(); };
-      node = n;
-      began = ctx.currentTime;
-      if (synth) startSynth(n, ctx, synth.durationMs); else n.start(0, ready.duration ? elapsed % ready.duration : 0);
-    };
-    const handle = {
-      gain(v, ms = 0) {
-        const p = local.gain; const t = ctx.currentTime;
-        p.cancelScheduledValues(t); p.setValueAtTime(p.value, t); p.linearRampToValueAtTime(v, t + ms / 1000);
-      },
-      pause() { if (paused || finished) return; paused = true; if (node) { elapsed += ctx.currentTime - began; drop(); } },
-      resume() { if (!paused) return; paused = false; play(); },
-      stop: end,
-      done: () => finished,
-    };
-    (async () => {
-      try {
-        if (src.synth) ready = true;
-        else {
-          const buffer = await decode(src.path);
-          if (finished) return;
-          if (!buffer) { end(); return; }
-          ready = buffer;
-        }
-        play();
-      } catch { end(); }
-    })();
-    return handle;
-  };
-  const mixer = createMixer(start, player.limits);
-  const voiced = new Map();
-  const lineLog = [];
-  const dropLine = (address, why) => {
-    const v = voiced.get(address);
-    if (!v) return;
-    voiced.delete(address);
-    if (v.node) { v.node.onended = null; try { v.node.stop(); } catch {   } try { v.node.disconnect(); } catch {   } }
-    try { v.gain?.disconnect(); } catch {   }
-    v.entry.state = why;
-    if (why !== 'ended' && why !== 'stopped') player.lines.silent(address, v.run);
-  };
-  const sayLine = (d) => {
-    dropLine(d.address, 'stopped');
-    if (!d.voiced || !d.source?.path) return;
-    const entry = { address: d.address, line: d.line, run: d.run, state: 'waiting' };
-    lineLog.push(entry);
-    const v = { run: d.run, entry, node: null, gain: null, began: 0, at: 0, waited: 0, stalled: 0, offset: 0 };
-    voiced.set(d.address, v);
-    if (!ctx || win.document.hidden || !(player.mix().voice > 0)) { dropLine(d.address, 'silent'); return; }
-    v.gain = ctx.createGain();
-    v.gain.gain.value = player.mix().voice;
-    v.gain.connect(voiceBus);
-    decode(d.source.path).then((buffer) => {
-      if (voiced.get(d.address) !== v) return;
-      if (!buffer) { dropLine(d.address, 'failed'); return; }
-      if (v.waited > 300) { dropLine(d.address, 'late'); return; }
-      v.buffer = buffer;
-      playFrom(d.address, v, 0);
-      entry.state = 'playing';
-    }).catch(() => dropLine(d.address, 'failed'));
-  };
-  const playFrom = (address, v, offset) => {
-    const n = ctx.createBufferSource(); n.buffer = v.buffer; n.connect(v.gain);
-    n.onended = () => { if (voiced.get(address) === v && v.node === n) { v.node = null; v.entry.state = 'ended'; voiced.delete(address); player.lines.align(address, v.run, v.buffer.duration * 1000, true); } };
-    v.node = n; v.began = ctx.currentTime; v.offset = offset; n.start(0, offset);
-  };
-  const stepLines = (ms) => {
-    const held = player.pausedStage?.();
-    for (const [address, v] of [...voiced]) {
-      const line = player.state.blocks[address]?.line;
-      if (!line || line.run !== v.run) { dropLine(address, 'stopped'); continue; }
-      if (!player.state.ambient.voice) { dropLine(address, 'silenced'); continue; }
-      if (v.gain) v.gain.gain.value = player.mix().voice;
-      const paused = player.clockHeld ? player.clockHeld(address) : !!held && (address === held || address.startsWith(held + '/'));
-      if (v.paused) { if (!paused) { v.paused = false; playFrom(address, v, v.offset); } continue; }
-      if (!v.node) { v.waited += ms; if (v.waited > 300) dropLine(address, 'late'); continue; }
-      if (paused) { v.paused = true; v.offset += ctx.currentTime - v.began; v.node.onended = null; try { v.node.stop(); } catch {   } v.node = null; continue; }
-      const pos = (v.offset + (ctx.currentTime - v.began)) * 1000;
-      if (pos === v.at) { v.stalled += ms; if (v.stalled > 1000) { dropLine(address, 'stalled'); continue; } } else v.stalled = 0;
-      v.at = pos;
-      player.lines.align(address, v.run, pos);
-    }
-  };
-  const syncHold = () => {
-    const stage = player.pausedStage?.();
-    const st = player.clockStates?.();
-    mixer.hold(st ? (o) => st.get(o)?.rate === 0 : stage ? (o) => o === stage || o.startsWith(stage + '/') : null);
-  };
-  const update = () => {
-    if (gone) return;
-    mixer.setLevels(player.mix());
-    syncHold();
-    mixer.prune((owner) => !owner.includes('/') || !!player.state.blocks[owner]);
-    if (ctx && !win.document.hidden) mixer.music(player.music());
-  };
-  const arm = (e) => {
-    if (!e.isTrusted || ctx || gone) return;
-    try {
-      ctx = new win.AudioContext();
-      out = ctx.createGain();
-      out.connect(ctx.destination);
-      voiceBus = ctx.createGain();
-      voiceBus.connect(out);
-      if (extras) {
-        analyser = ctx.createAnalyser();
-        analyser.fftSize = 1024;
-        analyserData = new Float32Array(analyser.fftSize);
-        voiceBus.connect(analyser);
-      }
-      ctx.resume().catch(() => {});
-    } catch { ctx = null; }
-    update();
-  };
-  for (const type of ['pointerdown', 'keydown']) win.addEventListener(type, arm, true);
-  const shown = () => {
-    if (gone) return;
-    if (win.document.hidden) ctx?.suspend().catch(() => {});
-    else { ctx?.resume().catch(() => {}); update(); }
-  };
-  win.document.addEventListener('visibilitychange', shown);
-  const delivered = ({ deliveries }) => {
-    if (gone) return;
-    for (const d of deliveries) {
-      if (d.kind === 'sound') mixer.play(d.sound, d.group, d.gain, d.address, d.source);
-      else if (d.kind === 'say') sayLine(d);
-      else if (d.kind === 'stopLine') dropLine(d.address, 'stopped');
-    }
-    update();
-  };
-  player.listeners.push(delivered);
-  const stats = async () => {
-    await Promise.all(buffers.values());
-    return { armed: !!ctx, requests: log.length, started: log.filter(e => e.started).length, decoded: buffers.size - failed.size, failed: [...failed], music: mixer.nowPlaying() };
-  };
-  const read = () => { analyser.getFloatTimeDomainData(analyserData); const v = player.mix().voice; return v > 0 ? extras.rms(analyserData) / v : 0; };
-  const heard = () => !!ctx && !!analyser && !win.document.hidden && player.mix().voice > 0 && (mixer.voicePlaying() || [...voiced.values()].some(v => v.node));
-  const mouth = extras ? extras.mouths(player, { read, heard }) : null;
-  const advance = (ms) => { if (gone) return; syncHold(); mixer.advance(ms); stepLines(ms); mouth?.(ms); };
-  const destroy = () => {
-    if (gone) return;
-    gone = true;
-    try { mixer.silence(); } catch {   }
-    for (const address of [...voiced.keys()]) dropLine(address, 'stopped');
-    for (const type of ['pointerdown', 'keydown']) win.removeEventListener(type, arm, true);
-    win.document.removeEventListener('visibilitychange', shown);
-    const i = player.listeners.indexOf(delivered); if (i >= 0) player.listeners.splice(i, 1);
-    try { ctx?.close?.().catch?.(() => {}); } catch {   }
-  };
-  return { mixer, log, update, stats, advance, destroy, lines: lineLog, get armed() { return !!ctx; }, get gone() { return gone; } };
-}
-
-
-};
-defs[26] = function (exp) { 'use strict'; // engine/v2/src/mixer.mjs
-exp.createMixer = createMixer;
-function createMixer(start, limits = { soundCopies: 4, oneShotSounds: 16 }) {
-  const levels = { music: 1, sounds: 1, voice: 1 };
-  let tracks = [];
-  let current = null;
-  let isHeld = null;
-  const level = (t) => (levels[t.group] ?? 1) * t.fadeLevel * t.gain;
-  const apply = (t, ramp = 25) => t.handle.gain(Math.max(0, Math.min(1, level(t))), ramp);
-  const stop = (t) => { t.handle.stop(); tracks = tracks.filter(x => x !== t); if (current === t) current = null; };
-  const fadeTo = (t, to, ms) => {
-    if (!ms) { t.fade = null; t.fadeLevel = to; if (!to) stop(t); else apply(t); return; }
-    t.fade = { from: t.fadeLevel, to, ms, at: 0 };
-  };
-  const sync = (t) => {
-    const held = !!(t.owner && isHeld && isHeld(t.owner));
-    if (held === t.held) return;
-    t.held = held;
-    if (held) t.handle.pause?.(); else t.handle.resume?.();
-  };
-  const begin = (name, group, gain, owner, loop, fadeLevel, source) => {
-    const handle = start(name, { loop, group, owner, source });
-    if (!handle) return null;
-    const t = { name, group, gain, owner, loop, handle, fadeLevel, fade: null, held: false };
-    tracks.push(t);
-    apply(t, 0);
-    sync(t);
-    return t;
-  };
-  const oneShots = () => tracks.filter(t => t.group !== 'music');
-  return {
-    setLevels(next) {
-      for (const g of Object.keys(levels)) if (typeof next[g] === 'number') levels[g] = Math.max(0, Math.min(1, next[g]));
-      for (const t of tracks) apply(t);
-    },
-    music(m) {
-      const want = m?.sound || null;
-      if (current && current.name === want) {
-        if (m.gain !== current.gain) { current.gain = m.gain ?? 1; apply(current); }
-        if ((m.owner ?? null) !== current.owner) { current.owner = m.owner ?? null; sync(current); }
-        return;
-      }
-      const ms = m?.fadeMs ?? 400;
-      for (const t of tracks.filter(x => x.group === 'music' && x !== current)) stop(t);
-      const old = current;
-      current = null;
-      if (old) fadeTo(old, 0, ms);
-      if (want) {
-        current = begin(want, 'music', m.gain ?? 1, m.owner ?? null, true, ms ? 0 : 1);
-        if (current && ms) fadeTo(current, 1, ms);
-      }
-    },
-    play(name, group, gain = 1, owner = null, source = null) {
-      if (oneShots().filter(t => t.name === name).length >= limits.soundCopies) return false;
-      if (oneShots().length >= limits.oneShotSounds) return false;
-      return !!begin(name, group, gain, owner, false, 1, source);
-    },
-    prune(isLive) {
-      for (const t of oneShots()) if (t.owner && !isLive(t.owner)) stop(t);
-    },
-    hold(fn) { isHeld = fn; for (const t of tracks) sync(t); },
-    advance(ms) {
-      for (const t of [...tracks]) {
-        if (t.handle.done()) { stop(t); continue; }
-        if (!t.fade) continue;
-        const f = t.fade;
-        f.at += ms;
-        const p = Math.min(1, f.at / f.ms);
-        t.fadeLevel = f.from + (f.to - f.from) * p;
-        if (p === 1) { t.fade = null; if (!f.to) { stop(t); continue; } }
-        apply(t);
-      }
-    },
-    silence() { for (const t of [...tracks]) stop(t); },
-    voicePlaying() { return tracks.some(t => t.group === 'voice' && !t.held); },
-    busy() { return tracks.length > 0; },
-    tracks() { return tracks.map(t => ({ name: t.name, group: t.group, owner: t.owner, level: +level(t).toFixed(4), fading: !!t.fade, held: t.held })); },
-    nowPlaying() { return current?.name || null; },
-  };
-}
-
-
-};
 defs[27] = function (exp) { 'use strict'; // engine/v2/web/input-web.mjs
-exp.attachInput = attachInput; exp.stageFocus = stageFocus; exp.contrastOf = contrastOf; exp.focusColour = focusColour; exp.focusRing = focusRing; exp.ringFilter = ringFilter; exp.canRing = canRing;
+exp.controlName = controlName; exp.attachInput = attachInput; exp.stageFocus = stageFocus; exp.contrastOf = contrastOf; exp.focusColour = focusColour; exp.focusRing = focusRing; exp.ringFilter = ringFilter; exp.canRing = canRing;
 const keyOwner = new WeakMap();
 const TAP_PX = 10;
 const mountedIn = new WeakMap();
@@ -7005,6 +6753,10 @@ function groupStop(it, order) {
   if (it?.c?.kind !== 'choice') return it;
   const peers = order.filter(x => x.addr === it.addr && x.cid === it.cid);
   return peers.find(x => x.el.getAttribute('tabindex') === '0') || peers[0] || it;
+}
+function controlName(c, option, on, tpl, drawnLabel) {
+  if (!on && c.disabledLabel) return tpl(c.disabledLabel);
+  return (option !== undefined ? tpl(c.options[option].label) : tpl(c.label)) || drawnLabel || undefined;
 }
 function attachInput(player, state, container, win) {
   const doc = win.document;
@@ -7021,6 +6773,9 @@ function attachInput(player, state, container, win) {
     const a = doc.activeElement;
     return (!a || a === doc.body || a === doc.documentElement) && owner() === container;
   };
+  const first = (ev) => { if (ev.isTrusted && !state.stopped && !player.state.firstInput) report(player.firstInput()); };
+  listen(container, 'pointerdown', first, true);
+  listen(doc, 'keydown', (ev) => forMe(ev) && first(ev), true);
   const KEY = /^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$/;
   const LOOKS = ['disabled', 'pressed', 'selected', 'focus', 'hover', 'idle'];
   let items = [];
@@ -7033,6 +6788,7 @@ function attachInput(player, state, container, win) {
   let hover = null;
   const ringId = `${state.namespace || ''}hsvg-focus-${++ringCount}`;
   const style = doc.createElement('style');
+  if (state.nonce) style.nonce = state.nonce;
   cleanups.push(() => style.remove());
   doc.head.appendChild(style);
   let ringDefs = null;
@@ -7091,7 +6847,7 @@ function attachInput(player, state, container, win) {
       ringDefs = doc.createElement('div');
       ringDefs.setAttribute('data-hsvg-ring', '');
       ringDefs.setAttribute('aria-hidden', 'true');
-      ringDefs.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
+      ringDefs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
       ringDefs.appendChild(build(['svg', { width: '0', height: '0' }]));
       cleanups.push(() => ringDefs.remove());
     }
@@ -7100,7 +6856,7 @@ function attachInput(player, state, container, win) {
     set(want, 'data-player-ring', on === want ? ringId : `${ringId}-copy`);
     ringOn = want;
   }
-  const build = ([name, attrs, kids = []]) => { const e = doc.createElementNS(SVGNS, name); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); for (const k of kids) e.appendChild(build(k)); return e; };
+  const build = ([name, attrs, kids = []]) => { const e = doc.createElementNS(SVGNS, name); for (const [k, v] of Object.entries(attrs)) { if (k === 'style') e.style.cssText = v; else e.setAttribute(k, v); } for (const k of kids) e.appendChild(build(k)); return e; };
   listen(win, 'resize', () => { if (!state.destroyed) ring(); });
   const visible = (el) => {
     if (!el || !el.isConnected) return false;
@@ -7194,8 +6950,7 @@ function attachInput(player, state, container, win) {
       const on = player.controlEnabled(addr, it.cid, it.option);
       const shown = visible(el) && inDialog(el);
       set(el, 'data-player-control', '');
-      const optionLabel = it.option !== undefined ? tpl(addr, c.options[it.option].label) : '';
-      const name = !on && c.disabledLabel ? tpl(addr, c.disabledLabel) : (optionLabel || tpl(addr, c.label) || it.node.attrs?.['data-hsvg-label']);
+      const name = controlName(c, it.option, on, t => tpl(addr, t), it.node.attrs?.['data-hsvg-label']);
       set(el, 'aria-label', name || null);
       set(el, 'aria-disabled', on ? null : 'true');
       if (isPress(c.kind) || c.kind === 'snapshot') { set(el, 'role', c.kind === 'toggle' ? 'checkbox' : 'button'); set(el, 'tabindex', shown && on ? 0 : -1); }
@@ -7368,13 +7123,13 @@ function attachInput(player, state, container, win) {
     let r;
     try { r = player.activate(it.addr, it.cid, drop); report(r); } finally { state.trustedActivation = false; }
     if (accepted && r?.ok && !r.ignored && !state.stopped && player.state.blocks[it.addr]) {
-      report(player.transaction('person', () => { const b = player.state.blocks[it.addr]; b.snaps = { ...(b.snaps || {}), [it.cid]: drop }; })); player.afterCommit?.();
+      report(player.snap(it.addr, it.cid, drop));
     }
     after();
   }
   function unsnap(it) {
     if (player.state.blocks[it.addr]?.snaps?.[it.cid] === undefined) return false;
-    report(player.transaction('person', () => { const b = player.state.blocks[it.addr]; const s = { ...b.snaps }; delete s[it.cid]; b.snaps = s; })); player.afterCommit?.();
+    report(player.snap(it.addr, it.cid));
     return true;
   }
   function keyboardDropMove(dir) {
@@ -7623,7 +7378,7 @@ function attachInput(player, state, container, win) {
     }
     if (code === 'Escape' && player.openDialogs?.().length) {
       const top = player.openDialogs().at(-1);
-      report(player.transaction('person', () => player.dialog(top.id, false))); player.afterCommit?.(); after(); ev.preventDefault(); return;
+      report(player.closeDialog(top.id)); after(); ev.preventDefault(); return;
     }
     if (drag?.keyboard) {
       if (/^Arrow/.test(code)) { keyboardDropMove(code === 'ArrowLeft' || code === 'ArrowUp' ? -1 : 1); ev.preventDefault(); return; }
@@ -7769,7 +7524,11 @@ function frameLink(win) {
         const k = eventKey(n);
         if (d.call === 'on') { if (!subs.has(k)) subs.set(k, host.on(n, ({ name, detail }) => post({ channel, v: 1, call: 'on', name, detail }))); }
         else if (d.call === 'off') { subs.get(k)?.(); subs.delete(k); }
-        else { const v = host[d.call](...args); if (VALUED.has(d.call)) value = v ?? null; }
+        else {
+          const v = host[d.call](...args);
+          if (d.call === 'emit') return void v.then((value) => post({ channel, id: d.id, ok: true, value }), (e) => post({ channel, id: d.id, ...fail(e.code || 'E-HOST-CALL', e.message) }));
+          if (VALUED.has(d.call)) value = v ?? null;
+        }
         r = { ok: true, value };
       } catch (e) { r = fail(e?.code || 'E-HOST-CALL', String(e?.message ?? e)); }
     }

@@ -1003,19 +1003,19 @@
       "section": "6.2.4",
       "on": {
         "kinds": [
-          "look-child"
+          "variant-child"
         ],
         "elements": [
           "g"
         ],
-        "note": "each look: a direct child <g> of a part with looks"
+        "note": "each variant: a direct child <g> of a part with variants"
       },
       "value": {
         "type": "id",
         "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
         "maxLength": 48,
         "unique": "in the part",
-        "note": "the look name; the rest look is the one shown (no display=\"none\")"
+        "note": "the variant name; the rest variant is the one shown (no display=\"none\")"
       },
       "codes": [
         "E-LOOK"
@@ -1064,7 +1064,7 @@
         "<metadata> (the tool record, 6.6)"
       ]
     },
-    "componentOrCompoundRoot": {
+    "componentRoot": {
       "required": [
         "data-hsvg-kind",
         "id (the namespace)"
@@ -1114,9 +1114,9 @@
       ],
       "optional": []
     },
-    "looks": {
+    "variants": {
       "required": [
-        "data-hsvg-variant on every look"
+        "data-hsvg-variant on every variant"
       ],
       "recommended": [],
       "optional": []

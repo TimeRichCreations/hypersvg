@@ -6,6 +6,8 @@ import { Validator } from './validate.mjs';
 import { DRAFT_KINDS, draftUses, withoutCovered } from './drafts.mjs';
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
+// Composed schemas, by the kind schema object they were made from: [{used: the fills objects in order, schema}].
+const composed = new WeakMap();
 
 // A pinned preset named in needs: a preset is expanded into content, so it goes in a document's presets list.
 function presetInNeeds(n, name) {
@@ -18,10 +20,17 @@ export function makeDocumentChecker(schemas) {
   const presetNames = new Set(schemas.presetAddons || []); // pinned outside presets (src/load.mjs withPresetNames)
   const headerKinds = new Set(Object.entries(schemas.kinds).filter(([, s]) => !s['x-hsvg-headerKind']).map(([k]) => k));
 
+  // The kind's schema with the fills of the needs' capabilities. The result is only read, so one made for the same kind
+  // schema and the same fills is kept and given again (composed below).
   function compose(kindName, needs) {
-    const s = clone(schemas.kinds[kindName]);
+    const base = schemas.kinds[kindName];
+    const used = [...needs].map(c => schemas.capabilities[c]?.['x-hsvg-fills']).filter(Boolean);
+    const kept = base && typeof base === 'object' ? (composed.get(base) ?? composed.set(base, []).get(base)) : null;
+    const hit = kept?.find(e => e.used.length === used.length && e.used.every((f, k) => f === used[k]));
+    if (hit) return hit.schema;
+    const s = clone(base);
     const fills = {};
-    for (const c of needs) Object.assign(fills, schemas.capabilities[c]?.['x-hsvg-fills'] || {});
+    for (const f of used) Object.assign(fills, f);
     const walk = (node) => {
       if (!node || typeof node !== 'object') return;
       if (Array.isArray(node)) { node.forEach(walk); return; }
@@ -36,6 +45,7 @@ export function makeDocumentChecker(schemas) {
       for (const v of Object.values(node)) walk(v);
     };
     walk(s);
+    if (kept && kept.length < 32) kept.push({ used, schema: s });
     return s;
   }
 

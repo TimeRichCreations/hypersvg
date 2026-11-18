@@ -15,7 +15,9 @@
 //   silences it at once; stopLine, a new line of the same block and the line's end stop it.
 // Returns {mixer, log, update(), advance(ms), stats(), lines}; log lists every request with whether it started (for
 // tests); lines lists the line recordings ({address, run, state}).
+// It gives itself to the player when it loads (player-web.mjs useAudio, added after 2.0.0-next.0).
 import { createMixer } from '../src/mixer.mjs';
+import { useAudio } from './player-web.mjs';
 
 // A made sound (audioSynths, core since D31.2): a pitch glide over durationMs with attack and release. The caller
 // starts the node and then schedules its stop (startSynth): Web Audio refuses stop() before start(), and a refused
@@ -273,3 +275,4 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
   };
   return { mixer, log, update, stats, advance, destroy, lines: lineLog, get armed() { return !!ctx; }, get gone() { return gone; } };
 }
+useAudio(attachAudio);

@@ -105,7 +105,9 @@ export class Player extends Engine {
   }
 
   // ---------- start ----------
-  start() {
+  // ambient: the ambient values to start with (a fed start move, 9.6); none keeps the player's.
+  start(ambient) {
+    if (ambient) this.state.ambient = structuredClone(ambient);
     const r = this.transaction('host', () => {
       const s = this.state.story;
       let to = s.resume;

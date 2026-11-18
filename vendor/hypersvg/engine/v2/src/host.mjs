@@ -2,14 +2,17 @@
 // faces, never its body (decision 1): inputs it may set, triggers it may fire, output results and inputs it may read,
 // output events and records it may hear, plus pause, restart and storage. A refused call throws {code, message}.
 // - set: a declared input (content field or knob) as one change from the host; type and bounds checked, never clamped.
-// - emit: a declared trigger input, with a payload only when it declares one.
+// - emit: a declared trigger input, with a payload only when it declares one. Returns a promise of the step's end.
 // - read: an output result or an input; body values and freeText fields are E-HOST-PRIVATE.
 // - on: declared output events and records of the experience, and entered, ended, openUrl, firstInput, hookHealth;
 //   hsvg.changed hears every change of an input, whoever made it: {name, value, by} (D45).
 //   The callback gets a frozen {name, detail} after the step's reactions; a throwing listener goes to onError, and
 //   so does any failure in the engine's deliver phase (9.2).
 // - A state-changing call made while listeners run waits until that step is over (9.2).
-// - test mode (A8.5) also gives `internal`, the engine itself, for test tools.
+// - test mode (A8.5) also gives `internal`, the engine itself, for test tools (internal, spec 10.16).
+// - API labels (spec 10.16, D63): every call above is stable but `internal`; place(name), seat() and ladder() are
+//   experimental. The ports aiPort, pagePort and modulePort are experimental (exported from ./mount); every other
+//   export of this module is internal.
 // - aiPort: the host port for AI sources (A5.1, 10.7). A host gives it as the ai capability of mount():
 //   mount(el, pkg, {capabilities: {ai: aiPort({'browser-ai': async (request, signal) => text})}}). The ai grant decides
 //   which sources content may use; the engine checks every answer before any write (src/ai.mjs).
@@ -174,6 +177,8 @@ const frozen = (x) => Object.freeze(structuredClone(x));
 // The host's own copy of a value it gives; a value that cannot be copied (a function) is no JSON value.
 const own = (x, name) => { try { return structuredClone(x); } catch { return refuse('E-TYPE', `${name}: not a JSON value`); } };
 
+// onError: the host's callback; play() (player-web.mjs) and logic() pass it wrapped, so it always hears a code
+// (src/error-detail.mjs).
 export function hostApi(player, { onError = null, test = false, onRestart = null } = {}) {
   const doc = player.exp.doc;
   const inputs = doc.inputs || {};
@@ -273,7 +278,20 @@ export function hostApi(player, { onError = null, test = false, onRestart = null
       const payload = own(given, name);
       if (Object.keys(payload).length && !inp.payload) refuse('E-TYPE', `the trigger ${name} takes no payload`);
       if (inp.payload) { const bad = checkValue(inp.payload, payload); if (bad) refuse(bad[0], `${name}: ${bad[1]}`); }
-      return change(() => check(player.trigger(name, payload, 'host')));
+      // A promise of the trigger's step (added after 2.0.0-next.0): it resolves once the trigger's reactions have run
+      // and its listeners were called, with {name, payload, outputs} (the output events and records that step sent).
+      // It does not wait for clips or timers. A refusal still throws at the call; a call that waited (9.2) and then
+      // failed rejects it.
+      let done, fail;
+      const p = new Promise((y, n) => { done = y; fail = n; });
+      p.catch(() => {});
+      change(() => {
+        try {
+          const r = check(player.trigger(name, payload, 'host'));
+          done(frozen({ name, payload, outputs: r.outputs.filter(o => BUILT_IN.includes(o.name) || outputs[o.name]).map(({ name: n, ...d }) => ({ name: n, detail: d })) }));
+        } catch (e) { fail(e); throw e; }
+      });
+      return p;
     },
     // A picture for a picture place (10.6, D40): name is a content input of the experience whose contentType is
     // picture; bytes a Uint8Array (copied now); type image/png, image/jpeg or image/webp. The engine checks the type
