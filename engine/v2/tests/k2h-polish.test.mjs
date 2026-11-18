@@ -10,7 +10,7 @@ import { pack, packAsset, PLAYER_NOTICE } from '../tools/pack.mjs';
 import { checkValue } from '../src/runtime.mjs';
 import { checkExperience } from '../check/index.mjs';
 import { makeAsset, readAsset } from '../src/asset.mjs';
-import { repo, schemas, eq, ok, mapSource } from './helpers.mjs';
+import { repo, schemas, eq, ok, mapSource, runLater } from './helpers.mjs';
 
 const guideLamp = path.join(repo, 'docs', 'guide', 'examples', 'lamp');
 const temp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'k2h-'));
@@ -115,28 +115,29 @@ export const tests = {
   },
 
   // ---------- B. R08: a browser pass that cannot run is said, and fails with --browser required ----------
-  'R08: test.mjs says SKIPPED and gives coverage when the browser cannot start; --browser required exits 1'() {
+  async 'R08: test.mjs says SKIPPED and gives coverage when the browser cannot start; --browser required exits 1'() {
     const tool = path.join(repo, 'engine', 'v2', 'tools', 'test.mjs');
     const env = { ...process.env, PW_EXECUTABLE_PATH: path.join(temp(), 'no-such-browser') };
-    const run = (...extra) => spawnSync(process.execPath, [tool, guideLamp, '--quick', '--no-shots', '--out', temp(), ...extra], { encoding: 'utf8', env });
-    const soft = run('--json');
+    const run = (...extra) => runLater([tool, guideLamp, '--quick', '--no-shots', '--out', temp(), ...extra], { env });
+    const [soft, hard] = await Promise.all([run('--json'), run('--browser', 'required')]);
     eq(soft.status, 0, soft.stderr);
     // With --json the notes go to stderr and stdout is the report alone.
     ok(/^SKIPPED the browser pass did not run/m.test(soft.stderr), soft.stderr.slice(0, 300));
     const r = JSON.parse(soft.stdout);
     eq(r.coverage.ran, ['check', 'node']);
     ok(r.coverage.omitted.some(x => x.part === 'browser'), JSON.stringify(r.coverage));
-    const hard = run('--browser', 'required');
     eq(hard.status, 1, hard.stdout);
     ok(/T-BROWSER-SKIPPED/.test(hard.stdout), hard.stdout.slice(0, 300));
   },
 
   // ---------- F. the command: help, the scoped name, the add-on tool ----------
-  'F: hypersvg <command> --help prints the tool\'s usage; init\'s next steps use the full name; hypersvg addon runs the add-on tool'() {
+  async 'F: hypersvg <command> --help prints the tool\'s usage; init\'s next steps use the full name; hypersvg addon runs the add-on tool'() {
     const bin = path.join(repo, 'bin', 'hypersvg.mjs');
     const cli = (args, cwd) => spawnSync(process.execPath, [bin, ...args], { encoding: 'utf8', cwd });
-    for (const c of ['check', 'test', 'pack', 'unpack', 'addon']) {
-      const r = cli([c, '--help'], temp());
+    const commands = ['check', 'test', 'pack', 'unpack', 'addon'];
+    const helps = await Promise.all(commands.map(c => runLater([bin, c, '--help'], { cwd: temp() })));
+    for (const [k, c] of commands.entries()) {
+      const r = helps[k];
       eq(r.status, 0, `${c}: ${r.stderr}`);
       const said = r.stdout + r.stderr;
       ok(r.stdout.startsWith(`Usage: hypersvg ${c}`) && !/E-FILE-MISSING/.test(said), `${c} --help: ${said.slice(0, 200)}`);

@@ -1,0 +1,423 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "doors-walk",
+ "about": "A seeded random walk of up to 20 steps (seed 7).",
+ "package": {
+  "folder": "engine/v2/addons/examples/doors",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:d1276970e6fe15afba60b965213374177739e40294ce41eef9498f8e0a9400ff",
+   "scenes/yard/scene.json": "sha256:d377501ee2c6a3a127273f79f06cd034c81f1051f21cadffd861a90ba54eb99f",
+   "scenes/yard/yard.svg": "sha256:0ee25bfcbf0b7c2f13afa3952e3159a51506a948e39e1516430f1ae4ac45cd9e"
+  },
+  "addons": {
+   "example.steps@1.0.0": "sha256:79fc697221594d6c0cce22c6b91b9bdb68fc391c5017069f2652b5ae99876cf1",
+   "example.sway@1.0.0": "sha256:47c6772222bec8669228ed83c98b4814d6fc8870077d967774a60c5c76be9c04"
+  }
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:89b67facc9c2a315fae6254a9ab64221f2b72b330febcbbeff214300de31f0f2",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "yard",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "yard"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:852be5f2338d72a4708d8b68e20483c86d821dfbbcd84c080be4a19260be11ad",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:440e4620390586e19079cbadae8d4e422465757dc3342b1a690b9c42c9b93257",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 516,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:f43a529ba3a486fd36c03294f2ac0da5ff023c2cbc9f0acfbd8d99e668766a3f",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1356,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:2c7087c4617e25ec4a69c2753fd420ca881e58c5c0ce4dc3b6bccd4d79a34518",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1756,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:329ec4b29eb44f3bf05634f8426a5ac6d3282ee6b1346c94f94fd59eb318714c",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2068,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:c642c5fdbd708072130e7796ec802972815a787b317ba8a41e86d02ddcc597da",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3168,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:047a03964fd115d3294887ddb829b917052345b86cbadbe41f3d726f9652868b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3824,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:e1b29c7eef8799a7d8cd3187342440047f0ec5b54f2773ab7041d3009fc3f76e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4900,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:fdd87944804934d24e20876c341d55550560b33bc12bebfa2511808c3b81d01c",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5496,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:44f6d16271128d52338aa7b76f53dfa8eec03eeb1c5d1aa6688e2a98913c7787",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 6108,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:cb238bba06ec11a4ba50ce3924b4887687d4e8017856db1a19e48172fc846551",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 7304,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:975e1d032c670b11dcad5f3ad4cafcbd511cc81340afae4be859caca0e003cf1",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8320,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:6c3bfa074adc599fa9bc28db2c2c270585dfffd9a70b965e9f0418fab73d6e41",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8740,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:c3d2c4a0d6ba3a7f7a6149d6b8e94a63a0b228eccc13ff1f7726efa82d72f7f8",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 9868,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:bf877d67aed28ff370e8fd4141f9aeab95a2c150acaa0fe406c4d71665870eb8",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 10952,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:7b9e49e94f11f7c1f3ebd7ae0c3f37e3ad4a407cc363db7c9de5998677642e8e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 11712,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:2d23f281cd598f511afa4cdae8e87cba59711722f653c0cf0b86c3c9cca64e4b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 12672,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:cf8f03045f65415d751253b92e82a1f5ca66f415b1357ec1e9106811aedd9d24",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13128,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:fc342cc0d0810d8fca7428262bf73891a642cdea268c52277b05bdab0ea2ab4b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13648,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:48a5cbcc65320b0ee0093522e76bc1df68db7df1f296afe236829d10befd274a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 14020,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:348eb14e89eaf2cc7437b6f060473786840cfaeca66b2f6be6a7adb1c89fdcbd",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 14504,
+  "fingerprint": "sha256:6360c17ac86edd2a8275eef76816208c7382064925bed51e42f885eb20317072",
+  "heard": [],
+  "state": {
+   "now": 14504,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "yard": {
+     "kind": "scene",
+     "def": "yard",
+     "parent": null,
+     "values": {
+      "wind": 3
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "yard",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "yard": 1
+    },
+    "resume": null,
+    "painted": {
+     "yard": true
+    },
+    "held": [],
+    "endedReported": {
+     "yard": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "yard": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

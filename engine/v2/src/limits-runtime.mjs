@@ -14,7 +14,7 @@
 //   drawing.faults, since the art mounts after the transaction commits).
 // - Restored stored data: over its limit, or past the host's retention days, it is not restored (5.1.2).
 import { admitHost, budgetResults, expired } from './host-profile.mjs';
-import { parseTransform } from './drawing.mjs';
+import { parseTransform } from './transform.mjs';
 
 // The engine's fault class, given by installLimits (no import of runtime.mjs: the packer refuses that cycle).
 let EngineFault = class extends Error { constructor(code, m, a) { super(`${code} ${a || ''}: ${m}`); this.code = code; this.address = a; } };

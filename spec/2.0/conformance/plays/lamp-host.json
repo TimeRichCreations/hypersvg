@@ -1,0 +1,251 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "lamp-host",
+ "about": "The host sets the knobs (lit and height); the person flips the switch, and switched is heard each time.",
+ "package": {
+  "folder": "docs/guide/examples/lamp",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:8d51040446878602950bad84c8b5e80355c766e2a2701c37c65fb14a2b5524bc",
+   "lamp.json": "sha256:6183600c86ca809417626695608ad62671ad6ecf0a88e7099b4fa2d5ee2a5682",
+   "lamp.svg": "sha256:c20685696e23e403e343b6f6cfa83210457d27f4d158415be77d40ed03a1c1cd"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {
+   "height": 1.25
+  },
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:e3f3e811a73ee4cbfbd75c42323af7345caffd6a746e1254c39d1f6f2f4474c1",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "lamp",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 100,
+    "source": "setInput",
+    "payload": [
+     "lit",
+     true,
+     "host"
+    ]
+   },
+   "fingerprint": "sha256:024514fd6e677bfbf61a37809534b8ed9f2e87e8cd17b7cbac3d946bfc71808a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 600,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:6b15a07594cce130e7c04291477036b66a8eeaa0089deb580005f1349301efe5",
+   "heard": [
+    {
+     "t": 600,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 600,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch"
+    ]
+   },
+   "fingerprint": "sha256:bdef3396d228af48361bebb1ce18edb2a03304555bd54452ac943cf0681fd24e",
+   "heard": [
+    {
+     "t": 600,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 900,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch"
+    ]
+   },
+   "fingerprint": "sha256:e19b66a8cfebf1fb13b45e75330d546a10a2ccb568f505dde3983bad5b164d63",
+   "heard": [
+    {
+     "t": 900,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1200,
+    "source": "setInput",
+    "payload": [
+     "height",
+     0.5,
+     "host"
+    ]
+   },
+   "fingerprint": "sha256:92d4b06ebf0903d44cf9d1af4078c9bd204796b2d7876d908160d5ab0baa563d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1300,
+    "source": "setInput",
+    "payload": [
+     "height",
+     2,
+     "host"
+    ]
+   },
+   "refused": "E-RANGE",
+   "fingerprint": "sha256:6d8624d0e267752d06355bb068e56c131b17843a500152a2f0455f14c4ddd18e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1500,
+    "source": "applySettings",
+    "payload": [
+     [
+      [
+       "lit",
+       false
+      ],
+      [
+       "height",
+       1.5
+      ]
+     ],
+     "person"
+    ]
+   },
+   "fingerprint": "sha256:5d5ad92145ef1558b1574bacd45a709a0634682034bdf7a705f493276f632b2b",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 2000,
+  "fingerprint": "sha256:73eb731176b677e44887aeba26b8862f1d7d83aa9eae20b8018d360279a758f1",
+  "heard": [],
+  "state": {
+   "now": 2000,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {
+      "lit": false,
+      "height": 1.5
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "lamp": {
+     "kind": "scene",
+     "def": "lamp",
+     "parent": null,
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "lamp",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "lamp": 1
+    },
+    "resume": null,
+    "painted": {
+     "lamp": true
+    },
+    "held": [],
+    "endedReported": {},
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "lamp": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

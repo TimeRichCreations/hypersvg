@@ -89,6 +89,35 @@ test('the public policy takes the lean 2.0 base and leaves out 0.1, briefs and p
   'docs/spec-2.0-work/tools/upgrade/upgrade.mjs','engine/v2/tests/w4u-upgrade.test.mjs','experiences/2.0/demo-show/experience.json'])
   assert.equal(decide(name,r).include,false,name);
 });
+test('php/ and replay/ are hard exclusions: no export policy, lift or prepared folder lets a file under them out',async()=>{
+ const inside=['php/src/Formula.php','php/tests/run.php','php/README.md','php','PHP/x.php','php./x.php','replay/recorder.mjs','replay','Replay/a.json'];
+ for(const name of inside){
+  assert.equal(protectedPath(name),true,name);
+  assert.equal(protectedPath(name,['php','replay']),true,name+' (lifted)');
+ }
+ for(const name of ['engine/v2/src/replay.mjs','docs/php.md','engine/v2/tests/replay/a.mjs','x/php/a.md'])assert.equal(protectedPath(name),false,name);
+ // Every target policy in this folder, and policies that ask for the folders outright.
+ // In the authors' repository: release/*.files.txt; in an export: release/EXPORT-POLICY.txt.
+ const files=(await fs.readdir(path.join(root,'release'))).filter(f=>f.endsWith('.files.txt')||f==='EXPORT-POLICY.txt');
+ assert.ok(files.length>=1,'a target policy');
+ const texts=[...files.map(f=>readFileSync(path.join(root,'release',f),'utf8')),'+ **\n','+ php/**\n+ replay/**\n+ php\n+ replay\n','+ experiences/2.0/php/**\n+ **\n'];
+ for(const text of texts){const r=policy(text);for(const name of inside)assert.equal(decide(name,r).include,false,name);}
+ // The export verifier refuses a prepared folder that holds either.
+ const tmp=await fs.mkdtemp(path.join(os.tmpdir(),'hsvg-php-test-'));
+ const put=async(name,text)=>{const f=path.join(tmp,...name.split('/'));await fs.mkdir(path.dirname(f),{recursive:true});await fs.writeFile(f,text);};
+ try{
+  await put('release/EXPORT-POLICY.txt','+ **\n');
+  await put('LICENSE',await fs.readFile(new URL('../LICENSE',import.meta.url)));
+  await put('.gitattributes','* text=auto eol=lf\n');
+  await put('docs/a.md','Clean text.\n');
+  await verifyExport(tmp);
+  for(const name of ['php/src/Formula.php','replay/recorder.mjs']){
+   await put(name,'x\n');await assert.rejects(verifyExport(tmp),/protected/,name);
+   await fs.rm(path.join(tmp,name.split('/')[0]),{recursive:true,force:true});
+  }
+  await verifyExport(tmp);
+ }finally{await fs.rm(tmp,{recursive:true,force:true});}
+});
 test('verifyExport refuses a planted leak in a prepared folder and passes the clean folder',async()=>{
  const tmp=await fs.mkdtemp(path.join(os.tmpdir(),'hsvg-leak-test-'));
  const put=async(name,text)=>{const f=path.join(tmp,...name.split('/'));await fs.mkdir(path.dirname(f),{recursive:true});await fs.writeFile(f,text);};

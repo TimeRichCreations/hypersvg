@@ -2,7 +2,7 @@
 // parameters (8.9, A10.3, A11.1), combining (8.6), waivers (8.5) and the budgets that files can measure (A10.3).
 // Codes: E-RULE, E-RULE-SUBJECT, E-RULE-CONFLICT, E-RIGHTS, E-REF-UNKNOWN, E-KEY-REQUIRED.
 // What only play can prove is listed by playingOnly(experience) (see playing.mjs).
-import { parseXml } from '../../schema/xml.mjs';
+import { parseXmlShared } from '../xml-shared.mjs';
 import { PROOFS, BUDGET_MEASURES, ADDRESS } from './tables.mjs';
 import { combine } from './combine.mjs';
 import { roleOf, boxOf, keepOf } from '../../src/marks.mjs';
@@ -23,7 +23,7 @@ function drawnFacts(entry) {
   const local = (id) => (id === ns ? id : id.startsWith(`${ns}__`) ? id.slice(ns.length + 2) : id);
   for (const d of Object.values(entry.drawings || {})) {
     let root;
-    try { root = parseXml(d.text); } catch { continue; }
+    try { root = parseXmlShared(d.text); } catch { continue; }
     const walk = (n) => {
       if (!n.name) return;
       const a = n.attrs;

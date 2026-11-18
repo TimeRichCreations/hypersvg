@@ -1,0 +1,38 @@
+{
+ "minimal.json": {
+  "fingerprint": "sha256:2e9411fe6e643d7efab6e11e8ff7e8ca5bddd26df603f42a48043b6ec5e89913",
+  "bytes": 92,
+  "canonical": "{\"ambient\":{},\"blocks\":{},\"now\":0,\"pauses\":[],\"records\":{},\"seq\":0,\"story\":null,\"timers\":[]}"
+ },
+ "numbers.json": {
+  "fingerprint": "sha256:985c81443566b8976b134d5a13c4290d36dee3f61137828ddb43c20b0bbb1fef",
+  "bytes": 255,
+  "canonical": "{\"ambient\":{},\"blocks\":{\"experience\":{\"values\":{\"big\":1e+21,\"half\":0.5,\"neg\":-12.25,\"safe\":9007199254740991,\"small\":1e-7,\"third\":0.3333333333333333,\"tiny\":5e-324,\"whole\":100,\"zero\":0}}},\"now\":1500,\"pauses\":[],\"records\":{},\"seq\":0,\"story\":null,\"timers\":[]}"
+ },
+ "strings.json": {
+  "fingerprint": "sha256:c9f2131406164b65286804e888102b4a480bcd3c4b55236f6925d53abcd55d90",
+  "bytes": 243,
+  "canonical": "{\"ambient\":{},\"blocks\":{\"experience\":{\"values\":{\"\":\"empty key\",\"A\":\"tab\\there \\\"quoted\\\" back\\\\slash\",\"z\":\"line\\nfeed \\u0001 \",\"é\":\"café\",\"😀\":\"smile 😀\",\"דּ\":\"דּ\"}}},\"now\":0,\"pauses\":[],\"records\":{},\"seq\":0,\"story\":null,\"timers\":[]}"
+ },
+ "order.json": {
+  "fingerprint": "sha256:38f9ac29ef0f97e2926cc3d88af7b7b031ed92797efe1999ca581bd35447dc5b",
+  "bytes": 188,
+  "canonical": "{\"ambient\":{},\"blocks\":{\"a\":{},\"b\":{\"values\":{\"10\":5,\"9\":6,\"B\":3,\"a\":1,\"aa\":4,\"b\":2}}},\"now\":0,\"pauses\":[\"host\",\"hidden\"],\"records\":{},\"seq\":0,\"stopped\":\"E-RANGE\",\"story\":null,\"timers\":[]}"
+ },
+ "harbour-start.json": {
+  "fingerprint": "sha256:f7c5081f0525dbc59d485702ac6bc40e024806ae571cf2430160086ba12c9b5b",
+  "bytes": 979
+ },
+ "harbour-sailed.json": {
+  "fingerprint": "sha256:85a1b21d0e17542572a596409486da45b63d995adc01da829bcb0697e0743d30",
+  "bytes": 2332
+ },
+ "harbour-first-input.json": {
+  "fingerprint": "sha256:072d983778527c45bce8237b1b3cf044beead44326be90962648ee7ffaf11954",
+  "bytes": 2350
+ },
+ "harbour-later.json": {
+  "fingerprint": "sha256:5022bacadf18d5e57225af98e5eb38a69eb37b21db10d71950cc93420583cc14",
+  "bytes": 2332
+ }
+}

@@ -1,0 +1,12 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "component",
+  "id": "tag",
+  "drawing": "tag.svg",
+  "inputs": {
+    "label": {"kind": "content", "type": "string", "maxLength": 20, "initial": "Name"}
+  },
+  "bindings": [
+    {"target": "words", "text": "{{ label }}"}
+  ]
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Badge</title>
+<desc>A card with a name tag.</desc>
+<rect width="240" height="160" rx="12" fill="#f8fafc" data-hsvg-layer="backdrop"/>
+<g id="tag-place" data-hsvg-kind="part" data-hsvg-slot="tag-place" transform="translate(40 50)"/>
+</svg>

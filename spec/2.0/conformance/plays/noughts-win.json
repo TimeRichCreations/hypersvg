@@ -1,0 +1,314 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "noughts-win",
+ "about": "Easy level: X takes cells and wins against the logic module example.noughts. Bolt's reply waits on timers.",
+ "package": {
+  "folder": "engine/v2/addons/examples/noughts",
+  "experience": "experience.json",
+  "files": {
+   "data/lines.csv": "sha256:0935ce6cb195f4841db701a4305a21b4a5e72fa83da0daf610e5243d6b22403c",
+   "experience.json": "sha256:e03e6039388f63166464b4d010d64c5fc0a8de4d5718a342629b680fe51d99be",
+   "notes/art.mjs": "sha256:e22f87ab8fc74fe8367c02ef9c8cd02962a3dd81c6655ea207458de678280579",
+   "notes/geometry.mjs": "sha256:97f03965b3f9d4aa0f47b7bd954184e515c8a0955008e5064d1d957b65c06dfa",
+   "notes/make.mjs": "sha256:53c416377dd0d78ec6cf4ebb75ee7adfe488f96509415af8834a87cbc668f4e6",
+   "scenes/game/game.svg": "sha256:1d0785d6615d0ed226fddf29f4066949fe6a72e28cf63678e21f03ad82145327",
+   "scenes/game/game.tall.svg": "sha256:68b4249bfc81877f8166fab7aef05b32777d112e240a7805c71309657de8d2b9",
+   "scenes/game/scene.json": "sha256:ea21a24bbcfb7312421f3ecac3240276469eb0b324c53ff3af33aaf6bd3486f7",
+   "scenes/pick/pick.svg": "sha256:e5e7d1978448cb48032617f44034d847e529d24353fd8db7cf54ac2444eda0cd",
+   "scenes/pick/pick.tall.svg": "sha256:294a41760f9c508889f8267b46d7002d98577f280b629bf9d28e41e69edcc8a7",
+   "scenes/pick/scene.json": "sha256:cd985ba06f11fa893337530ff39d130252ce88924e22b572ff0a15ea43b7763b",
+   "tests/play-in-browser.mjs": "sha256:510b07605f0d2b9224d423181065804195f878014a84e31bc45d04f23961feed",
+   "words/en.csv": "sha256:127982a01a2a2097ae74e5aac34ce5bf94793bce42367860aef0b790e61fac4d"
+  },
+  "addons": {
+   "example.glow@1.0.0": "sha256:05a036c5632d4c09f04045a78cc981d1214eb6836f075a6a03de8ed42969add7",
+   "example.noughts@1.0.0": "sha256:de1c156bf6d73ad9bc2375f2347b8a44fc48946c896f71f7adc80f03e054af1b"
+  }
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:d4b9e78fab5598594c63933b0c09ed92195f886802f41253ff033ebb5d8b8091",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "pick",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:fdff22101e8ba377bf83511729f88d85a450a2b5e36097b1977cb00581ee8bee",
+   "heard": [
+    {
+     "t": 300,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:fd3b3fe2d757d052819b09a843034d588e5d1e26b12e080eb7c0de3f5f8f14be",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 600,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:66e1e62b0d779a76487ce0cbff771c02702ef20ec223d969168ebc0cc93172bb",
+   "heard": [
+    {
+     "t": 600,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "game",
+      "link": "pick-to-game"
+     }
+    },
+    {
+     "t": 600,
+     "name": "ended",
+     "detail": {
+      "scene": "game"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1500,
+    "source": "activate",
+    "payload": [
+     "game",
+     "cells",
+     "c0"
+    ]
+   },
+   "fingerprint": "sha256:5aef49fb2dccc1ecf17ca9f1c8bf965ef0a2fd3148693545d5ff29a5235b000e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5000,
+    "source": "activate",
+    "payload": [
+     "game",
+     "cells",
+     "c1"
+    ]
+   },
+   "fingerprint": "sha256:b3f259aa9ebf78c3be3a640f5fddb17fb55e34ed07ee0633e52b1f0280aa2a67",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8500,
+    "source": "activate",
+    "payload": [
+     "game",
+     "cells",
+     "c6"
+    ]
+   },
+   "fingerprint": "sha256:be0da88a60ac5b08831effd6a594dfaefcab2b7311cd8ba13c0131f85191df1f",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 12000,
+    "source": "activate",
+    "payload": [
+     "game",
+     "cells",
+     "c3"
+    ]
+   },
+   "fingerprint": "sha256:28e5180792baa6004fbb0f442eb7a7f3b49520821c4d101402e34d336020df87",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 19000,
+  "fingerprint": "sha256:432fa9f640c11767db246c56ad800346fae42755351287ad7590acfc9904a22a",
+  "heard": [],
+  "state": {
+   "now": 19000,
+   "seq": 21,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {
+      "level": 1,
+      "wins": 1,
+      "losses": 0,
+      "draws": 0
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "game": {
+     "kind": "scene",
+     "def": "game",
+     "parent": null,
+     "values": {
+      "board": [
+       "X",
+       "X",
+       "O",
+       "X",
+       "O",
+       "",
+       "X",
+       "",
+       "O"
+      ],
+      "cell": 3,
+      "winner": "X",
+      "reply": -1,
+      "seed": 42017,
+      "glow": 0,
+      "cheered": true
+     },
+     "inputs": {},
+     "machines": {
+      "round": [
+       "over"
+      ]
+     },
+     "uses": [],
+     "clips": {
+      "bulb": {
+       "startedAt": 600,
+       "speed": 1
+      },
+      "breathe": {
+       "startedAt": 600,
+       "speed": 1
+      },
+      "blink": {
+       "startedAt": 600,
+       "speed": 1
+      },
+      "sway": {
+       "startedAt": 600,
+       "speed": 1
+      },
+      "dots": {
+       "startedAt": 600,
+       "speed": 1
+      },
+      "twinkle": {
+       "startedAt": 600,
+       "speed": 1
+      }
+     },
+     "attach": {},
+     "born": 600
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "game",
+    "stack": [],
+    "counts": {
+     "pick-to-game": 1
+    },
+    "visits": {
+     "pick": 1,
+     "game": 1
+    },
+    "resume": null,
+    "painted": {
+     "pick": true,
+     "game": true
+    },
+    "held": [],
+    "endedReported": {
+     "game": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "game": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

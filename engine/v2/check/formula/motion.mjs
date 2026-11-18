@@ -1,6 +1,6 @@
 // Motion ranges drawn on parts (`data-hsvg-motion`, 6.2.1): per frame, a map from a part's local id to its channel ranges.
 // A range is { lo, hi } or 'free' for rotate *. A channel a part does not list has no entry (it moves with its parent only).
-import { parseXml } from '../../schema/xml.mjs';
+import { parseXmlShared } from '../xml-shared.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -31,7 +31,7 @@ export function motionFrames(owner) {
   const local = (id) => (id === ns ? id : id.startsWith(`${ns}__`) ? id.slice(ns.length + 2) : id);
   for (const [layout, d] of Object.entries(owner.drawings || {})) {
     let root;
-    try { root = parseXml(d.text); } catch { continue; }
+    try { root = parseXmlShared(d.text); } catch { continue; }
     const motion = new Map();
     const attrs = new Map(); // local id -> the part's attributes (its pivot, its leader)
     const walk = (n) => {

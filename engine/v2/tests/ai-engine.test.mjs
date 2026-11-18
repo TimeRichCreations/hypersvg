@@ -27,6 +27,9 @@ async function make({ ai = null, host = null, edit = null } = {}) {
 const ask = (p, text) => { ok(p.setInput('askText', text, 'widget').ok, 'typed'); return p.send('desk', 'askGuide', {}, 'widget'); };
 const answer = (p) => [p.read('desk', 'answer'), p.read('desk', 'answerFrom')];
 const tick = () => new Promise(r => setTimeout(r, 0));
+// A built-in answer arrives: a picked question's at the next clock step; one matched from typed words right after the
+// asking step, as the move ai.arrive (9.6).
+const answered = async (p) => { p.advance(0); await tick(); };
 
 export const tests = {
   'normalising: NFKC, lower case, trimmed, only letters, numbers and spaces (A5.2)'() {
@@ -67,22 +70,22 @@ export const tests = {
   },
   async 'built-in: typed text matches an intent; its answers are used in turn, with when'() {
     const p = await make();
-    ask(p, 'My brakes squeak!'); p.advance(0);
+    ask(p, 'My brakes squeak!'); await answered(p);
     eq(answer(p), ['Brakes squeeze the wheel to slow it.', 'builtIn']);
-    ask(p, 'how do brakes work'); p.advance(0);
+    ask(p, 'how do brakes work'); await answered(p);
     eq(answer(p)[0], 'Check the pads are not worn.', 'the second answer next time');
-    ask(p, 'brakes squeak'); p.advance(0);
+    ask(p, 'brakes squeak'); await answered(p);
     eq(answer(p)[0], 'Brakes squeeze the wheel to slow it.', 'then round again');
     p.transaction('host', () => p.runActions('experience', [{ id: 't', set: 'topic', to: "'cars'" }], 'test'));
-    ask(p, 'brakes squeak'); p.advance(0);
-    ask(p, 'brakes squeak'); p.advance(0);
+    ask(p, 'brakes squeak'); await answered(p);
+    ask(p, 'brakes squeak'); await answered(p);
     eq(answer(p)[0], 'Brakes squeeze the wheel to slow it.', 'an answer whose when is false is passed over');
   },
   async 'built-in: nothing matches, so the fallback, with source fallback'() {
     const p = await make();
-    ask(p, 'what is the weather'); p.advance(0);
+    ask(p, 'what is the weather'); await answered(p);
     eq(answer(p), ['Let us look at the bike together.', 'fallback']);
-    ask(p, ''); p.advance(0);
+    ask(p, ''); await answered(p);
     eq(answer(p)[1], 'fallback', 'empty text matches nothing');
   },
   async 'without the ai grant from the host profile, the built-in source answers and the host is not called'() {

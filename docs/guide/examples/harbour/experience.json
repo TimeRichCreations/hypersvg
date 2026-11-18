@@ -119,7 +119,8 @@
     }
   },
   "grants": {
-    "openUrl": true
+    "openUrl": true,
+    "storage": ["saved"]
   },
   "values": {
     "best": {

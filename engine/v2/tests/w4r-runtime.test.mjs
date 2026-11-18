@@ -193,7 +193,11 @@ export const tests = {
     const files = (needs) => bundle(ENTRY, capabilityModules(needs).map(c => c.file)).files;
     const none = files([]);
     for (const f of ['engine/v2/src/capabilities/synth.mjs', 'engine/v2/src/mouth.mjs']) ok(!none.includes(f), `${f} is not in a page without audio`);
-    ok(none.includes('engine/v2/web/audio-web.mjs') && none.includes('engine/v2/src/mixer.mjs'), 'plain sounds and music stay core (6.10)');
+    // Plain sounds and music stay core (6.10): no needs entry. Their code is carried when the experience uses sound
+    // (added after 2.0.0-next.0: the packer adds web/audio-web.mjs then, tools/pack.mjs AUDIO).
+    ok(!none.includes('engine/v2/web/audio-web.mjs') && !none.includes('engine/v2/src/mixer.mjs'), 'a page without sound carries no audio code');
+    const sounding = bundle(ENTRY, [path.join(repo, 'engine', 'v2', 'web', 'audio-web.mjs')]).files;
+    ok(sounding.includes('engine/v2/web/audio-web.mjs') && sounding.includes('engine/v2/src/mixer.mjs') && !sounding.includes('engine/v2/src/mouth.mjs'), 'a page with sound carries the mixer, not the mouth');
     const withAudio = files(['synth']);
     for (const f of ['engine/v2/src/capabilities/synth.mjs', 'engine/v2/src/mouth.mjs']) ok(withAudio.includes(f), `${f} ships with audio`);
   },

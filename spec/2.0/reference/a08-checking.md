@@ -169,7 +169,7 @@ Some rules hold only while playing (A11.9). Play tests prove them.
 | `reload()` | Reloads the page: the player is destroyed and mounted again with the stored values |
 | `seat(seatId, filler, identity?)` | Fills a seat as one identity; `legal(seatId)`, `act(seatId, key)` and `leave(seatId)` use the agent door (A4.1) |
 | `advance(ms)` | Moves the engine clock and runs every deadline due |
-| `text(id)`, `look(id)`, `visible(id)`, `name(id)` | Reads what a person sees on a part |
+| `text(id)`, `variant(id)`, `visible(id)`, `name(id)` | Reads what a person sees on a part |
 | `channel(id, channel)` | Reads a part's motion channel value (6.7) |
 | `soundCount()` | Sounds playing now |
 | `rules()` | Per play-checked rule, its id and `pass`, `fail` or `not-run` at the current step |
@@ -193,7 +193,7 @@ to mount). Anything else in a fixture is refused.
   "steps": [
     {"press": "parcel-button"},
     {"advance": 1200},
-    {"expect": {"look": "robin-hero/mouth", "is": "open"}},
+    {"expect": {"variant": "robin-hero/mouth", "is": "open"}},
     {"expect": {"output": "onward"}},
     {"expect": {"output": "delivered", "is": true}}
   ],
@@ -202,7 +202,7 @@ to mount). Anything else in a fixture is refused.
 }
 ```
 
-1. `steps` use the harness methods. `expect` checks what a player sees or a host hears: text, a look, visibility, an
+1. `steps` use the harness methods. `expect` checks what a player sees or a host hears: text, a variant, visibility, an
    accessible name, an output, the current scene. `{"output": <event>}` passes when that output event was heard since
    the last step; with `is`, it compares an output result. It never reads a sealed block's body.
 2. **Rules checked by playing.** Every rule named in `rules` is checked after each settled step: a step
@@ -212,7 +212,7 @@ to mount). Anything else in a fixture is refused.
    `{"drag": target, "points": [...], "ms": n}`, `{"signal": name, "payload": {...}}`, `{"page": {...}}`,
    `{"seat": id, "filler": kind, "identity": name}`, `{"act": seat, "key": k}`, `{"leave": seat}`,
    `{"reload": true}`, `{"advance": ms}`. An `expect` names one of
-   `text`, `look`, `visible`, `name`, `channel`, `sounds` (a count), `legal` (a seat's list), `output`, `scene` (a scene id, in the stage slot) or `offered` (a choice link id) with `is`. Parts are named by path from the stage scene
+   `text`, `variant`, `visible`, `name`, `channel`, `sounds` (a count), `legal` (a seat's list), `output`, `scene` (a scene id, in the stage slot) or `offered` (a choice link id) with `is`. Parts are named by path from the stage scene
    (`kitchen/door`, through its uses: `kitchen/cook/hat`), or from the shell as `shell/<path>`. An event output's
    `is` compares its last payload. The `size` fixture is `{"width", "height"}` in CSS pixels. A broken
    rule names the step, the scene and the rule. A failed `expect` fails the play test.

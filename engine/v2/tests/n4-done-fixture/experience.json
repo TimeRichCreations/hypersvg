@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "flag",
+  "about": {"title": "Flag", "description": "Saying done when a clip ends: the page hears waved when the wave has finished."},
+  "language": "en",
+  "outputs": {"waved": {"kind": "event"}},
+  "story": {"start": "wave", "scenes": {"wave": "wave.json"}, "endless": true}
+}

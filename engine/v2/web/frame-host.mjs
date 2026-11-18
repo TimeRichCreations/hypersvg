@@ -2,10 +2,14 @@
 // (sandbox="allow-scripts", no allow-same-origin). It is not part of a packed page; the page side is web/frame-link.mjs.
 //   const link = connectFrame(iframe);
 //   await link.ready;                       // the page answered the hello
+//   const step = await link.emit('start');  // the step's result {name, payload, outputs}, as host.emit gives it
 //   await link.set('volume', 0.2);          // every call returns a promise
 //   const off = await link.on('won', ({ name, detail }) => ...);
 // A refused call rejects with an Error that carries the page's code (E-RANGE, E-REF-UNKNOWN, ...).
 // Plain ES module, no dependencies, no network.
+// API labels (spec 10.16, D63), as the package's ./frame-host: connectFrame, frameToken and the options channel,
+// timeout and probe are stable; so are the link's set, emit, read, pause, resume, restart, scene, clearStorage,
+// setPartition, on, off, close and ready. seat and ladder are experimental, as on the host API.
 const CALLS = ['set', 'emit', 'read', 'pause', 'resume', 'restart', 'scene', 'seat', 'clearStorage', 'setPartition', 'ladder'];
 
 // A fresh channel token: 144 random bits, base64url (24 characters).

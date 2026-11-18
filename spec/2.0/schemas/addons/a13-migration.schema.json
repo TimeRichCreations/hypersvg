@@ -20,11 +20,11 @@
       "note": "Readable in 2.0 drawings without an upgrade; writers never write them.",
       "data-hsvg-states": {
         "means": "dropped",
-        "note": "the look names come from the look children; checked to agree"
+        "note": "the variant names come from the variant children; checked to agree"
       },
       "data-hsvg-state": {
         "means": "dropped",
-        "note": "the rest look is the look shown without display=\"none\""
+        "note": "the rest variant is the variant shown without display=\"none\""
       },
       "data-hsvg-state-name": {
         "aliasOf": "data-hsvg-variant"

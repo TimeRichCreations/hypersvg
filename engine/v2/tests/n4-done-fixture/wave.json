@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "wave",
+  "drawing": "wave.svg",
+  "controls": {"go": {"kind": "button", "target": "go", "label": "Wave"}},
+  "clips": {
+    "wave": {"durationMs": 600, "tracks": [{"target": "flag", "channel": "rotate", "keys": [[0, 0], [300, 20], [600, 0]]}]}
+  },
+  "on": {
+    "press:go": [{"actions": [{"play": "wave"}]}],
+    "ended:wave": [{"id": "say-done", "guard": "!event.interrupted", "actions": [{"emit": "waved"}]}]
+  }
+}

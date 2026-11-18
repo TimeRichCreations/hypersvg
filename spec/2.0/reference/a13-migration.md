@@ -34,7 +34,7 @@ The interaction chapters were unpublished 1.0 contracts. Their mechanisms are no
    `E-SVG-ROOT`. The fixes of both codes name the upgrade tool (A13.3).
 5. **Old marks.** The old page marks `data-hsvg-target`, `-spot`, `-grab` and `-action` leave the reader: the
    converter maps them to page hooks when a host page is imported (the `page` add-on; the step `page-marks.mjs`). The
-   host page check names an old mark with its new spelling and the converter (`E-HOOK-MARK`). The old look marks
+   host page check names an old mark with its new spelling and the converter (`E-HOOK-MARK`). The old variant marks
    `data-hsvg-states`, `-state` and `-state-name` are still read as aliases in drawings, each reported
    (`W-MARK-ALIAS`), until the transition ends. Writers never write them.
 6. The transition ends at a version or date the person sets. After it, old versions are refused with a message that
@@ -95,7 +95,7 @@ The base ships no upgrade command (D41, D42): this is the interface an upgrade t
 9. **It checks behaviour.** When the source has a behaviour suite or recorded traces, the tool runs them on the old
    player and the upgraded files on the new player, and compares values, event order, scene changes and logical time.
    Pixels and audio samples are not compared. The tool converts the suite with the files (`state(id)` becomes
-   `look(id)`). A difference fails, unless the report lists it as expected (a changed random draw,
+   `variant(id)`, A8). A difference fails, unless the report lists it as expected (a changed random draw,
    reaction order after a `go`) and a person has confirmed it.
 10. **Reviews survive only exactly.** A review survives when downgrading the upgraded file reproduces the reviewed
     bytes. The trust record then keeps the old review and adds `upgradedFrom` (A9.3) to its provenance, and the tool
@@ -144,9 +144,10 @@ The report is JSON with these keys:
 
 ## A13.4 The rename table
 
-Words follow section 11. This is the one rename list: documents, drawings, sidecars, chapters, packages, earlier
-words (W) and earlier error codes (K). This markdown table is the source. `renames.json` beside the spec is generated from it (row,
-group, from, to, treatment) and has the same row ids. The last column is the default treatment: M = mechanical,
+Words follow section 11. This table lists the renames from `hsvg/0.1` and older drafts: documents, drawings, sidecars,
+chapters, packages, earlier words (W) and earlier error codes (K). The words renamed while 2.0 was drafted are in 11.5.
+`renames.json` beside the spec is generated from both tables (row, group, from, to, and a treatment or a place) by
+`engine/v2/tools/make-renames.mjs`, and has the same row ids. The last column is the default treatment: M = mechanical,
 R = review, N = none (no clean mapping), D = dropped (listed, never blocks). A row that leads to other rows says "per
 row".
 
@@ -157,7 +158,7 @@ row".
 | A-01 | `"format": "hsvg/0.1"` | `"format": "hsvg/2.0"` | M |
 | A-02 | `kind`: `experience`, `component`, `settings` | `experience` and `component` stay; a `settings` document becomes the experience's `settings` key (5.3.2) | M |
 | A-03 | `kind: "scene"` | `kind: "scene"` (the file path is kept) | M |
-| A-04 | settings item `value` (a stored value) and `step` | item `knob`; the value moves to the experience's inputs face as a knob with `step` (5.3.2); a `set` of it in a person's control becomes `player.setting`, and a reset of it `resetSaved` with `settings: true` (5.15) | R |
+| A-04 | settings item `value` (a stored value) and `step` | item `knob`; the value moves to the experience's inputs face as a knob with `step` (5.3.2); a `set` of it in a person's control becomes `player.setting`, and a reset of it `player.resetSaved` with `settings: true` (5.15.3) | R |
 | A-05 | settings item `when: "play"` | same: the knob is a setting | M |
 | A-06 | settings item `when: "make"` | same; the knob gets `editableBy` (default `["designer"]`), and an experience without rights gets the starter rights (A9.6) | R |
 | A-07 | `kind: "layout"` | editor sidecar outside the format, never packed | M |
@@ -173,10 +174,10 @@ row".
 | A-17 | `after[].delay` (already milliseconds in 0.1) | `after[].delayMs`, same number | M |
 | A-18 | `entry`, `exit` | same | M |
 | A-19 | `shows` | `bindings` (6.8) | M |
-| A-20 | show `state` (drawn state) | binding `look` | M |
-| A-21 | actions `state`, `show`, `hide` | a value write plus a `look` or `visible` binding (5.15.1 has no imperative drawing actions) | R |
+| A-20 | show `state` (drawn state) | binding `variant` | M |
+| A-21 | actions `state`, `show`, `hide` | a value write plus a `variant` or `visible` binding (5.15.1 has no imperative drawing actions) | R |
 | A-22 | show `token` / `value` | binding `color` (6.8, 7.7) with `role` the token's name: only the paints that used `var(--token)` change | M |
-| A-23 | show `fit` (`region`, `fontPx`, `minFontPx`, `maxLines`) | `fit` on the text binding (7.6); the region gets `data-hsvg-region="fit"` in every frame | M |
+| A-23 | show `fit` (`region`, `fontPx`, `minFontPx`, `maxLines`) | `fit` on the text binding (7.6); the box gets `data-hsvg-fit` in every frame | M |
 | A-24 | control `kind: "choice"`; a press control's `hold` | choice control (5.11), whose own `target` goes (each option keeps its target); `held` | M |
 | A-25 | component `inputs` | inputs with `kind` `content`, `knob` or `trigger` (5.3); a counter used as a pulse becomes a trigger, and each caller's increment becomes `emit` as a trigger; an entry that reads a pulse at mount has no 2.0 form and is listed | R |
 | A-26 | component `outputs` (formulas) | outputs of kind `result` (5.4) | M |
@@ -188,9 +189,9 @@ row".
 | A-32 | `data` tables, `words` | data and words resources; the default language is the `language` key (2.7) | M |
 | A-33 | `extensions` | `needs`, derived from content (10.11); a capability no content uses is listed | M |
 | A-34 | extension fields (`physics`, `audio`, `audioMouth`, `audioSynths`, `snapshot`) | the capability's 2.0 grammar (10.7); a physics burst that only emits becomes a `particles` effect (A1.1) with `start: "play"`, made in a new empty group `<layer>-particles` after the layer, whose transform fits the burst `viewBox` into the layer's box (meet) in each drawing; `audioMouth` (a mouth moved by loudness) and `audioSynths` (made sounds) keep their names under the `synth` capability (`capabilities/synth.json`; the 0.1 extension `audio` is the 2.0 capability `synth`), times in ms | R; N where a manifest does not cover a field |
-| A-35 | `audioPlay`; clip `period`; glide `ms` | `sound` with `group`; `periodMs`; `durationMs` (6.7) | M |
+| A-35 | `audioPlay`; clip `period`; glide `ms` | `play` as `sound` with `group`; `periodMs`; `durationMs` (6.7) | M |
 | A-36 | `aiSeats`, `aiAsk` | character seats with the `ai` grant (A5.1); `ask` | R |
-| A-37 | `audioSettings` (drawn panel), `aiSettings`, `tuneSettings` | the `open` action on a dialog slot (10.1) with a `form` or SVG widget (A6.1); until a shell exists, the drawn panel stays in its scene, shown by a value through a `visible` binding, its controls changing settings with `setting` (5.15) | R |
+| A-37 | `audioSettings` (drawn panel), `aiSettings`, `tuneSettings` | the `open` action on a dialog slot (10.1) with a `form` or SVG widget (A6.1); until a shell exists, the drawn panel stays in its scene, shown by a value through a `visible` binding, its controls changing settings with `player.setting` (5.15.3) | R |
 | A-38 | `drawing` (one SVG, or `wide` / `tall`) | `drawing`, or `layouts` with `when` `wide` and `tall` (7.4); the experience gets the shape axis of 7.1 (`wide` from aspect 1, `tall` below) | M |
 | A-39 | scene field `inputMode`; built-ins `now`, `elapsed`, `reducedMotion`, `muted`, `volume` | ambient inputs (5.5); a `set` of `muted` or `volume` becomes `player.setting` | M |
 | A-40 | `logic` declarations and `logic/*.js` files | a reviewed registry module named in `needs` (10.7, A9.3) | N until a reviewed module exists |
@@ -206,7 +207,7 @@ row".
 | A-50 | values, knobs or a graph with `keep` or a stored lifetime (0.1 kept them on the device without asking) | the experience asks for the `storage` grant with the `session` and `saved` scopes it uses (5.1.2, 10.5) | M |
 | A-51 | a drag control's `accept` (0.1: whether the item snaps onto the drop; every hit still sent `event` with the drop) | removed, so every hit sends `event` as before and the item goes home (5.11); with `accept` other than `false`, the snap is not carried and the row is reviewed | M, R |
 | A-52 | a channel binding whose value 0.1 checked only at play (the 0.1 player stopped with a fault, `E-MOTION-RANGE`, when the value left the part's motion range; it never clamped) | where the 2.0 checker cannot prove the range (5.6.7), the same formula inside `clamp(f, lo, hi)`, lo..hi being the part's motion range; every value 0.1 played is unchanged. A part whose range differs between layouts is listed, not clamped | R |
-| A-53 | a control with `enabled` (0.1 drew its target at opacity 0.45 while it could not be used, 1 while it could, whatever the drawing had) | an opacity binding on the target, `(enabled) ? 1 : 0.45`, with the motion range `opacity(0.45 1)` widened to any range it had (6.2.1); an opacity binding the target already has joins it as `min(look, formula)`; a `choice` dims its group, the 0.1 target; a `transform` on the target moves to a new plain `<g>` around it. A target that is a look, or a component drawing's top `<g>` with a transform, is not converted. Without it 2.0 shows a disabled look only where the drawing has one (6.2.4) | M, R |
+| A-53 | a control with `enabled` (0.1 drew its target at opacity 0.45 while it could not be used, 1 while it could, whatever the drawing had) | an opacity binding on the target, `(enabled) ? 1 : 0.45`, with the motion range `opacity 0.45..1` widened to any range it had (6.2.1); an opacity binding the target already has joins it as `min((enabled) ? 1 : 0.45, formula)`; a `choice` dims its group, the 0.1 target; a `transform` on the target moves to a new plain `<g>` around it. A target that is a variant, or a component drawing's top `<g>` with a transform, is not converted. Without it 2.0 shows a disabled variant only where the drawing has one (6.2.4) | M, R |
 | A-54 | a clip that is not endless (0.1 kept every part at its last sampled value when a clip ended) | `loopMode: "hold"`, so the final pose stays until the clip is stopped or replaced (6.7). An endless clip (`loop: true`) never ends and is unchanged | M |
 
 ### B. From SVG 1.x drawings
@@ -217,15 +218,15 @@ row".
 | B-02 | `data-hsvg-kind` `artboard`, `component`, `compound`, `part` | `artboard` becomes `screen`; `compound` becomes `component` (D31); the others are unchanged; every element with a job gets `data-hsvg-kind="part"` (4.1) | M |
 | B-03 | `data-hsvg-slot` on an empty `<g>` that a use mounts into | a slot (drawn place); `-slot-target` removed | M |
 | B-04 | `data-hsvg-slot` (and `-slot-target`) on a node that shows a value | a part holding a content field, with a binding in JSON (A13.5) | M |
-| B-05 | icon slot: `data-hsvg-icon-meaning`, `-icon-package`, `-icon-source`; pre-1.2 `data-hsvg-icon-slot` | an icon place with `data-hsvg-icon` (6.2.2), plus a content field with `contentType: "icon"` and an `icon` binding when the icon was editable; package and source go to the icon-set resource | M |
+| B-05 | icon slot: `data-hsvg-icon-meaning`, `-icon-package`, `-icon-source`; pre-1.2 `data-hsvg-icon-slot` | an icon place, a part with `data-hsvg-role="icon"` (6.2.2), plus a content field with `contentType: "icon"` and a `variant` binding as `icon` when the icon was editable; package and source go to the icon-set resource | M |
 | B-06 | colour slot (`attr:fill`, `css:--…` on a shared colour) | a colour role on the part (7.7) | R |
-| B-07 | `data-hsvg-states`, `-state`, `-state-name` | look marks (6.2.4), with `display="none"` on every look but the rest look; readers still accept the old marks, writers never write them | M |
-| B-08 | `data-hsvg-state-review` `draft` / `redo` / `approved` and its note | a trust review `of` the look: `draft` to `draft`, `redo` to `blocked`, `approved` to `candidate` (A9.3); an `approved` never becomes `accepted`, since it does not say a person gave it | R |
+| B-07 | `data-hsvg-states`, `-state`, `-state-name` | variant marks (6.2.4), with `display="none"` on every variant but the rest variant; readers still accept the old marks, writers never write them | M |
+| B-08 | `data-hsvg-state-review` `draft` / `redo` / `approved` and its note | a trust review `of` the variant: `draft` to `draft`, `redo` to `blocked`, `approved` to `candidate` (A9.3); an `approved` never becomes `accepted`, since it does not say a person gave it | R |
 | B-09 | `data-hsvg-inferred="auto"` / `"person"` | listed in `about.trust.provenance.inferred` / removed | M |
 | B-10 | `data-hsvg-layer` (five bands) | `data-hsvg-layer` on the layer (6.4); paint outside the viewBox by a part that is not backdrop is listed, to fix by hand | M |
 | B-11 | `data-hsvg-place` (library name) | a slot and a use in JSON (`uses[].use`, `into`) | M |
 | B-12 | page marks `data-hsvg-target="signup"` (and `-spot`, `-grab`, `-action`) | `data-hsvg-hook="target:signup"` (and `spot:`, `grab:`, `control:`), converted when the host page is imported (A13.2) | M |
-| B-13 | manifest `<metadata id="<ns>__hsvg">` | `about` (id, version), trust provenance; `variant.of` becomes a look or a layout | R |
+| B-13 | manifest `<metadata id="<ns>__hsvg">` | `about` (id, version), trust provenance; `variant.of` becomes a variant or a layout | R |
 | B-14 | built-in motion `<style … data-hsvg-role="motion">` | a clip (6.7) | R |
 | B-15 | colour variables `--hsvg-primary`, `-secondary`, `-accent`, `-surface`, `-text` | `data-hsvg-color`: `primary` to `accent`, `secondary` to `ink`, `accent` to `accent-2`, `surface` to `surface`, `text` to the kit role `on-accent` (7.7), which the tool adds to every theme of the kit with the old colour | R |
 | B-16 | `data-hsvg-role`, `-label`, `-pivot`, `-motion`, `-side`, `-follows` | unchanged; on the root `<svg>` or a component root, `-label` becomes the root `<title>` when there is none (else it is listed), and `-motion` is listed | M |
@@ -233,8 +234,8 @@ row".
 | B-18 | a named `font-family` that is neither generic nor a font resource | a `font:<family>` need (10.11), or a font resource when the source carries the file | R |
 | B-19 | paints `var(--name, #hex)`, in attributes or `style` text | the fallback colour, with `data-hsvg-color` naming the token's role (row A-30) | R |
 | B-20 | `data-hsvg-scene` | dropped: the scene names its frames | M |
-| B-21 | `data-hsvg-kind="anchor"` | a part with `data-hsvg-anchor="0 0"`, keeping its transform | M |
-| B-22 | motion range `reveal(min max)` | `draw(min max)`, adding `pathLength="1"` to the element | M |
+| B-21 | `data-hsvg-kind="anchor"` | an empty `<g data-hsvg-slot="<name>">` at the point (an attach point, 6.9), keeping its transform | M |
+| B-22 | motion range `reveal(min max)` | `draw min..max`, adding `pathLength="1"` to the element | M |
 | B-23 | `<title>` inside a part; `aria-hidden="true"`; authored `role`, `aria-*`, `tabindex` | `data-hsvg-label`; `data-hsvg-layer="decoration"`; removed and listed (the player writes them, 6.5) | M |
 | B-24 | ids in JSON with the namespace (`robin__near-wing`) | local ids (`near-wing`) | M |
 | B-25 | a nested `<svg>` used as a coordinate system (not a placed copy or icon place) | a `<g>` with the same `transform`, and a clip path when it clipped | R |
@@ -245,9 +246,9 @@ row".
 | B-30 | a scene drawing of an `hsvg/0.1` document with no `data-hsvg-version` | the 2.0 root marks: `data-hsvg-version="2.0"`, `data-hsvg-kind="screen"` | M |
 | B-31 | `focusable`; an empty `data-hsvg-label` | removed (the player owns focus, 6.5; an empty label says nothing) | M |
 | B-32 | `data-hsvg-kind="text"` (not a 1.x kind) | removed; listed, so a part with a job is marked `part` by hand | R |
-| B-33 | looks on a component root (`data-hsvg-states` on the component `<g>`) | the looks wrapped in a new part `<namespace>__face`; controls on a look target that part, and press controls that land on one part become one (6.2.4) | R |
+| B-33 | drawn states on a component root (`data-hsvg-states` on the component `<g>`) | the variants wrapped in a new part `<namespace>__face`; controls on a variant target that part, and button controls that land on one part become one (6.2.4) | R |
 | B-34 | `data-hsvg-slot-target` on a mount that a use fills | kept as a slot; `slot-target` removed (a use, not a value, fills it) | R |
-| B-35 | looks on a component of a screen drawing (`data-hsvg-states` on a component `<g>` that is not the root of a component drawing) | the component becomes a part: looks belong to parts (6.2.4), and a component defined in place is used like one (4.1) | R |
+| B-35 | drawn states on a component of a screen drawing (`data-hsvg-states` on a component `<g>` that is not the root of a component drawing) | the component becomes a part: variants belong to parts (6.2.4), and a component defined in place is used like one (4.1) | R |
 | B-36 | a use in a `<g>` slot (0.1 and runtime JSON drew the component with its drawing's own `x`, `y`, `width` and `height`: the viewBox origin less `x`, `y` sat on the slot's origin) | `translate(dx dy)` after the slot's `transform`, (dx, dy) being the root's pivot (default the viewBox centre, 6.2.1) less the viewBox origin plus the root's `x` and `y`; a pivot on the slot moves by (-dx, -dy), so clips on it turn about the same point. It draws as before. A component whose layouts need different moves, a root whose `width` or `height` is not its viewBox size (0.1 scaled it), and one slot that two uses need moved apart are listed | M |
 
 ### C. From sidecars and the ad catalog
@@ -274,7 +275,7 @@ row".
 | C-18 | `provenance.json` | `about.trust.provenance`; free notes go to `notes`; private paths removed, and the report names only their pointers | R |
 | C-19 | `catalog.json`, `aliases.json` | a kit of components; the kit's `aliases` map for old ids (A14.1) | M |
 | C-20 | card `ground` (what the item sits on) | a `contrast` rule with `against` that colour role (A11.10) | R |
-| C-21 | an item whose job is `action` with no control | a `press` control on its `surface` part (else its root part) with event `pressed`, and the output event `pressed` (5.11) | R |
+| C-21 | an item whose job is `action` with no control | a `button` control on its `surface` part (else its root part) with event `pressed`, and the output event `pressed` (5.11) | R |
 | C-22 | `checks.json`, preview images | not carried: tools make new receipts and previews; listed | D |
 
 ### D. From the interaction chapters
@@ -292,7 +293,7 @@ row".
 | D-09 | `history` and `final` states | none: 2.0 machines have neither (5.14) | N |
 | D-10 | `on` transitions; `after` keyed by decimal-ms strings | reactions; `after` with numeric `delayMs` | M |
 | D-11 | `behaviour.actions` registry; `set`; `emit`; `play`, `stop`; `say` | core actions (5.15.1); `emit` of an output event | M |
-| D-12 | `scroll`, `point`, `go-spot` | capability actions `scroll` and `point` (5.15.2), under `pageActions` grants (10.5); `go-spot` has no 2.0 form (`goSpot` is a 2.1 draft) and is listed | M; N for `go-spot` |
+| D-12 | `scroll`, `point`, `go-spot` | the `page` add-on's calls `page.scroll` and `page.point` (5.15.3), under `pageActions` grants (10.5); `go-spot` has no 2.0 form (`goSpot` is a 2.1 draft) and is listed | M; N for `go-spot` |
 | D-13 | `add-to-cart`, `open-contact` | `invoke` on an `action` hook, human-only (5.15.4, A3.1) | M |
 | D-14 | `start-story`, `start-tour` | links into a scene (section 3) | R |
 | D-15 | `mode` (hero, companion, tour, chat, carried, minimised, closed) | presentation scenes joined by page signals (A3.1) | R |
@@ -305,7 +306,7 @@ row".
 | D-22 | clips chapter (motion channels v2) | clips (6.7), `timeRemap` included; the `trim` and `stroke-dash` channels are not carried (`draw` covers stroke draw-on) | M; D for those two |
 | D-23 | `theme.json` | a theme (7.7) | M |
 | D-24 | slots chapter (effect recipes, providers); dynamics; particles | effects with capability needs (A1.1) | M |
-| D-25 | mascot chapter colour slots, parts and holds | colour roles, parts and looks | R |
+| D-25 | mascot chapter colour slots, parts and holds | colour roles, parts and variants | R |
 | D-26 | gateway `inbound`, `outbound`, `requests` | the host API, triggers, output events and `network` grants (10.5, 10.6) | R |
 | D-27 | chat (scripted answers, finder), AI chapter | finders and character seats (A5.1, A5.2) | R |
 | D-28 | agent chapter (door, seats, turns, results) | player seats (A4.1) | R |
@@ -345,7 +346,7 @@ row".
 | P-27 | runtime synthesised `sounds` (`wave`, `from`, `to`, `ms`, `volume`, `attackMs`, `releaseMs`) and `{"do": "sound", "name": …}` | `audioSynths` and the `audioSynth` action of `hsvg/0.1`, then row A-34; a file sound is not converted | M |
 | P-28 | runtime `clipSets` and clips | the loader's copies (`<as>-<recipe>`, targets renamed) as plain clips; tracks and markers get ids `<clip>-track-<n>` and `<clip>-marker-<n>`; string key values become quoted literals | M |
 | P-29 | runtime `controls` list | controls with ids `<target>-control-<n>` (`__` in the target written `-`); conditions become formulas; a choice's `options` map `{target: value}` becomes option objects with the target as id | M |
-| P-30 | runtime `bindings` | `shows` with ids `<target>-binding-<n>`; `text` becomes a template (a `join` becomes `{{ }}` spans); each `fit.box` becomes a drawn `<rect>` `<target>-region-<n>` beside its text, in the text's coordinates, in every drawing; a text with a `transform` is not converted | M |
+| P-30 | runtime `bindings` | `bindings` with ids `<target>-binding-<n>`; `text` becomes a template (a `join` becomes `{{ }}` spans); each `fit.box` becomes a drawn `<rect data-hsvg-fit>` `<target>-region-<n>` beside its text, in the text's coordinates, in every drawing; a text with a `transform` is not converted | M |
 | P-31 | the runtime `type` control (`type` extension) with a drawn `keyboard` | reactions to the drawn keys' press events: a letter appends to the value while it is shorter than `maxLength`, `Backspace` returns to the text before the last key (a list value `<value>Typed`), `Enter` sends the field's event; typing on a physical keyboard into the field is not carried | R |
 | P-32 | runtime `add` on a number with `min` and `max` | `set` with `clamp(<value> + (<by>), min, max)`: the 0.x add kept the value inside its bounds | R |
 | P-33 | runtime `go` with `transition: "slide"` | `transition: "fade"` (links have cut and fade) | R |
@@ -365,19 +366,19 @@ Words an earlier spec or tool used, and the 2.0 word. "Lean" below is Canvas.fit
 | W-03 | package manifest `slots` | input list | R |
 | W-04 | mascot colour slots | **colour role** | R |
 | W-05 | Lean replacement slot, swap contract | **replaceable use** (`choices`, `pick`, 4.3) | R |
-| W-06 | zone, area, rect, focal | **region** (or a box `[x, y, w, h]`); the key `focal` is a point `[x, y]` (7.4, the `fit` add-on), not a region | R |
+| W-06 | zone, area, rect, focal | **fit box** or **slot** (or a box `[x, y, w, h]`); the key `focal` is a point `[x, y]` (7.4, the `fit` add-on), not a box | R |
 | W-07 | `data-hsvg-place` as a library name | a slot and a use in JSON (`uses[].use`, `into`) | R |
 | W-08 | host-page anchor; `data-hsvg-target`, `-spot`, `-grab`, `-action` | **page hook** (`data-hsvg-hook`; the old marks are converted at import) | R |
 | W-09 | registry `anchorRoleIds` | `attachTo` | R |
 | W-10 | statechart state | **machine state** | R |
-| W-11 | drawn state, `state` action and show, mood, control idle/hover/pressed | **look** | R |
+| W-11 | drawn state, `state` action and show, mood, control idle/hover/pressed | **variant** | R |
 | W-12 | review state, card status | review status (in the trust record) | R |
 | W-13 | catalog look, tokens, style meaning of "look" | **theme** | R |
 | W-14 | legacy `rules` array of event → actions | **reactions** (`on`) | R |
 | W-15 | rules module | logic module | R |
 | W-16 | policy rules, rules kit | **rule pack** | R |
 | W-17 | Lean family rules | **layouts** | R |
-| W-18 | variant (bare), alternate | **layout**, **tier** or **look**, by meaning | R |
+| W-18 | variant (bare), alternate | **layout**, **tier** or **variant**, by meaning | R |
 | W-19 | "Version A/B" | two kit experiences (content options are a 2.1 draft) | R |
 | W-20 | `data-hsvg-layer` | a **layer**: a `<g>` with `data-hsvg-layer` | R |
 | W-21 | page layer | **overlay slot** | R |
@@ -453,10 +454,11 @@ written by its role id (`headline` is an alias of `message`).
 Deeper names such as `features.items.1.title` become a `rows` field and its column (2.9), and are flagged for
 review.
 
-**States to looks.** `data-hsvg-states`, `-state` and `-state-name` become the look marks. Everything that named a
-drawn state follows: a `state` show becomes a `look` binding; a `state`, `show` or `hide` action becomes a value write
-that a `look` or `visible` binding reads; a `state` clip channel becomes a look channel; the harness `state(id)`
-becomes `look(id)`; `E-STATE-NOT-DRAWN` becomes `E-LOOK-NOT-DRAWN`. Statecharts are not looks: they become machines.
+**States to variants.** `data-hsvg-states`, `-state` and `-state-name` become the variant marks. Everything that
+named a drawn state follows: a `state` show becomes a `variant` binding; a `state`, `show` or `hide` action becomes a
+value write that a `variant` or `visible` binding reads; a `state` clip channel becomes the `variant` channel; the
+harness `state(id)` becomes `variant(id)`; `E-STATE-NOT-DRAWN` becomes `E-LOOK-NOT-DRAWN` (the code keeps its name).
+Statecharts are not variants: they become machines.
 
 **Seconds to milliseconds.** Every time in seconds (`hsvg-motion` `duration`, `delay` and key `t`; mouth cue times;
 the sidecar clock; any `*Sec` field) is multiplied by 1,000 and rounded to the nearest whole millisecond, halves up.
@@ -538,7 +540,7 @@ becomes a knob of its scene or component, and settings may name it once a contai
 - **One namespace.** The variants become layouts of one component, so their drawings take the component's
   namespace (A13.3, rule 6); the tool renames those ids and lists each one.
 - **Fitting.** `resize` goes on its layout; the catalog's `insets` (`[top, right, bottom, left]`) and `ends` (the
-  lengths of the two ends) mean what 7.4's do and copy unchanged. Each `fit.box` becomes a drawn `<rect data-hsvg-region="fit">` in
+  lengths of the two ends) mean what 7.4's do and copy unchanged. Each `fit.box` becomes a drawn `<rect data-hsvg-fit="">` in
   that layout's drawing, with the id `<part>-region-1`; `lineHeight` and `maxLines` carry over. The measured
   values (`maxChars`, `minWidth`, `boxOverlaps`) are evidence: the tool measures again and writes a fit receipt. The
   field's `maxLength` is the largest old `maxChars` (review); a layout whose box cannot fit that text does not
@@ -573,7 +575,7 @@ upgrade; it is not a kit experience.
    grammar does not cover is an unconverted item, and the upgrade is then `incomplete`.
 4. **Parity.** The experience's behaviour suite must pass on the upgraded files, apart from confirmed expected differences
    (A13.3, rule 9).
-5. **Not migration.** Folding the eight near-duplicate hero components into one definition with looks and
+5. **Not migration.** Folding the eight near-duplicate hero components into one definition with variants and
    layouts, a shell for the gear, map and help drawn in 44 scene drawings, and a kit with sealed blocks for stops,
    repairs and quizzes are redesigns. Each comes after the upgrade, as its own change with its own parity run.
 
@@ -612,7 +614,7 @@ upgrade; it is not a kit experience.
 
 ## A13.9 Older drawings
 
-Readers of SVG 1.x drawings run the upgrade tool (A13) on a copy. The old look marks below stay readable as
+Readers of SVG 1.x drawings run the upgrade tool (A13) on a copy. The old variant marks below stay readable as
 aliases in 2.0 drawings, without an upgrade (A13.2); the old page marks are read on host pages only (A3.1). Writers
 never write them. Every other row below is applied by the upgrade tool; table B of A13.4 holds these rows and more,
 with row ids, and the tool reports by those.
@@ -620,23 +622,23 @@ with row ids, and the tool reports by those.
 | SVG 1.x | 2.0 |
 |---|---|
 | `data-hsvg-version` `1.2`, `1.1`, `1.0`, `0.4` | `2.0` |
-| `data-hsvg-states` | dropped: the names come from the look children (an alias, checked to agree) |
-| `data-hsvg-state` | dropped: the rest look is the one shown |
+| `data-hsvg-states` | dropped: the names come from the variant children (an alias, checked to agree) |
+| `data-hsvg-state` | dropped: the rest variant is the one shown |
 | `data-hsvg-state-name` | `data-hsvg-variant` (alias) |
 | `data-hsvg-state-review`, `-review-note` | a review with `of` in the trust record (A9.3) |
 | `data-hsvg-inferred` | the trust record's `inferred` list (A9.3) |
 | `data-hsvg-slot` on an empty `<g>` a use mounts into | `data-hsvg-slot` with the same name; `-slot-target` removed |
 | `data-hsvg-slot` on a node that shows a value | a part; a content field and a binding in JSON (A13.5) |
-| `data-hsvg-icon-meaning`; pre-1.2 `data-hsvg-icon-slot` | `data-hsvg-icon` on an icon place; package and source go to the icon-set resource |
+| `data-hsvg-icon-meaning`; pre-1.2 `data-hsvg-icon-slot` | an icon place, a part with `data-hsvg-role="icon"`; package and source go to the icon-set resource |
 | `data-hsvg-layer` | `data-hsvg-layer` on the layer: `background` to `backdrop`, `effects-background` and `effects-foreground` to `decoration`, `content` and other names to `content`, `foreground` to `overlay` |
 | `data-hsvg-category`, `data-hsvg-tags` | `about.category`, `about.tags` (section 2) |
 | `data-hsvg-scene` | dropped: the scene names its frames |
 | `data-hsvg-place` with `data-hsvg-as` | a slot and a use in JSON |
-| `data-hsvg-kind="anchor"` | a part with `data-hsvg-anchor="0 0"`, keeping its transform |
+| `data-hsvg-kind="anchor"` | an empty slot `<g data-hsvg-slot>` at the point, keeping its transform |
 | `--hsvg-*` colour variables in `<style>` | colour roles: `primary` to `accent`, `secondary` to `ink`, `accent` to `accent-2`, `surface` to `surface`, `text` to the kit role `on-accent` (7.7) |
-| `<metadata id="<ns>__hsvg">` | `about` and the trust record; `variant.of` becomes a look or a layout |
+| `<metadata id="<ns>__hsvg">` | `about` and the trust record; `variant.of` becomes a variant or a layout |
 | built-in motion `<style … data-hsvg-role="motion">` | a clip (6.7) |
-| `reveal(min max)` range | `draw(min max)` |
+| `reveal(min max)` range | `draw min..max` |
 | `<title>` inside a part | `data-hsvg-label` |
 | `aria-hidden="true"` | `data-hsvg-layer="decoration"` |
 | ids in JSON with the namespace (`robin__near-wing`) | local ids (`near-wing`) |

@@ -18,6 +18,7 @@ grammar as 2.0 had it, so 2.1 can start from it. The three `.json` drafts of D31
 | `choice-places-2.1.md`, `choices-2.1.json` | `choiceRegion` and `choicesAtMs`: drawn places for choices inside a scene. 2.0 shows choices through an add-on (3.5). | Only the checker read them; never built (P1). |
 | `delivery-2.1.md`, `delivery-2.1.json` | Export adapters (ad zip, video, learning platforms) with `report`, `endHoldMs` and `clickArea`; served play (update, withdraw, A/B); the `network` grant and the `site` storage scope. | Never built. |
 | `custom-widgets-2.1.md` | Host-written HTML widgets: a shell use's `custom` and `fallback`, and the `widgets` grant. | Experimental in 2.0 before; never proven (P1). |
+| `scroll-clock-2.1.json` | The scroll clock source: a stage slot that takes its local time from the scroll position (`clock.source`, `spanMs`, 3.10). | Never run by a 2.0 engine; the checker accepted it. |
 | `content-options-2.1.md` | Content options (named alternative wordings), the `seed` selector, the rule kind `seeds` and the mount option `seed`. 2.0 keeps tiers. | Never built; decision 5 after R2. |
 
 ## Experimental parts of 2.0

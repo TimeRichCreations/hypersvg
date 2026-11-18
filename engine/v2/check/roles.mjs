@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { roleOf } from '../src/marks.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -47,7 +47,7 @@ export function check(ctx) {
     const frames = []; // [{layout, file, ids: Set(local ids), role}]
     for (const [layout, d] of Object.entries(b.drawings || {})) {
       let root;
-      try { root = parseXml(d.text); } catch { continue; }
+      try { root = parseXmlShared(d.text); } catch { continue; }
       const f = { layout, file: d.file, ids: new Set(), role: null };
       walk(root, (n) => {
         const nid = n.attrs.id;

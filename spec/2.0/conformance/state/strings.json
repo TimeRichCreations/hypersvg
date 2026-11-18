@@ -1,0 +1,21 @@
+{
+ "now": 0,
+ "seq": 0,
+ "blocks": {
+  "experience": {
+   "values": {
+    "é": "café",
+    "A": "tab\there \"quoted\" back\\slash",
+    "z": "line\nfeed \u0001 ",
+    "😀": "smile 😀",
+    "דּ": "דּ",
+    "": "empty key"
+   }
+  }
+ },
+ "timers": [],
+ "records": {},
+ "ambient": {},
+ "story": null,
+ "pauses": []
+}

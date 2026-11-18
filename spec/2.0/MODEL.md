@@ -1,180 +1,240 @@
 # HyperSVG 2.0: the model
 
-The model in three sizes. Each uses every word with the same meaning; each adds detail to the one before. It
-describes 2.0 as built. What waits for 2.1 is in the last section, "Later".
+The model in three sizes. Each uses every word with the same meaning; each adds detail to the one before. It describes
+2.0 as built. What waits for 2.1 is in the last section, "Later".
 
 ## Simple (for people)
 
-An experience serves a purpose through its story: scenes, built from ready-made parts, drawn in layers and laid out
-for every screen. Rules keep it on track, and AI may help where the host allows it.
+HyperSVG turns an SVG into a hyper drawing: named parts that respond, with JSON beside the drawing that says what they
+do, so people and AI tools can read, check, change and reuse it. You keep the drawing and its JSON as plain files, and
+pack them into a HyperSVG, one `.svg` file to place in any page, or an Experience, one `.html` page that runs on its
+own.
 
 ## Medium (for the spec)
 
-An experience serves a purpose through its story, which links scenes, optionally grouped into chapters. Scenes are
-built from components and compounds (components made of components), which bring drawings; they are usually taken
-from a kit, pinned once by the experience and used by everything inside. Every component, compound, scene and shell
-is drawn as one or more frames (one drawing at one size), each made of layers with paint roles (backdrop, content,
-decoration, overlay) that stack in drawing order, and shown in representations, defined by what changes (the shape,
-the layout, the content tier, the language, a look or the theme) and who picks it (the space, an input, the host or a
-person); a layout is either drawn or computed by a layout plan. A copy made from an original and then changed is a
-variation, which records what it came from; a template is a starter experience that a tool copies this way. Each
-scene reports outcomes, what happened in it, and the story follows them. Rules are conditions whose place decides
-their job (in a block's rules they must always hold; on a link they say when that way is open); they are proven from
-the files where possible, otherwise tested by playing or reviewed by a person. Optional abilities are capabilities
-and add-ons that the experience names and the host allows. Where the host allows AI, an AI character answers from
-fixed creator text and checked values, and an AI agent may take a seat; neither has authority over values or
-outcomes beyond that seat's moves.
+HyperSVG is a format for interactive drawings made of plain files, and a small engine that checks, packs and plays them.
+SVG drawings own how things look, JSON documents own what they mean and do, and conditions are formulas, never scripts.
+What you make is an experience, named after its main file, `experience.json`, whatever it packs into; an asset is a
+small one: one drawing and its JSON, with its knobs as inputs. Everything with an outside and an inside is a block: a
+component (a reusable drawing with its JSON, which may hold other components, drawn in place or placed in its slots), a
+scene, a shell (the screen around the scenes, with one stage slot) or the experience itself. A block's outside is four
+faces (places, inputs, rules, outputs); its inside, the body, holds values and behaviour. The JSON is written in seven
+sentence shapes (values, controls, reactions, clips, bindings, story and the door) with 29 words, and a drawing carries
+15 marks. Neither list loses or changes a word in 2.x; a minor version may only add a value in a list that exists, such
+as a control kind, and only when no preset or add-on can do the job. A drawing is made of named parts with jobs (it
+moves, holds content, takes a theme colour, is the target of a control, is a place, or has variants), grouped in layers
+(content, backdrop, overlay, decoration) that stack in document order; each drawing at one size is a frame. Controls
+(button, toggle, choice, slider, dial, drag) and other events start reactions, whose actions set values, play clips and
+sounds, and emit outputs; machines keep states; bindings show values in parts. The story links scenes on an event, after
+a time or on a choice, optionally grouped into chapters; a scene's output events are its outcomes, and the story follows
+them. A block is shown in representations, defined by what changes (the size or shape, the layout, the content tier, the
+language, a variant, or the theme) and who picks it (the space, an input, the host or a person); in the core every
+layout is drawn. The checker proves what it can from the files. The packer makes an Experience (one offline `.html`
+page) or a HyperSVG (one `.svg`, with its JSON inside as data), and `unpack` splits a HyperSVG again. The player plays
+it in two halves: the logic, which keeps the values and follows the story and needs no page, and the drawing, which
+shows it and hears presses and keys. A host plays it, grants what it may cross, and reaches it only through the host
+API: inputs and pictures in, outputs out. Everything else is an add-on through one door (`needs`, `presets`, `addons`,
+`call`): a preset, a logic module or a capability, which may also add a control kind, a binding channel or a clip
+channel as a value carrying its name. Add-ons are chosen and fingerprinted when the experience is made; nothing new
+arrives while it plays. The rule language, kits, libraries, templates, variations, editor rights, packages and host
+profiles are the tool reference. The official add-ons (AI, seats, spoken lines, layout plans, physics and the others),
+the kit and its templates, the library, the showcases and the skills live outside the base repository.
 
 ## Expanded (for a first-time reader)
 
-**What it is.** An experience is what we make and a person uses: an ad, a lesson, a game, a website guide. It serves
-a purpose, the reason it exists, such as getting a click or teaching a skill.
+**What it is.** HyperSVG is a way to make drawings that respond, from plain files. You draw in SVG and name the parts;
+beside the drawing, JSON says what the parts do. What you make is called an **experience**, after its main file,
+`experience.json`, whatever it packs into: an ad, a lesson, a game, an infographic, a lamp on a web page. It serves a
+purpose, the reason it exists, such as getting a click or teaching a skill. The smallest experience is an **asset**: one
+drawing and its JSON, with knobs a page may set, such as whether the lamp is lit and how tall it is. An asset is a small
+experience, so everything here holds for both.
 
-An experience is plain files. SVG drawings own how things look; JSON documents own what they mean and do; and
-conditions are short formulas in one small language, never scripts, so content can be checked and safely edited by
-people and AI alike. Heavier logic, such as the rules of chess, comes from reviewed logic modules, fingerprinted when
-the experience is made, never from code in the content. A small player plays the files, adding optional capabilities
-only when an experience needs them, and a checker proves what it can from the files before anything runs.
+The files are plain. SVG drawings own how things look; JSON documents own what they mean and do; and conditions are
+short formulas in one small language, never scripts, so content can be read, checked and safely changed by people and AI
+tools alike. Heavier logic, such as a game's rules, comes from reviewed logic modules, fingerprinted when the experience
+is made, never from code in the content. Three tools work on the files: a checker proves what it can before anything
+runs, a packer makes the outputs, and a small player plays them, adding an add-on's code only when the experience names
+it.
+
+**Two outputs.** The same folder packs two ways. An **Experience** is one offline `.html` page: the player, every file
+and the add-ons it names. It opens from a file and makes no network requests. A **HyperSVG** is one `.svg` file: the
+start scene's drawing with its marks, and the asset's JSON inside `<metadata>` as data, never as script. A HyperSVG
+shows its rest pose wherever an SVG shows: an `<img>`, a design tool, a README. It plays when a page loads the shared
+player and places it with a `<hypersvg-asset>` tag or `mount()`. The tag's attributes set its knobs, and it sends its
+outputs as page events. `unpack` turns a HyperSVG back into its folder, so you author in separate files and ship one. A
+HyperSVG holds only text and carries no code: no kit, no script, no add-on code, and no picture, sound, font or video
+file.
 
 **How it unfolds.** Its story is the plan for how it unfolds: scenes, joined by links that say which scene can come
-next, by time, by an event or by a choice. When several links could fire, the first in the list wins; a link may also
-visit a scene and return to the one that sent it. Scenes may be grouped into chapters. A shell is the screen around
-the scenes, such as a top bar that stays while scenes change; it has one stage slot, where the scenes show.
+next, on an event, after a time or on a choice. When several links could fire, the first in the list wins; a link may
+also visit a scene and return to the one that sent it. Scenes may be grouped into chapters. A shell is the screen around
+the scenes, such as a top bar that stays while scenes change; it has one stage slot, where the scenes show, and may have
+overlay and dialog slots. The core does not draw choices; an add-on shows them.
 
-**What it is made of.** Everything we build is a block, and a scene uses only the kinds it needs:
-- a component: one reusable object, such as a button or a character;
-- a compound: several components that act as one, such as an offer box.
+**What it is made of.** Everything we build is a block. A component is one reusable object with its own drawing and
+JSON, such as a button, a crate or a character. A component may hold other components: drawn in place as its parts, or
+placed in its slots. Scenes and shells are blocks too, and the experience itself is the largest block. A scene places a
+component with a use, which fills the component's inputs; a use can also repeat once for each item of a list, such as
+four answer cards or the bars of a chart. Blocks may also come from a kit: a versioned set of blocks, themes, resources
+and rules that an experience pins. A library is a kit with a catalogue, from which an experience picks single items.
+Kits and libraries are part of the format and written in the tool reference; they live in their own repositories.
 
-Scenes and shells are blocks too, and the experience itself is the largest block. Blocks usually come from a kit: a
-versioned set of blocks, themes, resources, presets and rules. An experience that pins a kit version is a kit
-experience. A library is a kit with a catalogue, so any experience can pick one item from it. A block or a list of
-blocks can also repeat once for each item of a list, such as four answer cards or the bars of a chart.
+**How a block works.** Every block has an outside and an inside. The outside has four faces: places (slots and other
+drawn places where things go), inputs (what may be changed from outside: content such as its text, knobs such as a
+speed, and triggers), rules (what it promises) and outputs (what it reports, such as "pressed"). The inside, its body,
+holds its values and behaviour; other blocks, editors and hosts reach it only through the faces.
 
-**How a block works.** Every block has an outside and an inside. The outside has four faces: places (slots and areas
-where other things go), inputs (what may be changed, such as its text or a speed), rules (what it promises) and
-outputs (what it reports, such as "pressed"). The inside, its body, holds its values and behaviour; other blocks,
-editors and hosts reach it only through the faces.
+Behaviour starts from events: a control (a button, toggle, choice, slider, dial or drag), a key, a timer, a changed
+value, the player coming into view, or an output of a block inside it. A reaction answers an event with actions: set a
+value, choose with `if`, emit an output, play or stop a clip or a sound, open or close a dialog, or call the player (to
+open a web address, for example) or an add-on. A scene's outputs are its outcomes: the story follows them to choose the
+next scene. A machine keeps states, such as "waiting" and "answered", with timers of its own. Each value lasts for a set
+time: while its scene is shown, for the run, for the session, or saved across visits, where the host allows storage.
 
-Behaviour reacts to events (a press, a key, a timer, scrolling, a signal from the page, an output of a block inside
-it) with actions: set a value, play a motion or a sound, say a spoken line, or report an output. A scene's outputs are
-its outcomes: the story follows them to choose the next scene. Behaviour can also keep states, such as "waiting" and
-"answered". Each value lasts for a set time: while its scene is shown, for the run, for the session, or saved across
-visits.
-
-A sealed block can change only through its inputs. Its rules are proven once, for every value those inputs allow,
-and that proof is reused wherever the block is used; what depends on where it is placed, such as its size or crop, is
-still checked at each use.
+A block may be sealed, so that a use can change only its inputs and its proven rules hold wherever it is used. Seals and
+those proofs are tools' business, in the tool reference.
 
 **How the drawing comes alive.** A block with a drawing is drawn in SVG, and each drawing at one size is a frame (a
-drawing, not an image in a video). A drawing is made of named parts, and each part has jobs: it moves, holds content,
-takes a theme colour, reacts to a press, marks a place, or has several looks (a mouth open or closed). Bindings tie the
-block's values to its parts: a score shows in a text part, a mood picks a look. Motion moves parts over time; sounds
-and spoken lines play with captions, and sound starts only after a person's first press. Logic reaches the drawing
-only by part names and declared sizes, never by raw SVG, so the art can be redrawn without touching the logic.
+drawing, not an image in a video). A drawing is made of named parts, marked with `data-hsvg-*` attributes. Each part has
+jobs: it moves within the ranges its marks allow, holds content, takes a theme colour, is the target of a control, marks
+a place, or has variants (a mouth open or closed). Bindings tie the block's values to its parts: a score shows in a text
+part, a mood picks a variant, a speed turns a wheel. Clips move parts over time. Sounds play from files or are made from
+a few numbers, and sound starts only after a person's first press. Logic reaches the drawing only by part names and
+declared sizes, never by raw SVG, so the art can be redrawn without touching the logic. No add-on adds a mark: the
+drawing side is closed.
 
-Each frame is made of layers that stack in drawing order: what is drawn later sits on top. Every layer has a paint
-role: a backdrop (which may reach past the edges on other screen shapes and is never in the way), content (the
-words, pictures and buttons that matter), decoration (which screen readers skip) and an overlay (which may cover
-content only where a rule allows). Layers nest: a component has its own layers, which stay together, and a placed
-component sits in the scene layer that holds its slot. The shell stacks the same way, with the scene on its stage
-and an overlay, such as a caption bar, above it. The order never changes while playing, so covering rules can be
-proven; depth comes from motion and from which copy is visible. Parallax is each layer moving with the same scroll
-or time at its own speed; Robin circles a tree because a copy of the trunk in front of him shows only while he is
-behind it; and a dragon can wrap round a ball when both are drawn as one compound, the back of the body before the
-ball and the front after it.
+A group in a drawing may say which layer it is: content (the default: the words, pictures and controls that matter), a
+backdrop (which may reach past the edges on other screen shapes and is never in the way), an overlay (which may cover
+content only where a rule allows), or decoration (paint that may give way when the picture is simplified, and that
+screen readers skip). Layers stack in document order: what is drawn later sits on top. Layers nest: a component has its
+own layers, which stay together, and a placed component sits in the layer that holds its slot. The shell stacks the same
+way, with the scene on its stage and an overlay, such as a caption bar, above it. The order never changes while playing,
+so covering can be proven; depth comes from clips and from which copy is visible. Parallax is each layer moving at its
+own speed on the same clock; a character circles a tree because a copy of the trunk in front of it shows only while it
+is behind; and a dragon can wrap round a ball when both are drawn as one component, the back of the body before the ball
+and the front after it.
 
-The same block can be shown in different representations, defined by what changes (the shape, the layout, the
-content tier, the language, a look or the theme) and who picks it (the space available, an input, the host or a
-person). A content tier is short, medium or rich copy that the author wrote; the engine never invents words. The
-layout for each screen size is either drawn or computed by a layout plan (rows, columns or a grid). A representation
-is another view of the same block; a variation is different: a separate copy made from an original and then changed,
-such as a winter version of a summer ad, which records what it came from. A template is a starter experience: the
-`new` tool copies it as a variation, with new ids, and checks the copy.
+The same block can be shown in different representations, defined by what changes (the size or shape, the layout, the
+content tier, the language, a variant, or the theme) and who picks it (the space available, an input, the host or a
+person). A content tier is short, medium or rich copy that the author wrote; the engine never invents words. In the
+core, the layout for each size is drawn: one drawing per size, with the same part names. A layout computed by a layout
+plan (rows, columns or a grid) comes with the `fit` add-on. A representation is another view of the same block; a
+variation is different: a separate copy made from an original and then changed, such as a winter version of a summer ad,
+which records what it came from. A template is a starter experience that a tool copies as a variation, with new ids, and
+checks. Variations and templates are tools' business; the templates live with the kit.
 
-**How it stays right.** Each scene reports outcomes, what happened in it, such as "parcel delivered". A rule is a
-condition, and where it is written decides its job: in a block's rules it must always hold, and on a link it says
-when that way is open. Every rule that applies must hold; two that conflict both fail, and the checker names both.
+**How it stays right.** Each scene reports outcomes, what happened in it, such as "parcel delivered". A link may carry a
+condition, a formula: the link is open only while it is true. A block's rules are what it promises, such as "the logo is
+never cropped"; the checker reads them. Every rule that applies must hold; two that conflict both fail, and the checker
+names both.
 
-Rules have strengths. A must rule that fails stops publishing, and while playing, a change that would break it is
-refused and the experience goes on. A should rule only adds a note. A give-way rule bends in set steps down to a
-limit: a headline may shrink step by step, but never below its smallest size. Rules are proven from the files where
-possible; otherwise they are tested by playing or reviewed by a person.
+Rules have strengths. A must rule that fails stops publishing. A should rule only adds a note. A give-way rule bends in
+set steps down to a limit: a headline may shrink step by step, but never below its smallest size. Rules are proven from
+the files where possible; otherwise they are tested by playing or reviewed by a person. The rule language is in the tool
+reference. The player does not run rules while playing: a text's own fit still shrinks and wraps it, and give-way while
+playing is the `ladder` add-on. The format's own limits, such as safe content and unique ids, always hold and need no
+rule.
 
-Every change, whether from a person, an editor, the host or a participant, passes the same checks, in order, one
-change at a time. Each input names who may change it (a copywriter the headline, a marketer the price), and every
-edit is checked against those rights before it is saved. A participant may make only the moves their seat allows,
-such as moving a piece only on their turn.
+Every change, whether from a person, an editor, the host or an add-on, passes the same checks, in order, one change at a
+time: type, bounds, rules and grants. Who may edit which input, such as a copywriter the headline, is written in the
+tool reference.
 
-The player gives every drawing its accessible structure from the parts and their roles: names, keyboard order,
-captions for spoken lines, and a calm version under reduced motion.
+The player gives every drawing its accessible structure from the parts and their roles: names, keyboard handling and
+order, spoken feedback, and a calm version under reduced motion.
 
-**AI.** Where the host allows AI, an AI character answers a person's questions: its persona is fixed creator text,
-the values it may see travel as facts, and every answer is checked (plain text of a set length, or one of the declared
-options) before content sees it, with a written fallback when no AI is there. An AI agent may also take a seat and
-play like a person; then it is a participant, with only that seat's moves.
+**What comes through the door.** The core is small and stays put: files made for 2.0 keep working in every 2.x.
+Everything else is an add-on, ours or anyone's, and every add-on uses one door: the experience names it in `needs` (a
+preset in `presets`), its settings sit in `addons`, its actions are calls and its events carry its name. There are three
+kinds: a preset (JSON only), a logic module (a pure function, pinned by its fingerprint) and a capability (code in the
+page that the host allows). An add-on may also add a control kind, a binding channel or a clip channel, each as a value
+carrying its name. Add-ons are chosen and fingerprinted when the experience is made; nothing new arrives while a page
+plays, except data and pictures through the host API. The official add-ons come in their own release: AI characters,
+seats for players and AI agents, spoken lines and captions, layout plans, physics, particles, rich text, recorded video,
+HTML widgets, page hooks on someone else's page, rows a host feeds and others. Where the host allows AI, an AI character
+answers from fixed creator text and checked values, and an AI agent may take a seat and play like a person, with only
+that seat's moves. The base repository holds four presets and one tiny example for each door. An experience that names
+an official add-on checks with a warning without the add-ons release, and packs only with it.
 
-**Where it runs and travels.** An experience runs on a host: its own page, an ad placement, someone else's website,
-an app or an AI assistant. The host grants what the experience may reach, such as storage or elements of the page,
-and nothing else, and it runs the optional abilities the experience needs (capabilities, such as physics or AI).
-The door to the outside is the host API: values go in, events come out; a page in a sandboxed frame uses the same
-verbs through the frame link; `live-data` brings in data from declared sources. People, AI agents and programs take
-part through seats, each a participant's place on one page, such as the two sides of a chess game. Outside
-developers add presets, logic modules and capabilities through the add-on door, chosen and fingerprinted when the
-experience is made. An experience travels as one package with a fingerprint (digest) for every file, and can be
-exported for other places: an ad network, a learning platform, or a video, which follows the timed path, keeps the
-look and captions, and loses the interaction.
+**Where it runs and travels.** An experience runs on a host: its own page, an ad placement, an app, an AI assistant, or
+someone else's website (with the page add-on). A HyperSVG runs in any page that loads the player. The player has two
+halves: the logic, which keeps the values, runs the reactions and follows the story and needs no page, and the drawing,
+which shows it in the page and hears presses and keys. The host grants what the experience may reach, such as storage or
+opening a web address, and nothing else; the packer writes what the experience asks for, and the host decides. The host
+also runs the add-ons the experience needs, or refuses it. The door to the outside is the host API: values and pictures
+go in, events come out. A page in a sandboxed frame uses the same verbs through the frame link, and an AI assistant
+reaches an experience the same way, through an adapter in the host. An Experience comes with a short description,
+`package.json`, that lists a fingerprint (digest) of every file; a HyperSVG carries the same list inside it, and a file
+that no longer matches is refused. These digests catch accidents, not tampering: a host that must trust a file keeps its
+fingerprint on its own server.
 
-**One kind of thing, set differently.** An ad, a lesson, a game and a mascot are the same kind of thing set
-differently: how many sizes, how scenes are joined (by time, events, choices or scrolling), what changes them, what
-they remember, and where they run.
+**One kind of thing, set differently.** An ad, a lesson, a game, a mascot and a lamp on a page are the same kind of
+thing set differently: how many sizes, how scenes are joined (by time, events or choices), what changes them, what they
+remember, which output they ship as, and where they run.
 
-**Which word to use.** One moment of the story is a scene; a group of scenes is a chapter; another view of the same
-block is a representation; a changed copy is a variation; a starter experience to copy is a template; a value someone
-may set is an input; a stacked group of a drawing with a paint role is a layer.
+**Which word to use.** One moment of the story is a scene; a group of scenes is a chapter; a drawn alternative of a part
+is a variant; another view of the same block is a representation; a changed copy is a variation; a starter experience to
+copy is a template; a value someone may set is an input, and a bounded one is a knob; a group of a drawing that says its
+job in the picture is a layer; a small experience with knobs is an asset; HyperSVG names the format and its engine, and
+also the packed `.svg`; the packed `.html` page is an Experience; anything beyond the core is an add-on.
 
-**A small example.** The bakery's 300×250 banner is one experience with the purpose "get a click", made from the
-bakery kit. Its story has three scenes, hook, offer and end card, linked by time. The end card holds a button, a
-component with a label input that only a copywriter may change and a "pressed" output, and the kit's rule says the
-logo is never cropped. Its 300×250 layout is drawn, and its 728×90 layout is computed by a layout plan. When a person
-presses the button, the end card reports the outcome "clicked"; the ad network, the host, which allows no storage
-and no AI, opens the bakery's page and counts the click.
+**A small example.** The bakery's banner is one experience with the purpose "get a click". Its story has three scenes,
+hook, offer and end card, linked by time. Each scene is drawn twice, at 300×250 and at 728×90, with the same part names.
+The end card holds a button, a component with one content input (its words) and a "pressed" output, and a protected area
+keeps the logo inside the picture. When a person presses the button, the end card asks the player to open the bakery's
+page and reports the outcome "clicked". The banner packs as an Experience. The ad placement, its host, allows opening
+that address and nothing else: no storage and no AI. Counting the click is the host's business.
 
-The button's files, shortened:
+The button's files:
 
 ```svg
-<g id="cta" data-hsvg-kind="component" data-hsvg-role="action">
-  <rect id="cta__surface" data-hsvg-kind="part" data-hsvg-color="accent" x="0" y="0" width="180" height="48" rx="24"/>
-  <text id="cta__label" data-hsvg-kind="part" x="24" y="31">ORDER NOW</text>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48" data-hsvg-version="2.0">
+  <title>Order button</title>
+  <g id="cta" data-hsvg-kind="component" data-hsvg-role="action">
+    <rect id="cta__surface" data-hsvg-kind="part" data-hsvg-role="surface" data-hsvg-fit="" data-hsvg-color="accent" x="0" y="0" width="180" height="48" rx="24" fill="#d84315"/>
+    <text id="cta__label" data-hsvg-kind="part" data-hsvg-role="label" data-hsvg-color="surface" x="90" y="31" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">Order now</text>
+  </g>
+</svg>
 ```
 
 ```json
-{"kind": "component", "id": "cta", "drawing": "cta.svg",
- "inputs":   {"label": {"kind": "content", "type": "string", "maxLength": 18, "initial": "Order now",
-                        "editableBy": ["copywriter"]}},
+{"format": "hsvg/2.0", "kind": "component", "id": "cta", "drawing": "cta.svg",
+ "inputs":   {"action.text": {"kind": "content", "type": "string", "maxLength": 18, "initial": "Order now"}},
  "outputs":  {"pressed": {"kind": "event"}},
- "controls": {"press": {"kind": "button", "target": "surface", "event": "pressed"}},
- "bindings": [{"id": "label-text", "target": "label", "text": "{{ label }}"}],
- "rules":    [{"id": "label-fits", "kind": "fits", "subject": "field:label"}]}
+ "controls": {"press": {"kind": "button", "target": "surface", "event": "pressed", "label": "{{ action.text }}"}},
+ "bindings": [{"target": "label", "text": "{{ action.text }}", "fit": {"box": "surface", "minFontPx": 14}}]}
 ```
 
-The SVG names two parts, surface and label; the JSON gives the button one input (the label, which only a copywriter
-may change), one output ("pressed"), a binding that writes the label into the label part, and one rule (the label
-always fits).
+The SVG names two parts, surface and label. The JSON gives the button one input (its words, `action.text`: a component
+with the role `action` names it so), one output ("pressed"), a button on the surface, and a binding that writes the
+words into the label and keeps them inside the surface, shrinking them if needed. The checker finds nothing to fix.
 
 ## Later (2.1)
 
-These are designed or drafted, not in 2.0. Drafts with their grammar are in `drafts/`; a 2.0 checker refuses them
-(`E-DRAFT`).
+These are designed or drafted, not in 2.0. A 2.1 may only add: files made for 2.0 keep working. Drafts with their
+grammar are in `drafts/` in the repository; a 2.0 checker refuses them (`E-DRAFT`, or `E-NEEDS-UNKNOWN` for a need).
+Words an add-on owns arrive with a version of that add-on, not with the base.
+
+In the format:
 
 - **Goals, journeys and achievements.** Goals are declared measures of the purpose that outcomes move ("all parcels
   delivered"); a person's journey is the path they actually take; it earns achievements when the goals they name are
   reached.
-- **AI roles.** Beyond characters and seats: AI that assists (explains, guides), chooses among ways that are already
-  valid, or judges something a person made into declared levels, always with a record.
 - **Nested experiences, logical blocks and split screen** (`drafts/structure-2.1.md`).
 - **Content options and the seed selector** for A/B tests (`drafts/content-options-2.1.md`).
-- **More effect kinds** (`drafts/effect-kinds-2.1.json`) and **page actions that move the actor**
-  (`drafts/page-actions-2.1.json`).
-- **Remote seats**: players on different devices (`drafts/remote-seats-2.1.json`). The `bridge` plan they were designed
-  with is removed from the base (D40): runtime import is outside the standard.
+- **Clip extras**: `wiggle`, `timeRemap`, `frameRate`, `holdFrames`, a track's `composite` and a clip's `blendMs`
+  (`drafts/clip-extras-2.1.md`).
+- **Choice places**: drawn places for choices inside a scene (`drafts/choice-places-2.1.md`).
+- **A scroll clock**: a stage slot whose time follows scrolling (`drafts/scroll-clock-2.1.json`).
+- **Delivery**: export adapters (an ad network's zip, a learning platform, a video), served play, the `network` grant
+  and the `site` storage scope (`drafts/delivery-2.1.md`).
+- **Custom HTML widgets** written by the host (`drafts/custom-widgets-2.1.md`).
+- **Hosted change history.**
+
+Through add-ons:
+
+- **AI roles** (the `ai` add-on): AI that assists (explains, guides), chooses among ways that are already valid, or
+  judges something a person made into declared levels, always with a record.
+- **More effect kinds** (`drafts/effect-kinds-2.1.json`, the `effects` add-on) and **page actions that move the actor**
+  (`drafts/page-actions-2.1.json`, the `page` add-on).
+- **Remote seats**: players on different devices (`drafts/remote-seats-2.1.json`). They need a runtime door that is
+  outside the base standard; the `bridge` plan they were designed with is removed from the base.

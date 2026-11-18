@@ -83,7 +83,7 @@ A kit experience is an experience made from a kit (A14.2). It pins one exact ver
 
 Readers resolve exactly the pinned version, never "the latest". A missing kit or version, or a digest mismatch, is
 `E-KIT-PIN` (files). What a kit experience may do is fixed here and in A14.2: fill content fields, set knobs, choose the
-layouts and looks the kit offers, combine kit definitions in its own story graph, add its own words and
+layouts and variants the kit offers, combine kit definitions in its own story graph, add its own words and
 resources, and add rules stricter than the kit's (A11.7). Its own definitions, values, behaviour or drawings are
 refused (`E-KIT-BODY`), and so is a `with` outside a definition's inputs, bounds or editor rights (`E-TYPE`,
 `E-RANGE`, `E-RIGHTS`). Anything more is a kit change, made
@@ -117,7 +117,7 @@ id, a type, a title, 1 to 8 tags, one line, a preview image in the kit, and name
   "format": "hsvg/2.0", "kind": "catalogue", "kit": "hsvg-starter", "version": "1.0.0",
   "items": {
     "icon-star": {"type": "icon", "title": "Star icon", "tags": ["icon", "control"],
-                  "line": "A star icon button with idle, pressed, disabled and selected looks.",
+                  "line": "A star icon button with idle, pressed, disabled and selected variants.",
                   "preview": "previews/icon-star.svg", "block": "icon-star"},
     "bg-meadow-dawn": {"type": "background", "title": "Meadow at dawn", "tags": ["nature", "warm"],
                        "line": "Soft hills, a rising sun and long grass.", "preview": "previews/bg-meadow-dawn.svg",
@@ -193,8 +193,8 @@ value is a formula, with text in single quotes (5.6.1, D36):
     "start": "depart",
     "scenes": {
       "depart": {"use": "ride-out", "with": {"destination": "stop-cliff", "windStrength": 2}},
-      "cliff": {"use": "delivery-stop", "with": {"stopName": "{{ words.cliff }}", "parcels": 3}},
-      "gazette": {"use": "gazette-page", "with": {"headline": "{{ words.cliffHeadline }}"}}
+      "cliff": {"use": "delivery-stop", "with": {"stopName": "words.cliff", "parcels": 3}},
+      "gazette": {"use": "gazette-page", "with": {"headline": "words.cliffHeadline"}}
     },
     "ends": ["gazette"],
     "links": [
@@ -243,14 +243,14 @@ document id, keeps internal ids (they are scoped) and runs the checker on the re
 
 | Call | Result |
 |---|---|
-| `hsvg new <name> --from <template> [--in <folder>]` | **Built** (`engine/v2/tools/library.mjs`). A new experience in `<folder>/<name>/` that copies the template: a folder with `experience.json`, or the name of a starter template (`library/2.0/templates/`). Its id is `<name>`; `derivedFrom` names the template (its id, its `about.version` or else the version of the kit it pins, and its digest); reviews are not copied; a kit the new folder cannot find is copied into its `kits/<id>/` (A10.5); the kit pin gets the kit's digest (A9.3), so a later change to a kit file is `E-KIT-PIN`; the result is checked. |
+| `hsvg new <name> --from <template> [--in <folder>]` | **Built** (`engine/v2/tools/library.mjs`). A new experience in `<folder>/<name>/` that copies the template: a folder with `experience.json`, or the name of a starter template (the templates come with the kit, in their own repository; they are not in the base). Its id is `<name>`; `derivedFrom` names the template (its id, its `about.version` or else the version of the kit it pins, and its digest); reviews are not copied; a kit the new folder cannot find is copied into its `kits/<id>/` (A10.5); the kit pin gets the kit's digest (A9.3), so a later change to a kit file is `E-KIT-PIN`; the result is checked. |
 | `hsvg add <library> <item> [--to <experience>]` | **Built.** Adds one catalogue item to the experience's `picks` (A14.1), pinned to the library's version and its digest (A9.3); brings the kit if the experience cannot find it; checks. One experience pins one version of a library. On a kit experience of the same kit it changes nothing (the item is there). |
 | `hsvg instantiate <kit> <experience-id> --from <sample-id> [values.json]` | A new kit experience in `./<experience-id>/` that pins the kit and copies the sample kit experience, with `derivedFrom` naming the sample (A14.2). `values.json` maps input addresses to values. |
 | `hsvg instantiate <kit> <new-kit-id> --kit` | A new kit (a fork) in `./<new-kit-id>/` with a new id, at version `0.1.0`; `derivedFrom` names the source kit. |
 | Detach, in an editor | The use's definition is copied into the container as an open local definition (A9.4). |
 
 A **template** is a starter experience that `hsvg new` copies (D24): any checked experience, usually a kit experience of
-a library. The 2.0 starter templates are in `library/2.0/templates/`. A kit may also be marked for starting from: `"about": {"template": true}`. A template kit holds at least one
+a library. The 2.0 starter templates come with the kit, in their own repository, not in the base. A kit may also be marked for starting from: `"about": {"template": true}`. A template kit holds at least one
 sample kit experience that passes its checks, with the receipt in its evidence. "Save as template" sets the mark on a kit.
 The `template/0.1` fill tool is replaced by `instantiate` (A13).
 

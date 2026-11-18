@@ -118,7 +118,7 @@ export function capabilityNames(needs) {
 //              only inside a step (9.2)
 //   timers     timers.add(owner, due, fields), timers.drop(match), timers.list(): only its own
 //   others     deliver({kind, ...}) (kind is the capability's id), humanOnly(address, what), fault(code, message,
-//              address), EngineFault, transaction(source, fn) (a step of its own, outside any other), note(kind,
+//              address), EngineFault, transaction(source, fn, move) (a step of its own, outside any other), fed(), note(kind,
 //              address, message), onCommit(fn), expose(name, value) (a name the page part reads on the player)
 const FROZEN = new WeakMap();
 const deepFreeze = (x) => { if (x && typeof x === 'object' && !Object.isFrozen(x)) { Object.freeze(x); for (const v of Object.values(x)) deepFreeze(v); } return x; };
@@ -207,12 +207,14 @@ export function makeDoor(engine, id, EngineFault) {
       engine.state.deliveries.push(copy(d));
     },
     humanOnly: (address, what) => engine.humanOnly(address, what),
-    transaction(source, fn) {
+    // move: [name, ...arguments] when the step can be fed again as player[cap][method](...arguments) (9.6), else the
+    // hook hears {source: 'door', payload: [capability, source]}. fed(): a replay feeds this engine its moves (logic()
+    // feed), so a step the page would start comes only as a fed move.
+    transaction(source, fn, move) {
       if (engine.source !== null) throw new Error(`${id}: a transaction is already running`);
-      const r = engine.transaction(source, fn);
-      engine.afterCommit?.();
-      return r;
+      return engine.moveIn(move ? move[0] : 'door', move ? move.slice(1) : [id, source], () => engine.step(source, fn));
     },
+    fed: () => engine.fed === true,
     note: (kind, address, message) => engine.note(kind, address, message),
     onCommit: (fn) => engine.on(fn),
     expose(name, value) {
@@ -269,16 +271,8 @@ export function makePageDoor(player, id, page) {
     setInput: (name, value) => step(player.setInput(name, copy2(value), 'widget')),
     applySettings: (pairs) => step(player.applySettings(copy2(pairs), 'widget')),
     send(address, name, payload = {}) { const r = player.send(address, name, copy2(payload), 'widget'); return step(r); },
-    fire(name) {
-      const r = player.transaction('widget', () => { player.emit('experience', name); player.queueAll(name); });
-      player.afterCommit?.();
-      return step(r);
-    },
-    closeDialog(slot) {
-      const r = player.transaction('person', () => player.dialog(slot, false));
-      player.afterCommit?.();
-      return step(r, 'control');
-    },
+    fire: (name) => step(player.shellEvent(name)),
+    closeDialog: (slot) => step(player.closeDialog(slot), 'control'),
     pick: (linkId) => step(player.pick(linkId), 'control'),
     slot: (slotId) => page.drawing?.slots?.[slotId]?.dom ?? null,
     part: (address, local) => page.drawing?.frames?.[address]?.byLocal?.get(local)?.dom ?? null,

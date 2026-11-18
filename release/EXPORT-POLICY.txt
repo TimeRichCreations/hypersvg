@@ -131,6 +131,10 @@
 - engine/v2/web/captions-web.mjs
 - engine/v2/web/richtext-web.mjs
 - engine/v2/web/widgets-web.mjs
+# The modules a page loads on demand for a HyperSVG that pins effects or physics (D55), and their tool: they are
+# capability code. The core keeps the loader (web/on-demand-web.mjs) and the rules (src/on-demand.mjs).
+- engine/v2/web/addons/**
+- engine/v2/tools/bundle-addons.mjs
 # The checker families of built-in add-ons (the AI flow, rich text, spoken lines); check/index.mjs loads them when
 # they are there.
 - engine/v2/check/ai.mjs
@@ -168,6 +172,28 @@
 - engine/v2/tests/browser/media-browser.mjs
 - engine/v2/tests/browser/page-browser.mjs
 - engine/v2/tests/browser/seats-browser.mjs
+- engine/v2/tests/d55-on-demand.test.mjs
+- engine/v2/tests/d55-fixture/**
+- engine/v2/tests/browser/d55-on-demand-browser.mjs
+# The add-ons' compatibility suites (packed Experiences offline; HyperSVGs on a host page) need the add-ons.
+- engine/v2/tests/browser/addons-experiences-browser.mjs
+- engine/v2/tests/browser/addons-host-browser.mjs
+# Browser suites that play an add-on (a capability, a preset that needs one, or an example that does). They fail on
+# the core alone and pass with the add-ons laid over it; they run in the add-ons export (release/addons-browser.mjs --all).
+- engine/v2/tests/browser/ai-browser.mjs
+- engine/v2/tests/browser/baked-browser.mjs
+- engine/v2/tests/browser/fault-browser.mjs
+- engine/v2/tests/browser/joins-browser.mjs
+- engine/v2/tests/browser/kit-ads-browser.mjs
+- engine/v2/tests/browser/ladder-browser.mjs
+- engine/v2/tests/browser/lines-browser.mjs
+- engine/v2/tests/browser/motion-browser.mjs
+- engine/v2/tests/browser/plan-browser.mjs
+- engine/v2/tests/browser/preview-browser.mjs
+- engine/v2/tests/browser/q1-player-browser.mjs
+- engine/v2/tests/browser/richtext-browser.mjs
+- engine/v2/tests/browser/shell-browser.mjs
+- engine/v2/tests/browser/x2-paint-browser.mjs
 
 # Examples, recipes, templates and presets whose needs name a built-in capability, and every example, recipe example
 # and template release/core-examples.json does not list (release/core-only.mjs). A "+ experiences/2.0/<name>/**" line

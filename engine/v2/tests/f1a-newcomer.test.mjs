@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFile } from 'node:child_process';
 import { repo, ok, eq, mapSource, schemas } from './helpers.mjs';
 import { checkExperience } from '../check/index.mjs';
 import { newFromTemplate } from '../tools/library.mjs';
@@ -23,6 +23,8 @@ export function copyOf(from, edit = () => {}) {
 export const readJson = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 export const writeJson = (f, v) => fs.writeFileSync(f, JSON.stringify(v, null, 2));
 export const runCheck = (dir, ...more) => spawnSync(process.execPath, [checkTool, dir, ...more], { encoding: 'utf8' }).stdout;
+// The same check tool on several folders at once (each its own process, run side by side): their outputs, in order.
+export const runChecks = (dirs, ...more) => Promise.all(dirs.map(dir => new Promise(done => execFile(process.execPath, [checkTool, dir, ...more], { encoding: 'utf8', maxBuffer: 64 << 20 }, (err, stdout) => done(stdout)))));
 
 export const tests = {
   'item 1: the ASKS openUrl line says a page alone opens no link, and how a host opens it'() {
@@ -37,58 +39,66 @@ export const tests = {
       ok(line.includes("window.hsvg.on('openUrl', fn)") && line.includes('--host'), line);
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   },
-  'item 2: W-SLIDER-EQUALS warns when a slider without positions feeds === or !==, and names the fix'() {
+  async 'item 2: W-SLIDER-EQUALS warns when a slider without positions feeds === or !==, and names the fix'() {
     const game = path.join(repo, 'engine', 'v2', 'tests', 'f1a-fixture', 'lanes');
     const scene = (d) => path.join(d, 'scenes', 'orchard', 'scene.json');
-    ok(!runCheck(game).includes('W-SLIDER-EQUALS'), 'with positions: no warning');
     const without = copyOf(game, (d) => { const s = readJson(scene(d)); delete s.controls.move.positions; writeJson(scene(d), s); });
     const loose = copyOf(game, (d) => {
       const s = readJson(scene(d)); delete s.controls.move.positions;
       writeJson(scene(d), JSON.parse(JSON.stringify(s).replaceAll('basketLane === appleLane', 'basketLane > appleLane - 0.5 and basketLane < appleLane + 0.5')));
     });
     try {
-      const line = runCheck(without).split('\n').find(l => l.startsWith('W-SLIDER-EQUALS'));
+      const [withPositions, withoutOut, looseOut] = await runChecks([game, without, loose]);
+      ok(!withPositions.includes('W-SLIDER-EQUALS'), 'with positions: no warning');
+      const line = withoutOut.split('\n').find(l => l.startsWith('W-SLIDER-EQUALS'));
       ok(line?.includes('scenes/orchard/scene.json'), line);
       ok(line.includes('basketLane is written by slider move, which has no positions, so it can be any number from 0 to 2'), line);
       ok(line.includes('Add "positions": 3 to the slider'), line);
-      ok(!runCheck(loose).includes('W-SLIDER-EQUALS'), 'a compare with < and > gives no warning');
+      ok(!looseOut.includes('W-SLIDER-EQUALS'), 'a compare with < and > gives no warning');
     } finally { for (const d of [without, loose]) fs.rmSync(d, { recursive: true, force: true }); }
   },
-  'item 3: E-REF-UNKNOWN for entered, start, enter, begin or ready suggests the scene\'s entry list'() {
+  async 'item 3: E-REF-UNKNOWN for entered, start, enter, begin or ready suggests the scene\'s entry list'() {
     const example = path.join(repo, 'docs', 'one-page', 'example');
     const scene = (d) => path.join(d, 'scenes', 'hello', 'scene.json');
-    for (const word of ['entered', 'start', 'enter', 'begin', 'ready', 'opened']) {
-      const dir = copyOf(example, (d) => { const s = readJson(scene(d)); s.on[word] = [{ actions: [{ play: 'pop' }] }]; writeJson(scene(d), s); });
-      try {
-        const line = runCheck(dir).split('\n').find(l => l.startsWith('E-REF-UNKNOWN'));
+    const words = ['entered', 'start', 'enter', 'begin', 'ready', 'opened'];
+    const dirs = words.map(word => copyOf(example, (d) => { const s = readJson(scene(d)); s.on[word] = [{ actions: [{ play: 'pop' }] }]; writeJson(scene(d), s); }));
+    try {
+      const outs = await runChecks(dirs);
+      words.forEach((word, k) => {
+        const line = outs[k].split('\n').find(l => l.startsWith('E-REF-UNKNOWN'));
         ok(line?.includes(`"${word}" has no producer in hello`), line);
         const hint = 'To act when the scene starts, list the actions in the scene\'s entry instead of on: "entry": [{"play": "intro"}] (5.13)';
         ok(word === 'opened' ? !line.includes(hint) : line.includes(hint), `${word}: ${line}`);
-      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
-    }
+      });
+    } finally { for (const dir of dirs) fs.rmSync(dir, { recursive: true, force: true }); }
   },
-  'item 4: = or == in a formula says that equality is === (and !==)'() {
+  async 'item 4: = or == in a formula says that equality is === (and !==)'() {
     const example = path.join(repo, 'docs', 'one-page', 'example');
     const scene = (d) => path.join(d, 'scenes', 'hello', 'scene.json');
-    for (const [op, at] of [['==', 7], ['=', 7]]) {
-      const dir = copyOf(example, (d) => { const s = readJson(scene(d)); s.bindings[0].text = `{{ stars ${op} 3 ? 'three' : 'some' }} stars`; writeJson(scene(d), s); });
-      try {
-        const line = runCheck(dir).split('\n').find(l => l.startsWith('E-FORMULA'));
+    const cases = [['==', 7], ['=', 7]];
+    const dirs = cases.map(([op]) => copyOf(example, (d) => { const s = readJson(scene(d)); s.bindings[0].text = `{{ stars ${op} 3 ? 'three' : 'some' }} stars`; writeJson(scene(d), s); }));
+    try {
+      const outs = await runChecks(dirs);
+      cases.forEach(([op, at], k) => {
+        const line = outs[k].split('\n').find(l => l.startsWith('E-FORMULA'));
         ok(line?.includes(`${op} at ${at} is not an operator: equality is === (and !==)`), `${op}: ${line}`);
-      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
-    }
+      });
+    } finally { for (const dir of dirs) fs.rmSync(dir, { recursive: true, force: true }); }
   },
   async 'item 6: "is not an input of" lists the inputs (a template use, a kit with, a component use)'() {
     const work = fs.mkdtempSync(path.join(os.tmpdir(), 'hsvg-f1a-'));
     try {
       const made = await newFromTemplate('g', 'game', work);
+      // Two copies of the new folder, each with one mistake, checked side by side.
+      const other = path.join(work, 'g2');
+      fs.cpSync(made.dir, other, { recursive: true });
       const f = path.join(made.dir, 'experience.json');
       const e = readJson(f); e.story.scenes.play.with.thing = 'apple'; writeJson(f, e);
-      let out = runCheck(made.dir);
+      const f2 = path.join(other, 'experience.json');
+      const e2 = readJson(f2); e2.with = { bogus: 'x' }; writeJson(f2, e2);
+      const [out, out2] = await runChecks([made.dir, other]);
       ok(out.includes('thing is not an input of frame-game; its inputs are seconds, hopMs'), out);
-      delete e.story.scenes.play.with.thing; e.with = { bogus: 'x' }; writeJson(f, e);
-      out = runCheck(made.dir);
-      ok(out.includes('bogus is not an input of kit hsvg-starter; it has no inputs'), out);
+      ok(out2.includes('bogus is not an input of kit hsvg-starter; it has no inputs'), out2);
     } finally { fs.rmSync(work, { recursive: true, force: true }); }
     const files = base();
     scene(files).uses = [{ id: 'badge', use: 'badge', into: 'badge-spot', with: { nope: '1', title: "'Hi'" } }];

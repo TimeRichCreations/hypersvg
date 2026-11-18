@@ -1,5 +1,5 @@
 // The story graph rules (section 3): start, links, outcomes, choices, visits and returns, chapters, graph validity.
-import { parseXml } from '../../schema/xml.mjs';
+import { parseXmlShared } from '../xml-shared.mjs';
 import { walk, isObj, entryTargets, chapterEdges, linkKind, ID } from './model.mjs';
 import { FORMAT } from '../../src/limits.mjs';
 import { endsOf } from '../../src/ends.mjs';
@@ -393,7 +393,7 @@ function findCycle(nodes, adj) {
 // The number of option slots (direct children with data-hsvg-slot) of the repeat region with this id, or null.
 export function repeatSlots(text, regionId) {
   let root;
-  try { root = parseXml(text); } catch { return null; }
+  try { root = parseXmlShared(text); } catch { return null; }
   let result = null;
   const visit = (el) => {
     if (!el || !el.attrs) return;

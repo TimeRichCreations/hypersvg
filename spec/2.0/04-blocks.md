@@ -28,7 +28,7 @@ its members, as before), and the upgrade tool rewrites it.
   and being the target of a binding, clip or control. A colour role alone is a paint mark, not a job: an
   element that only takes the theme's colour needs no kind; one that a `color` binding targets is a part. Writers write `data-hsvg-kind="part"` on it. A reader that
   finds a job without the kind treats the element as a part and warns, and so does a reader that finds
-  `data-hsvg-role`, `-side`, `-label` or `-type-role` on an element without a kind. A part without an id is
+  `data-hsvg-role`, `-label` or `-text-style` on an element without a kind. A part without an id is
   `E-ID-SHAPE`. `W-KIND-MISSING` (files).
 
 ## 4.2 Block documents
@@ -104,7 +104,7 @@ on the clock (3.10). Section 4.5 adds `items` and `key` for a repeated use.
   {"id": "robin", "use": "robin-hero", "into": "robin", "with": {"walking": "speed > 0"}},
   {"id": "parcel", "use": "parcel", "into": "parcel-spot"},
   {"id": "answers", "use": "answer-card", "into": "answer-slots", "items": "question.choices", "key": "item.id",
-   "with": {"label": "{{ item.label }}", "chosen": "picked === item.id"}}
+   "with": {"label": "item.label", "chosen": "picked === item.id"}}
 ]
 ```
 
@@ -223,7 +223,7 @@ A **repeated use** is a use (`id`, `use`, `into`, `with`, 4.3) made once per row
 ```json
 "uses": [
   {"id": "answers", "use": "answer-card", "into": "answer-slots", "items": "question.choices", "key": "item.id",
-   "with": {"label": "{{ item.label }}", "chosen": "picked === item.id"}}
+   "with": {"label": "item.label", "chosen": "picked === item.id"}}
 ]
 ```
 

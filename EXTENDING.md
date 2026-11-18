@@ -58,8 +58,29 @@ const lamp = mount(document.querySelector('#lamp'), svg, { lit: true }, { schema
 lamp.on('hsvg.changed', (e) => console.log(e.detail));
 ```
 
+A host that checked the file once may place it with its fingerprint instead (added after `2.0.0-next.0`). `pack
+--asset` prints it; the host stores it on its server. The page then needs no schemas:
+
+```js
+import { mountAsync } from './node_modules/@hypersvg/core/engine/v2/web/asset-lean.mjs';
+const lamp = await mountAsync(element, svgBytes, { lit: true }, { integrity: 'sha256-...' });
+```
+
+A mismatch is refused (`E-ASSET-INTEGRITY`), and nothing of the file shows. A small safety pass always runs. A digest inside the file is never a
+trust anchor; the host's stored fingerprint is.
+
 Serve the page over http or https. Spec: `spec/2.0/10-hosts-and-delivery.md` 10.6 and 10.14; more in
 `docs/browser-embedding.md`.
+
+**What is stable.** Spec 10.16 labels every part of the JavaScript API, the command line and a packed page.
+**Stable** parts stay for all of 2.x: a minor version only adds. **Experimental** parts work and are documented, but
+may change in a minor version, with a note in the changelog. **Internal** parts are not for your code, even when a
+file exports them. Experimental now, among others: the host ports `aiPort`, `pagePort` and `modulePort` (from
+`@hypersvg/core/mount`) and the `capabilities` option that takes them; the `modules`, `hostWords` and `widgets`
+options; `place(name)`, `seat()` and `ladder()` on the host API; the `theme`, `options` and `addonBase` options of a
+HyperSVG mount and the element's `theme`, `addon-base` and `partition` attributes; `repack`; the one-file player
+`hypersvg-asset.js`; the `hookHealth` output; and every add-on's schema files and moves. An add-on's own API is
+experimental until it is promoted.
 
 ## Sizes, themes and languages
 

@@ -201,7 +201,8 @@ export const tests = {
     ok(!has(check(edit(adFiles(), KIT, d => { delete d.themes['harbour-night'].colorRoles['on-accent']; })), 'E-THEME-ROLES'), 'extends gives the role');
     const typed = adFiles();
     typed['kits/ad-kit/blocks/headline/headline.svg'] = typed['kits/ad-kit/blocks/headline/headline.svg'].replace('data-hsvg-role="message"', 'data-hsvg-role="message" data-hsvg-text-style="heading"');
-    ok(has(check(typed), 'E-THEME-ROLES'), 'a type role no theme gives');
+    const lacks = check(typed).diags.filter(d => d.code === 'E-THEME-ROLES').map(d => d.message);
+    ok(lacks.length && lacks.every(m => /lacks text style heading/.test(m)), `a text style no theme gives, named in the final words: ${lacks}`);
   },
 
   // ---------- seals ----------

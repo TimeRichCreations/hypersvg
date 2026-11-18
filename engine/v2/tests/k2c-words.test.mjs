@@ -47,8 +47,10 @@ export const tests = {
     eq(sayChannel('look'), 'variant');
     eq(sayChannel('color:accent'), 'color (role accent)');
     eq(sayChannel('opacity'), 'opacity');
-    eq(bindingFor({ kind: 'slider', axis: 'y', value: 'level' }, 'handle'), '{"target": "handle", "move": "level", "axis": "y"}');
-    eq(bindingFor({ kind: 'dial', value: 'heat' }, 'pointer'), '{"target": "pointer", "rotate": "heat"}');
+    // The value's bounds map onto the range (5.11); without them the message shows the mapping itself.
+    eq(bindingFor({ kind: 'slider', axis: 'y', value: 'level' }, 'handle'), '{"target": "handle", "move": "(level - min) / (max - min) * span", "axis": "y"}');
+    eq(bindingFor({ kind: 'slider', axis: 'y', value: 'level', range: [0, 100] }, 'handle', { minimum: 0, maximum: 100 }), '{"target": "handle", "move": "level", "axis": "y"}');
+    eq(bindingFor({ kind: 'dial', value: 'heat', range: [-90, 90] }, 'pointer', { minimum: -5, maximum: 5 }), '{"target": "pointer", "rotate": "-90 + (heat + 5) / 10 * 180"}');
     ok(!/translate|channel/.test(bindingFor({ kind: 'slider', axis: 'x', value: 'v' }, 'h')));
   },
 };

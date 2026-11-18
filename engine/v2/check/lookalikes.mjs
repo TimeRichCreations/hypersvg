@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { parseColorRole } from './drawing-rules.mjs';
 
 // The colour mark's name as the vocabulary lists it (data-hsvg-color since K2b, D33).
@@ -45,7 +45,7 @@ export function check(ctx) {
     const said = new Set();
     for (const d of Object.values(o.drawings)) {
       let root;
-      try { root = parseXml(d.text); } catch { continue; } // the load step reported it
+      try { root = parseXmlShared(d.text); } catch { continue; } // the load step reported it
       const ids = (n) => (n.attrs?.id ? [local(n.attrs.id)] : []);
       // Who follows whom (the follow mark, data-hsvg-follow, D33): a controlled
       // part that follows a drawn button, or that it follows, is its hit area.
@@ -102,7 +102,7 @@ function colorsUnmarked(ctx, owners) {
     if (!o?.drawings) continue;
     for (const d of Object.values(o.drawings)) {
       let root;
-      try { root = parseXml(d.text); } catch { continue; }
+      try { root = parseXmlShared(d.text); } catch { continue; }
       const found = new Map(); // colour -> [where]
       const walk = (n, marked) => {
         if (!n.name || n.name === 'defs') return;

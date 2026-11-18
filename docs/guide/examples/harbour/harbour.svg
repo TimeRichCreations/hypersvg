@@ -7,7 +7,7 @@
     <rect id="title-box" data-hsvg-kind="part" data-hsvg-fit="" x="20" y="16" width="360" height="56" rx="8" fill="#2e7d32"/>
     <text id="title" data-hsvg-kind="part" data-hsvg-role="title" data-hsvg-text-style="heading" data-hsvg-color="fill:surface" x="36" y="56" font-family="sans-serif" font-size="32" fill="#ffffff">Ahoy!</text>
     <g id="badge" data-hsvg-kind="part" data-hsvg-role="badge" data-hsvg-label="Ten loads"><circle cx="420" cy="44" r="20" fill="#e6af42"/></g>
-    <g id="flag" data-hsvg-kind="part" data-hsvg-role="flag" data-hsvg-label="Harbour flag" data-hsvg-pivot="600 140" data-hsvg-motion="lean -30..30">
+    <g id="flag" data-hsvg-kind="part" data-hsvg-role="flag" data-hsvg-label="Harbour flag" data-hsvg-pivot="600 140" data-hsvg-motion="lean -30..30; scale-y 0.8..1">
       <path d="M600 140V60l50 20-50 20" fill="#d84315"/>
     </g>
     <g id="vane" data-hsvg-kind="part" data-hsvg-role="dial" data-hsvg-label="Wind" data-hsvg-pivot="720 100" data-hsvg-motion="rotate -45..45">

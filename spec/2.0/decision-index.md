@@ -6,7 +6,7 @@ tools. The numbers are not continuous: only the decisions that public files cite
 
 `release/verify.mjs` checks that every number a public file cites has an entry here.
 
-- **D1 A slot's size may follow values.** A `<rect>` slot or region may take `[width, height]` from a formula while
+- **D1 A slot's size may follow values.** A `<rect>` slot or fit box may take `[width, height]` from a formula while
   the page plays (6.8 `size`, 5.10). What is placed in it then chooses its frame, layout, tier and give-way steps again.
 - **D2 The give-way ladder runs live.** A block that needs `fit` gives way while playing with the same steps,
   priorities and floors as at bake time (8.4), so a live page and a baked page match.
@@ -72,13 +72,55 @@ tools. The numbers are not continuous: only the decisions that public files cite
 - **D40 The closed box.** Nothing new arrives while a page runs, except data and pictures through the host API. A
   picture is checked data (its type, byte size and dimensions), shown in a picture place; it is never SVG or code.
 - **D41 A lean base.** This repository holds the format (the core spec, and the engine with its player, checker,
-  packer and tests), one tiny example per door, a short guide and the `hypersvg` command. Skills, kits, libraries,
-  showcases and the official add-ons live in their own repositories.
+  packer and tests), one tiny example per door, a short guide and the `hypersvg` command. Kits, libraries, showcases,
+  the official add-ons and the other skills live in their own repositories; one skill for coding agents ships here
+  (D50).
 - **D42 A stable standard.** Files made for 2.0 keep working in every later 2.x. The base changes only by a recorded
   decision, extensions never need a change to it, and versions follow semver.
 - **D44 Delivery.** The npm package `@hypersvg/core` has no dependencies and needs Node 20 or later. It carries one
-  `hypersvg` command (`init`, `check`, `test`, `pack`), the player for embedding, the schemas and the guide.
-  Playwright stays optional.
+  `hypersvg` command (`init`, `check`, `test`, `pack`, and with D45 `pack --asset` and `unpack`), the player for
+  embedding, the schemas and the guide. Playwright stays optional.
 - **D45 One base, one format, two outputs.** A reusable asset and a whole experience are the same format. An
   experience packs into one offline HTML page (an Experience); an asset packs into one HyperSVG (`pack --asset`), whose
   JSON rides inside as data. A HyperSVG shows its rest pose anywhere and plays when a page loads the player.
+- **D50 One skill for coding agents.** `skills/hypersvg/SKILL.md` ships in this repository and the package. `init`
+  copies it into a new folder, with short notes for agents and the guide. The package also has `llms.txt`.
+- **D55 A HyperSVG may name a pinned capability.** Added after `2.0.0-next.0`. A HyperSVG may name in `needs` a
+  capability that asks for no host port and no grant (`effects`, `physics`), pinned by version and digest in
+  `about.trust.pins`. It never carries the code. The page loads the module only when a placed HyperSVG names it, checks
+  its digest, then plays; a missing module is `E-ADDON-MISSING`, a different one `E-ADDON-DIGEST` (2.13, 10.14).
+- **D56 A host-held fingerprint may replace the full check.** Added after `2.0.0-next.0`. A host that checked a
+  HyperSVG once stores the file's SHA-256 (`integrity`, `sha256-<base64>`) and places the file with it. On a match the
+  page skips the schema check and loads no schemas; on a mismatch it refuses (`E-ASSET-INTEGRITY`). A small safety pass
+  always runs. A digest inside a file is never a trust anchor (2.13, 10.14).
+- **D57 Replay is an add-on; the base keeps it possible.** The base gives seeded randomness, a clock passed in, a
+  hook to observe and feed moves, and language-neutral test files (9.6, 5.6.8). The diary format and replay itself
+  are an add-on. A port of the logic layer in another language is proven against an engine version by shared test
+  files; rules in code (kits, add-ons) need their own ports.
+- **D58 The fingerprint check, as built.** Added after `2.0.0-next.0`. A file that does not match its integrity value
+  shows nothing of itself. On a page without Web Crypto the plain SHA-256 gives the same value, so a match skips the
+  schema check there too. The lean player is the package's `./asset-lean` (10.14).
+- **D59 Small host additions.** Added after `2.0.0-next.0`, each one opt-in. `emit()` returns a promise of the
+  trigger's step. A host may pick a declared theme, give a CSP nonce, hide the fault box, ask where a listed place is
+  (`place(name)`), give words for a language the file lacks, and repack files (10.6). The one-file player
+  `engine/v2/web/hypersvg-asset.js` is made by `bundle-asset.mjs`; a release refuses a stale copy.
+- **D60 Replay is supported, built to 1.0.** The base's replay support is stable API (D42): the move hook, the clock a
+  host passes in, the logic-only entry (`./logic`), the state fingerprint (9.6.1) and the test files for formulas and
+  whole plays. A recorder and a viewer are not part of the base.
+- **D62 Replay support and the formula language, as built.** The state fingerprint covers the engine's full state
+  record (9.6.1), and the whole-play files pin its shapes (9.6.2). The engine's work-step counts are the rule (5.6.6).
+  Text sorts unit by unit, surrogates last. `pow`, `exp`, `log`, `sin` and `cos` give the platform's result within 1
+  unit in the last place, and the checker notes such a result that decides behaviour unrounded. `plural` uses the
+  platform's CLDR rules and is presentation. Whitespace in formulas is the set the engine reads (5.6.2).
+- **D63 The stable JavaScript API.** Three labels: stable (kept for all of 2.x; only additions), experimental (may
+  change in a minor version, with a changelog note) and internal (not for outside code). Chapter 10's section "The
+  stable API" lists every name, and a snapshot test fails when a stable name is removed or renamed.
+- **D64 Small rulings on the formula files and the play files.** The checker warns on `lookup` over a row that is an
+  array. The formula files keep a tolerance of 4 units in the last place and never hold a lone surrogate escape. Each
+  play file names its engine version. The guide's harbour asks for saved storage, and a play starts with a stored
+  record.
+- **D65 Free host colours.** Added after `2.0.0-next.0`, experimental. A host passes colours for the experience's
+  colour roles at mount; they are checked against the contrast rules of a declared theme, all or nothing, and the
+  author's theme stays when they fail (7.7.1, 10.6).
+- **D66 Two labels settled.** Added after `2.0.0-next.0`. The host's `theme` pick on a package mount is experimental,
+  and so is `seatInput`, the move of the `seats` add-on, which may still change in a minor version (10.16).

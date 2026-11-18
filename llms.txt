@@ -12,7 +12,7 @@
 
 ## More
 
-- [Examples](docs/guide/examples/): lamp, harbour, ad, list
+- [Examples](docs/guide/examples/): lamp, light, harbour, ad, list
 - [Embedding](docs/browser-embedding.md): HyperSVGs in a web page
 - [Extending](EXTENDING.md): components and add-ons
 - [Specification](spec/2.0/README.md): the full format

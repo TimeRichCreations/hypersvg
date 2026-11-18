@@ -69,7 +69,7 @@ export const tests = {
     f.send('not an object');
     eq(f.sent.length, 1);
   },
-  'set, read and emit round trip; on delivers events and off stops them'() {
+  async 'set, read and emit round trip; on delivers events and off stops them'() {
     const f = frame();
     hello(f);
     eq(f.call(1, 'set', 'volume', 0.2), { channel: TOKEN, id: 1, ok: true, value: null });
@@ -78,7 +78,9 @@ export const tests = {
     eq(f.call(4, 'read', 'visitorName').value, 'Robin');
     eq(f.call(5, 'on', 'started'), { channel: TOKEN, id: 5, ok: true, value: null });
     const n = f.sent.length;
-    eq(f.call(6, 'emit', 'start').ok, true);
+    f.call(6, 'emit', 'start');
+    await new Promise(r => setTimeout(r, 0));
+    eq(f.sent.find(m => m.id === 6)?.ok, true);
     const on = f.sent.slice(n).filter(m => m.call === 'on');
     eq(on.length, 1);
     eq([on[0].channel, on[0].v, on[0].name], [TOKEN, 1, 'started']);
@@ -92,6 +94,15 @@ export const tests = {
     ok(f.host.paused);
     eq(f.call(12, 'resume', 'host-menu').ok, true);
     ok(!f.host.paused);
+  },
+  async 'emit resolves the step\'s result {name, payload, outputs}, as host.emit does (D63); a refusal is an error reply'() {
+    const f = frame();
+    hello(f);
+    f.call(1, 'emit', 'start');
+    await new Promise(r => setTimeout(r, 0));
+    const reply = f.sent.find(m => m.id === 1);
+    eq(reply, { channel: TOKEN, id: 1, ok: true, value: { name: 'start', payload: {}, outputs: [{ name: 'started', detail: {} }] } });
+    eq(f.call(2, 'emit', 'nope').error.code, 'E-REF-UNKNOWN', 'a refusal still replies at once');
   },
   'a refused host call is an error reply with its code'() {
     const f = frame();

@@ -16,7 +16,7 @@ kits and libraries, publishing and the upgrade tool.
 | [A14. Kits and libraries](a14-kits-and-libraries.md) | kits, versions and pins, catalogues, pick-and-use, kit experiences, variations |
 
 **Labels.** The labels A8 to A13 are the old reference chapters' labels, kept so that the registries (`errors.json`,
-`limits.json`, `documents.json`) stay valid. A1 to A7 now name the add-on pages (`../capabilities/README.md`). A
+`limits.json`, `documents.json`) stay valid. A1 to A7 now name the add-on pages, which come with the official add-ons (their own repository). A
 section moved here from the core keeps its old number in its heading, as "(was 9.10)", and each core chapter ends with
 a table of what left it. The old files in `../addons/` are stubs that point here (the schema tools read their first
 line).

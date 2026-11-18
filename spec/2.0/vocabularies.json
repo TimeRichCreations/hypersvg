@@ -2054,19 +2054,19 @@
       "section": "6.2.4",
       "on": {
         "kinds": [
-          "look-child"
+          "variant-child"
         ],
         "elements": [
           "g"
         ],
-        "note": "each look: a direct child <g> of a part with looks"
+        "note": "each variant: a direct child <g> of a part with variants"
       },
       "value": {
         "type": "id",
         "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
         "maxLength": 48,
         "unique": "in the part",
-        "note": "the look name; the rest look is the one shown (no display=\"none\")"
+        "note": "the variant name; the rest variant is the one shown (no display=\"none\")"
       },
       "codes": [
         "E-LOOK"
@@ -2105,11 +2105,11 @@
     "note": "Readable in 2.0 drawings without an upgrade; writers never write them.",
     "data-hsvg-states": {
       "means": "dropped",
-      "note": "the look names come from the look children; checked to agree"
+      "note": "the variant names come from the variant children; checked to agree"
     },
     "data-hsvg-state": {
       "means": "dropped",
-      "note": "the rest look is the look shown without display=\"none\""
+      "note": "the rest variant is the variant shown without display=\"none\""
     },
     "data-hsvg-state-name": {
       "aliasOf": "data-hsvg-variant"
@@ -2131,7 +2131,7 @@
         "<metadata> (the tool record, 6.6)"
       ]
     },
-    "componentOrCompoundRoot": {
+    "componentRoot": {
       "required": [
         "data-hsvg-kind",
         "id (the namespace)"
@@ -2181,9 +2181,9 @@
       ],
       "optional": []
     },
-    "looks": {
+    "variants": {
       "required": [
-        "data-hsvg-variant on every look"
+        "data-hsvg-variant on every variant"
       ],
       "recommended": [],
       "optional": []
@@ -3079,7 +3079,7 @@
       "X"
     ],
     "rest": "X",
-    "note": "mouth.cues maps all nine letters to look names of the mouth part"
+    "note": "mouth.cues maps all nine letters to variant names of the mouth part"
   },
   "clipChannels": {
     "section": "6.7",

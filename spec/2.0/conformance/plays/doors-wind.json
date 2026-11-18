@@ -1,0 +1,227 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "doors-wind",
+ "about": "The add-on control kind example.steps.stepper (its gestures up, down and press) and a gust clip.",
+ "package": {
+  "folder": "engine/v2/addons/examples/doors",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:d1276970e6fe15afba60b965213374177739e40294ce41eef9498f8e0a9400ff",
+   "scenes/yard/scene.json": "sha256:d377501ee2c6a3a127273f79f06cd034c81f1051f21cadffd861a90ba54eb99f",
+   "scenes/yard/yard.svg": "sha256:0ee25bfcbf0b7c2f13afa3952e3159a51506a948e39e1516430f1ae4ac45cd9e"
+  },
+  "addons": {
+   "example.steps@1.0.0": "sha256:79fc697221594d6c0cce22c6b91b9bdb68fc391c5017069f2652b5ae99876cf1",
+   "example.sway@1.0.0": "sha256:47c6772222bec8669228ed83c98b4814d6fc8870077d967774a60c5c76be9c04"
+  }
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:89b67facc9c2a315fae6254a9ab64221f2b72b330febcbbeff214300de31f0f2",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "yard",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "yard"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:2e62f02ce2fc6090ae2e06ee9ec3d6880dc034252282013f44971aaf8515e7a4",
+   "heard": [
+    {
+     "t": 300,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "up"
+    ]
+   },
+   "fingerprint": "sha256:f6d9d6451b4a0288bccbf930fadde796108dab08ba40d912bf06c115ac139541",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 500,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "up"
+    ]
+   },
+   "fingerprint": "sha256:f7f8c24970ad5a9635fb3c238371f30bd64b410a16e8c20906489124317f1c0a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 700,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "down"
+    ]
+   },
+   "fingerprint": "sha256:17322f7a20cd51ea7f63f108a1df154c9333e24187023d82ff47e34fddfdd723",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 900,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "wind",
+     "press"
+    ]
+   },
+   "fingerprint": "sha256:4a191ec9856c0bb10620a131f25b14707a6840d47eb3a3f9bce298170514b128",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1200,
+    "source": "activate",
+    "payload": [
+     "yard",
+     "gust"
+    ]
+   },
+   "fingerprint": "sha256:e006fb9e478fb74f3ea3ed9a631cee24d0e5061b258a9055d4225b7faf195d4b",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 3000,
+  "fingerprint": "sha256:4fb2fac3aa22867956efda2022abc4d71f0175946efdc51c95bee46bccd7ee08",
+  "heard": [],
+  "state": {
+   "now": 3000,
+   "seq": 1,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "yard": {
+     "kind": "scene",
+     "def": "yard",
+     "parent": null,
+     "values": {
+      "wind": 3
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "yard",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "yard": 1
+    },
+    "resume": null,
+    "painted": {
+     "yard": true
+    },
+    "held": [],
+    "endedReported": {
+     "yard": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "yard": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

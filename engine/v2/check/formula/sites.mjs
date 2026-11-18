@@ -4,6 +4,8 @@
 //   expect: 'any', 'boolean', 'number', 'string', 'array', or { decl: <name of a value or input> } or { input: [useId or 'dest', name] }.
 //   range: { lo, hi, code, what } when the field needs a proven range (5.6.7).
 //   motion: { target, channel } when the value must lie inside the target part's motion range (6.7).
+//   decides: 'guard', 'stored' or 'output' when the value decides behaviour: a guard or condition, a value or input
+//   written, an output or an event's payload (the maths note, W-MATH-UNROUNDED, 5.6.4).
 import { walkBehaviour } from '../refs/walk.mjs';
 import { EFFECT_PARAMS, PHYSICS_BODY_PARAMS } from './params.mjs';
 import { builtinCall, callInputDecl, callName } from '../builtins.mjs';
@@ -69,7 +71,7 @@ export function blockSites(doc, { experience = false, videoMs = null, decls = de
     if (!o || typeof o !== 'object' || o.kind !== 'result' || o.value === undefined) continue;
     const range = o.type === 'number' && (typeof o.minimum === 'number' || typeof o.maximum === 'number')
       ? { lo: typeof o.minimum === 'number' ? o.minimum : -Infinity, hi: typeof o.maximum === 'number' ? o.maximum : Infinity, code: 'E-RANGE', what: `output ${k}` } : null;
-    push(`/outputs/${esc(k)}/value`, o.value, { expect: { output: k }, range });
+    push(`/outputs/${esc(k)}/value`, o.value, { expect: { output: k }, range, decides: 'output' });
   }
 
   // The longest video a place can show: a literal id names one; a formula may give any video in scope.
@@ -84,8 +86,8 @@ export function blockSites(doc, { experience = false, videoMs = null, decls = de
   // ----- behaviour: guards, timers and actions (5.13, 5.14, 5.15) -----
   const action = (a, path) => {
     const eventOk = path.includes('/on/') && !path.includes('/after/');
-    if (a.if !== undefined) push(`${path}/if`, a.if, { expect: 'boolean', eventOk });
-    if (typeof a.set === 'string' && 'to' in a) push(`${path}/to`, a.to, { expect: { decl: a.set }, eventOk });
+    if (a.if !== undefined) push(`${path}/if`, a.if, { expect: 'boolean', eventOk, decides: 'guard' });
+    if (typeof a.set === 'string' && 'to' in a) push(`${path}/to`, a.to, { expect: { decl: a.set }, eventOk, decides: 'stored' });
     // A built-in capability's call (D28): an input its manifest types as a number is proven a number in its range.
     const bc = typeof a.call === 'string' ? builtinCall(a.call) : null;
     const built = bc?.call?.with?.properties ?? null;
@@ -105,7 +107,7 @@ export function blockSites(doc, { experience = false, videoMs = null, decls = de
         const range = seek ? { lo: 0, hi: seekLimit(callName(null, a, 'place')), code: 'E-RANGE', what: `${a.id} atMs` }
           : (p && typeof p.minimum === 'number' && typeof p.maximum === 'number' ? { lo: p.minimum, hi: p.maximum, code: 'E-RANGE', what: `${a.call} ${k}` } : null);
         // An input its add-on's manifest types as a string is a text slot (D31.1): words, or {{ }} for a formula.
-        push(`${path}/with/${esc(k)}`, v, p?.type === 'number' ? { expect: 'number', eventOk, ...(range ? { range } : {}) } : key === 'call' ? { expect: { callInput: [a.call, k] }, eventOk } : { eventOk });
+        push(`${path}/with/${esc(k)}`, v, p?.type === 'number' ? { expect: 'number', eventOk, ...(range ? { range } : {}) } : key === 'call' ? { expect: { callInput: [a.call, k] }, eventOk } : { eventOk, decides: 'output' });
       }
     }
     // A trigger on a repeated use reaches one row with itemKey (4.5).
@@ -128,7 +130,7 @@ export function blockSites(doc, { experience = false, videoMs = null, decls = de
   for (const [id, body] of Object.entries(doc.addons?.physics?.bodies || {})) if (body && typeof body === 'object') param(`/addons/physics/bodies/${esc(id)}`, body, PHYSICS_BODY_PARAMS, `body ${id}`);
   const reaction = (r, path) => {
     const eventOk = path.includes('/on/') && !path.includes('/after/');
-    if (r.guard !== undefined) push(`${path}/guard`, r.guard, { expect: 'boolean', eventOk });
+    if (r.guard !== undefined) push(`${path}/guard`, r.guard, { expect: 'boolean', eventOk, decides: 'guard' });
     if (path.includes('/after/') && r.delayMs !== undefined) push(`${path}/delayMs`, r.delayMs, { expect: 'number', range: { lo: 1, hi: BASE, code: 'E-RANGE', what: 'delayMs' } });
   };
   walkBehaviour(doc, { action, reaction });
@@ -136,7 +138,7 @@ export function blockSites(doc, { experience = false, videoMs = null, decls = de
   // ----- controls (5.11) -----
   for (const [id, c] of Object.entries(doc.controls || {})) {
     if (!c || typeof c !== 'object') continue;
-    push(`/controls/${esc(id)}/enabled`, c.enabled, { expect: 'boolean' });
+    push(`/controls/${esc(id)}/enabled`, c.enabled, { expect: 'boolean', decides: 'guard' });
     tmpl(`/controls/${esc(id)}/label`, c.label);
     tmpl(`/controls/${esc(id)}/disabledLabel`, c.disabledLabel);
     tmpl(`/controls/${esc(id)}/valueText`, c.valueText);
@@ -250,8 +252,8 @@ function experienceSites(doc, push, tmpl) {
     if (!l || typeof l !== 'object') return;
     const p = `/story/links/${i}`;
     const at = { scope: 'link', from: l.from, to: l.to, eventOk: true };
-    push(`${p}/when`, l.when, { ...at, expect: 'boolean' });
-    for (const [k, v] of Object.entries(l.carry || {})) push(`${p}/carry/${esc(k)}`, v, { ...at, expect: { input: ['dest', k] } });
+    push(`${p}/when`, l.when, { ...at, expect: 'boolean', decides: 'guard' });
+    for (const [k, v] of Object.entries(l.carry || {})) push(`${p}/carry/${esc(k)}`, v, { ...at, expect: { input: ['dest', k] }, decides: 'stored' });
     if (typeof l.afterMs === 'string') push(`${p}/afterMs`, l.afterMs, { ...at, eventOk: false, expect: 'number', range: { lo: 1, hi: BASE, code: 'E-RANGE', what: `link ${l.id ?? `#${i}`} afterMs` } });
     tmpl(`${p}/choice`, l.choice, at);
   });

@@ -18,7 +18,7 @@
 //   `is: "overlay"` names the two, or one is painted as backdrop or decoration (6.4). A text item counts as its cell.
 // - W-PLAN-SCALE: at a declared size of a scene or shell, a text the plan places, drawn at its type size times the
 //   frame's design scale, is under the readable floor (7.5): a strip or tower wants a frame of its own.
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { applies, chooseLayout, rangeOf, shapeMapsOf, parseSize } from '../src/layout.mjs';
 import * as P from '../src/plan.mjs';
 import { readableFloor } from '../src/ladder.mjs';
@@ -63,10 +63,10 @@ export function check(ctx) {
       const frame = (l.drawing ? o.drawings?.[l.id] : o.drawings?.main) || null;
       if (!frame) return; // a missing file is E-FILE-MISSING
       let root;
-      try { root = parseXml(frame.text); } catch { return; }
+      try { root = parseXmlShared(frame.text); } catch { return; }
       const ns = isScene ? null : o.doc.id;
       const byLocal = new Map();
-      const walk = (n, parent) => { if (!n.name) return; n.parent = parent; const id = n.attrs.id; if (id) byLocal.set(ns && id.startsWith(`${ns}__`) ? id.slice(ns.length + 2) : id, n); n.children.forEach(c => walk(c, n)); };
+      const walk = (n, parent) => { if (!n.name) return; if (n.parent !== parent) n.parent = parent; const id = n.attrs.id; if (id) byLocal.set(ns && id.startsWith(`${ns}__`) ? id.slice(ns.length + 2) : id, n); n.children.forEach(c => walk(c, n)); };
       walk(root, null);
       const place = byLocal.get(plan.place);
       if (!place) { report('E-DRAWN-MISSING', frame.file, 'svg', `layout ${l.id} of ${o.file}: the root place ${plan.place} is not drawn in ${frame.file} (7.5)`); return; }
@@ -117,7 +117,7 @@ export function check(ctx) {
               const u = (o.doc.uses || []).find(x => x?.id === it.item.slice(4).replace(/\[[^\]]*\]$/, ''));
               const def = u && exp.blocks[u.use];
               const text = def && (def.drawings?.main?.text || Object.values(def.drawings || {})[0]?.text);
-              try { node = text ? parseXml(text) : null; } catch { node = null; }
+              try { node = text ? parseXmlShared(text) : null; } catch { node = null; }
               const b = r?.boxes.find(x => x.item === it.item);
               k = scale * (b ? Math.min(b.scale[0], b.scale[1]) : 1);
             }
@@ -197,7 +197,7 @@ function solvedWithRoot(plan, layout, root, place, byLocal, doc, exp, space) {
     const def = u && exp.blocks[u.use];
     const text = def && (def.drawings?.main?.text || Object.values(def.drawings || {})[0]?.text);
     let own = null;
-    try { own = text ? P.viewBoxOf(parseXml(text)) : null; } catch { own = null; }
+    try { own = text ? P.viewBoxOf(parseXmlShared(text)) : null; } catch { own = null; }
     return { box: own || { x: 0, y: 0, width: cell.width || 1, height: cell.height || 1 }, picture: true };
   };
   const repeat = (name) => { const u = (doc.uses || []).find(x => x.id === name); const n = Math.max(1, Math.min(Number(u?.maxItems) || 1, 64)); return Array.from({ length: n }, (_, i) => `use:${name}[${i}]`); };

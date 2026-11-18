@@ -130,10 +130,10 @@ export async function layoutPass(browser, browserName, file, scenes, layoutName,
           if (c.inImg) add(sc.id, 'T-IMG-HOLDS-CONTROLS', 'error', el, c.inImg, `"${c.name}" is inside ${c.inImg}, which is role="img": its controls are hidden from the tree (WCAG 4.1.2)`);
           if (c.role === 'radio' && !c.radioGroup) add(sc.id, 'T-NO-RADIOGROUP', 'error', el, null, `option "${c.name}" is a radio outside a radiogroup`);
         }
-        // A glyph box is taller than its line: across the line a text may pass its region by a quarter of its size.
+        // A glyph box is taller than its line: across the line a text may pass its fit box by a quarter of its size.
         for (const f of m.fits) {
           const over = Math.max(f.x - t.fitTolerance, f.y - Math.max(t.fitTolerance, 0.25 * f.px));
-          if (over > 0) add(sc.id, 'T-FIT-OVERFLOW', 'error', `${f.addr} ${f.target}`, Math.max(f.x, f.y), `fitted text leaves its region ${f.region} by ${f.x > 0 ? `${f.x} px across` : ''}${f.x > 0 && f.y > 0 ? ' and ' : ''}${f.y > 0 ? `${f.y} px up or down` : ''}`);
+          if (over > 0) add(sc.id, 'T-FIT-OVERFLOW', 'error', `${f.addr} ${f.target}`, Math.max(f.x, f.y), `fitted text leaves its fit box ${f.region} by ${f.x > 0 ? `${f.x} px across` : ''}${f.x > 0 && f.y > 0 ? ' and ' : ''}${f.y > 0 ? `${f.y} px up or down` : ''}`);
         }
         for (const x of m.overlaps) add(sc.id, 'T-TEXT-OVERLAP', 'warning', `${x.a} / ${x.b}`, x.w, `"${x.aText}" and "${x.bText}" overlap by ${x.w} px`);
         if (m.pageScroll.w > m.pageScroll.vw + 1) add(sc.id, 'T-PAGE-SCROLL', 'warning', 'page', m.pageScroll.w, `the page is ${m.pageScroll.w} px wide in a ${m.pageScroll.vw} px window: it scrolls sideways`);

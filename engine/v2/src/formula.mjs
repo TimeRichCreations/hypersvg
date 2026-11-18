@@ -370,7 +370,9 @@ export function evaluate(tree, scope, budget = { steps: 0 }) {
       case 'clamp': { const [v, lo, hi] = a.map(x => num(x, 'clamp')); if (lo > hi) fault('clamp low is above high'); return Math.min(hi, Math.max(lo, v)); }
       case 'floor': return Math.floor(num(a[0], 'floor'));
       case 'ceil': return Math.ceil(num(a[0], 'ceil'));
-      case 'round': return Math.floor(num(a[0], 'round') + 0.5);
+      // Ties toward +infinity (5.6.4), from the exact fraction: floor(x + 0.5) would round twice (0.49999999999999994
+      // gives 1, and 2^52 + 1 gives 2^52 + 2).
+      case 'round': { const v = num(a[0], 'round'); const r = Math.floor(v); return v - r < 0.5 ? r + 0 : r + 1; }
       case 'pow': return finite(Math.pow(num(a[0], 'pow'), num(a[1], 'pow')));
       case 'sqrt': { const v = num(a[0], 'sqrt'); if (v < 0) fault('sqrt needs a number 0 or more'); return Math.sqrt(v); }
       case 'exp': return finite(Math.exp(num(a[0], 'exp')));
@@ -391,14 +393,14 @@ export function evaluate(tree, scope, budget = { steps: 0 }) {
         for (const r of rowsList) { work(1); if (r && typeof r === 'object' && Object.prototype.hasOwnProperty.call(r, a[1]) && same(r[a[1]], a[2])) return r; }
         return a[3];
       }
-      case 'append': { const max = num(a[2], 'append'); if (max < 1 || max > FORMAT.listItems) fault(`append maximum is 1..${FORMAT.listItems}`); const from = arr(a[0], 'append'); bulk(from.length + 1); const out = [...from, a[1]]; return out.slice(Math.max(0, out.length - max)); }
+      case 'append': { const max = num(a[2], 'append'); if (max < 1 || max > FORMAT.listItems) fault(`append maximum is 1..${FORMAT.listItems}`); const from = arr(a[0], 'append'); bulk(from.length + 1); const out = [...from, a[1]]; return out.slice(Math.max(0, Math.ceil(out.length - max))); }
       case 'pick': { const list = arr(a[0], 'pick'); if (!list.length) fault('pick needs a non-empty array'); return list[mix(num(a[1], 'pick')) % list.length]; }
       case 'shuffle': {
         const list = [...arr(a[0], 'shuffle')]; work(list.length); const seed = num(a[1], 'shuffle'); const len = list.length;
         for (let i = len - 1; i >= 1; i--) { const j = mix(seed + (len - 1 - i)) % (i + 1); [list[i], list[j]] = [list[j], list[i]]; }
         return list;
       }
-      case 'random': { const [lo, hi, seed] = a.map(x => num(x, 'random')); return lo + ((hi - lo) * mix(seed)) / 4294967296; }
+      case 'random': { const [lo, hi, seed] = a.map(x => num(x, 'random')); return finite(lo + ((hi - lo) * mix(seed)) / 4294967296); }
       // range (5.6.4): the whole numbers 0 to n - 1 (n truncated toward zero), at most formulaArrayItems of them.
       case 'range': {
         const c = Math.trunc(num(a[0], 'range'));

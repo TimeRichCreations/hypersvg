@@ -1,0 +1,708 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "noughts-walk",
+ "about": "A seeded random walk of up to 40 steps (seed 7).",
+ "package": {
+  "folder": "engine/v2/addons/examples/noughts",
+  "experience": "experience.json",
+  "files": {
+   "data/lines.csv": "sha256:0935ce6cb195f4841db701a4305a21b4a5e72fa83da0daf610e5243d6b22403c",
+   "experience.json": "sha256:e03e6039388f63166464b4d010d64c5fc0a8de4d5718a342629b680fe51d99be",
+   "notes/art.mjs": "sha256:e22f87ab8fc74fe8367c02ef9c8cd02962a3dd81c6655ea207458de678280579",
+   "notes/geometry.mjs": "sha256:97f03965b3f9d4aa0f47b7bd954184e515c8a0955008e5064d1d957b65c06dfa",
+   "notes/make.mjs": "sha256:53c416377dd0d78ec6cf4ebb75ee7adfe488f96509415af8834a87cbc668f4e6",
+   "scenes/game/game.svg": "sha256:1d0785d6615d0ed226fddf29f4066949fe6a72e28cf63678e21f03ad82145327",
+   "scenes/game/game.tall.svg": "sha256:68b4249bfc81877f8166fab7aef05b32777d112e240a7805c71309657de8d2b9",
+   "scenes/game/scene.json": "sha256:ea21a24bbcfb7312421f3ecac3240276469eb0b324c53ff3af33aaf6bd3486f7",
+   "scenes/pick/pick.svg": "sha256:e5e7d1978448cb48032617f44034d847e529d24353fd8db7cf54ac2444eda0cd",
+   "scenes/pick/pick.tall.svg": "sha256:294a41760f9c508889f8267b46d7002d98577f280b629bf9d28e41e69edcc8a7",
+   "scenes/pick/scene.json": "sha256:cd985ba06f11fa893337530ff39d130252ce88924e22b572ff0a15ea43b7763b",
+   "tests/play-in-browser.mjs": "sha256:510b07605f0d2b9224d423181065804195f878014a84e31bc45d04f23961feed",
+   "words/en.csv": "sha256:127982a01a2a2097ae74e5aac34ce5bf94793bce42367860aef0b790e61fac4d"
+  },
+  "addons": {
+   "example.glow@1.0.0": "sha256:05a036c5632d4c09f04045a78cc981d1214eb6836f075a6a03de8ed42969add7",
+   "example.noughts@1.0.0": "sha256:de1c156bf6d73ad9bc2375f2347b8a44fc48946c896f71f7adc80f03e054af1b"
+  }
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:d4b9e78fab5598594c63933b0c09ed92195f886802f41253ff033ebb5d8b8091",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "pick",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:f87e18aea54b93a268b818322c1a4a9a55b0686243d9d37132055eadaece55a3",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:42e98fa0add260353ff226ff128e565b4c94e40a449e4c163bd2cecddcad60c5",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 516,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:d1eb834e09b279028b5b74ee2a4f7ce7a0bbf95bad626f6a5f010b0b53194f8f",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1356,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:d01af715560720392eb06240f9d88e232c607de05b9fa1583cd24d2f54b5511e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1756,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:21d93c9e8013d9f8dff08214736cd36a416270cc9822f2e495db045bc67758dc",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2068,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:ba7ad7114b56d6d3f4a75c1b6de5ba3799f1c850329002902bc5e8af7f017515",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3168,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:4953176af76a4aec6acd8d58dd12d65d339f17f14d01c8ecbbee8b5e6a18cbb8",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3824,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:77fca7f291973d3bb63f0c67bc768dceba981be0477168106460b5c233b6244b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4900,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:d600f1eec9ceae871e1aebcbacab3f215b1fd0ec2e0034316e09260cd7ad08e6",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5496,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:1403c10bdfb7a178d127bc56df74b9a8090de645b757e6531752d1b1f798c45e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 6108,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:9e1f35eec5a4dd700f7cda86c8ed38eb5ec9a12dbb2ada9f693da30525161f0e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 7304,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:c0e45b555dcc412cfae1c91c36c9d251f4043a125b51e0cd45d7ce0c2d9b47a1",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8320,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:dfd797819b922ea2890e0cae4fe9e9173f0892c8a6f855c932ff750b4c6197f2",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8740,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:0f29de29be9810a06a10fe36b6f0872d770694304855b26b2df3e47c679140d8",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 9868,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:431f2c2ca68a390eec0551b6980c1307f6af09dc512536f028ddde54b6023c6f",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 10952,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:672a265c96d47ed1c584d9f48a741b62ff04053dc1bd5ff24b904a8997b4805c",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 11712,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:b04a405fb381649fa002485eff2773d02929a3aad27a05f70f501c5ed668f3ab",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 12672,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:d96ee137aafd5aeaa70c76e17887c073c9294858c45f3ab9c993d2fd011029c6",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13128,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:8266b76e30f1dda16c2a0e5f1b6d9be8685bc4c0bcee79cae1ac6a7d4fb0fa2e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13648,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:08524d46a7153a6b08ee38c2fcc5fa107511c23ca5c7cfbba8f4a4719d105464",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 14020,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:d605cd683627754b41a7f5925e082b4530aac2df6a982469c19a52c7f8881f7c",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 14504,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:81c7fcdb40223fa0d1273cdaf34c3e55a4d5bfc8ed6b8d3a418ce9983a5fa4eb",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 15364,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:446d210db05e553ed9c0dad9bdc964aebaf1e72c49873f28ef5c07364d01f1f4",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 15692,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:134bfb4f2eb700367a83695f450b12c217cfafea9046f404a480b88d5623e1b7",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 16536,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:ee9cdb1759d180414c76ddd914137980ada17fe189f6dcc56667ec23354238d7",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 17048,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:551ff521630920e23afbd0a457d7d60aaf26a6c22b1c6423c97cdbe9e6dce158",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 17504,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:cd72d0e20feb956f92768c5d049ee62cd600eeff555df6fed2c5a79a8023618e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 17852,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:07b0b653b2eeec364796ba8f73b45c5bcb4bdaf6cc78e850eb84e96f33a74de1",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 18212,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:1964ed5b85bd8f9c5865b9fea2325209d6ccefd8890282a9135687c006564205",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 19080,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:4abaea55099836a54ad047b1dc6aa35a3ca15391cf38ad42869e6faa64af9f13",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 20124,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:87fce5bd0fd0036a581215422c91b82521c43e80506347882490d85781d07f54",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 21184,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:a4e42b15c87b8d97fd2b19b873e08531095baf340356addc08cc0f8ed1f3333a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 22088,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:066b03e1c1828e5fad63369f5491b0ea92a9581f84e2e8a164c80efbdebe62e3",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 22900,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:0732cb954a8d356751848653e0083702eaf8b7f542d8c71e6a23157432af5e57",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 23224,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:60ece4ad27417eb77e1cc056588637daff90b54da809c33e8e1c55055baeaa39",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 24012,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:fa7d90a8afedd9a130b0c9b6a623ca1aa2c45bd19d805568fd5885782f93f17d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 24616,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:1ab284f873e3e631771c62f656738115030197563a2074a6c6bd15c3f0f9a337",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 25128,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:db3f37b4375839a56ed444c79cd144a4f0d11e7bb873a88f6d44a9f2cbcef855",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 25928,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:e3a5f0c1c2ec4ba07faca08c3481c04e3e020904bcd882dd12a0cc1249dfcce7",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 26500,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:ccb76ff08218aefcddf7429513f3e06fa1a9d13890ef1ef6a36ac26bed1146a2",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 27284,
+    "source": "activate",
+    "payload": [
+     "pick",
+     "levels",
+     "easy"
+    ]
+   },
+   "fingerprint": "sha256:fc7d014ab50f23e82e06c73ae1dd20898589e962648e4dfb82299dc4934198d6",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 27936,
+  "fingerprint": "sha256:057cdfb24f3ac604849fba892ef5ab2d84558245119640f20db41fe2272801d8",
+  "heard": [],
+  "state": {
+   "now": 27936,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {
+      "level": 1,
+      "wins": 0,
+      "losses": 0,
+      "draws": 0
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "pick": {
+     "kind": "scene",
+     "def": "pick",
+     "parent": null,
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {
+      "bulb": {
+       "startedAt": 0,
+       "speed": 1
+      },
+      "breathe": {
+       "startedAt": 0,
+       "speed": 1
+      },
+      "blink": {
+       "startedAt": 0,
+       "speed": 1
+      },
+      "sway": {
+       "startedAt": 0,
+       "speed": 1
+      },
+      "wave": {
+       "startedAt": 0,
+       "speed": 1
+      }
+     },
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "pick",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "pick": 1
+    },
+    "resume": null,
+    "painted": {
+     "pick": true
+    },
+    "held": [],
+    "endedReported": {},
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "pick": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

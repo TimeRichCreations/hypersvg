@@ -129,7 +129,7 @@ A10.1). A package that needs an add-on the host does not run is refused at mount
 | Host | What it gives | Usually refused |
 |---|---|---|
 | Own page | A packed or served page that the experience fills; storage scoped by origin and path | network unless granted |
-| Ad placement | An export (A10.1) with fixed sizes, file and time budgets. The click-out is the experience's `openUrl` output, which the adapter maps to the network's click macro; the address is a `url` content field | network, storage, AI, agent and program seats, page hooks |
+| Ad placement | An export (a 2.1 draft: `drafts/delivery-2.1.md`, "Exports") with fixed sizes, file and time budgets. The click-out is the experience's `openUrl` output, which the adapter maps to the network's click macro; the address is a `url` content field | network, storage, AI, agent and program seats, page hooks |
 | Portal | A served page for making and previewing; editors and portal agents | grants the portal's owner has not given |
 | App | A native wrapper; may supply a host storage backend | page hooks |
 | AI assistant | The experience inside an assistant's conversation; the assistant reaches it through the host API (10.6) | page hooks, network, storage |
@@ -152,7 +152,10 @@ grants. Behaviour never names an address.
 **Ad lifecycle.** An ad needs a few moments it can report, and no code of its own to do it.
 
 - The built-in experience output `firstInput` (5.12) is reported once per run, at the first trusted press, key press or
-  pointer-down in the player. A press on the click area reports `firstInput` before `openUrl`.
+  pointer-down in the player. A press on the click area reports `firstInput` before `openUrl`. The page sends it as
+  the move `firstInput` (9.6) when that input begins, before the press runs; a restart starts a new run. It is a move
+  because it changes the logic state (9.6.1) and what a host hears, and a pointer-down on a part of the drawing that
+  is no control reaches no other move. A replay feeds it again.
 - The host delivers two player-level signals, `self:visible` and `self:hidden`: the player's box is at least half in
   view, or it is not. `self` is a core signal kind (5.12) with the hooks `visible` and `hidden`, so `signal:self:visible`
   parses as kind `self`, hook `visible`. They are core events, owned by no capability, granted under `signals` (10.5)
@@ -223,7 +226,7 @@ add-on cannot bring a kind of its own (`E-ADDON`).
   inside them gets only the grants its use passes down, by name:
   `{"id": "helper", "use": "page-helper", "into": "captions", "grants": {"storage": ["session"]}}`, in the
   experience's shape. A use passes down only grants its own block has (`E-GRANT`). **[files]**
-- **Human only.** The human-only actions of 5.15.4 (`openUrl`, `setting` except turning `voice` off, and the calls an
+- **Human only.** The human-only actions of 5.15.4 (`player.openUrl`, `player.setting` except turning `voice` off, and the calls an
   add-on's manifest marks `humanOnly`) need a person's trusted activation. Programs, agents, timers, links and AI answers
   cannot cause them (`E-HUMAN-ONLY`, `W-HUMAN-ONLY-PATH`). **[files]**, conservatively, and **[playing]**.
 
@@ -233,8 +236,10 @@ The host talks to a mounted player through one small API. It reaches only the ex
 (decision 1).
 
 ```js
-import {mount} from './engine/player.mjs';
-const player = mount(container, experiencePackage, {host: hostProfile});
+import {mount} from '@hypersvg/core/mount';
+import {loadSchemas} from '@hypersvg/core/schemas';      // Node; a browser host serves the schema objects itself
+const schemas = loadSchemas('node_modules/@hypersvg/core/spec/2.0');
+const player = mount(container, experiencePackage, {schemas, host: hostProfile});
 const off = player.on('ended', ({name, detail}) => showReplay(detail.scene));
 player.on('answers', ({detail}) => platform.track(detail));   // one call per record row
 player.set('visitorName', 'Robin');   // an input: content field or knob
@@ -255,13 +260,40 @@ player.destroy();
 ```
 
 - `mount(container, package, options)`: `package` is a map from member path to bytes (`Uint8Array`) that includes
-  `package.json` (the `experiencePackage` above). The options are `host` (the host profile), `options` (`{<axis id>: <option>}`: the option the host picks on each axis
+  `package.json` (the `experiencePackage` above). The options are `schemas` (required: the schema objects of
+  `spec/2.0/schemas`, as `loadSchemas` gives them; a mounted package is checked before it plays, 10.12), `host` (the
+  host profile), `options` (`{<axis id>: <option>}`: the option the host picks on each axis
   whose selector is `host`, 7.1), `partition` (an opaque string that keys stored values, 5.1.2; `device` when absent),
   `onError` (the host's error callback `onError({code, message, source})`, below), `timeLimits` (the person's time
   limits at start, 0 or 1..10, 5.5; a value between 0 and 1 stops the start with `E-RANGE`) and `test`
   (test mode, A8.5). Each
   option is checked against its axis (`E-AXIS-INPUT`). A host profile may give defaults for `options` (A10.1).
-  **[playing]**
+  Added after `2.0.0-next.0`: `faultBox` (`false`: the player shows no fault message; `onError` still hears it) and
+  `nonce` (given to every `<style>` the player adds, for a page with a strict Content Security Policy). Also taken,
+  experimental (10.16): `capabilities` (the host ports by capability: `aiPort`, `pagePort`, `modulePort`, exported
+  from `./mount`, 10.7), `modules` (the capability records to use; without it, those the page registered) and
+  `widgets` (a 2.1 draft). **[playing]** Added after `2.0.0-next.0`: `hostWords` (`{language, words}`) gives the words of one language the
+  package has none for. Each id is one of the package's default-language word ids; each text is plain text, at most
+  twice its default word's length (at least 24, at most 400 characters); else `E-WORDS`. That language is the
+  ambient language from the start. The checker never saw these words, so they are fit only at play time (7.6, 8.4).
+  **[playing]** Added after `2.0.0-next.0`, for replay (9.6): `clock`, a function `(engineMs) => UTC ms`, is the wall
+  clock that `now` reads (5.5); it is called with the engine time, and without it the browser's clock is read.
+  `onMove`, a function, hears every move `{t, source, payload}` before it runs (9.6). A hook that throws goes to
+  `onError` and the move still runs. The HyperSVG mounts take both too. **[playing]**
+  **Experimental**, added after `2.0.0-next.0` (D65): `colors` (`{<colour role>: '#rrggbb'}`) gives the host's own
+  colours for some or all of the experience's colour roles, checked at mount against the contrast rules of a declared
+  theme, all or nothing (7.7.1). A set that fails is not used: the author's theme stays, and `onError` hears
+  `W-HOST-COLOR-CONTRAST` (the pair, the theme, the ratio) or `W-HOST-COLOR-VALUE` (an unknown role, a value that is
+  not a six-digit hex colour). With `theme`, the theme applies first, then the colours. The HyperSVG mounts take it
+  too. **[playing]**
+- `logic(source, options)` (added after `2.0.0-next.0`, the package export `./logic`) plays with no page: story,
+  runtime and formulas; no drawing, no sound, no measures. `source` is a package, checked as `mount` checks it (it
+  needs `options.schemas`), or a checked experience. The options are `clock`, `epochMs` (a fixed date at engine time
+  0, instead of a clock), `onMove`, `host`, `options`, `capabilities`, `modules`, `storage` and `onError`. It returns
+  `feed(move)` (advance to the move's time, then run it; a `door` move is skipped with `{ok: true, ignored}`),
+  `start()`, `advance(ms)`, `read(name)`, `heard` (each output event, record and built-in output: `{t, name,
+  detail}`), `fingerprint()` (9.6.1), `state()` (the state document) and `host` (this API, without a page). It runs
+  in Node 20 and in a browser. **[playing]**
 - `set` writes a declared input as one play-time change with source `host` (A9.7): type, bounds and rules, never
   clamped. A refused change throws before any write and leaves the player usable. A content field takes a tier or
   language object (7.9) as `setInput` does; each wording is checked. A changed input is heard as `changed:<name>` and
@@ -278,7 +310,12 @@ player.destroy();
   same name replaces it. Only `picture` names a host picture: `set` refuses a `host:` value (`E-TYPE`). Example:
   `{"target": "photo", "variant": "productPhoto", "as": "picture"}`. **[playing]**
 - `emit` fires a declared trigger, with a payload only when the trigger declares one. It is not a simulated click;
-  controls keep their own admission (visible, enabled). **[playing]**
+  controls keep their own admission (visible, enabled). **[playing]** It returns a promise (added after
+  `2.0.0-next.0`) that resolves once the trigger's reactions have run and its listeners were called, with
+  `{name, payload, outputs}`: the output events and records that step sent, each `{name, detail}`. It does not wait
+  for clips or timers. A refused call still throws at the call.
+- `onError` always hears `{code, message}` (D63), with `source` and, when known, `address`, `path` or `diagnostics`.
+  A failure with no code of its own, such as a listener that throws a plain error, is `E-HOST-ERROR`. **[playing]**
 - `on` hears declared output events, including `entered` and `ended` (3.2), and records: one call per row, with the
   row and its `atMs`, `seat` and `filler` as the detail (5.16). The callback runs after the event's
   reactions and bindings, with a frozen copy of the detail. A shell's declared output events (10.1) reach `on(name)`
@@ -294,6 +331,9 @@ player.destroy();
   name is `E-REF-UNKNOWN`. A refused call throws `{code, message}`. The `on` callback gets `{name, detail}`.
   `read` returns the stored value: a tiered field reads as its tier or language object. A host reads the wording
   shown with `ladder()`. **[playing]**
+- `place(name)` (added after `2.0.0-next.0`, in a page that mounts a package or a HyperSVG) returns the box of a place
+  that the scene on the stage, or its shell, lists in `places` (4.3): `{x, y, width, height}` in CSS pixels from the
+  top left of the document, or `null` while it is not drawn. Another name is `E-REF-UNKNOWN`. **[playing]**
 - `ladder()` returns a read-only copy of the ladder's read-out: for each block on screen, its frame, its tier, its
   give-way steps and its texts. It is the same read-out as the ambient `layout` value (7.1). **[playing]**
 - An add-on may add host calls in its own page (the `seats` add-on adds `seat`).
@@ -397,6 +437,10 @@ never names an address).
   (`capabilityBundleBytes`). A logic module counts as an add-on bundle.
 - The core player's bundle (the packed page's engine without capabilities) is at most 120,000 bytes gzip level 9
   (`coreBundleBytes`).
+- The audio code (sound and music, 6.10) is not in the core player's bundle. Added after `2.0.0-next.0`. A packed
+  page carries it only when one of its documents declares a sound resource or a made sound (`audioSynths`); without
+  one, nothing can sound. It counts like an add-on bundle (`capabilityBundleBytes`). Sound stays core: it needs no
+  `needs` entry. A HyperSVG page loads it the same way, only for a file that uses sound (10.14).
 - The built bundle is the engine as a packed page carries it: each engine module without its comments, a logic module
   exactly as its reviewed file (D19). An engine over either limit is `E-ENGINE-SIZE`.
 - A module call runs within a declared time budget of at most 1000 ms (12.4).
@@ -553,23 +597,304 @@ resolve a package name such as `@hypersvg/core/asset`. Use the module's own addr
 - `mount(element, assetSvg, inputs, options)` is the host API's mount (10.6) for a HyperSVG. It returns the host
   API, plus `inputs()`: each input's `name`, `kind`, `type`, bounds (`minimum`, `maximum`, `step`, `enum`,
   `maxLength`), `initial` and current `value`. Any host, tool or experience builds a knobs panel from it; a panel is
-  not part of the base. `inputs` are the inputs' values at the start, checked by type and bounds (`E-TYPE`,
-  `E-RANGE`, `E-REF-UNKNOWN` for a name the asset does not declare).
+  not part of the base. It also has `outputs()`: each output event and record of the asset, `{name, kind}` with
+  `kind` `event` or `record`, the names `on` hears. `inputs` are the inputs' values at the start, checked by type and
+  bounds (`E-TYPE`, `E-RANGE`, `E-REF-UNKNOWN` for a name the asset does not declare).
 - The `<hypersvg-asset>` element's attributes set the declared inputs by name (case does not matter; `roof-open`
   sets `roofOpen`): a number is read as a number, a boolean is true when present unless `"false"`, text as written.
   A change of attribute sets the input again; removing it gives the declared initial value back. The element has
   `ready` (a promise of the host API), `inputs()`, `set`, `read` and `on`. It sends `hsvg:changed` for every change of
-  an input and `hsvg:<name>` for each of the asset's output events and records, as DOM events. Until it plays it shows
-  what it holds, such as an `<img>` of the same file.
+  an input and `hsvg:<name>` for each of the asset's output events and records, as DOM events, and `hsvg:error` for a
+  refusal or a fault, with `code` and `message` always (10.16). Until it plays it shows what it holds, such as an
+  `<img>` of the same file.
+- **Stored values.** Each placed copy keys its stored values by a partition (5.1.2, 10.6), `asset-<id>` by default, so
+  two copies of one HyperSVG on a page share their stored values. The `partition` option of `mount` and `mountAsync`,
+  or the element's experimental `partition` attribute (10.16), keeps them apart. A HyperSVG mount takes no host
+  profile, so it is given no storage grant (10.5): its stored values last for the run until a host gives storage.
+- **Experimental**, added after `2.0.0-next.0` (D65): the element's `colors` attribute gives the host's colours
+  (7.7.1) as `role: #rrggbb` entries separated by semicolons: `colors="accent: #bf360c; on-accent: #ffffff"`. Its
+  `colors` property reads the attribute as an object and sets it from one (`null` removes it). A change places the
+  file again. A refused set is heard as `hsvg:error` with its warning code; the HyperSVG plays in its author's
+  colours. If the HyperSVG has an input named `colors`, the attribute sets that input instead, as for `theme`.
 - **The latest change wins.** The host (an attribute, `mount`'s inputs, `set`) and a person (a drawn control whose
   `value` names the knob, 5.11) change one knob. Every change takes effect and is heard as `hsvg.changed` (10.6), so a
   host panel stays in step with the drawing.
 - **Many assets, one player.** Every asset on a page shares one copy of the player's code and of the schemas. Each
   placed asset is its own experience with its own state, keys and focus.
 - **Safety stays as it is.** Nothing new arrives while a page plays (D40). The player checks what it is handed
-  before anything plays: the record and every member's digest (a tampered file is refused), then every document and
-  drawing with the schemas, as mount checks a package (10.12). An asset with anything a packed asset cannot hold is
-  refused (`E-ASSET`), and nothing plays. A HyperSVG holds no script; a drawing with one fails the drawing check.
+  before anything plays: the record and every member's digest (a changed file is refused), the safety pass below,
+  then every document and drawing with the schemas, as mount checks a package (10.12). An asset with anything a packed
+  asset cannot hold is refused (`E-ASSET`), and nothing plays. A HyperSVG holds no script; a drawing with one fails
+  the drawing check.
+
+**Placing an asset with integrity (D56).** Added after `2.0.0-next.0`. A host that checked a HyperSVG once with the
+full checker may skip that check on its pages. It stores the file's integrity value (2.13) on its server and places
+the file with it:
+
+```html
+<script type="module" src=".../engine/v2/web/asset-lean.mjs"></script>
+<hypersvg-asset src="car.svg" integrity="sha256-..." length="1.4"></hypersvg-asset>
+```
+
+```js
+import { mountAsync } from '.../engine/v2/web/asset-lean.mjs';
+const car = await mountAsync(element, svgBytes, { length: 1.4 }, { integrity: 'sha256-...' });
+```
+
+- **The trust rule.** The fingerprint the host stored is the trust anchor, never a digest inside the file.
+- The value is one or more `sha256-<base64>` tokens separated by spaces; any one may match. Anything else is
+  `E-ASSET-INTEGRITY`.
+- The player hashes the file's exact bytes with the browser's Web Crypto and compares. On a match it reads the record
+  and the members, runs the safety pass and plays, with no schema check: the page needs no schemas and loads no
+  checking code. On a mismatch it refuses with `E-ASSET-INTEGRITY`: nothing plays, and nothing of the file shows (D58).
+- A page without Web Crypto (not served over HTTPS or from localhost) hashes with a plain SHA-256. It gives the same
+  value, so a match skips the schema check there too (D58).
+- `mount()` stays as it is: synchronous, with the full check. `mountAsync(element, asset, inputs, options)` is its
+  asynchronous twin: `asset` is the file's bytes or its text (hashed as UTF-8), and `options` adds `integrity`.
+  Without `integrity` it checks as `mount()` does and needs the schemas.
+- `asset-lean.mjs` (the package's `./asset-lean`, D58) is the element and `mountAsync` without the checker. It loads the checker and the schemas only for
+  a file placed without integrity. `asset-web.mjs` (the package's `./asset`) has all of it, with `mount()`.
+- A refused element keeps what it holds. A file that does not match shows nothing of itself: the host never approved
+  it (D58). A file that matched but is refused later, with nothing held, shows as a still picture: an `<img>` with a
+  `blob:` address, which runs no script and loads nothing. Markup from a refused file never enters the page.
+- `integrity` is the element's own attribute, as `src` is: it never sets an input, and a change places the file again.
+
+**A HyperSVG that pins a capability (D55).** Added after `2.0.0-next.0`. A HyperSVG may name `effects` or `physics` in
+`needs`, pinned by version and digest (2.13). `mountAsync` and the element load the module only when a placed HyperSVG
+names it, on both paths:
+
+```html
+<script type="module" src=".../engine/v2/web/asset-lean.mjs"></script>
+<hypersvg-asset src="party.svg" integrity="sha256-..."></hypersvg-asset>
+<hypersvg-asset src="ball.svg" integrity="sha256-..." addon-base="https://cdn.example/hypersvg/addons/"></hypersvg-asset>
+```
+
+```js
+const party = await mountAsync(element, svgBytes, {}, { integrity: 'sha256-...', addonBase: '/hypersvg/addons/' });
+```
+
+1. The player reads the needs of every document of the asset and the pins of `experience.json`. A need that may not
+   load this way, or that is not pinned once, is `E-ASSET`; nothing is fetched.
+2. It fetches `<id>-<version>.mjs` from the **add-on address**: the option `addonBase` or the attribute `addon-base`
+   (a relative address is the page's), by default the package's own `engine/v2/web/addons/`. A file it cannot fetch
+   is `E-ADDON-MISSING`.
+3. It hashes the exact bytes and compares them with the pin. A difference is `E-ADDON-DIGEST`.
+4. It runs those same bytes from a `blob:` address, so what runs is what was checked. The module imports nothing. Its
+   default export is the capability record. One that is not that capability (another id, a page part, no install) is
+   `E-ADDON-DIGEST`. A page whose Content Security Policy does not allow `blob:` in `script-src` cannot run it:
+   `E-ADDON-MISSING`.
+5. The engine installs the record for this placed asset only (10.7). It is not registered in the page.
+
+- Without `integrity`, the full check also needs the capability's grammar. The player fetches
+  `spec/2.0/schemas/capabilities/<id>.schema.json` beside the core schemas when the host's set lacks it. The one-file
+  player holds the core schemas and fetches only that one.
+- A page loads each module once per address and digest: many HyperSVGs that pin the same version share it.
+- A refusal shows the rest pose: the element keeps what it holds, or, with integrity and nothing held, the still
+  picture.
+- `mount()` is synchronous and cannot load code, so it refuses a HyperSVG with a need (`E-ASSET`), as before.
+- `addon-base` is the element's own attribute, as `integrity` is.
+
+**Sound only when used.** Added after `2.0.0-next.0`. `mountAsync` and the element load the audio code only for a
+HyperSVG that declares a sound resource or a made sound, before it plays, so its first sound plays at the first press
+as before. The synchronous `mount()` keeps the audio code with it.
+
+**The safety pass.** It runs before every asset plays, with or without integrity, and needs no schemas. On the full
+path it runs before the schema check, so a file that both refuse reports the safety pass's code. It is a part
+of the drawing check (2.11): a drawing that passes the drawing check passes it. For every drawing of the asset:
+
+1. The drawing is well-formed XML with no DOCTYPE, entity declaration or processing instruction (`E-SVG-PARSE`).
+2. The root is `<svg>` in the SVG namespace (`E-SVG-ROOT`).
+3. Every element is in the allowed subset of 2.11, with no namespace prefix: no `<script>`, `<foreignObject>`,
+   `<style>`, `<a>`, animation element or `<feImage>` (`E-SVG-UNSAFE`, as are the rules below).
+4. No attribute starts with `on`: no event handler.
+5. The only namespaces are SVG and XLink; the only prefixed attribute is `xlink:href`.
+6. `href` is a local `#id`; on `<image>` it is a `data:` URI of an image type, read as a browser reads an address.
+   An asset holds no picture file, so it names nothing outside itself.
+7. Every `url(` is `url(#id)`.
+8. CSS text holds no `@import`, no comment, no backslash escape and no image function that can load an address.
+
+## 10.15 The HyperSVG record, byte by byte (D45)
+
+This section defines the HyperSVG (2.13) exactly, so a host in any language can read, verify and re-pack one without
+the engine's code. The conformance files in `spec/2.0/conformance/hypersvg/` test a reader against it: each file has
+its expected result in `expected.json` there.
+
+**The file.** A HyperSVG is UTF-8 text: the drawing, with one line put in.
+
+1. Before the root `<svg>` start tag there may be only a byte order mark, one XML declaration (`<?xml … ?>`) and
+   comments, each followed by optional white space. Nothing else, not even a DOCTYPE.
+2. The line goes right after the `>` that ends the root start tag. It is a line break, then `<metadata>`, then the
+   record's JSON, then `</metadata>`. The line break is CR LF when the drawing's text after the start tag begins with
+   CR LF, and LF otherwise. Nothing else in the drawing changes.
+3. Taking the line out, from its line break to the end of `</metadata>`, gives the drawing's exact bytes back.
+
+**The JSON.** One object with one key, `asset`. Its value is an object with exactly these five keys:
+
+| Key | Value |
+|---|---|
+| `format` | `"hsvg/2.0"` |
+| `id` | The experience's `id`, matching `^[A-Za-z0-9][A-Za-z0-9._-]*$`. The file is named `<id>.svg`. |
+| `drawing` | The folder path of the drawing the file is: the start scene's `drawing`, joined to the folder of the scene's file. |
+| `members` | An object: every file of the asset, the drawing too, mapped to its digest. |
+| `files` | An object: every member but the drawing, mapped to its text as a JSON string. |
+
+A writer writes the keys in the order above, the keys of `members` and `files` sorted by UTF-16 code units, and no
+white space between tokens. It writes every `<`, `>` and `&` as `<`, `>` and `&` (lowercase hex). These
+characters only occur inside JSON strings, so the escaped text is the same JSON; the record holds no markup and needs
+no XML escaping. A writer that follows these rules gives the same bytes as `pack --asset`. A reader does not depend on
+the order or the white space; it needs only that the text between `<metadata>` and `</metadata>` holds no `<`.
+
+**Paths.** Each key of `files` and `members` is a plain relative path: segments joined by `/`, each segment made of
+`A`-`Z`, `a`-`z`, `0`-`9`, `_`, `.` and `-` and starting with a letter, a digit or `_`
+(`^[A-Za-z0-9_][A-Za-z0-9._-]*(/[A-Za-z0-9_][A-Za-z0-9._-]*)*$`), and no segment `..`. So an absolute path, a
+backslash or a `..` is refused: `E-ASSET`. A writer writes `drawing` the same way. A reader that writes the files out
+(`unpack`) also refuses any path that would leave its folder.
+
+**Digests.** A member's digest is `sha256:` followed by 64 lowercase hexadecimal digits: the SHA-256 (FIPS 180-4) of
+the member's exact bytes, as for a package's members (10.8). The bytes are:
+
+- for a file in `files`: the JSON string's value, decoded, then encoded as UTF-8 (no byte order mark added, line
+  endings as they are);
+- for the drawing: the HyperSVG's text with the line taken out, encoded as UTF-8.
+
+**Limits.**
+
+- The whole HyperSVG is at most `dataBytesEach` bytes (8,388,608) as UTF-8. A host may set a lower limit. A larger
+  file is `E-ASSET`, before anything else is read.
+- Every member is text. `pack --asset` writes the `.json`, `.svg` and `.csv` files the experience reaches. The asset
+  player refuses a member whose name ends in anything but `.json`, `.svg`, `.csv`, `.txt` or `.vtt`, an asset with no
+  `experience.json`, and one whose `needs` is not empty: `E-ASSET`.
+- There is no separate limit on the number of members; the size limit covers it.
+
+**Reading.** A reader takes these steps in order and stops at the first failure.
+
+1. The file is within the size limit. Otherwise `E-ASSET`.
+2. Find the end of the root start tag (rule 1 of the file). The text right after it is the line: a line break (CR LF
+   or LF), `<metadata>`, text with no `<`, `</metadata>`. Otherwise `E-ASSET`: the file is no HyperSVG.
+3. The JSON parses to an object whose only key is `asset`; `asset` holds no key but the five; `format` is
+   `hsvg/2.0`; `id` matches its pattern; `drawing` is a string; `members` and `files` are objects. Otherwise
+   `E-ASSET`.
+4. `files` does not hold `drawing`; each of its values is a string and each of its keys a plain relative path.
+   Otherwise `E-ASSET`.
+5. The drawing's text is the HyperSVG's text with the line taken out.
+6. Every name in `members` is a key of `files` or is `drawing`, and every key of `files` and `drawing` is in
+   `members`. Otherwise `E-PACKAGE-MEMBER`. Every member's bytes match its digest. Otherwise `E-PACKAGE-DIGEST`.
+7. The drawing holds no `<metadata>`: an asset's drawing carries no tool record of its own (2.13). Otherwise
+   `E-ASSET`. Added after `2.0.0-next.0`.
+
+The result is the `id`, the `drawing` and every member's text.
+
+**What the digests prove.** The digests catch accidents, not tampering: a file damaged on the way, cut short, or
+changed by a tool that did not re-pack it. Anyone who changes a file can make the digests again
+(`resealed-script.svg` in the conformance files is one). A digest inside a file is never a reason to trust it. So a
+reader that plays a HyperSVG also runs the checker (10.12) on every document and drawing it returned, as the asset
+player does, and plays nothing when it finds an error. Only a fingerprint the host keeps itself, outside the file, can
+say that a file is the one the host trusted.
+
+**Re-packing after an edit.** A host that changes a member, for example a cleaner that removes an attribute:
+
+1. reads the file as above;
+2. changes the members' text;
+3. writes the file again with the same `id` and `drawing`: the drawing, then the line, with every digest made again
+   from the new bytes, written as above. The drawing must not hold a `<metadata>` of its own;
+4. checks the files again (10.12). New digests only say that the record matches the files. The check says whether the
+   files are still valid: `repacked-cleaned.svg` passes, `repacked-cleaned-mark.svg` (a removed `data-hsvg-motion`)
+   does not.
+
+`unpack`, an edit and `pack --asset` on the folder do the same; the packer checks first. The packer also refuses a
+drawing that already has a tool record (`E-ASSET`), and the reader refuses a hand-made one (step 7,
+`drawing-has-record.svg`).
+
+## 10.16 The stable API (D63)
+
+Added after `2.0.0-next.0`. This section says which parts of the JavaScript API, the command line and a packed page
+a host may build on for all of 2.x. `engine/v2/tests/api1-stable.test.mjs` lists every name below and fails when a
+stable name is removed or renamed.
+
+**The three labels.**
+
+| Label | Promise | Changes allowed in 2.x |
+|---|---|---|
+| **Stable** | Kept for all of 2.x (D42). | Only additions: a new optional option, a new method, a new member in a result. Never a rename, a removal or a changed meaning. |
+| **Experimental** | Usable, and documented as experimental. | May change in a minor version, with a note in the changelog. Promoted to stable after real use. |
+| **Internal** | Not for outside code. | May change at any time, even when a file exports it. |
+
+**The rule.** Stable is what shipped in `2.0.0-next.0` and is documented, what a decision already made stable (D60),
+and the simple safety options (`integrity`, `nonce`, `faultBox`). Experimental is everything else new since
+`2.0.0-next.0`, and anything that belongs to an add-on. Internal is building blocks and the tools' inner parts. A
+name this section does not list follows the rule: new since `2.0.0-next.0` means experimental.
+
+**Package entry points** (`@hypersvg/core/…`).
+
+| Entry | Stable | Experimental | Internal |
+|---|---|---|---|
+| `./asset` | `mount`, `mountAsync`, `HyperSvgAsset` (the `<hypersvg-asset>` element), `useSchemas`, `sharedSchemas`, `readAsset`, `VERSION`, `elementVersion` | `repack` | — |
+| `./asset-lean` | `mountAsync`, `HyperSvgAsset`, `useSchemas`, `sharedSchemas`, `VERSION`, `elementVersion` | — | `place`, `leanLoad`, `bundleCheck` |
+| `./mount` | `mount`, `VERSION` | `aiPort`, `pagePort`, `modulePort` (the host ports, 10.7) | — |
+| `./logic` (D60) | `logic`, `fingerprint`, `fingerprintOf`, `stateDocument`, `canonicalJson` | — | the `player` member of `logic()`'s result |
+| `./frame-host` | `connectFrame`, `frameToken` | — | — |
+| `./schemas`, `./schemas/*` | `loadSchemas`; the schema files under `core/` | the schema files under `capabilities/` and `addons/` | — |
+| `./pack` (Node) | `pack`, `packAsset`, `PackError` | — | everything else (`bundle`, `engineSizes`, `bakePlans`, `flattenKit`, …) |
+| `./player` | `VERSION` | `play` | `boot`, `useAudio`, `chooseFrame`, `learnFits`, `reducedUnder`, `linkWithoutHostLine` |
+| The one-file player `engine/v2/web/hypersvg-asset.js` | — | the file and its exports (those of `./asset`) | — |
+
+**Options.**
+
+| Where | Stable | Experimental | Internal |
+|---|---|---|---|
+| `mount()` of a package (10.6) | `schemas`, `host`, `options`, `partition`, `onError`, `timeLimits`, `faultBox`, `nonce`, `clock`, `onMove` | `theme` (D66), `hostWords`, `colors` (D65), `modules`, `capabilities`, `widgets` (a 2.1 draft) | `test` |
+| HyperSVG mounts (`mount`, `mountAsync`, 10.14) | `schemas`, `partition`, `onError`, `timeLimits`, `integrity`, `faultBox`, `nonce`, `clock`, `onMove` | `theme`, `options`, `hostWords`, `addonBase`, `colors` (D65) | `test`, `modules` |
+| `logic()` (D60) | `schemas`, `clock`, `epochMs`, `onMove`, `host`, `options`, `storage`, `onError` | `capabilities`, `modules` | — |
+| `connectFrame()` | `channel`, `timeout`, `probe` | — | — |
+| `pack()` | — | `host`, `allow`, `kits`, `test`, `acceptFindings` | `sizes`, `date` |
+
+**The host API** (what a mount returns, 10.6).
+
+| Stable | Experimental | Internal |
+|---|---|---|
+| `on`, `read`, `set`, `emit` (a promise, D59), `picture`, `timeLimits`, `pause`, `resume`, `paused`, `scene`, `restart`, `clearStorage`, `setPartition`, `destroy`; on HyperSVG mounts `inputs()` and `outputs()` | `place(name)`, `seat()` (the `seats` add-on), `ladder()` (the `ladder` add-on) | `internal` (test mode) |
+
+The frame link (`connectFrame`, A10.4) carries these calls as stable: `set`, `emit`, `read`, `pause`, `resume`,
+`restart`, `scene`, `clearStorage`, `setPartition`, `on`, `off`, `close` and `ready`.
+
+**The `<hypersvg-asset>` element** (10.14).
+
+| Stable | Experimental |
+|---|---|
+| The attributes `src`, `integrity` and `fault-box`; the `nonce` property; any other attribute sets the input of that name (lower case or kebab case) | The attributes `theme`, `addon-base`, `partition` and `colors` (D65), and the `colors` property |
+| `ready`, `host`, `inputs()`, `read()`, `set()`, `on()`, the static `version` | — |
+| The events `hsvg:changed` `{name, value, by}`, `hsvg:<output>`, `hsvg:error` (always `code` and `message`; other fields optional) | — |
+| `data-hsvg-refused` on a refused element; `<img data-hsvg-still>` for an approved file that was refused later | — |
+
+- `hsvg:error`'s detail, and what the host's `onError` hears, always has `code` and `message`. A failure with no code
+  of its own, such as a listener that throws a plain error, is `E-HOST-ERROR`. The optional fields: `source` (where
+  it happened: `start`, `control`, `listener`, `storage`, `audio`, `destroy`, …), `address` (the block of a fault
+  while playing), `path` (a sound that cannot play) and `diagnostics` (the findings of a refused file).
+- `partition` (experimental) names the partition that keys this copy's stored values (5.1.2, 10.6): 1 to 128 of
+  `A-Z a-z 0-9 . _ -`, else `E-RANGE`. Without it every copy of one HyperSVG on a page uses `asset-<id>`, so copies
+  share their stored values. If the HyperSVG has an input named `partition`, the attribute sets that input instead.
+
+**Built-in outputs, the move hook and the clock.**
+
+| Stable | Experimental |
+|---|---|
+| `entered`, `ended`, `openUrl`, `firstInput`, `hsvg.changed`; a built-in added later is heard only as `hsvg.<name>` (5.9) | `hookHealth` (the `page` add-on) |
+| `onMove(move)` with `{t, source, payload}`, the sources of 9.6's table (D62) except `seatInput`, `clock(engineMs)` | the `door` move, `seatInput` (the `seats` add-on, D66) and the add-ons' moves (`ai.arrive` and those of the `page`, `media`, `snapshot` and `seats` add-ons) |
+
+The state document's inner shapes are pinned per engine version (D62), not frozen across 2.x: the fingerprint API is
+stable; its values may change between versions.
+
+**The command line** (`hypersvg`).
+
+| Stable | Internal |
+|---|---|
+| `init`, `check` (`--json`, `--review`), `test` (`--quick`, `--node-only`, `--min-width`, `--browser required`, `--json`, `--out`), `pack` (`--asset`, `--allow`, `--test`), `unpack` (`--force`), `addon new\|check\|digest\|pin`, `--version`, `--help`; the exit codes (0 pass, 1 findings or an error, 2 usage); the shape of `check --json` | the flags the tools read but the help does not list (`--only`, `--paint`, `--speed`, `--baseline`, …) |
+
+**A packed Experience page.**
+
+| Stable | Internal |
+|---|---|
+| `window.hsvg` (the host API), `window.hsvgReady`, `window.hsvgError` | the test-only address hooks (`?clock=manual`, `?start=`, `?partition=`) |
 
 ## Moved out of this chapter
 

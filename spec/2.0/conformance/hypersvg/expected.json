@@ -1,0 +1,28 @@
+{
+  "about": "The HyperSVG conformance files (10.15) and what a reader gives for each. read: \"ok\" when the reader returns the files, or the code it refuses with. check: the error codes the checker gives on the files it returned, [] for none. maxBytes: the size limit the reader is given (dataBytesEach when absent). repack: unpacking and packing again gives the same bytes. pack: what the packer gives for a folder: the file it writes, or the code it refuses with.",
+  "cases": [
+    {"file": "valid-one-scene.svg", "says": "A valid asset: one scene, one drawing.", "read": "ok", "check": [], "repack": true},
+    {"file": "valid-component.svg", "says": "A valid asset whose scene places a component.", "read": "ok", "check": [], "repack": true},
+    {"file": "valid-one-scene.svg", "maxBytes": 1024, "says": "The same file read by a host whose limit is 1,024 bytes: over the limit.", "read": "E-ASSET"},
+    {"file": "stale-drawing.svg", "says": "The drawing was changed after packing; the digests were not made again.", "read": "E-PACKAGE-DIGEST"},
+    {"file": "stale-file.svg", "says": "A file inside the record was changed after packing; the digests were not made again.", "read": "E-PACKAGE-DIGEST"},
+    {"file": "resealed-valid.svg", "says": "The drawing was changed and every digest made again. The files are still valid, so it checks clean.", "read": "ok", "check": [], "repack": true},
+    {"file": "resealed-script.svg", "says": "A script was put in the drawing and every digest made again. The digests match; the checker refuses it.", "read": "ok", "check": ["E-SVG-UNSAFE"]},
+    {"file": "resealed-broken-ref.svg", "says": "A control's target was renamed in scene.json and every digest made again. The checker refuses it.", "read": "ok", "check": ["E-REF-UNKNOWN"]},
+    {"file": "repacked-cleaned.svg", "says": "A cleaner removed two paint attributes, then the host re-packed it. It checks clean.", "read": "ok", "check": [], "repack": true},
+    {"file": "repacked-cleaned-mark.svg", "says": "A cleaner removed a part's data-hsvg-motion, then the host re-packed it. The digests match; the binding now moves a part past its range.", "read": "ok", "check": ["E-MOTION-RANGE"]},
+    {"file": "path-dot-dot.svg", "says": "A file path with a .. segment.", "read": "E-ASSET"},
+    {"file": "path-absolute.svg", "says": "An absolute file path.", "read": "E-ASSET"},
+    {"file": "path-backslash.svg", "says": "A file path written with backslashes.", "read": "E-ASSET"},
+    {"file": "member-missing.svg", "says": "members lists a file that files does not hold.", "read": "E-PACKAGE-MEMBER"},
+    {"file": "member-unlisted.svg", "says": "files holds a file that members does not list.", "read": "E-PACKAGE-MEMBER"},
+    {"file": "no-record.svg", "says": "A plain 2.0 drawing with no record.", "read": "E-ASSET"},
+    {"file": "record-moved.svg", "says": "The record line is not right after the <svg> start tag.", "read": "E-ASSET"},
+    {"file": "record-extra-key.svg", "says": "The record holds a key an asset cannot hold.", "read": "E-ASSET"},
+    {"file": "record-wrong-format.svg", "says": "The record's format is not hsvg/2.0.", "read": "E-ASSET"},
+    {"file": "drawing-has-record.svg", "says": "The drawing has a tool record of its own, made by hand. The packer never writes this, and the reader refuses it (2.13).", "read": "E-ASSET"},
+    {"folder": "folders/beacon", "says": "The one-scene asset's folder.", "pack": "valid-one-scene.svg"},
+    {"folder": "folders/badge", "says": "The component asset's folder.", "pack": "valid-component.svg"},
+    {"folder": "folders/has-record", "says": "A folder whose drawing already has a tool record: the packer refuses it.", "pack": "E-ASSET"}
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Flag</title>
+<rect width="200" height="200" fill="#f1f5f9" data-hsvg-layer="backdrop"/>
+<rect x="40" y="40" width="6" height="140" fill="#475569"/>
+<g id="flag" data-hsvg-kind="part" data-hsvg-pivot="43 44" data-hsvg-motion="rotate 0..20"><path d="M46 44h70l-14 20 14 20h-70z" fill="#dc2626"/></g>
+<g id="go" data-hsvg-kind="part" data-hsvg-label="Wave"><rect x="120" y="140" width="64" height="44" rx="10" fill="#1d4ed8"/></g>
+</svg>

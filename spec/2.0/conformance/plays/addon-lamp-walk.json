@@ -1,0 +1,294 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "addon-lamp-walk",
+ "about": "A seeded random walk of up to 10 steps (seed 9).",
+ "package": {
+  "folder": "engine/v2/addons/examples/lamp",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:fea8bda7db47223c0b15361dee17ed0a6afc77b49e1ff628298df463a35ce69a",
+   "scenes/room/room.svg": "sha256:6d712c215947e148e1627f0679f8f5781725182f1087a5ea219bc2427d8f2122",
+   "scenes/room/scene.json": "sha256:4a59ca229fbbaf7b6ed454c54dea0e01e9a231b7fdc1c276102c00b36efb8590"
+  },
+  "addons": {
+   "example.tint@1.0.0": "sha256:a8686d1c61f062992c868bf5f814855a3bf5fa30a04429c62f088a68510412b6"
+  }
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:7e6ea26366bb4792d2ab84228581d275969ea9dc10a9505edd27868ebeb1a563",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "room",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "room"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:15e3d5457ffc01fe194b8e859743d9cedb9c9491ff176c3c12eec9a45619eb7e",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:8a2b92e295862cf3309c10f5242fdac0ed79c18162d0970aae3dc8062304cf9a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 658,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:8b6774cf275e9e0b336e9805a3bb9021228dd0027a6fe3bbcaa138df64a65c05",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1730,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:5865fbadd88c1f051bf77c866fab36d41ba89f68fb3505c3191f89e06f4c28a4",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2566,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:aade49492a70112ae4a5367fe93bda0077f1f2f9dcec5a12d3d98bf956808e26",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3186,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:321f2ec82a99b228da55a39e1d1e14c1b9830b7012f05c2a6124bb614e9cad65",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4082,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:00a781a4eb74aec4455f1a34d81cbed647b6451bc104fbc9cfef911258540524",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4414,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:32fe8a1ddc4941e1204bc3d499e3a569dde2297e8db2c07a474f66803bc97e34",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5554,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:b507c080b03b5e3c9668c9c524199551749d95ed612a2672c896e6465d49a530",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5918,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:dfbaa49d6a9c390ff6cf32339c1a259775b278199f6da5dda0a76d85fc1019d8",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 7098,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:bf17dcf52c92701580007cad9cd4385c74d4bee5338071cfac5546345cf5dce3",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 8122,
+  "fingerprint": "sha256:c57122cf60b2a49f6591e3f4b8b7011bca36e83b44da0d3d09845b1e9f08d41b",
+  "heard": [],
+  "state": {
+   "now": 8122,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "room": {
+     "kind": "scene",
+     "def": "room",
+     "parent": null,
+     "values": {
+      "lit": false
+     },
+     "inputs": {
+      "shade": "#ffcc33"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "room",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "room": 1
+    },
+    "resume": null,
+    "painted": {
+     "room": true
+    },
+    "held": [],
+    "endedReported": {
+     "room": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "room": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

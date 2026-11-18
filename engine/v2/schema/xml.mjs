@@ -7,10 +7,13 @@ export class XmlError extends Error {
   constructor(message, at) { super(message); this.code = 'E-SVG-PARSE'; this.at = at; }
 }
 
-const NAME = /^[A-Za-z_][A-Za-z0-9_.:-]*/;
+// A name, read where the reader stands (sticky). A name counts at most 200 characters, as it always has.
+const NAME = /[A-Za-z_][A-Za-z0-9_.:-]*/y;
+const nameAt = (src, i) => { NAME.lastIndex = i; const m = NAME.exec(src); return m ? m[0].slice(0, 200) : null; };
 const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
 
 export function decodeEntities(s, at = 0) {
+  if (!s.includes('&')) return s;
   return s.replace(/&([^;&\s]*);?/g, (m, name) => {
     if (!m.endsWith(';')) throw new XmlError(`bare "&" at ${at}`, at);
     if (name in ENT) return ENT[name];
@@ -29,9 +32,11 @@ export function parseXml(src) {
   if (src.charCodeAt(0) === 0xfeff) src = src.slice(1);
   let i = 0;
   let line = 1;
-  const adv = (n) => { for (let k = 0; k < n; k++) if (src[i + k] === '\n') line++; i += n; };
+  // nl: the next line break at or after i (-1: none). adv moves n characters on, counting the line breaks passed.
+  let nl = src.indexOf('\n');
+  const adv = (n) => { const end = i + n; while (nl >= 0 && nl < end) { line++; nl = src.indexOf('\n', nl + 1); } i = end; };
   const fail = (m) => { throw new XmlError(`${m} (line ${line})`, i); };
-  const ws = () => { while (i < src.length && ' \t\r\n'.includes(src[i])) adv(1); };
+  const ws = () => { for (;;) { const c = src.charCodeAt(i); if (c === 32 || c === 9 || c === 13) i++; else if (c === 10) { line++; i++; nl = src.indexOf('\n', i); } else return; } };
   const misc = () => {
     for (;;) {
       ws();
@@ -57,9 +62,8 @@ export function parseXml(src) {
   function element() {
     const startLine = line;
     adv(1);
-    const m = NAME.exec(src.slice(i, i + 200));
-    if (!m) fail('bad element name');
-    const name = m[0];
+    const name = nameAt(src, i);
+    if (!name) fail('bad element name');
     adv(name.length);
     const attrs = {};
     const attrOrder = [];
@@ -69,9 +73,8 @@ export function parseXml(src) {
       if (src.startsWith('/>', i)) { adv(2); return { name, attrs, attrOrder, children: [], line: startLine }; }
       if (src[i] === '>') { adv(1); break; }
       if (i === before) fail(`expected whitespace in <${name}>`);
-      const am = NAME.exec(src.slice(i, i + 200));
-      if (!am) fail(`bad attribute in <${name}>`);
-      const an = am[0];
+      const an = nameAt(src, i);
+      if (!an) fail(`bad attribute in <${name}>`);
       adv(an.length);
       ws();
       if (src[i] !== '=') fail(`attribute ${an} has no value`);

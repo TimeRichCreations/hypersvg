@@ -46,7 +46,7 @@
  },
  "engine/v2/tests/e4-joins.test.mjs": {
   "tests": [
-   "small: START names hsvg preview; the README names proof.mjs guide, the guides folder and the studio's browser test; preview speaks of srcdoc; the fast run has the studio test"
+   "small: START names hsvg preview; the README names proof.mjs guide and the guide format, not the studio (outside the base); preview speaks of srcdoc; the fast run has the studio test"
   ],
   "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
  },
@@ -65,6 +65,14 @@
  },
  "engine/v2/tests/k2a-addons.test.mjs": {
   "tests": "all",
+  "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
+ },
+ "engine/v2/tests/r1-replay.test.mjs": {
+  "tests": [
+   "replay: a quiz gives the same fingerprint after every move",
+   "replay: a scoring game with timers and clips (starfall) gives the same fingerprint after every move",
+   "replay: clips that loop (idle-loop) and a story with choices (branching-story)"
+  ],
   "why": "needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base."
  },
  "engine/v2/tests/skill.test.mjs": {

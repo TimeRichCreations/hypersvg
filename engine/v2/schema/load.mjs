@@ -1,5 +1,7 @@
 // Reads the generated schemas from <spec/2.0>/schemas into the shape check-document.mjs and drawing-check.mjs take.
 // Node only (the browser engine is given the same objects by its loader).
+// API labels (spec 10.16, D63), as the package's ./schemas: loadSchemas is stable, and so are the schema files under
+// core/; those under capabilities/ and addons/ are experimental.
 import fs from 'node:fs';
 import path from 'node:path';
 

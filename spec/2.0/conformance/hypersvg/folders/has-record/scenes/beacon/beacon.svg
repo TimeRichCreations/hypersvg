@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<metadata>{"derived": "derived"}</metadata>
+<title>Beacon</title>
+<desc>A round beacon on a post, with a switch.</desc>
+<rect width="200" height="200" fill="#eef2f7" data-hsvg-layer="backdrop"/>
+<g id="halo" data-hsvg-kind="part" data-hsvg-role="decoration" data-hsvg-motion="opacity 0..1" opacity="0"><circle cx="70" cy="70" r="48" fill="#fde68a"/></g>
+<circle cx="70" cy="70" r="24" fill="#f59e0b" stroke="#92400e" stroke-width="3"/>
+<rect x="64" y="94" width="12" height="80" fill="#64748b"/>
+<g id="switch" data-hsvg-kind="part" data-hsvg-label="Beacon on"><rect x="120" y="120" width="64" height="48" rx="24" fill="#1d4ed8"/></g>
+</svg>

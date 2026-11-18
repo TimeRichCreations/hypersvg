@@ -1,7 +1,9 @@
 # The HyperSVG guide
 
 This guide teaches the whole format on its own, to people and to any AI tool. Every word and mark has an example.
-Each example is cut from a small folder in `docs/guide/examples/` that checks and plays clean.
+Each example is cut from a small folder in `docs/guide/examples/` that checks and plays clean. In a folder made by
+`init`, those folders and the spec are in the package: after `npm install @hypersvg/core`, read
+`node_modules/@hypersvg/core/docs/guide/examples/` and `node_modules/@hypersvg/core/spec/2.0/`.
 
 HyperSVG makes two things from the same format:
 
@@ -110,6 +112,26 @@ control, input and output.
 `{"play": "'bell'", "as": "sound", "volume": 0.5}`. An empty text is `"''"`. Only words a person reads (`text` and `label` bindings)
 are plain words with `{{ formula }}` inside: `"text": "Turn {{ lit ? 'off' : 'on' }}"`.
 
+**Functions.** The list is closed; any other call is `E-FORMULA`. Each takes these arguments:
+
+- Numbers: `min(a, b, …)` and `max(a, b, …)` (1 to 32 numbers), `clamp(n, low, high)`, `floor(n)`, `ceil(n)`,
+  `round(n)`, `pow(base, power)`, `sqrt(n)`, `exp(n)`, `log(n)`, `sin(degrees)`, `cos(degrees)`.
+- Lists and text: `length(list or text)`, `at(list, index, fallback)`, `includes(list, x)`,
+  `lookup(rows, 'key', x, fallback)`, `append(list, item, maxItems)`, `range(count)`.
+- Row functions, with `item` and `index` inside: `filter(list, test)`, `count(list, test)`, `sum(list, number)`,
+  `minBy(list, number)`, `sort(list, key)` or `sort(list, key, true)` for high to low, and `fold(list, start, step)`
+  with `acc`, the result so far.
+- Chance, the same for the same seed: `pick(list, seed)`, `shuffle(list, seed)`, `random(min, max, seed)`.
+- `active('state')`: true while a machine of the block is in that state (section 6.4).
+- Display: `numberText(n, decimals)`, `formatNumber(n, decimals, grouping)` and `plural(count, 'wordId')`. `plural`
+  needs a words file with the word's plural forms (at least `wordId.other`); without one, write
+  `lives === 1 ? 'life' : 'lives'`.
+
+**The clock.** `elapsed` is the block's clock in milliseconds. A formula reads it like a value: `"rotate": "elapsed /
+1000 * 36"` turns a part 36 degrees a second (the part lists `data-hsvg-motion="rotate *"`). A binding that reads
+`elapsed` repaints all the time and holds still under reduced motion. For steps in time, use a machine's `after`
+(section 6.4). Never name a value `elapsed`, `now`, `size` or another built-in name (`W-NAME-HIDES`).
+
 ## 3. The 15 drawing marks
 
 Only parts need an `id`. The examples come from `docs/guide/examples/harbour/` and its crate.
@@ -168,9 +190,15 @@ named by the words drawn in it, else give it a `label`.
 | `dial` | `"wind": {"kind": "dial", "target": "vane", "value": "wind", "range": [-45, 45], "label": "Wind", "valueText": "{{ wind }} degrees"}` |
 | `drag` | `"parcel": {"kind": "drag", "target": "parcel", "drops": ["basket", "bin"], "accept": "event.drop === 'basket'", "event": "loaded", "missEvent": "missed", "label": "Parcel"}` |
 
-A slider's handle and a dial's part show the value only when you bind them: `{"target": "handle", "move": "speed",
-"axis": "x"}`, `{"target": "vane", "rotate": "wind"}`. A drag reads `accept` at the drop; a refused or missed drop
-goes home and sends `missEvent`.
+A slider's handle and a dial's part show the value only when you bind them. A `move` binding moves the handle by its
+number in drawing units, and `rotate` turns by degrees: neither reads `range`. Here `speed` runs 0 to 200 over a
+`range` of `[0, 200]`, and `wind` runs -45 to 45 over `[-45, 45]`, so the value is the distance:
+`{"target": "handle", "move": "speed", "axis": "x"}`, `{"target": "vane", "rotate": "wind"}`. For other bounds, map
+them onto the range with `start + (v - min) / (max - min) * span`: for `level` from 10 to 100 over `[0, 200]`, bind
+`"move": "(level - 10) / 90 * 200"`. Draw the handle at the start of its travel; `W-CONTROL-STILL` gives the formula
+with your numbers. Without `positions`, a drag gives round values: whole numbers for 0 to 200, tenths for 10 to 100.
+A choice's `label` names the group; each option is named by its own `label`, else by the words drawn in it. A drag
+reads `accept` at the drop; a refused or missed drop goes home and sends `missEvent`.
 
 **Actions.**
 
@@ -193,8 +221,8 @@ The built-in calls are `player.openUrl`, `player.setting`, `player.resetSaved` a
 "shop": [{"actions": [{"call": "player.openUrl", "with": {"field": "'shopLink'"}}]}]
 ```
 
-`player.openUrl` opens the address in an input with `"contentType": "url"`; the experience asks for it with
-`"grants": {"openUrl": true}`. `player.attach` moves a use onto a slot, written `'<use>.<slot>'`; `"to": "null"`
+`player.openUrl` opens the address in an input with `"contentType": "url"`; the experience asks for it, and for saved
+storage for its `saved` value `best`, with `"grants": {"openUrl": true, "storage": ["saved"]}`. `player.attach` moves a use onto a slot, written `'<use>.<slot>'`; `"to": "null"`
 takes it back home. The sound `bell` is made in the experience: `"audioSynths": {"bell": {"wave": "sine", "from":
 880, "to": 660, "durationMs": 120, "gain": 0.4}}`.
 
@@ -217,6 +245,10 @@ takes it back home. The sound `bell` is made in the experience: `"audioSynths": 
 and `stroke` take `#rrggbb`. A colour is a theme role wherever it can be. `variant` with `"as": "icon"` picks an icon
 by its `id` on an icon place. `draw` is a share from 0 to 1; a path that draws carries `pathLength="1"`.
 
+On a control's part, variants named `idle`, `hover`, `pressed`, `selected`, `focus` and `disabled` are the control's
+own looks: the player shows them by itself. Do not bind that part's `variant` as well, and give your own variants other
+names (`E-WRITER`).
+
 **Structure.**
 
 | Word | Example |
@@ -228,7 +260,13 @@ by its `id` on an icon place. `draw` is a share from 0 to 1; a path that draws c
 | `use` | `{"id": "lead", "use": "crate", "into": "lead-spot", "with": {"name": "'Lead'"}}` |
 
 A clip's tracks hold keys `[ms, value]` on a `channel` named like a binding word, with its `as` or `axis`:
-`{"target": "lid", "channel": "move", "axis": "y", "keys": [[0, 0], [150, -8], [300, 0]]}`.
+`{"target": "lid", "channel": "move", "axis": "y", "keys": [[0, 0], [150, -8], [300, 0]]}`. The motion mark names
+the channel with its axis: `channel` `scale` with `axis` `y` is `scale-y`, so the flag lists
+`data-hsvg-motion="lean -30..30; scale-y 0.8..1"` for
+`"flutter": {"durationMs": 600, "tracks": [{"target": "flag", "channel": "scale", "axis": "y", "keys": [[0, 1], [300, 0.8], [600, 1]]}]}`.
+When a clip run ends, its block hears `ended:<clip>`, once; `event.interrupted` is true when a `stop` or a new play
+cut it short. This says "done" only after a full run:
+`"ended:wave": [{"guard": "!event.interrupted", "actions": [{"emit": "waved"}]}]`.
 
 **Values, inputs and outputs.** A value has a `type` (`number`, `boolean`, `string`, `array`, `object`) and lives as
 long as its owner; `"lifetime": "saved"` keeps it for next time. Inputs are what a parent or a host may change:
@@ -271,7 +309,20 @@ a settings dialog, and a crate block used four times.
 },
 ```
 
-The story names the first scene, the scenes, the links and the endings. A link fires on an event. A block inside
+The story names the first scene, the scenes, the links and the endings:
+
+```json
+"story": {
+  "start": "gate",
+  "scenes": {"gate": "gate.json", "harbour": "harbour.json"},
+  "links": [{"id": "in", "from": "gate", "on": "start", "to": "harbour", "transition": "fade", "transitionMs": 300}],
+  "ends": ["harbour"]
+}
+```
+
+A link fires on an event of its `from` scene: here the gate's button, `"go": {"kind": "button", "target": "go",
+"event": "start"}`. The scene needs no reaction for it. A link back is one more entry with `from` and `to` swapped.
+Without `ends`, a scene with no way out is an ending; `"endless": true` says there is none. A block inside
 another is a `use`; its `with` fills the block's inputs. A shell holds the scenes: its slot `kind` is `widget`,
 `stage`, `overlay` or `dialog`.
 
@@ -310,15 +361,20 @@ the item:
 {"id": "crates", "use": "crate", "into": "crates", "items": "range(3)", "key": "item", "with": {"name": "stops[item]"}}
 ```
 
-**6.4 A timed machine.** A machine moves between states on events and on timers (`after`). A formula asks
-`active('<state>')`. A transition on an event always names itself with an `id`; a timer in `after` needs none. A
-blinking buoy light:
+**6.4 A timed machine.** A machine moves between states on events (`on`) and on timers (`after`). A formula asks
+`active('<state>')`. A transition on an event always names itself with an `id`; a timer in `after` needs none. Both
+may run `actions`. A blinking buoy light, and a ferry that sails on `load` and comes back two seconds later:
 
 ```json
 "machines": [{"id": "buoy", "initial": "on", "states": {
-  "on": {"after": [{"delayMs": 1000, "target": "off"}]}, "off": {"after": [{"delayMs": 500, "target": "on"}]}}}],
+  "on": {"after": [{"delayMs": 1000, "target": "off"}]}, "off": {"after": [{"delayMs": 500, "target": "on"}]}}},
+  {"id": "ferry", "initial": "docked", "states": {
+  "docked": {"on": {"load": [{"id": "sail", "target": "sailing"}]}},
+  "sailing": {"after": [{"delayMs": 2000, "target": "docked", "actions": [{"set": "note", "to": "'Back in port'"}]}]}}}],
 {"target": "buoy-light", "variant": "active('on') ? 'on' : 'off'"},
 ```
+
+A timer whose `target` is its own state repeats. A state may also have `entry` and `exit` actions.
 
 **6.5 `entry`.** A scene's `entry` actions run each time the scene starts:
 
@@ -387,8 +443,12 @@ npx @hypersvg/core pack --asset <folder> <out> # one HyperSVG (an asset)
 ```
 
 `pack` writes `<out>/<id>.html` and `<out>/package.json`, a short description of the page (packing a second
-experience into the same folder replaces it). `pack --asset` writes `<out>/<id>.svg`. Both print the engine's size
-(`engine sizes, gzip 9: core 118727 of 120000`) and the files they left out because nothing reaches them.
+experience into the same folder replaces it). `pack --asset` writes `<out>/<id>.svg`; for several scenes it says
+that the still picture is the start scene. Both print the engine's size (`engine sizes, gzip 9: core 118812 of
+120000`) and count the files they left out because nothing reaches them. The notes `init` writes (`AGENTS.md`,
+`CLAUDE.md`, `GUIDE.md`, `.claude/`) are never part of a page and are left out without a word. A finding prints the
+same in `check` and `pack`: `E-SVG-UNSAFE lamp.svg:12:5 switch: event attribute onclick`. `test --quick` still opens a
+browser when Playwright is there; `--node-only` opens none.
 
 For an asset, `npx @hypersvg/core test <folder> --min-width 320` runs the phone pass at the narrowest width it is meant for;
 the touch-size and text-size rules apply there. `npx @hypersvg/core check <folder> --json` gives each finding with its
@@ -403,7 +463,7 @@ copy it. The packed page opens from a file, makes no network requests and runs n
 
 ## 9. Where to go next
 
-The spec is in `spec/2.0/`:
+The spec is in `spec/2.0/` (in a folder made by `init`: `node_modules/@hypersvg/core/spec/2.0/`):
 
 - `01-model.md`: the model in one page.
 - `03-story.md`: scenes, links and endings.

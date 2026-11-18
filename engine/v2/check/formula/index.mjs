@@ -1,6 +1,7 @@
 // Formula proofs (5.1.3, 5.6, 5.6.7): parse every formula and template, resolve every name in its scope, infer its type,
 // refuse a type that does not fit the field, and prove the ranges the fields need.
-// Codes: E-FORMULA, E-REF-UNKNOWN, E-REF-PRIVATE, E-NAME-SHADOW, E-CYCLE, E-TYPE, E-RANGE, E-MOTION-RANGE, E-CLOCK-SPEED.
+// Codes: E-FORMULA, E-REF-UNKNOWN, E-REF-PRIVATE, E-NAME-SHADOW, E-CYCLE, E-TYPE, E-RANGE, E-MOTION-RANGE, E-CLOCK-SPEED,
+// and the notes W-MATH-UNROUNDED and W-LOOKUP-ARRAY.
 import { parse, parseTemplate, textSlot } from '../../src/formula.mjs';
 import { walkBehaviour } from '../refs/walk.mjs';
 import { infer, fromDecl, misfit, T } from './infer.mjs';
@@ -13,7 +14,7 @@ import { markChannel } from '../../src/physics.mjs';
 import { growthOf } from '../builtins.mjs';
 const CHANNELS = motionChannels();
 
-const CODE = { unknown: 'E-REF-UNKNOWN', private: 'E-REF-PRIVATE', type: 'E-TYPE', formula: 'E-FORMULA', shadow: 'E-NAME-SHADOW', cycle: 'E-CYCLE', range: 'E-RANGE' };
+const CODE = { unknown: 'E-REF-UNKNOWN', private: 'E-REF-PRIVATE', type: 'E-TYPE', formula: 'E-FORMULA', shadow: 'E-NAME-SHADOW', cycle: 'E-CYCLE', range: 'E-RANGE', lookupArray: 'W-LOOKUP-ARRAY' };
 // A null-prototype map (5.9): toString, valueOf and the other Object.prototype names are never built-ins.
 export const AMBIENT = Object.assign(Object.create(null), {
   now: T.num(), elapsed: T.num(), reducedMotion: T.bool(), timeLimits: T.num(), inputMode: T.str(['keyboard', 'pointer', 'touch']), language: T.str(),
@@ -29,6 +30,32 @@ export const RESERVED_NAMES = new Set(['true', 'false', 'null', 'and', 'or', 'no
 const fmt = (n) => (n === Infinity ? 'unbounded above' : n === -Infinity ? 'unbounded below' : String(n));
 const showRange = (t) => (t.t === 'number' ? `${t.lo === -Infinity ? '-inf' : t.lo}..${t.hi === Infinity ? 'inf' : t.hi}` : t.t);
 const noop = () => {};
+
+// The maths note (5.6.4, D62): pow, exp, log, sin and cos give the platform's result within 1 unit in the last place,
+// so one that decides behaviour unrounded may differ between implementations. The first such call in a formula that
+// is not inside round, floor or ceil, or null. A tree node is {k, ...}; its children are nodes or lists of them.
+const MATHS = new Set(['pow', 'exp', 'log', 'sin', 'cos']);
+const ROUNDING = new Set(['round', 'floor', 'ceil']);
+function unroundedMaths(node) {
+  if (Array.isArray(node)) { for (const x of node) { const f = unroundedMaths(x); if (f) return f; } return null; }
+  if (!node || typeof node !== 'object') return null;
+  if (node.k === 'call' && ROUNDING.has(node.f)) return null;
+  if (node.k === 'call' && MATHS.has(node.f)) return node.f;
+  for (const [key, v] of Object.entries(node)) if (key !== 'k' && v && typeof v === 'object') { const f = unroundedMaths(v); if (f) return f; }
+  return null;
+}
+// The formulas of a site's source: one for a formula, the spans of a template or text slot. Unparsable sources give
+// none (their error is said elsewhere).
+function siteTrees(site) {
+  if (typeof site.src !== 'string') return [];
+  try {
+    if (site.mode === 'formula') return [parse(site.src)];
+    const slot = site.mode === 'text' ? textSlot(site.src) : { template: site.src };
+    if (slot.formula !== undefined) return [parse(slot.formula)];
+    return slot.template !== undefined ? parseTemplate(slot.template).filter(x => typeof x !== 'string').map(x => x.f) : [];
+  } catch { return []; }
+}
+const DECIDES = { guard: 'a guard or condition', stored: 'a value that is written', output: 'an output' };
 const esc = (k) => String(k).replace(/~/g, '~0').replace(/\//g, '~1');
 
 // What a document declares: a scope that answers names (own, then the experience's, then ambient).
@@ -343,6 +370,10 @@ export function check(ctx) {
         env = envFor(o.scope, { eventOk: site.eventOk, itemOk: site.itemOk, uses: usesFn });
       }
       runSite(o, o.scope, site, rep, env);
+      if (site.decides) {
+        const f = siteTrees(site).map(unroundedMaths).find(Boolean);
+        if (f) rep('W-MATH-UNROUNDED', site.path, `${f}(...) reaches ${DECIDES[site.decides]} unrounded; ${f} gives the platform's result within 1 unit in the last place, so another implementation may decide otherwise. Wrap it in round(...), floor(...) or ceil(...) to the precision the decision needs (5.6.4)`);
+      }
     }
     // a computed value in a cycle (5.2)
     for (const name of o.scope.computed.keys()) {

@@ -50,7 +50,8 @@ export const COMMAND_HELP={
 `,
  test:`Usage: hypersvg test [folder] [options]
   Checks, plays every scene and control in Node, then measures in a browser if Playwright is there.
-  --quick              the wide pass only (faster)
+  --quick              the wide pass only (faster); it still opens a browser when Playwright is there
+  --node-only          no browser at all: the check and the Node play only
   --min-width <px>     run the phone pass at this width (100 to 2000)
   --browser required   fail when the browser pass cannot run
   --json               the report as JSON on stdout (notes go to stderr)

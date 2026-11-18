@@ -58,7 +58,7 @@ A value's `lifetime` says how long it lasts.
 | `moment` | While its owner is active: a scene from entry to exit, a use of a component from creation to removal. Kept while the owner is suspended by a visit (3.7). | On fresh entry or creation | scenes, components |
 | `run` | One run of the experience: from mounting it until it is closed or restarted (`player.restart()`, 10.6). | On mount and on restart | experiences, shells |
 | `session` | Until the browser session ends. Survives a reload in the same tab. | When the session ends | |
-| `saved` | Across runs, on the device or in host storage. | On `resetSaved` or when storage is cleared | |
+| `saved` | Across runs, on the device or in host storage. | On `player.resetSaved` or when storage is cleared | |
 
 The story graph's memory (3.8) uses the same words: `run`, `session`, `saved`.
 
@@ -186,7 +186,7 @@ out when the type implies it: a string is `text`, a string with `enum` is `choic
 | `point` | array `[x, y]`, numbers 0..1 | A place in a picture, such as a photo's focal point | `cover` crops (the `fit` add-on) |
 | `rows` | array of objects | Rows in the shape of a data table named by the field's `table` key (2.8) | repeated uses (4.5) |
 | `row` | object with declared `properties` | One row, such as a data table's row a parent looked up and passes to a component | formulas reading its members |
-| `url` | string | An absolute `https:` address that `openUrl` opens (10.4) | `player.openUrl` |
+| `url` | string | An absolute `https:` address that `player.openUrl` opens (10.4) | `player.openUrl` |
 | `freeText` | string | Words a visitor types, at most 500 characters | an add-on call that declares it (the `ai` add-on) |
 | `richText` | array of runs `{text, style?, optional?}` | Needs the `rich-text` capability (10.7). Words with emphasis: each run's `style` is one of the field's `styles` (the text styles of the theme, 7.7, that an editor may choose); a value may give runs per tier and per language, as a `text` field does | a `runs` binding (the `rich-text` add-on) |
 
@@ -226,11 +226,14 @@ A **knob** is a bounded input that may be adjusted, such as speed or difficulty.
 without `initial` must be supplied by every use; a knob that a settings item names always has `initial`. (The model's
 knob `{min, default, max, step}` is written `minimum`, `initial`, `maximum`, `step`.)
 
+- **Knob types.** A knob is a number, a yes/no (`boolean`) or a text value from a fixed list (a `string` with `enum`
+  and `maxLength`). There is no other knob type. A list is refused: `"type": "array"` on a knob is `E-TYPE`. Use one
+  knob per item, or a content field (5.3.1) for a list of words or rows. **[files]**
 - `step` is positive. `initial` and every change lie on the lattice `minimum + n × step`, within 1e-9 × `step` for
   floating-point error. `E-RANGE` **[files]**, **[playing]**
 - A knob's `lifetime` (`run`, `session` or `saved`) applies to changes made while playing through a setting or the
   host. It defaults to `run`;
-  `saved` remembers a person's setting across runs and is not cleared by `resetSaved`. On mount the knob takes its
+  `saved` remembers a person's setting across runs and is not cleared by `player.resetSaved`. On mount the knob takes its
   `initial`, then a stored value, then any host change. Changes made while making are written into the files.
   Content fields have no lifetime: their source sets them.
 
@@ -344,8 +347,7 @@ text slots: the slot's declared type no longer changes how a string is read.
   (`"Try another ending"`) is an everyday word and passes. **[files]**
 - A text field given in `with` may also be a tier object or a language object (5.3.1), and a `rows` field literal
   JSON rows.
-- The K2 rewrite tool (`docs/spec-2.0-work/tools/k2/k2.mjs`) rewrites files written before D36, and the upgrade tool
-  uses the same mapping:
+- The upgrade tool (A13) rewrites files written before D36 with this mapping:
 
   | Before D36 | Now |
   |---|---|
@@ -358,7 +360,12 @@ text slots: the slot's declared type no longer changes how a string is read.
 
 ### 5.6.2 Grammar
 
-Whitespace is allowed between tokens.
+Whitespace is allowed between tokens. Whitespace is exactly these 25 characters, the set JavaScript's `\s` matches
+(D62): U+0009 tab, U+000A line feed, U+000B line tab, U+000C form feed, U+000D carriage return, U+0020 space, U+00A0
+no-break space, U+1680, U+2000 to U+200A (the eleven spaces of fixed width), U+2028 line separator, U+2029 paragraph
+separator, U+202F narrow no-break space, U+205F medium mathematical space, U+3000 ideographic space and U+FEFF (the
+byte order mark). Any other character outside a string that is not part of a token is refused (`E-FORMULA`): U+0085,
+U+180E and U+200B are not whitespace. Written out after `2.0.0-next.0`; the engine is unchanged.
 
 ```ebnf
 formula     = conditional ;
@@ -383,6 +390,8 @@ number      = digit, {digit}, [".", digit, {digit}], [ ("e"|"E"), ["+"|"-"], dig
 - Tokenize a whole identifier-shaped word first. Exactly `true`, `false` and `null` become literal tokens before name
   lookup; `trueValue` stays a name. `and`, `or` and `not` are reserved, not operators. **[files]**
 - Strings use single or double quotes, JSON escapes, and `\'` inside single quotes. No raw control characters.
+- A number literal is read as the double nearest its exact decimal value, ties to even, whatever its length. A
+  literal whose value is not finite (`1e999`) is refused (`E-FORMULA`); one too small to represent reads as 0.
 - Not in the language: comments, trailing commas, assignment, methods, user functions, regular expressions, spread,
   backtick templates, globals, imports and any dynamic code. `E-FORMULA` **[files]**
 - `__proto__`, `prototype` and `constructor` are refused as names and as member keys, including computed keys. Only
@@ -401,20 +410,26 @@ number      = digit, {digit}, [".", digit, {digit}], [ ("e"|"E"), ["+"|"-"], dig
 | 3 | `&&` | left | booleans; lazy |
 | 4 | `===`, `!==` | left | any; scalars by type and value, arrays and objects by deep JSON equality |
 | 5 | `<`, `<=`, `>`, `>=` | left | numbers |
-| 6 | `+`, `-` | left | numbers; `+` also joins two strings |
+| 6 | `+`, `-` | left | numbers; `+` also joins two strings, or text and a number (5.6.1) |
 | 7 | `*`, `/`, `%` | left | numbers |
 | 8 | `!`, unary `+`, unary `-` | right | boolean for `!`, numbers otherwise |
 | 9 | `.`, `[ ]`, calls | left | |
 
-- There is no coercion. `"3" + 1` is a type error. **[files]**, **[playing]**
+- There is no coercion beyond `+` joining text and a number (5.6.1): `"3" + true` and `"3" - 1` are type errors.
+  **[files]**, **[playing]**
 - A lazy operator does not evaluate the branch it skips: the skipped branch costs no budget and cannot fault. The
   checker still type-checks every branch. **[files]**, **[playing]**
 - Division or remainder by zero, a missing member, a wrong operand type and a non-finite result fault the formula.
   `E-FORMULA` **[playing]**
 - `%` is the truncated remainder: its sign follows the left operand (`-7 % 3` is `-1`). It accepts non-integers.
+  `a % n` is the exact remainder of `a ÷ n` truncated toward zero, as IEEE 754 `fmod` gives it; it is never computed
+  as `a - n × trunc(a / n)`.
 - `===` between values of different types is false; the checker warns when it can see the types never match.
 - Indexes are zero-based. `[ ]` reads arrays and objects; `length` counts a string's Unicode code points.
   **[playing]**
+- Text is a sequence of UTF-16 units. `length` and `[ ]` count code points: a high surrogate followed by a low
+  surrogate is one code point, and any other surrogate is one code point on its own. `===` compares the units; text is
+  never normalized, so `é` and `e` followed by U+0301 differ. **[playing]**
 
 ### 5.6.4 Functions
 
@@ -432,7 +447,7 @@ The function list is closed. No other call is accepted. `E-FORMULA` **[files]**
 | `length` | Array items or string code points: `length(choices)` |
 | `at` | Array and index (truncated toward zero), or object and string key, with a required fallback: `at(choices, 2, null)` |
 | `includes` | Array and scalar member: `includes(seen, item.id)` |
-| `lookup` | Rows, key column, scalar key, required fallback; first match in order: `lookup(data.topics, 'id', topic, null)` |
+| `lookup` | Rows, key column, scalar key, required fallback; first match in order: `lookup(data.topics, 'id', topic, null)`. A row is an object; on rows that are arrays the checker warns (`W-LOOKUP-ARRAY`, D64) |
 | `append` | Array, item, maximum 1..1024; a new array keeping the newest items: `append(journey, {"stop": stopId}, 128)` |
 | `filter` | Array and row predicate: `filter(data.topics, item.enabled)` |
 | `count` | Array and row predicate: `count(choices, item.correct)` |
@@ -472,6 +487,26 @@ The function list is closed. No other call is accepted. `E-FORMULA` **[files]**
   argument, before the row function binds its own: `sum(range(index), rows[item].share)` is the share of the rows
   before this one (a donut's start). **[files]**, **[playing]**
 - No randomness is hidden. A new draw needs an authored write of a new seed. **[files]**
+- **Text order.** `sort` compares text keys unit by unit; at the first unit that differs, surrogates (the units
+  0xD800 to 0xDFFF) sort after every other unit. For text with no lone surrogate this is code point order. No
+  function compares text by locale: `'B'` sorts before `'a'`, and `'z'` before `'é'`. **[playing]**
+- **Maths.** `+`, `-`, `*`, `/`, `%`, `sqrt`, `floor`, `ceil`, `round`, `min`, `max` and `clamp` are exact on every
+  platform (`sqrt` is correctly rounded). `pow`, `exp`, `log`, `sin` and `cos` give the platform's result, within 1
+  unit in the last place of the exact one; implementations may differ in the last bits (D62). `sin(d)` and `cos(d)`
+  are computed on `(d × π) / 180`, with π the nearest double and `d × π` first; at whole multiples of 90 they are
+  exactly 0, 1 or −1. `pow(a, 0)` is 1, `exp(0)` is 1 and `log(1)` is 0 exactly. A value that decides behaviour (5.8)
+  should not depend on the last bits of these functions: round it to the precision the decision needs. The checker
+  gives a note where it does not (`W-MATH-UNROUNDED`). **[files]**, **[playing]**
+- **Number text.** In `numberText` and `formatNumber` the decimals are truncated toward zero, then must be 0..8
+  (`numberText(x, 2.9)` uses 2). `formatNumber` puts the group mark between every three digits of the whole part,
+  counted from the right; there is no other grouping. **[playing]**
+- **`plural`** uses the active language's CLDR cardinal rules, as the platform gives them, applied to the count
+  written as a decimal with at most 3 fraction digits (as `Intl.PluralRules` does), using its absolute value. The
+  rules may differ between platforms and CLDR versions. Where the platform has no rules for the language, the form is
+  `one` for exactly 1 and `other` for any other count. `plural` is presentation (5.8): its result must not decide
+  behaviour (D62). **[playing]**
+- **Time.** No function reads a clock, a timezone or a calendar. Time comes in only as the numbers `now` and
+  `elapsed` (5.9).
 
 ### 5.6.5 Seeded randomness
 
@@ -482,6 +517,9 @@ operations: truncate the seed toward zero and take it modulo 2^32 (so negative a
 computed in that order in double precision. `shuffle` copies the array, then for `i` from `n - 1` down to 1 swaps the
 items at `i` and `j = mix(seed + (n - 1 - i)) % (i + 1)` (the sum is formed before the conversion); it never changes
 its input. These are format algorithms, not calls into content code. **[playing]**
+
+The seed's truncation and modulo are exact: take the truncated seed modulo 2^32 (a value 0 to 2^32 − 1), whatever
+its size; never convert a seed above 2^63 to a machine integer first.
 
 ### 5.6.6 Budgets
 
@@ -494,10 +532,35 @@ its input. These are format algorithms, not calls into content code. **[playing]
 | Items in any array a function reads or returns | 1024 |
 | Result size, serialized | 65,536 UTF-16 units |
 
-**Work steps.** One step for each call, operator, name, member access and literal evaluated; for each row a row
-function visits; for each item `sort` orders or `shuffle` mixes; and for each value an equality (`===`, `!==`,
-`includes`, `lookup`) compares, nested values included. One step for every 16 items, or part of 16, that `append` or
-`range` builds, and for every 16 UTF-16 units, or part of 16, that `+` joins or that `length` or a string index reads.
+**The result size** is the length in UTF-16 units of the result written as JSON: no spaces; in strings only `"`, `\`
+and characters below U+0020 escaped (`\b`, `\f`, `\n`, `\r`, `\t`, else `\u00XX`), and a lone surrogate as
+`\uXXXX`; numbers as ECMAScript's `Number.prototype.toString` writes them (`1e+21` is 5 units).
+
+**Work steps.** Every implementation counts them as the reference engine does, so a formula faults at the same step
+everywhere (D62). The conformance files give the count of every case (5.6.8, `steps`). Changed after `2.0.0-next.0`:
+this list now writes out the engine's counts.
+
+- **Nodes.** One step for each node evaluated: a literal, a name, a member access, an operator, a `? :` and each
+  array or object literal, and each call. A call's arguments are nodes of their own. A lazy branch that is skipped is
+  not evaluated and costs nothing.
+- **Equality.** `===`, `!==`, `includes` and `lookup` charge one step for each value they compare, nested values
+  included: `[1, 2] === [1, 2]` charges 3 on top of its 7 nodes. `includes` stops at the first match.
+- **Rows.** A row function charges one step for each row of its array, on top of its row formula's steps for each
+  row. `fold` evaluates its array and its start once. `filter`, `count` and `sum` evaluate their array once.
+  `minBy` and `sort` evaluate their array twice: once to read the list and once for the rows.
+- **`sort`.** On top of its rows, `n × ceil(log2(n + 1))` steps for `n` items, and its third argument when given.
+  `sort(range(8), item)` costs 55: 1 for the call, 3 and 3 for the array twice, 8 rows, 8 row formulas and
+  8 × 4 for ordering. `minBy(range(8), item)` costs 23 and `count(range(8), true)` costs 20.
+- **`lookup`.** One step for each row it visits, until the first match, and the equality's steps for each row that has
+  the key column.
+- **`shuffle`.** One step for each item it mixes.
+- **Building and reading.** One step for every 16 items, or part of 16, that `append` (the new array, the item
+  included) or `range` builds, and for every 16 UTF-16 units, or part of 16, that `+` joins (both texts, a number as
+  printed) or that `length` or a string index reads (the whole string).
+- **Templates.** A template counts the steps of all its spans together, and of the words they expand.
+- **The fault.** Steps are added as they happen. The step that takes the count over the limit faults (`E-RANGE`); the
+  count at that point is the case's `steps`.
+
 So the work of one evaluation is bounded, whatever it builds or compares; a row formula of 64 steps fits every row of
 the largest table (1024 rows). A `+` that would build a string over the result size faults at once. The steps also
 count toward the formula steps of the transaction (9.2).
@@ -543,6 +606,22 @@ timeout and no partial result. `E-RANGE` **[files]**, **[playing]**
   **[playing]**
 - Editors print an unchanged formula exactly as written (tool conformance, section 10).
 
+### 5.6.8 Conformance files
+
+Added after `2.0.0-next.0`. The folder `spec/2.0/conformance/formula/` holds test files for the formula language
+and templates (5.6, 5.7): one JSON file per area. Each case gives a formula or a template, the values, built-in
+names, active states, language and words it reads, and the result or the error code (`E-FORMULA`, `E-RANGE`), with
+the work steps it counts (5.6.6, `steps`, added later). The folder's `README.md` gives the format. Reading the files
+needs only a JSON parser.
+
+- An implementation of the formula language passes when it gives the result or the error code of every case, with the
+  same work steps. Every function of 5.6.4 and every edge case this section states has cases.
+- A case marked `cldr` rests on the platform's plural rules (2.7); one marked `math` rests on the platform's maths
+  library and passes within 4 units in the last place. Every other case is exact on every platform.
+- The files never hold a lone surrogate escape in a JSON string, so any language's standard JSON reader can read
+  them. A case that needs a lone surrogate writes it as a `\u` escape inside the formula's own text (D64).
+- The engine's own tests run every case, so the files and the engine cannot drift apart.
+
 ## 5.7 Templates for text
 
 A **template** is literal text with `{{ formula }}` spans: `"text": "Score {{ score }} of {{ total }}"`.
@@ -550,8 +629,12 @@ A **template** is literal text with `{{ formula }}` spans: `"text": "Score {{ sc
 - The scanner finds `}}` only outside quoted strings and balanced brackets. `\{{` and `\}}` in the decoded string are
   literal braces; JSON writes the slash as `\\`. **[files]**
 - A span gives a string, a number or a boolean. Numbers print as the shortest decimal that reads back to the same
-  number, never in exponent form; use `formatNumber` for display. `numberText` and `formatNumber` round the number's shortest decimal form half toward +infinity:
-  `numberText(2.675, 2)` is `"2.68"`, `numberText(-2.675, 2)` is `"-2.67"`.
+  number, never in exponent form; use `formatNumber` for display. Exactly: the fewest significant digits that read
+  back to the same double; when several such strings exist, the one nearest the double's exact value, and of two
+  equally near, the one with an even last digit. The digits are written in full, with no trailing zeros after the
+  point, and `-0` prints `0`. The same text is what `+` joins. `numberText` and `formatNumber` round the number's
+  shortest decimal form half toward +infinity: `numberText(2.675, 2)` is `"2.68"`, `numberText(-2.675, 2)` is
+  `"-2.67"`. A result whose digits are all zero has no minus sign: `numberText(-0.001, 2)` is `"0.00"`.
   Booleans print `true` or `false`. Null, arrays and objects cannot be printed. No HTML is parsed. **[files]**,
   **[playing]**
 - Visible prose lives in words files (section 2). A word may contain a template; it is expanded once, in the scope of
@@ -639,6 +722,10 @@ in its `places` key the places its containers may use; the rest are private (sec
 
 A mark that takes no value is written with an empty one, as XML needs: `data-hsvg-fit=""`, `data-hsvg-repeat=""`.
 
+**Place names are ids.** A slot's name (`data-hsvg-slot`) and the `into` of a use that names it follow the id grammar
+(section 2): kebab-case, lower-case letters and digits with a dash between words, such as `speech-point`.
+`speechPoint` and `speech_point` are refused: `E-MARK-VALUE` in the drawing, `E-TYPE` in `into` **[files]**.
+
 ```svg
 <rect id="card__total-bar" data-hsvg-kind="part" data-hsvg-fit="" x="20" y="200" width="160" height="32" fill="#2e7d4f"/>
 <g id="card__rows" data-hsvg-kind="part" data-hsvg-repeat="">
@@ -648,8 +735,8 @@ A mark that takes no value is written with an empty one, as XML needs: `data-hsv
 <rect id="card__face" data-hsvg-kind="part" data-hsvg-role="keep-inside keep-clear" x="120" y="20" width="60" height="60" fill="none"/>
 ```
 
-Today's `data-hsvg-region` is `E-WORD-RENAMED`: `fit` is `data-hsvg-fit`, `layout-plan` is `data-hsvg-fit="items"`,
-`video` is `data-hsvg-fit="video"` and `repeat` is `data-hsvg-repeat`. Today's `data-hsvg-safe-area` is the same words
+The earlier `data-hsvg-region` is `E-WORD-RENAMED`: `fit` is `data-hsvg-fit`, `layout-plan` is `data-hsvg-fit="items"`,
+`video` is `data-hsvg-fit="video"` and `repeat` is `data-hsvg-repeat`. The earlier `data-hsvg-safe-area` is the same words
 in `data-hsvg-role` (D33) (files).
 
 Route places and video boxes are core drawing words (D28): a drawing may carry them whatever its `needs`. A route place
@@ -726,7 +813,7 @@ guesses: `"type"` for `"kind"`, `knob` or `wheel` for `dial`, and `options` with
 | `held` | button, toggle, slider, dial | A boolean body value, true while the control is held. A slider's or dial's is true from a pointer or touch press until its release or cancel, never from keys (a value bubble shows only while held). |
 | `value` | toggle, choice, slider, dial | A toggle's: a boolean body value of the block that each press flips, before the event is queued; actions may also write it. The toggle is a checkbox (`aria-checked`), and shows its `selected` variant while the value is true: a checkbox or an on and off chip. It may be used with `held`. `E-TYPE` (files) when it does not name a boolean value of the block or a boolean knob. A choice's, slider's or dial's: the block's own value (section 5) written before the event, or a person's setting as `player.setting` names one (5.15): a drawn sound slider or settings switch. Any of the four may name a **knob** of the experience (5.3.2): the control then writes the knob, as a person's change (human-only); every block hears `changed:<knob>` and the host hears `hsvg.changed` (10.6). **The latest change wins (D45):** a host `set` after a press takes effect, and so does a press after a host `set`. So an asset's knob and its own drawn control share one value, with no copy. |
 | `options` | choice | Required. Option id to `{target, value, enabled?, label?, keys?}`; `value` is a formula of the value's type, with text in single quotes (D36). An option's position, from 1, is its target's place in document order among the control's options. The control's `enabled` covers every option; an option's own `enabled` only disables it further, and its `keys` select it. |
-| `axis`, `range`, `positions` | slider, dial (no `axis`) | A slider's travel axis (`x`, the default, or `y`), travel `[start, end]`, optional number of positions. The travel is how far the handle moves from where it is drawn, along its axis, in its parent's units: the solar system's `[0, 256]` runs from the handle's drawn place to 256 units along x, in every layout and at every size. It lies inside the handle's motion range for that axis (`translate-x` or `translate-y`); `E-RANGE` (files). The travel maps linearly onto the bounds of the number `value`: start gives its minimum, end its maximum; with `positions`, the value snaps to that many evenly spaced values. A dial turns its target about the target's pivot, and `range` is the turn in degrees from where the target is drawn, clockwise positive as SVG `rotate`: the oven's `"heat": {"kind": "dial", "target": "knob", "value": "share", "range": [-135, 135]}` turns its knob from 135° left of its drawn angle to 135° right. The span is more than 0 and at most 360; the target has a pivot (`E-PIVOT`) and a `rotate` motion range that holds the range, or `rotate *`; `E-RANGE` (files). |
+| `axis`, `range`, `positions` | slider, dial (no `axis`) | A slider's travel axis (`x`, the default, or `y`), travel `[start, end]`, optional number of positions. The travel is how far the handle moves from where it is drawn, along its axis, in its parent's units: the solar system's `[0, 256]` runs from the handle's drawn place to 256 units along x, in every layout and at every size. It lies inside the handle's motion range for that axis (`move-x` or `move-y`); `E-RANGE` (files). The travel maps linearly onto the bounds of the number `value`: start gives its minimum, end its maximum; with `positions`, the value snaps to that many evenly spaced values; else a knob's `step` rounds it; with neither, a pointer or a turn gives the value rounded to the largest power of ten that leaves at least 100 values between the bounds (10 to 100 gives tenths, 0 to 270 whole numbers, 0 to 1 hundredths) **[playing]**. The handle shows the value at rest only through a binding: `move` moves it by its number in drawing units, not along the travel, so the binding maps the bounds onto the travel, `start + (v - min) / (max - min) * span`: `{"target": "handle", "move": "(level - 10) / 90 * 200", "axis": "x"}` for `level` from 10 to 100 over `[0, 200]`. A dial's `rotate` binding maps the same way. Without such a binding, `W-CONTROL-STILL` (files). A dial turns its target about the target's pivot, and `range` is the turn in degrees from where the target is drawn, clockwise positive as SVG `rotate`: the oven's `"heat": {"kind": "dial", "target": "knob", "value": "share", "range": [-135, 135]}` turns its knob from 135° left of its drawn angle to 135° right. The span is more than 0 and at most 360; the target has a pivot (`E-PIVOT`) and a `rotate` motion range that holds the range, or `rotate *`; `E-RANGE` (files). |
 | `valueText` | slider, dial | A template (section 5) giving the spoken value, such as `"{{ numberText(amount, 0) }} °C"`: the engine writes it as the control's `aria-valuetext` and keeps it fresh when a name it reads changes. Without it the value is spoken as the number. A label that reads its own `value`, directly or through a computed value, is `W-LABEL-HAS-VALUE` (files): the value would be spoken twice. |
 | `drops`, `accept`, `missEvent`, `picked`, `snap` | drag | Allowed drop targets, each a part of the same drawing (`E-REF-UNKNOWN`, files), a formula tested at release, the event for a drop that `accept` refuses, a boolean value of the block that is true while the item is picked up, and whether an accepted item stays on its drop (default `false`). |
 

@@ -1,0 +1,10 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "chime",
+  "about": {"title": "Chime", "description": "A small HyperSVG for the engine's tests: a button that plays a made sound."},
+  "language": "en",
+  "audioSynths": {"tone": {"wave": "triangle", "from": 660, "to": 880, "durationMs": 120, "gain": 0.4}},
+  "outputs": {"rang": {"kind": "event"}},
+  "story": {"start": "chime", "scenes": {"chime": "scenes/chime/scene.json"}, "endless": true}
+}

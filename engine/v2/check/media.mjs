@@ -12,7 +12,7 @@
 //   with the other formulas, formula/sites.mjs);
 // A drawn video region is core drawing (D28): one that no video binding uses is W-PLACE-UNUSED (places.mjs).
 import crypto from 'node:crypto';
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { walkBehaviour } from './refs/walk.mjs';
 import { packageNeeds, capabilityNames } from '../src/capabilities.mjs';
 import { callName } from './builtins.mjs';
@@ -166,7 +166,7 @@ export function check(ctx) {
     // Every drawn video region, and the element each local id is drawn on.
     const drawn = [];
     for (const [layout, dr] of Object.entries(o.drawings || {})) {
-      let root; try { root = parseXml(dr.text); } catch { continue; }
+      let root; try { root = parseXmlShared(dr.text); } catch { continue; }
       const ns = doc.id; const local = (x) => (x === ns ? x : x.startsWith(`${ns}__`) ? x.slice(ns.length + 2) : x);
       const nodes = new Map(); const regions = [];
       const walk = (n) => { if (!n.name) return; if (n.attrs.id) nodes.set(local(n.attrs.id), n); if (boxOf(n.attrs) === 'video') regions.push(n); n.children.forEach(walk); };

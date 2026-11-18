@@ -1,0 +1,8 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "chime",
+  "drawing": "chime.svg",
+  "controls": {"ding": {"kind": "button", "target": "ding", "event": "ding", "label": "Ding"}},
+  "on": {"ding": [{"id": "ring", "actions": [{"id": "t", "play": "'tone'", "as": "sound"}, {"id": "e", "emit": "rang"}]}]}
+}

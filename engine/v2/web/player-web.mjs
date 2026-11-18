@@ -7,14 +7,16 @@
 // - mount(container, package, options), the host API of 10.6, is in mount-web.mjs: it checks the package first, so it
 //   carries the checkers, which a packed page does not (D19).
 // Plain ES modules, served as files; no network beyond the page's own origin.
+// API labels (spec 10.16, D63), as the package's ./player: VERSION is stable; play is experimental; boot, useAudio,
+// chooseFrame, learnFits, reducedUnder and linkWithoutHostLine are internal.
 import { readExperience } from '../src/read.mjs';
 import { Player } from '../src/story.mjs';
 import { checkSetting } from '../src/runtime.mjs';
 import { Drawing, narrowLayouts } from '../src/drawing.mjs';
 import { hostApi } from '../src/host.mjs';
-import { attachAudio } from './audio-web.mjs';
 import { attachInput } from './input-web.mjs';
 import { packageMeasures, experienceResources } from '../src/host-profile.mjs';
+export { VERSION } from '../src/version.mjs';
 import { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } from '../src/layout.mjs';
 
 // Did a block, or a use inside it, take give-way steps in this drawing (8.4)? Its rules used a step, or a text gave way.
@@ -92,6 +94,13 @@ export function learnFits(d, roots, memory) {
 }
 
 // A booted page is the whole page (true size, 7.3) unless it sits in a frame: a frame is a host's slot.
+// Sound (6.10) is a page part its entry gives: audio-web.mjs calls useAudio when it loads. A packed page carries it
+// only when its experience uses sound; a HyperSVG page loads it only then (added after 2.0.0-next.0). Without it
+// nothing sounds, and an experience with no sound resource and no made sound cannot ask for one.
+let attachAudio = null;
+export function useAudio(attach) { attachAudio = attach; }
+const SILENT = { log: [], lines: [], advance() {}, destroy() {}, stats: async () => ({ armed: false, requests: 0, started: 0, decoded: 0, failed: [], music: null }) };
+
 export async function boot(container, { filesUrl, files: givenFiles = null, schemasUrl, checked = false, ...rest } = {}) {
   let framed = false;
   try { framed = window.top !== window.self; } catch { framed = true; }
@@ -102,6 +111,7 @@ export async function boot(container, { filesUrl, files: givenFiles = null, sche
   // page registers the ones its needs names before it boots. The dev player checks every file (src/load.mjs, with the
   // checkers and the kit loader); a packed page only parses what the packer checked and flattened.
   if (!checked && !rest.modules) await import('../src/capabilities/all.mjs');
+  if (!checked) await import('./audio-web.mjs');
   const load = checked ? null : (await import('../src/load.mjs')).loadExperience;
   return play(container, { files, schemas, test: true, wholePage: !framed, ...(load ? { load } : {}), ...rest });
 }
@@ -154,7 +164,7 @@ function linkWithoutHost(state, container, host) {
       box = document.createElement('div');
       box.setAttribute('role', 'status');
       box.setAttribute('data-hsvg-notice', 'openUrl');
-      box.setAttribute('style', 'position:absolute;left:0;right:0;top:0;padding:8px 12px;background:#1f3a5f;color:#fff;font:14px/1.4 system-ui,sans-serif;z-index:9');
+      box.style.cssText = 'position:absolute;left:0;right:0;top:0;padding:8px 12px;background:#1f3a5f;color:#fff;font:14px/1.4 system-ui,sans-serif;z-index:9';
       if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
       container.appendChild(box);
     }
@@ -174,7 +184,10 @@ function linkWithoutHost(state, container, host) {
   return (f) => { if (f?.code === 'E-GRANT' && /openUrl/.test(String(f?.message ?? ''))) tell(linkWithoutHostLine(state.player)); };
 }
 
-export function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null }) {
+export function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null }) {
+  // The host's error callback always hears {code, message} and what else is known (D63): every call below gives a
+  // message; a failure with no code of its own is E-HOST-ERROR (src/error-detail.mjs says the same).
+  const onError = givenOnError && ((d) => givenOnError({ ...d, code: d.code || 'E-HOST-ERROR' }));
   // Shared across separately imported player copies in the same page; stable across this mount's redraws.
   const sequence = Symbol.for('hypersvg.mountSequence');
   const namespace = `hsvg${globalThis[sequence] = (globalThis[sequence] || 0) + 1}__`;
@@ -198,9 +211,11 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
   // it is made. The page then stops with that code and message, as any other fault does (9.2), and plays nothing.
   let player = null;
   let made = null;
-  // The page's wall clock gives the ambient now (5.5); a test or replay sets a fixed epochMs instead.
-  try { player = new Player(loaded.experience, { capabilities, storage, host, options, measures, modules, wallClock: () => Date.now() }); } catch (e) { if (!e?.code) throw e; made = e; }
-  const state = { player, namespace, drawing: null, scene: null, loaded, errors: [], stopped: null };
+  // The page's wall clock gives the ambient now (5.5), or the host's clock(engineMs) (added after 2.0.0-next.0); onMove
+  // hears every move (9.6).
+  try { player = new Player(loaded.experience, { capabilities, storage, host, options, measures, modules, wallClock: clock || (() => Date.now()), onMove }); } catch (e) { if (!e?.code) throw e; made = e; }
+  // nonce: the host page's CSP nonce, given to every <style> the player adds (added after 2.0.0-next.0).
+  const state = { player, namespace, drawing: null, scene: null, loaded, errors: [], stopped: null, nonce };
   // A fault from a control, a timer, a marker, an effect or the start stops the experience with a visible message
   // naming the code and the owner's address (9.2). Every path (a real press, a key, the test hook, the clock) comes
   // here. After it, the clock stops and input is ignored.
@@ -218,10 +233,11 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     player?.stop?.(f, source); // the engine's one stopped state: no later transaction, clock tick or host call
     onError?.({ code, address, message, source });
     try { state.audio?.destroy(); } catch { /* nothing sounds */ } // audio, music and spoken recordings stop for good
+    if (faultBox === false) return; // the host shows faults itself (onError, events); added after 2.0.0-next.0
     const box = document.createElement('div');
     box.setAttribute('role', 'alert');
     box.setAttribute('data-hsvg-fault', code || 'fault');
-    box.setAttribute('style', 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:#7a1010;color:#fff;font:15px/1.4 system-ui,sans-serif;z-index:10');
+    box.style.cssText = 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:#7a1010;color:#fff;font:15px/1.4 system-ui,sans-serif;z-index:10';
     box.textContent = `This experience stopped: ${code || 'fault'} in ${address || 'the experience'}. ${message}`;
     if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
     container.appendChild(box);
@@ -251,7 +267,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     if (!soundWarned) { soundWarned = true; console.warn(`hsvg: ${d.message}`); }
     onError?.(d);
   };
-  state.audio = attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed });
+  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed }) : SILENT;
   // Reduced motion (5.5, 6.7): the person's prefers-reduced-motion is the ambient reducedMotion from the start.
   const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   if (motionQuery) { player.state.ambient.motionSystem = motionQuery.matches === true; player.state.ambient.reducedMotion = motionQuery.matches === true || player.state.ambient.motionChosen === true; }
@@ -263,6 +279,35 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     if (bad) { halt({ code: bad[0], address: 'experience', message: `timeLimits: ${bad[1]}` }, 'start'); return stoppedAtStart(); }
     player.state.ambient.timeLimits = timeLimits;
   }
+  if (language) player.state.ambient.language = language; // host words (src/host-words.mjs), added after 2.0.0-next.0
+  // The host's picks (7.1, 10.6): its option on a host-selected language or theme axis of the experience, and its
+  // theme (the option theme, added after 2.0.0-next.0). They apply to the whole experience. A pick the host made (the
+  // mount's options, the profile's options, theme) wins over an input pick on the same axis; an axis default only
+  // fills in where no input picks. Host words keep their own language.
+  const hostSet = { theme: theme ?? undefined }; const hostDefault = {};
+  for (const a of player.exp.doc.axes || []) {
+    const id = a?.id ?? a?.axis;
+    if ((a?.axis !== 'language' && a?.axis !== 'theme') || player.options?.[id] === undefined) continue;
+    const made = Object.hasOwn(options || {}, id) || Object.hasOwn(player.host?.profile?.options || {}, id);
+    (made ? hostSet : hostDefault)[a.axis] ??= player.options[id];
+  }
+  if (language) { delete hostSet.language; delete hostDefault.language; }
+  const hostTheme = hostSet.theme;
+  if (hostTheme !== undefined && !Object.hasOwn(player.exp.doc.themes || {}, hostTheme)) {
+    halt({ code: 'E-AXIS-INPUT', address: 'experience', message: `theme ${JSON.stringify(hostTheme)} is not one of the experience's themes (${Object.keys(player.exp.doc.themes || {}).join(', ') || 'it declares none'})` }, 'start');
+    return stoppedAtStart();
+  }
+  if (hostSet.theme === undefined) delete hostSet.theme;
+  // The host's colours (7.7.1, experimental): checked once against the contrast rules, all or nothing. A set that
+  // fails keeps the author's theme, and the host hears why (W-HOST-COLOR-VALUE, W-HOST-COLOR-CONTRAST). The mounts
+  // pass the check (checkColors: src/host-colors.mjs hostColors), so a packed page's core does not carry it.
+  if (colors !== null && colors !== undefined && checkColors) {
+    const hc = checkColors(player.exp, colors, hostSet.theme);
+    state.colors = hc.roles;
+    for (const w of hc.warnings) { state.errors.push(w.message); if (onError) onError(w); else console.warn(`hsvg: ${w.code} ${w.message}`); }
+  }
+  const hostLanguage = hostSet.language ?? hostDefault.language;
+  if (hostLanguage !== undefined) player.state.ambient.language = hostLanguage;
   player.setSize(sizeNow());
   state.fault(player.start(), 'start');
   // A fault while the start scene was made (a missing module or capability, 9.2) leaves no scene to draw.
@@ -309,16 +354,17 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
   // Picking by input (7.1): what the input selectors pick now, from the mounted blocks' axes (layout.mjs).
   const readPicks = () => {
     const blocks = Object.keys(player.state.blocks).map(a => [a, player.def(a)]).filter(([, d]) => d?.axes);
-    return inputPicks(blocks, (a, n) => player.read(a, n));
+    const p = inputPicks(blocks, (a, n) => player.read(a, n));
+    p.experience = { ...hostDefault, ...p.experience, ...hostSet };
+    for (const axis of Object.keys(hostSet)) for (const b of Object.values(p.blocks)) delete b[axis];
+    return p;
   };
   state.picks = readPicks();
   // A language picked by input applies from boot, as on a change (B7, batch 2): one transaction before the first
   // drawing, so every block hears changed:language and the first frame is in that language.
   const bootLanguage = state.picks.experience.language;
   if (bootLanguage && bootLanguage !== player.state.ambient.language && !state.picks.bad.length) {
-    const r = player.transaction('host', () => { player.state.ambient.language = bootLanguage; player.queueAll('changed:language'); });
-    player.afterCommit?.();
-    state.fault(r, 'start');
+    state.fault(player.setLanguage(bootLanguage), 'start');
     if (state.stopped) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
     state.picks = readPicks();
   }
@@ -336,7 +382,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
   const blockOf = (address) => (address === shellId ? player.exp.shell : player.exp.scenes[address]);
   // A whole drawing for the space: the shell and its stage's scene, or the scene alone. memory: address -> layout.
   const build = (memory, space) => {
-    const d = new Drawing(player, { namespace, layouts: memory, picks: state.picks, theme: state.picks.experience.theme, stageSizes });
+    const d = new Drawing(player, { namespace, layouts: memory, picks: state.picks, theme: state.picks.experience.theme, colors: state.colors || null, stageSizes, nonce });
     if (shellId) {
       d.mountShell(shellId, choose(memory, shellId, blockOf(shellId), space), space);
       const st = d.stageSpace();
@@ -395,7 +441,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
   announcer.setAttribute('data-hsvg-announce', '');
   announcer.setAttribute('role', 'status');
   announcer.setAttribute('aria-live', 'polite');
-  announcer.setAttribute('style', 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0');
+  announcer.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0';
   const announce = (text) => {
     if (!text) return;
     if (!announcer.isConnected) container.appendChild(announcer);
@@ -545,9 +591,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     state.picks = next;
     const lang = next.experience.language;
     if (lang && lang !== player.state.ambient.language) {
-      const r = player.transaction('host', () => { player.state.ambient.language = lang; player.queueAll('changed:language'); });
-      player.afterCommit?.();
-      state.fault(r, 'host');
+      state.fault(player.setLanguage(lang), 'host');
       if (state.stopped) return true;
     }
     relayout(true, true);
@@ -641,9 +685,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     if (state.destroyed || state.stopped) return;
     const on = ev.matches === true;
     if (player.state.ambient.motionSystem === on) return;
-    const r = player.transaction('host', () => player.motionPreference(on));
-    player.afterCommit?.();
-    state.fault(r, 'host');
+    state.fault(player.motion(on), 'host');
     if (!state.stopped) after();
   };
   motionQuery?.addEventListener?.('change', motionChanged);

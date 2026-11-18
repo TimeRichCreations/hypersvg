@@ -17,6 +17,9 @@ export function protectedPath(name,lift=[]){
  // The 2.0 certify tool lives in a folder named proof; it is code, so only that folder is exempt, and never for images.
  const proofTool=/^engine\/v2\/tools\/proof(?:\/|$)/.test(name)&&!RASTER.test(name);
  if(parts.some(p=>['pro','.git','node_modules','private','evidence','sources'].includes(p)||(p==='proof'&&!proofTool)))return true;
+ // Two top-level folders are built here and leave only to their own repositories: php/ and replay/. No policy and no
+ // lift opens them.
+ if(['php','replay'].includes(parts[0]))return true;
  if(/^examples\//i.test(name)&&RASTER.test(name)&&!EXAMPLE_IMAGES.has(name)&&!GALLERY_IMAGE.test(name))return true;
  // A lifted folder, and the folders on the way to it, keep only the private-pack rule.
  if(lift.some(f=>name===f||name.startsWith(f+'/')||f.startsWith(name+'/')))return parts.some(p=>/^(?:private[-_]catalog|ad[-_]catalog|layout[-_]roles?|ad[-_]checkers?|ad[-_]iq)/.test(p));

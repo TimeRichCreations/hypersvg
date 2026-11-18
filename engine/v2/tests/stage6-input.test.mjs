@@ -59,6 +59,24 @@ export const tests = {
     eq(p.controlValue('a', 'gas'), 120);
     eq(p.controlValueDecl('a', 'gas').maximum, 240);
   },
+  'a slider with neither positions nor a step gives round values: at least 100 across its bounds (5.11)'() {
+    const v = (minimum, maximum) => ({ type: 'number', initial: minimum, minimum, maximum });
+    const p = make({
+      values: { level: v(10, 100), share: v(0, 1), turn: v(0, 270), big: v(0, 5000) },
+      controls: {
+        dim: { kind: 'slider', target: 'h1', value: 'level', axis: 'x', range: [0, 200] },
+        mix: { kind: 'slider', target: 'h2', value: 'share', axis: 'x', range: [0, 200] },
+        deg: { kind: 'slider', target: 'h3', value: 'turn', axis: 'x', range: [0, 200] },
+        far: { kind: 'slider', target: 'h4', value: 'big', axis: 'x', range: [0, 200] },
+      },
+    });
+    ok(p.start().ok);
+    eq(p.sliderValueAt('a', 'dim', 0.9654), 96.9, '10..100: tenths, never 96.886');
+    eq(p.sliderValueAt('a', 'mix', 0.33333), 0.33, '0..1: hundredths');
+    eq(p.sliderValueAt('a', 'deg', 0.33333), 90, '0..270: whole numbers');
+    eq(p.sliderValueAt('a', 'far', 0.33333), 1670, '0..5000: tens');
+    eq([p.sliderValueAt('a', 'dim', 0), p.sliderValueAt('a', 'dim', 1)], [10, 100], 'the bounds stay reachable');
+  },
   'a slider on a knob writes the person\'s setting'() {
     const p = make({ controls: { vol: { kind: 'slider', target: 'v', value: 'musicVolume', axis: 'x', range: [0, 10] } } },
       { inputs: { musicVolume: { kind: 'knob', type: 'number', minimum: 0, maximum: 1, step: 0.1, initial: 0.5 } }, settings: { items: [{ id: 'm', knob: 'musicVolume', label: 'Music' }] } });

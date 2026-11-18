@@ -1,0 +1,360 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "harbour-saved",
+ "about": "The harbour asks for saved storage; the play starts with a saved record whose best is 7, so best starts at 7, not at its initial 0.",
+ "package": {
+  "folder": "docs/guide/examples/harbour",
+  "experience": "experience.json",
+  "files": {
+   "crate/component.json": "sha256:5c6ce40c1c1c739226b02fbfedf661ee07ce40e1363198123193de04b97c901d",
+   "crate/crate.svg": "sha256:dd143e13d3d25cf2a585f46ed24997c5b428087564411a7b1007561f14d4f221",
+   "experience.json": "sha256:af88c2d7acd2ffa603cd7f465fed36f1363ad074a4f337d62a1a9b1cb269eb59",
+   "gate.json": "sha256:55dfb25d8c5d4c6e0cf02a50bdfb262e046263036c92e8e70bccecbd36db0881",
+   "gate.svg": "sha256:785866cde97be7021e0a164aba29af92ba9eed0ea64c411746ae89d92f18470c",
+   "harbour.json": "sha256:d8058dfd05573c2ebf93c2d97217ef2cad10e5bc2631ca396aa2a674d2036c2b",
+   "harbour.svg": "sha256:d4a899a8a23f423c853310dd27fa65334cb62b01eae0b0387de5de95ec4d9b14",
+   "shell.json": "sha256:62aab62e75f605c5e9ab2bb6abf1cbc709c1a97655d9c795e02ea6ab140621db",
+   "shell.svg": "sha256:7af9d812f061819f73dcb7980978e65534cb3ba56a7337a09125e2f6915b9839"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": {
+   "saved": {
+    "stamp": "",
+    "values": {
+     "experience#best": 7
+    },
+    "knobs": {},
+    "graph": null
+   }
+  }
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:60309d09ea00bd9ba4a4276628cf7a3667adf77e5fcf69db4bd22749a420b64a",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "gate",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 400,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:e95e9b66c203ae156bd858bf301d66b823fc0eea344d28425a03003cf30c29dc",
+   "heard": [
+    {
+     "t": 400,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 400,
+    "source": "activate",
+    "payload": [
+     "gate",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:1aec3ac5d6acc706a404dd5501f5dcbf36f95e059a24961d3bd4f4d66dd6b446",
+   "heard": [
+    {
+     "t": 400,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "harbour",
+      "link": "in"
+     }
+    },
+    {
+     "t": 400,
+     "name": "ended",
+     "detail": {
+      "scene": "harbour"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1000,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:921945661f779040ef5c8375f2e3166869f4a80eadd9f6e83cf3699f2a570753",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 3000,
+  "fingerprint": "sha256:d834b753db3d0c24566b6e2ec642eee5fb1fbfb8f5f903eda02b6face397e79a",
+  "heard": [],
+  "state": {
+   "now": 3000,
+   "seq": 5,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {
+      "best": 7
+     },
+     "inputs": {
+      "title": "Harbour day",
+      "pace": 2,
+      "shopLink": "https://example.org/harbour"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "shell": {
+     "kind": "shell",
+     "def": "shell",
+     "parent": null,
+     "values": {
+      "settingsOpen": false
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "harbour": {
+     "kind": "scene",
+     "def": "harbour",
+     "parent": null,
+     "values": {
+      "score": 1,
+      "note": "Back in port",
+      "lampOn": false,
+      "speed": 0,
+      "wind": 0,
+      "pick": "",
+      "flight": 0,
+      "tension": 1,
+      "stops": [
+       "Mill",
+       "Quay",
+       "Point"
+      ]
+     },
+     "inputs": {},
+     "machines": {
+      "buoy": [
+       "off"
+      ],
+      "ferry": [
+       "docked"
+      ]
+     },
+     "uses": [
+      {
+       "id": "lead"
+      },
+      {
+       "id": "spare"
+      },
+      {
+       "id": "crates",
+       "keys": [
+        "0",
+        "1",
+        "2"
+       ]
+      }
+     ],
+     "clips": {
+      "roll": {
+       "startedAt": 400,
+       "speed": 2
+      }
+     },
+     "attach": {},
+     "born": 400
+    },
+    "harbour/lead": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Lead"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 400
+    },
+    "harbour/spare": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Spare"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 400
+    },
+    "harbour/crates[0]": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Mill"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 400
+    },
+    "harbour/crates[1]": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Quay"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 400
+    },
+    "harbour/crates[2]": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Point"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 400
+    }
+   },
+   "timers": [
+    {
+     "due": 3400,
+     "scale": 1,
+     "seq": 4,
+     "owner": "harbour",
+     "mid": "buoy",
+     "path": [
+      "off"
+     ],
+     "index": 0
+    }
+   ],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "harbour",
+    "stack": [],
+    "counts": {
+     "in": 1
+    },
+    "visits": {
+     "gate": 1,
+     "harbour": 1
+    },
+    "resume": null,
+    "painted": {
+     "gate": true,
+     "harbour": true
+    },
+    "held": [],
+    "endedReported": {
+     "harbour": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "shell": true,
+     "harbour": true,
+     "harbour/lead": true,
+     "harbour/spare": true,
+     "harbour/crates[0]": true,
+     "harbour/crates[1]": true,
+     "harbour/crates[2]": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

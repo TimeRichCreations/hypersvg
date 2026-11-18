@@ -105,7 +105,9 @@ async function main(){
   run('hsvg pack docs/one-page/example',[at('engine','v2','tools','pack.mjs'),example,path.join(tmp,'pack')]);
   for(const f of [path.join(tmp,'pack')])if(!fs.readdirSync(f).some(n=>n.endsWith('.html')))throw Error('Pack wrote no HTML page');
   if(LEAN_BASE&&there('package.json')&&there('bin','hypersvg.mjs'))leanChecks(tmp);
-  if(!there('kit','2.0','build.mjs'))return console.log('PUBLIC CHECKS PASS: leak check, fast tests, check and pack, the door examples and the hypersvg command.');
+  // The one-file player is committed, so it goes stale after an engine change: a release refuses a stale copy (D59).
+  if(there('engine','v2','tools','bundle-asset.mjs'))run('the one-file player is current',[at('engine','v2','tools','bundle-asset.mjs'),'--check'],{expect:/ is current/});
+  if(!there('kit','2.0','build.mjs'))return console.log('PUBLIC CHECKS PASS: leak check, fast tests, check and pack, the door examples, the hypersvg command and the one-file player.');
   run('core kit build',[at('kit','2.0','build.mjs'),'--core',path.join(tmp,'kit')],{expect:/^core kit:/m});
   const kit=path.join(tmp,'kit','hsvg-2.0-kit'),hsvg=path.join(kit,'bin','hsvg.mjs'),copy=path.join(tmp,'work','one-page');
   fs.cpSync(example,copy,{recursive:true});

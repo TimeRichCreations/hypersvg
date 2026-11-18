@@ -1,5 +1,6 @@
 // Test helpers: paths, schemas, assertions.
 import path from 'node:path';
+import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { loadSchemas } from '../schema/load.mjs';
 
@@ -18,6 +19,8 @@ export function throwsCode(fn, code) {
   throw new Error(`expected ${code}, nothing thrown`);
 }
 // A source over an in-memory map of files.
+// spawnSync(process.execPath, args, opts) as a promise, so independent tool runs go side by side: {status, stdout, stderr}.
+export const runLater = (args, opts = {}) => new Promise(done => execFile(process.execPath, args, { encoding: 'utf8', maxBuffer: 64 << 20, ...opts }, (err, stdout, stderr) => done({ status: err ? (typeof err.code === 'number' ? err.code : 1) : 0, stdout, stderr })));
 export const mapSource = (files) => ({ read: (rel) => (rel in files ? (typeof files[rel] === 'string' ? files[rel] : JSON.stringify(files[rel])) : null) });
 // A host that gives an experience exactly the grants it asks for (10.5). A page with no host profile is given none
 // (D31), so tests that play grants as a host would wrap their Player or Engine: granting(Player).

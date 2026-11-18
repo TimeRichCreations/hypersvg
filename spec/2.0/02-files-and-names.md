@@ -269,6 +269,9 @@ groupMark,","
   (`Intl.PluralRules`, type `cardinal`). The engine bundles no plural tables. Where the platform has no
   `Intl.PluralRules`, or does not know the language, the fixed fallback applies: `one` for a count of exactly 1,
   else `other`. A form with no row reads `other`. `E-WORDS` (files, playing).
+  The rule is applied to the count written as a decimal with at most 3 fraction digits, using its absolute value. The
+  rules are the platform's: they may differ between platforms and CLDR versions, so the words shown may differ. A
+  plural form is presentation (5.8) and never decides behaviour (D62).
 - **Sample text.** The reserved word id `sampleText` gives a language's sample for the `longest` pressure case (7.6).
 - **Number marks.** The reserved word ids `decimalMark` and `groupMark` give a language's marks for `formatNumber`
   (5.6.4); the defaults are `.` and `,` (playing).
@@ -527,6 +530,29 @@ An asset holds only text: its documents and drawings. It uses no kit and no add-
 empty), and no picture, sound, font or video file. Its drawing carries no tool record of its own. The HyperSVG is at
 most `dataBytesEach` bytes. Anything else is `E-ASSET` (files).
 
+**A pinned capability (D55).** Added after `2.0.0-next.0`. One exception to an empty `needs`: an asset may name a
+capability that asks for no host port and no grant and has a module, pinned by version and digest. Two qualify:
+`effects` (the `confetti`, `sparkle` and `snowfall` presets) and `physics` (`bouncy-ball`). The pin is
+`about.trust.pins` of `experience.json`: `"<id>@<version>": "sha256:<hex>"`, the SHA-256 of the exact bytes of the
+capability's module file `<id>-<version>.mjs`, which the page loads. Each need is pinned exactly once.
+
+- The asset never carries the code (D45). `pack --asset` expands the presets into the documents, so the file holds
+  only data, and writes the pins of the modules this release holds. A pin that is not that module is refused.
+- Any other need (a module, an outside add-on, a capability that needs a port or a grant, one with no module), an
+  unpinned need or a malformed pin is `E-ASSET`.
+- The page loads the module only when a placed HyperSVG names it, checks its digest, then plays (10.14). A module the
+  page cannot load is `E-ADDON-MISSING`; one whose bytes do not match the pin is `E-ADDON-DIGEST` (playing). Nothing
+  plays then, and the rest pose shows.
+
 **Author in separate files, ship as one file.** The artist keeps the drawing and the JSON stays clean.
 `pack --asset` joins them; `unpack` splits them again (10.14). Pack, unpack and pack again give the same bytes. A
 changed member no longer matches its digest: `E-PACKAGE-DIGEST` or `E-PACKAGE-MEMBER` (files, playing).
+The digests catch accidents, not tampering: anyone can make them again, so a reader also checks the files (10.15).
+So a digest inside a file is never a trust anchor. A host that wants to trust a file without checking it again stores
+the file's own fingerprint on its server, its **integrity value**: `sha256-` and the base64 SHA-256 of the file's exact
+bytes, as the browser's Subresource Integrity writes it. `pack --asset` prints it. A page places the file with it
+(10.14); a file that does not match is `E-ASSET-INTEGRITY` (playing). Added after `2.0.0-next.0` (D56).
+
+Section 10.15 defines the record byte by byte: where the line sits, its JSON and escaping, how the digests are made,
+the limits, and how to read, verify and re-pack a HyperSVG. The conformance files in `spec/2.0/conformance/hypersvg/`
+test a reader against it.

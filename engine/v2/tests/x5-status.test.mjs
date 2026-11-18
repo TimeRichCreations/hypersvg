@@ -32,15 +32,21 @@ export const tests = {
     const r = rows();
     const caps = JSON.parse(fs.readFileSync(path.join(spec, 'capabilities.json'), 'utf8')).capabilities;
     for (const c of caps) {
-      // widgets was the shell capability; the status row in spec/2.0/README.md (prose, B2's) keeps the old
-      // name until B2 renames it.
-      const was = { widgets: 'shell' }[c.name];
-      const row = r.find(x => x.area === `Capability \`${c.name}\`` || x.area === `Module \`${c.name}\`` || (was && x.area === `Capability \`${was}\``));
+      const row = r.find(x => x.area === `Capability \`${c.name}\`` || x.area === `Module \`${c.name}\``);
       ok(row, `capability ${c.name} has no row`);
       ok(row.status.startsWith('built'), `capability ${c.name} is in the 2.0 registry, so its row says built: ${row.status}`);
     }
+    // Every Capability row names a capability of the registry: the shell is core (10.1), its add-on is widgets.
+    for (const x of r.filter(x => x.area.startsWith('Capability '))) ok(caps.some(c => x.area === `Capability \`${c.name}\``), `${x.area} is in no registry`);
     const drafts = fs.readdirSync(path.join(spec, 'drafts')).filter(f => f !== 'README.md');
     for (const f of drafts) ok(r.some(x => x.evidence.includes(`spec/2.0/drafts/${f}`)), `draft ${f} has no row`);
+  },
+  'the status table has the two outputs (D45) and speaks the final words (11.2)'() {
+    const r = rows();
+    const hsvg = r.find(x => /\b10\.14\b/.test(x.sections));
+    ok(hsvg && hsvg.status === 'built', 'a built row for the HyperSVG output (10.14)');
+    const text = fs.readFileSync(path.join(spec, 'README.md'), 'utf8');
+    eq(text.match(/\blooks?\b(?!-)|only output/g), null, 'no "look" (now variant) and no "the only output"');
   },
   'X5.14 the engine README points to the one table and keeps no list of its own'() {
     const text = fs.readFileSync(path.join(repo, 'engine', 'v2', 'README.md'), 'utf8');

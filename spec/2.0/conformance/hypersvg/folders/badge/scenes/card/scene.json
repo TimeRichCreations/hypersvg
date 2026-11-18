@@ -1,0 +1,9 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "card",
+  "drawing": "card.svg",
+  "uses": [
+    {"id": "name-tag", "use": "tag", "into": "tag-place", "with": {"label": "name"}}
+  ]
+}

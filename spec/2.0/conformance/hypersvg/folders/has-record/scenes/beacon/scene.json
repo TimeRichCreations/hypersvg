@@ -1,0 +1,12 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "beacon",
+  "drawing": "beacon.svg",
+  "controls": {
+    "power": {"kind": "toggle", "target": "switch", "value": "lit", "label": "Beacon on"}
+  },
+  "bindings": [
+    {"target": "halo", "opacity": "lit ? glow : 0"}
+  ]
+}

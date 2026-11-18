@@ -1,0 +1,355 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "one-page-walk",
+ "about": "A seeded random walk of up to 15 steps (seed 11).",
+ "package": {
+  "folder": "docs/one-page/example",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:3777d82237c0cb2894675c9f83b3019949a260f9adc6f08790127de7827b811d",
+   "scenes/hello/hello.svg": "sha256:12f35af95b75ad21792f2b914613b09496609412c7eeffd94118f309712e773c",
+   "scenes/hello/scene.json": "sha256:80b61bd21672481078c6f667091b07bf71ab74301704e13ab00c134f87987512"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:7a78344ba20e561ad49f40345c7db172965369a944e94bec2179c40c51cdd8f4",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "hello",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "hello"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:183a0996dbc6a594e210f7bbdd5b543fe2b3c5a18aac6679b15d67a1fd33b6a1",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:40589f8945be2437a324d139b66ff46c17fec8eb35beefed570a288a062ebc3d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 800,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:7816293ddd982869fc5f0b25ca6eb49692ac0438c7a1524b5e3d96159d416229",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1204,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:70afeda2d50b7a1ff652ed5721d3d03342dfab34638121139dfb3b56b20cbf84",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1524,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:5cccf049b0429c316e2c0d56f52763c9b5a28dccd385fdbd431888af6cb03fe6",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2324,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:fe55b7fd48650a9875743c3c3bb02b18a31e9f5d7044b3a99c168dd7914fd0b8",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3208,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:c6c783abdcc0cb01e2488a46e22fdad43982252bbe44727f7b3ed607603ad4ae",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4280,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:2e86e132532f63968ec3c3008460b1ed9374671ae038ecbbf61d2ab7dcfd876f",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4608,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:806c8c7ede057a00c30b1acd9f755eaad144d5a5e2735827b6d1053b9b8b9ca0",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5436,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:493217b97e2f355de44004c1394a3680d170dc17b08bd075e3025a0abb8e9657",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 6496,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:f01c5174b3256b824e899c71c0fd37bcc5b5d48e67f8a07193c0ded2a89e096d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 7440,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:5b50be65cf8f37170a59cfa0bfa1d464b8a3cc80211d2aeb1562cc2e2c848f38",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8040,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:61a956a580bfb63efe95159c5bdfdbda99d0b12c45d4cb948cd9e215c549ea64",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8580,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:1dc837d72f781d829b8ce8ea36fbce41544b1836e221807c98946585ce660c4d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 9560,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:b1d467f5993ac9140978efc77f965c91c3aa0547a7c33ca92d0bc6df0edbdfb6",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 10368,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add",
+     null
+    ]
+   },
+   "fingerprint": "sha256:5edf38a542694bf3cfb1ed6f1f85f9a574959b366f07784e03ea445728be099a",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 11468,
+  "fingerprint": "sha256:5030a727ef7371b430a489f8eaf7f4ff981446cdaefb380e16da52302df09a4e",
+  "heard": [],
+  "state": {
+   "now": 11468,
+   "seq": 15,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "hello": {
+     "kind": "scene",
+     "def": "hello",
+     "parent": null,
+     "values": {
+      "stars": 15
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "hello",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "hello": 1
+    },
+    "resume": null,
+    "painted": {
+     "hello": true
+    },
+    "held": [],
+    "endedReported": {
+     "hello": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "hello": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

@@ -112,7 +112,9 @@ export const tests = {
     eq(over(`<rect id="mid" x="10" y="85" width="20" height="10" fill="#fff"/>${strip}`, false), [], 'content under the overlay is fine');
     eq(over(`${frame}<rect id="mid" x="30" y="30" width="40" height="40" fill="#fff"/>`, false), [], 'an outline overlay does not cover the inside');
     eq(over(`<rect id="go" x="10" y="85" width="20" height="10" fill="#fff"/>${strip}`).length, 1, 'an overlay over a control target');
-    eq(over(`<rect id="keep" x="0" y="80" width="30" height="20" fill="none" data-hsvg-role="keep-clear"/>${strip}`, false).length, 1, 'an overlay over a keep-clear area');
+    const kept = over(`<rect id="keep" x="0" y="80" width="30" height="20" fill="none" data-hsvg-role="keep-clear"/>${strip}`, false);
+    eq(kept.length, 1, 'an overlay over a keep-clear area');
+    ok(/covers a keep-clear protected area/.test(kept[0]), `the message names the protected area (11.2: "safe area" is retired): ${kept[0]}`);
     eq(over(`<rect id="keep" x="0" y="0" width="30" height="20" fill="none" data-hsvg-role="keep-clear"/>${strip}`, false), [], 'a clear area elsewhere');
   },
   'E-WIDGET-PAINT: an overlay slot after a declared widget slot that it crosses'() {

@@ -128,6 +128,143 @@ every step. **[playing]**
   logged host replies. Easing and fixed-step effects are exact algorithms.
 - Bitwise equal floating-point results across different JavaScript engines are not promised for effects and physics.
 
+**Moves.** Added after `2.0.0-next.0`. The input log is a list of moves, in order. A move is one JSON object
+`{"t": …, "source": …, "payload": […]}`: `t` is the engine time in ms when the input reached the logic, `source` names
+the input (the table below), and `payload` holds its arguments as JSON values, a missing one as `null`. A host hears
+each move before it runs, with the option `onMove` (10.6). An input made while another one runs is part of that move
+and is not heard again: the start inside a restart, an input a listener makes during that step. A clock advance is not
+a move: what the clock fires follows from the moves and their times.
+
+| `source` | `payload` | The input |
+|---|---|---|
+| `start` | `[ambient]` | The start (3.2). `ambient` is the ambient values it starts with (5.5): settings, language, size. |
+| `restart` | `[]` | A new run (10.6). Engine time is 0 again. |
+| `clearStorage` | `[]` | The partition's stored data cleared (10.6). The restart after it is a move of its own. |
+| `activate` | `[address, control, arg, source, actor]` | A control used (5.11): a press, an option, a slider value, a drop. |
+| `hold` | `[address, control, down, source]` | A press, slider or drag held or let go (5.11). |
+| `snap` | `[address, control, drop]` | A snap drag at rest on `drop`, or home with `null` (5.11). |
+| `key` | `[code, up, source]` | A key of the fixed set, or its release (5.12). |
+| `send` | `[address, name, payload, source]` | An event a widget sends to a block. |
+| `trigger` | `[name, payload, source]` | A trigger of the experience (10.6 `emit`). |
+| `setInput` | `[name, value, source]` | An input written (10.6 `set`, a form, a knob). |
+| `hostPicture` | `[name, address]` | A host picture taken, as its `data:` address (10.6 `picture`). |
+| `applySettings` | `[[[name, value], …], source]` | A settings form's Apply, or `timeLimits` (5.3.2, 10.13). |
+| `setPause` | `[reason, on]` | A pause reason added or cleared (3.10). |
+| `setSize` | `[{shape, width, height}]` | The player box (5.5). |
+| `setLanguage` | `[language]` | The language an axis picks (7.1). |
+| `motion` | `[on]` | The system's reduced-motion preference changed (5.5). |
+| `closeDialog` | `[slot]` | A dialog a person closed (10.1). |
+| `shellEvent` | `[name]` | A shell widget's event (10.1). |
+| `pick` | `[link]` | A choice link picked (3.5). |
+| `firstInput` | `[]` | The first trusted press, key press or pointer-down in the player in this run (10.4). The page sends it before the press itself; the engine reports the output `firstInput` once per run and ignores a later one. |
+| `seatInput` | `[actor, name, payload]` | A seat's input (A4.1). Experimental: it belongs to the `seats` add-on (10.16). |
+| `ai.arrive` | `[key, how, answer, intent]` | An answer to `ai.ask` arrived (A5.1). `how`: `ai` (a host AI source answered), `failed` (it failed), `late` (its time limit passed, for typed words) or `builtIn` (a built-in answer matched from typed words). For typed words, `intent` is the intent they matched, or `null`; otherwise it is left out. |
+| `door` | `[add-on, source]` | Another add-on's step that has no move of its own. It has nothing to feed again. |
+
+**Add-on moves.** Experimental. An add-on's step that comes from the page or the host is a move named
+`<add-on>.<name>`, with its payload, so a replay feeds it again. `ai.arrive` above is one.
+
+| `source` | `payload` | The input |
+|---|---|---|
+| `page.health` | `[status]` | The page reported its hooks' status, `{hook: "found" \| "missing" \| "ambiguous"}` (A3.1). |
+| `page.signal` | `[name, payload]` | A granted page signal, `<kind>` or `<kind>:<hook>`, with `{hook}` or `{progress}` (A3.1). |
+| `page.cut` | `[owner, id]` | A pointing or highlight mark cut short on the page (A3.1). |
+| `media.report` | `[address, place, kind]` | A video place's news: `stalled`, `failed` or `refused` (A2.1). |
+| `snapshot.status` | `[address, value, text]` | The host's status for a snapshot, at most 200 characters. |
+| `seats.fill` | `[seat, filler]` | A player seat filled from outside: by the host, or an agent joined (`agent`) or left (`null`) (A4.1). `filler` is `human`, `agent`, `program` or `null`. A fill made by a time limit's fallback is the clock's, not a move. |
+
+- A move never holds the identity behind a seat, nor typed words: an `ai.arrive` for typed words carries the intent
+  they matched and the answer it gave.
+- An answer matched from typed words arrives as its own step, just after the asking step, so the words never enter
+  the state. A replay that is fed moves makes no such answer itself: it waits for the fed `ai.arrive`.
+
+- The `source` inside a payload is the step's source of 9.2 (`person`, `host`, `widget`, `seat`). It is left out when
+  the input gives none.
+- A `freeText` value is written `{"freeText": n}`, with `n` its length in UTF-16 code units. A replay feeds `n` letters
+  `x`.
+- **Feeding.** A replay plays the same files with the same fixtures, host profile, grants, stored values, module lock
+  and clock. For each move it advances the engine clock to `t`, then runs the input with its payload. The logic-only
+  entry does this without a page (10.6).
+- **The clock.** The host's clock is called with the engine time and gives UTC ms. A clock that gives a fixed date plus
+  the engine time makes `now` replay exactly; the browser's wall clock does not.
+- **What a replay proves.** These moves, from this start, are legal and give this result, step by step (9.6.1). It
+  does not prove that a person made them. It cannot replay what needs a page: layout measures (the ambient `layout`,
+  layout plans while playing), sound and voice timing, the video itself and the snapshot's picture. What the page
+  reports to the logic (hook health, page signals, a video place's news, a snapshot's status) is a move and replays.
+  Effects and physics are exact only on the same kind of engine. Typed words decide only through the `ai` add-on, and
+  what they decide is in the `ai.arrive` move.
+
+### 9.6.1 The state fingerprint, byte by byte
+
+Added after `2.0.0-next.0`. The state fingerprint says whether two players are in the same logic state. A replay
+compares it after every move. A host in any language makes it in three steps: the state document, its canonical
+bytes, their SHA-256. The files in `spec/2.0/conformance/state/` test a writer: `expected.json` there gives each
+file's fingerprint, the UTF-8 length of its canonical JSON and, for a short one, the canonical text.
+
+**The state document.** One JSON object. It holds the logic state only: what the next step depends on. The drawing,
+sound and page measures are not in it.
+
+| Key | Value | Why it is in |
+|---|---|---|
+| `now` | The engine time in ms. | Timers and `elapsed` count from it. |
+| `seq` | The next timer sequence number. | It orders deadlines due at the same time. |
+| `blocks` | Every mounted block, by its address (4.5): its record, with `kind`, `def`, `parent`, `values`, `inputs`, `machines` (the active states), `uses`, `clips`, `attach`, `born`, and when present `snaps` and an add-on's run state. | The store, and what each block runs. |
+| `timers` | Every waiting deadline, in the engine's order: its owner, its due engine time and what it fires. | Deadlines make the next steps. |
+| `records` | Each record's rows (5.16). | Later rows and reads depend on them. |
+| `ambient` | The ambient values (5.5), except `layout`. | Formulas read them. |
+| `story` | The story's place: `current`, the visit `stack`, link `counts`, `visits`, `resume`, the scenes painted, held outcomes, and the pause and chapter notes. | The next link depends on it. |
+| `pauses` | The host's pause reasons, in the order given (3.10). | Time moves only when they are clear. |
+| `firstInput` | `true`, only once the run has reported `firstInput` (10.4). | A later one is ignored. |
+| `stopped` | The stopping fault's code, only when the player stopped (9.2). | A stopped player takes no input. |
+
+- Left out: the step count (`revision`), the last step's outputs and deliveries (heard by listeners, never read by the
+  next step), the list counter (the drawing's), the ambient `layout` (a page measure), the stored data (its values are
+  in `blocks`) and a host picture's bytes (the input holds `host:<name>`).
+- A `freeText` value is `{"freeText": n}`, as in a move.
+- An add-on's run state is in its block's record, under the add-on's id. The `seats` add-on's (A4.1), on the
+  experience block, holds `occupants`: each player seat's filler, `"human"`, `"agent"`, `"program"` or `null`. It
+  never holds the identity behind a seat. A new run starts with the occupants the last one had. The `ai` add-on's
+  never holds typed words: a pending answer to typed words is marked `typed`, and one whose time limit passed `late`.
+- The shapes inside a block record, a timer and the story are the reference engine's. The conformance files show them.
+  An engine in another language keeps the same shapes to give the same fingerprint.
+
+**The bytes.** The state document's canonical JSON (RFC 8785, the JSON Canonicalization Scheme), encoded as UTF-8
+with no byte order mark and no line break at the end:
+
+1. Object keys are sorted by their UTF-16 code units.
+2. No white space between tokens.
+3. Numbers are written in the ECMAScript form: `1e+21`, `1e-7`, `0.1`, `100`; `-0` is `0`.
+4. Strings are written as JSON with only `"`, `\` and the control characters U+0000 to U+001F escaped: `\b`, `\t`,
+   `\n`, `\f`, `\r`, else `\u00xx` in lowercase hex. Every other character is itself.
+
+JCS is a published standard with writers in many languages, and in JavaScript it is `JSON.stringify` with sorted keys.
+
+**The digest.** `sha256:` and the 64 lowercase hexadecimal digits of the SHA-256 (FIPS 180-4) of those bytes, as a
+package member's digest (10.8). The fingerprint is compared, printed and stored; it never goes in an `integrity`
+attribute, so the `sha256-` base64 form of 10.14 brings nothing here.
+
+### 9.6.2 Whole-play test files
+
+Added after `2.0.0-next.0`. The files in `spec/2.0/conformance/plays/` test another implementation of the logic layer
+against the engine, play by play (D57, D62). Their format is `hsvg-play/1`; the folder's `README.md` gives it key by
+key. `engine/v2/tools/make-plays.mjs` writes them from the engine, and the engine's tests feed every file again.
+
+- **One file, one play.** A file names its package (an example folder every core export holds, with each file's
+  SHA-256 and the add-ons it pins), how the play starts (the clock's start `epochMs`, the host's inputs, the stored
+  values), the moves of 9.6 in order, and after every move the state fingerprint (9.6.1), the outputs heard and,
+  when the input was refused or ignored, why. After the last move the clock runs on to an end time, and the file gives
+  the fingerprint and the whole state document there.
+- **Passing.** An implementation passes a file when it plays the same package from the same start and gives the same
+  fingerprint, outputs and result after every move and at the end. A package file with another digest is another
+  package: the file does not apply.
+- **What the plays hold.** Scripted plays (wins and losses, timers that run out, a restart, clips, choice controls,
+  host inputs, sizes, pauses, keys) and seeded random walks. A play of a package that pins an add-on
+  needs a port of that add-on's code too.
+- **What a file never holds.** A `door` move: it has no payload to feed again (9.6). Layout measures, sound and voice
+  timing and video places are not moves at all.
+- The files are made by the engine of the same release. A later engine version may change the state shapes; its
+  files show the change.
+
 ## 9.7 When checks run
 
 Checks run as the two proof kinds of A11.9. `files` checks run in the checker; `playing` checks run in the engine at

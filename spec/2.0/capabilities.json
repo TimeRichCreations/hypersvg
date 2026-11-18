@@ -120,7 +120,7 @@
       "name": "ai",
       "kind": "capability",
       "contract": "privileged",
-      "section": "5.15.2, A5.1",
+      "section": "5.15.3, A5.1",
       "owns": {
         "blockFields": [
           "addons.ai"

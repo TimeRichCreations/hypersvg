@@ -112,7 +112,7 @@ audit trail; the trail itself is outside the format.
 ## A9.3 The trust record
 
 `about.trust` is the trust record of a block definition, kit, experience or package. It never grants anything. The
-engine reads only three things from it: the digest (seals, A9.4), look reviews (6.2.4) and pins (reviewed code).
+engine reads only three things from it: the digest (seals, A9.4), variant reviews (6.2.4) and pins (reviewed code).
 
 ```json
 "trust": {
@@ -143,7 +143,7 @@ A block, kit or package whose effective status is `blocked` is refused at use, p
 
 - `madeWith`: tools and versions. `madeBy`: people and agents, as `person:<id>` or `agent:<id>`.
 - `sources`: what the work was made from, in words. Private paths never appear in a trust record (files).
-- `inferred`: paths (2.9) of parts or looks a tool drew that no person has checked, including covered geometry
+- `inferred`: paths (2.9) of parts or variants a tool drew that no person has checked, including covered geometry
   (6.2.5). It replaces `data-hsvg-inferred`.
 - `substitutions`: every substituted font or asset. A substitute is never claimed as exact.
 - `upgradedFrom`: for a file made by the upgrade tool (A13.3): `format`, the source's `id` when it had one, its
@@ -156,7 +156,7 @@ A block, kit or package whose effective status is `blocked` is refused at use, p
 
 ### Review status
 
-One list of statuses for blocks, looks, kits and packages:
+One list of statuses for blocks, variants, kits and packages:
 
 | Status | Meaning | Who may set it |
 |---|---|---|
@@ -166,8 +166,8 @@ One list of statuses for blocks, looks, kits and packages:
 | `blocked` | Not usable; the note says why. | a person or an agent |
 
 Each review entry has `status`, `by`, `date` (ISO 8601), `digest` and `note` (at most 2,000 characters; required for
-`blocked`). An optional `of` narrows it to one look or one frame (`"of": "robin-hero/mouth/open"`). Reviews are
-append-only. A look whose effective status (below) is `draft` or `blocked` is never selected while playing and is left out
+`blocked`). An optional `of` narrows it to one variant or one frame (`"of": "robin-hero/mouth/open"`). Reviews are
+append-only. A variant whose effective status (below) is `draft` or `blocked` is never selected while playing and is left out
 of exports; an editor may still show it (6.2.4).
 
 The **effective status** is computed, never trusted from the file: the last review in the list whose digest equals
@@ -334,7 +334,7 @@ A use mounts a definition in a place and gives its inputs (`use`, `into`, `with`
 |---|---|
 | An input value, within its type and bounds, by a right named in `editableBy` (A9.6) | yes |
 | The place the use is mounted in (`into`) and its order among sibling uses | yes |
-| A selection along a representation axis the definition declares: shape, layout, content tier, language, a look given as an input, theme (section 7) | yes |
+| A selection along a representation axis the definition declares: shape, layout, content tier, language, a variant given as an input (the axis `look`), theme (section 7) | yes |
 | A per-use lock on a knob, preferred or locked (section 7) | yes |
 | Promoting an inner input to the container (A9.5) | yes |
 | A body value; any reaction, machine, action, clip, binding or effect | no |

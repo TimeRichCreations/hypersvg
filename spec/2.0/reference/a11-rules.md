@@ -114,7 +114,7 @@ The `subject` is an address (section 2). This section uses these forms:
 | `field:action.text` | one content field: in a component's rules `field:<block id>.<field>`; in a plan item `field:<field>` (the `fit` add-on) |
 | `input:speed` | one input of the block (a knob, a content field or a trigger) |
 | `value:score` | one value of the document |
-| `place:caption-box` | one place (slot, region, anchor, safe area, route) |
+| `place:caption-box` | one place (slot, fit box, repeat, protected area, route) |
 | `use:answer-2` | one use of a block |
 | `scene:quiz` | one scene |
 | `color:accent` | one theme colour role, in every theme (contrast rules) |
@@ -334,7 +334,7 @@ grammar and a checker (section 10).
 
 | Kind | Parameters | Holds when | Proof |
 |---|---|---|---|
-| `inside` | `of` (an address: a place, part, region or slot) | The subject stays inside it, also while it moves. | files, playing |
+| `inside` | `of` (an address: a place, part, fit box or slot) | The subject stays inside it, also while it moves. | files, playing |
 | `clear` | `of` (addresses; default: everything else painted) | The subject is not covered by, and does not cover, the listed things. *Covered by* means painted over by later-painted content that is not `backdrop` or `decoration` paint (6.4) and not one of the subject's own parts. With no `of`, only "not covered by" is checked. "Nothing covers a control" is `clear` with `"subject": "controls"` and no `of`. | files, playing |
 | `fits` | none (uses the field's fit, section 7) | The content fits its place in the matrix the checker runs (7.1): every `must` size in every language, with the pressure cases (A8.4), and every theme that changes fonts or spacing. | files |
 | `intrinsic` | none | The subject keeps its drawn size under resizing (icons, button height, radii). | files |

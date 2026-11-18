@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<metadata>{"asset":{"format":"hsvg/2.0","id":"beacon","drawing":"scenes/beacon/beacon.svg","members":{"experience.json":"sha256:349bf21f17ca0a987e6c6c61aa9390ff4ef2853d34f0e78143e6ef2f56297713","scenes/beacon/beacon.svg":"sha256:ba3e1885e9d931d88b7a19a1e24251cf945957b26e812ff41d75edbffefb319d","scenes/beacon/scene.json":"sha256:850a96afed97299e3426078a4e249daa92d7431d4075b41ae57e8e2161f6392f"},"files":{"experience.json":"{\n  \"format\": \"hsvg/2.0\",\n  \"kind\": \"experience\",\n  \"id\": \"beacon\",\n  \"about\": {\"title\": \"Beacon\", \"description\": \"A conformance asset: one scene, one drawing, two knobs.\"},\n  \"language\": \"en\",\n  \"inputs\": {\n    \"lit\": {\"kind\": \"knob\", \"type\": \"boolean\", \"initial\": false},\n    \"glow\": {\"kind\": \"knob\", \"type\": \"number\", \"minimum\": 0, \"maximum\": 1, \"initial\": 0.6}\n  },\n  \"story\": {\"start\": \"beacon\", \"scenes\": {\"beacon\": \"scenes/beacon/scene.json\"}, \"endless\": true}\n}\n","scenes/beacon/scene.json":"{\n  \"format\": \"hsvg/2.0\",\n  \"kind\": \"scene\",\n  \"id\": \"beacon\",\n  \"drawing\": \"beacon.svg\",\n  \"controls\": {\n    \"power\": {\"kind\": \"toggle\", \"target\": \"switch\", \"value\": \"lit\", \"label\": \"Beacon on\"}\n  },\n  \"bindings\": [\n    {\"target\": \"halo\", \"opacity\": \"lit ? glow : 0\"}\n  ]\n}\n"}}}</metadata>
+<title>Beacon</title>
+<desc>A round beacon on a post, with a switch.</desc>
+<rect width="200" height="200" fill="#eef2f7" data-hsvg-layer="backdrop"/>
+<g id="halo" data-hsvg-kind="part" data-hsvg-role="decoration" data-hsvg-motion="opacity 0..1" opacity="0"><circle cx="70" cy="70" r="48" fill="#fde68a"/></g>
+<circle cx="70" cy="70" r="24" fill="#f59e0b"/>
+<rect x="64" y="94" width="12" height="80" fill="#64748b"/>
+<g id="switch" data-hsvg-kind="part" data-hsvg-label="Beacon on"><rect x="120" y="120" width="64" height="48" rx="24" fill="#1d4ed8"/></g>
+</svg>

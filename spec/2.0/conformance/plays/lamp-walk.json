@@ -1,0 +1,532 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "lamp-walk",
+ "about": "A seeded random walk of up to 20 steps (seed 7).",
+ "package": {
+  "folder": "docs/guide/examples/lamp",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:8d51040446878602950bad84c8b5e80355c766e2a2701c37c65fb14a2b5524bc",
+   "lamp.json": "sha256:6183600c86ca809417626695608ad62671ad6ecf0a88e7099b4fa2d5ee2a5682",
+   "lamp.svg": "sha256:c20685696e23e403e343b6f6cfa83210457d27f4d158415be77d40ed03a1c1cd"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:3145d250e601b81d360a1b4ad2dd6575068f133e5d4ae169bab5e28a4a611a92",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "lamp",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:cde7a705505691c4ae766281eed894a29f359c1077b13092c5e70cc9733a80f0",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:2a0cb642a618177d110848aef33deddff4fbba79b4a6c9cebb6290a453d1bb6b",
+   "heard": [
+    {
+     "t": 0,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 516,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:f88cd26c357b5d216f48123ebff781fad609ab6190352c3f77d1b3f96b6363e1",
+   "heard": [
+    {
+     "t": 516,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1356,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:48a253603951434dbf32f440125e70a120b227f87feefbb6e582fcb9fb95fff8",
+   "heard": [
+    {
+     "t": 1356,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1756,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:7b3f2bd4fcf73c55e65a876fb808a56269fe4094883e9a570be53cd5915f9f1b",
+   "heard": [
+    {
+     "t": 1756,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 2068,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:42cf4d6cf7356bf37bca3f4a197fa532b21d1345c2d4957a16e4e4b1d630aba8",
+   "heard": [
+    {
+     "t": 2068,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 3168,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:53afae9f0daf3cc2ed1a7ab204765c9222895b3c405184ebb5d91b496dbc1a9c",
+   "heard": [
+    {
+     "t": 3168,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 3824,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:539557122220edc4de233eb7fbb3495b5fc769f276c458dd08c0343987bbae37",
+   "heard": [
+    {
+     "t": 3824,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 4900,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:3d807223860dbea2d4054765db71961c01c75980fe041c4aeb89cb5320b4d35b",
+   "heard": [
+    {
+     "t": 4900,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 5496,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:dafeedfeefc2d35f748514e05568baf627b364fc4d121c335cd3ba8e1644c0d0",
+   "heard": [
+    {
+     "t": 5496,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 6108,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:d6abfce319507c0b9871fda1e3e7197d6b393e2f05a38143abac0c4a6a1fa6ff",
+   "heard": [
+    {
+     "t": 6108,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 7304,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:15d6338355088ef4cdda495ccc5d3b473bdff86af8a598326461459f4e9235af",
+   "heard": [
+    {
+     "t": 7304,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 8320,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:efa6e94052c9ab3eff446533209f742b7aa9b8db03599b9092a02c0b843d797e",
+   "heard": [
+    {
+     "t": 8320,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 8740,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:9e21dbb85ac1a48b15e4932395df9ef3c86258b73984a5b0b4fd45392858629e",
+   "heard": [
+    {
+     "t": 8740,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 9868,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:9eb018f1259269e868360e272fa470292a5d01dfb13568aeb16798496a6fe1e4",
+   "heard": [
+    {
+     "t": 9868,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 10952,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:1183c9731f42fc248c41d88aff75ded24aebaeb8778dad470b94190810474585",
+   "heard": [
+    {
+     "t": 10952,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 11712,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:115a6e99d8da49ef2f483b3c0d5c0e79396269aad1dad31e6b8ece162db6de38",
+   "heard": [
+    {
+     "t": 11712,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 12672,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:74a7249b19b0139d5ef5910210bbf61bcf604001b8f010df844d7cb578507e08",
+   "heard": [
+    {
+     "t": 12672,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 13128,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:a2d657d0aa4990deef93ba3ea2b93ced8cee85b43d7ffc23f8200c4eba6dc5cf",
+   "heard": [
+    {
+     "t": 13128,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 13648,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:5475d2cfd36dd78d8163a0f5f7fbff455616750eb09fd4d2183d5303baa9e8d2",
+   "heard": [
+    {
+     "t": 13648,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 14020,
+    "source": "activate",
+    "payload": [
+     "lamp",
+     "switch",
+     null
+    ]
+   },
+   "fingerprint": "sha256:ae97d822e6baf952f2b9000bb6661be7968532a5c2c2f18d5715a2145d730a6f",
+   "heard": [
+    {
+     "t": 14020,
+     "name": "switched",
+     "detail": {}
+    }
+   ]
+  }
+ ],
+ "end": {
+  "t": 14504,
+  "fingerprint": "sha256:137ead56297699a2e6131b77a0075461980df2e0807224b91fbb003567de04b7",
+  "heard": [],
+  "state": {
+   "now": 14504,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {
+      "lit": false,
+      "height": 1
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "lamp": {
+     "kind": "scene",
+     "def": "lamp",
+     "parent": null,
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "lamp",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "lamp": 1
+    },
+    "resume": null,
+    "painted": {
+     "lamp": true
+    },
+    "held": [],
+    "endedReported": {},
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "lamp": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { repo, eq, ok, mapSource, schemas } from './helpers.mjs';
+import { repo, eq, ok, mapSource, schemas, runLater } from './helpers.mjs';
 import { checkExperience } from '../check/index.mjs';
 
 const bin = path.join(repo, 'bin', 'hypersvg.mjs');
@@ -45,10 +45,12 @@ export const tests = {
     const r = checkExperience(mapSource(files), schemas());
     eq(r.diags.filter(d => d.severity === 'error').map(d => `${d.code} ${d.message}`), [], 'no errors');
   },
-  'each command\'s --help speaks in hypersvg terms, not the engine tools\' usage'() {
+  async 'each command\'s --help speaks in hypersvg terms, not the engine tools\' usage'() {
     const dir = temp();
-    for (const c of ['check', 'test', 'pack', 'unpack', 'addon']) {
-      const r = run(dir, c, '--help');
+    const commands = ['check', 'test', 'pack', 'unpack', 'addon'];
+    const helps = await Promise.all(commands.map(c => runLater([bin, c, '--help'], { cwd: dir, env: { ...process.env, PW_PATH: '' } })));
+    for (const [k, c] of commands.entries()) {
+      const r = helps[k];
       eq(r.status, 0, `${c}: ${r.stderr}`);
       ok(r.stdout.startsWith(`Usage: hypersvg ${c}`), `${c}: ${r.stdout.slice(0, 80)}`);
       ok(!/engine\/v2\/tools|--baseline|--previous-kit|--all\b/.test(r.stdout), `${c} lists internal usage: ${r.stdout}`);

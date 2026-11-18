@@ -12,7 +12,7 @@
 // - points: the target is a <polyline> and `area` names a drawn <rect> (E-PLACE).
 // The value types and ranges are checked with the formulas (formula/sites.mjs); needs by the schemas.
 import { channelOf, wordOf, valueOf } from '../src/binding-words.mjs';
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { isHex } from '../src/paint-channels.mjs';
 import { resultLiterals } from './refs/walk.mjs';
 import { optional } from './optional.mjs';
@@ -54,9 +54,9 @@ function frameNodes(o) {
   const out = [];
   for (const [layout, d] of Object.entries(o.drawings || {})) {
     let root;
-    try { root = parseXml(d.text); } catch { continue; }
+    try { root = parseXmlShared(d.text); } catch { continue; }
     const nodes = new Map();
-    const walk = (n, parent) => { if (!n.name) return; n.parent = parent; if (n.attrs.id) nodes.set(id(n.attrs.id), n); n.children.forEach(c => walk(c, n)); };
+    const walk = (n, parent) => { if (!n.name) return; if (n.parent !== parent) n.parent = parent; if (n.attrs.id) nodes.set(id(n.attrs.id), n); n.children.forEach(c => walk(c, n)); };
     walk(root, null);
     out.push({ layout, file: d.file, nodes });
   }

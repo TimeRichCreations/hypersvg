@@ -34,7 +34,7 @@
  "engine/v2/tests/x4-truth.test.mjs": {
   "tests": [
    "X4 architecture 10: a code quoted in a one-off spec edit script is not produced; the upgrade tool still is",
-   "X4 newcomer F1: README.md leads with 2.0 (the kit, START.md, the skill); its links resolve; its commands run"
+   "X4 newcomer F1: README.md leads with 2.0 (the published package, the release record); its links resolve; its commands run"
   ],
   "why": "Architecture 10 needs docs/spec-2.0-work (the internal spec work folder and its upgrade tool), which is not exported. Newcomer F1 checks the authors' repository README.md (with its 0.1 page); the export's front page is the one-page README proposal."
  },

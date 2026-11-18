@@ -115,6 +115,14 @@ function addressOf(owner, pointer, doc) {
 }
 
 // source: {read(rel)}; experience: the loaded experience (for owner ids and documents); returns new diagnostics.
+// One finding as the command line prints it, the same in check and pack: `CODE file:line:col pointer: message`. d is
+// a finding from describe().
+export const findingLine = (d) => `${d.code} ${d.file}${d.line ? `:${d.line}${d.column ? `:${d.column}` : ''}` : ''} ${d.pointer}: ${d.message}`;
+// The closing count: `0 findings`, `1 finding {"E-X":1}`, `3 findings {...}` (each code with its count).
+export function findingCount(found) {
+  const by = {}; for (const d of found) by[d.code] = (by[d.code] || 0) + 1;
+  return `${found.length} ${found.length === 1 ? 'finding' : 'findings'}${found.length ? ` ${JSON.stringify(by)}` : ''}`;
+}
 export function describe(diags, source, experience = null) {
   const docs = new Map(); // file -> {id, doc}
   if (experience) {

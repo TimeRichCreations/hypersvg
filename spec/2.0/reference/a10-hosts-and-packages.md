@@ -36,7 +36,7 @@ A host profile says what one host runs, grants and limits. It is a document:
 | `requireSignature` | Whether a package must carry a valid signature (A9.3). Default `false`. |
 | `requireSignedReviews` | Whether admission uses signed reviews only (A9.3); unsigned reviews are advisory there. Default `false`. |
 | `keys` | The keys the host trusts, a list of `{id, by, alg, publicKey}` (A9.3). A signature's `key` names an `id`. |
-| `urlParams` | Whether the host or adapter adds an `openUrl`'s `with` as query parameters (10.4). |
+| `urlParams` | Whether the host or adapter adds a `player.openUrl` call's `with` as query parameters (10.4). |
 | `video` | For a video export: `size`, `frameRate` (a whole number, 1 to 60) and `captions` (a list of `vtt` and `burned`). |
 | `audience` | Optional: `any` (default) or `children`, which refuses `open` AI steering (A5.1). |
 | `retention` | Days to keep stored data (`saved` and `session` values, 5.1.2): an integer of 1 or more (`E-RANGE`, files). Data whose `writtenAt` is more than that many days before the host's `now` is dropped before it is restored. Default: until cleared |
@@ -62,12 +62,12 @@ the host profile's `capabilities` (A10.1).
    run. Before mounting, the player compares the package's `needs` with the host profile's `capabilities` and refuses
    it before anything plays (`E-HOST-RUNS`).
 2. **Authoring-only features.** Some features are for authoring only: give-way steps, layout plans that were baked per
-   shape, draft looks, the adaptive envelope. The capability registry beside the spec marks them `authoringOnly`. They may
+   shape, draft variants, the adaptive envelope. The capability registry beside the spec marks them `authoringOnly`. They may
    live in kits. The packer bakes them before it computes digests: it writes the derived frames a plan gives
    (the `fit` add-on), unless the block lists `fit` in `needs`, applies give-way results, and leaves out authoring-only packs,
-   steps and draft looks. It then recomputes every digest it changed, drops the reviews of changed documents, and
+   steps and draft variants. It then recomputes every digest it changed, drops the reviews of changed documents, and
    records the source digest in `trust.provenance.packedFrom`. A package that still holds an authoring-only feature fails
-   (review). Packing never removes a look that a binding or a clip names: a blocked or draft look stays in
+   (review). Packing never removes a variant that a binding or a clip names: a blocked or draft variant stays in
    the file and is never selected (6.2.4).
 3. A feature that is valid in the spec but missing from a host's profile is not authoring-only. It is simply refused on that
    host.
@@ -140,8 +140,10 @@ host page imports (`engine/v2/web/frame-host.mjs`, `connectFrame(iframe)`). It c
   dropped with no reply.
 - **Calls.** The envelope is `{channel, v: 1, id, call, args}`. The calls are the host API's verbs (above): `set`,
   `emit`, `read`, `on`, `off`, `pause`, `resume`, `restart`, `scene`, `seat`, `clearStorage`, `setPartition` and
-  `ladder`. The reply is `{channel, id, ok: true, value}` or `{channel, id, ok: false, error: {code, message}}`. Only
-  `read`, `scene` and `ladder` reply with a value. Any other call, or another `v`, is `E-HOST-CALL`. `picture` (10.6) is
+  `ladder`. The reply is `{channel, id, ok: true, value}` or `{channel, id, ok: false, error: {code, message}}`.
+  `read`, `scene` and `ladder` reply with a value. `emit` replies once the trigger's step is over, with the step's
+  result `{name, payload, outputs}`, as `emit` on the host API resolves (added after `2.0.0-next.0`, D63). Any other
+  call, or another `v`, is `E-HOST-CALL`. `picture` (10.6) is
   not a frame link call in 2.0: a message is at most 64 KiB. A host that hands in pictures mounts the player in its
   own page.
 - **Events.** After `on(name)`, each event comes as `{channel, v: 1, call: "on", name, detail}`. `off(name)` stops it.

@@ -1,12 +1,12 @@
 // Painted extent (6.4, A6.1; W5-C item 6): E-PAINT, W-PAINT-OVER and E-WIDGET-PAINT.
 // - E-PAINT: in a screen drawing, what paints beyond the viewBox must be `backdrop`. A component's viewBox is not a limit.
 // - W-PAINT-OVER: at rest, content in front of an overlay (later in document order, boxes cross), an overlay over a
-//   control's target, or an overlay over a `keep-clear` safe area.
+//   control's target, or an overlay over a `keep-clear` protected area.
 // - E-WIDGET-PAINT: in a shell drawing, an overlay slot later in document order crosses a declared HTML widget's slot.
 // E-PAINT runs only when the caller asks (opts.paint, check.mjs --paint): the three upgraded experiences draw art past
 // the viewBox without a backdrop mark, so it stays off by default until they are marked (see the W5-C report).
 // The measurer is in paint/. It works on boxes: a shape outlined with no fill counts as its outline, not its inside.
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { measure } from './paint/measure.mjs';
 import { overlaps } from './paint/geometry.mjs';
 import { declaredWidgets } from '../src/widgets-of.mjs';
@@ -45,7 +45,7 @@ export function check(ctx) {
       if (seen.has(d.file)) continue;
       seen.add(d.file);
       let root;
-      try { root = parseXml(d.text); } catch { continue; }
+      try { root = parseXmlShared(d.text); } catch { continue; }
       const m = measure(root, { fitted, local });
       const said = new Set();
       const say = (code, r, msg) => { const k = `${code}|${r.id ?? r.name}|${msg}`; if (!said.has(k)) { said.add(k); ctx.report(code, d.file, label(r), msg); } };
@@ -72,7 +72,7 @@ export function check(ctx) {
           if (r.order > ov.order && cross(ov, r)) say('W-PAINT-OVER', ov, `content ${label(r)} is in front of the overlay ${label(ov)} (6.4)`);
           else if (r.order < ov.order && r.chain.some(c => targets.has(c)) && cross(ov, r)) say('W-PAINT-OVER', ov, `the overlay ${label(ov)} covers the control ${label(r)} (6.4)`);
         }
-        for (const a of m.areas) if (/keep-clear/.test(a.mode) && bands(ov).some(b => overlaps(b, a.box))) say('W-PAINT-OVER', ov, `the overlay ${label(ov)} covers a keep-clear safe area ${label(a)} (6.4)`);
+        for (const a of m.areas) if (/keep-clear/.test(a.mode) && bands(ov).some(b => overlaps(b, a.box))) say('W-PAINT-OVER', ov, `the overlay ${label(ov)} covers a keep-clear protected area ${label(a)} (6.4)`);
       }
 
       // E-WIDGET-PAINT

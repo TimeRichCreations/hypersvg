@@ -16,6 +16,14 @@ export const POLICY_FILE='release/EXPORT-POLICY.txt', REPORT_FILE='release/EXPOR
 export const WORDS_FILE='release/public-words.json';
 // The public decision index: every decision number (D and a number) an exported file cites has an entry there.
 export const DECISION_INDEX='spec/2.0/decision-index.md';
+// The add-ons export carries this notice as its LICENSE until the add-ons' public release (the person's choice): no
+// licence is granted yet. The core and the lists carry the repository's LICENSE (Apache-2.0).
+export const ADDONS_LICENSE='release/addons-LICENSE.txt';
+// The target an export was made for, read from its report (written last); null before the report exists.
+export async function exportTarget(root) {
+  try { return /^# (\S+) local export/.exec((await readRegular(path.join(root, ...REPORT_FILE.split('/')))).toString())?.[1] ?? null; }
+  catch (e) { if (e.code === 'ENOENT') return null; throw e; }
+}
 export const GENERATED=new Set(['README.md','GUIDE.md','AGENTS.md','EXTENDING.md','CONTRIBUTING.md','package.json','LICENSE','.gitattributes',POLICY_FILE,REPORT_FILE,'.github/workflows/checks.yml','.github/workflows/checks.mjs']);
 
 export function safePath(name) {
@@ -81,7 +89,7 @@ function covers(line, text, from, to) {
   for (let i = line.indexOf(text); i >= 0; i = line.indexOf(text, i + 1)) if (i <= from && to <= i + text.length) return true;
   return false;
 }
-export async function verifyExport(root,{policyBytes,words}={}) {
+export async function verifyExport(root,{policyBytes,words,target}={}) {
   if (!(await fs.lstat(root)).isDirectory() || (await fs.lstat(root)).isSymbolicLink()) throw Error('Export needs a real directory');
   const declared = await readRegular(path.join(root, ...POLICY_FILE.split('/')));
   if (policyBytes && !declared.equals(policyBytes)) throw Error('Export policy changed during checks');
@@ -125,11 +133,14 @@ export async function verifyExport(root,{policyBytes,words}={}) {
     unexplained.slice(0, 40).map(f => `${safeName(f.file)}:${f.line} D${f.number}`).join('; ') + (unexplained.length > 40 ? '; ...' : ''));
   if (refused.length) throw Error(`Export contains ${refused.length} refused word${refused.length === 1 ? '' : 's'} (${WORDS_FILE}): ` +
     refused.slice(0, 40).map(f => `${safeName(f.file)}:${f.line} ${f.reason}`).join('; ') + (refused.length > 40 ? '; ...' : ''));
-  // Every export carries the repository's LICENSE (Apache-2.0, the person's choice), unchanged.
+  // Every export carries a LICENSE. The core and the lists: the repository's LICENSE (Apache-2.0, the person's choice),
+  // unchanged. The add-ons: the private-preview notice (ADDONS_LICENSE); no licence is granted until their public release.
   if (!files.some(f => f.name === 'LICENSE')) throw Error('Missing licence: LICENSE');
   if (files.some(f => f.name === 'LICENSE-TODO.md')) throw Error('Invalid licence: LICENSE-TODO.md is replaced by LICENSE');
   const licence = (await readRegular(path.join(root, 'LICENSE'))).toString();
-  if (!licence.includes('Apache License') || !licence.includes('Version 2.0, January 2004')) throw Error('Invalid licence: LICENSE is not the Apache-2.0 text');
+  if ((target ?? await exportTarget(root)) === 'hypersvg-addons') {
+    if (!licence.includes('All rights reserved') || licence.includes('Apache License')) throw Error('Invalid licence: the add-ons LICENSE is the private-preview notice (' + ADDONS_LICENSE + ')');
+  } else if (!licence.includes('Apache License') || !licence.includes('Version 2.0, January 2004')) throw Error('Invalid licence: LICENSE is not the Apache-2.0 text');
   // Every export keeps LF line endings on every system (a Windows clone would otherwise get CRLF and other bytes).
   if (!files.some(f => f.name === '.gitattributes')) throw Error('Missing .gitattributes (LF line endings)');
   if (!/^\*\s+text=auto\s+eol=lf\s*$/m.test((await readRegular(path.join(root, '.gitattributes'))).toString())) throw Error('Invalid .gitattributes: it must say "* text=auto eol=lf"');

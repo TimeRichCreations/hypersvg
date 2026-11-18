@@ -6,7 +6,7 @@ Pack it as a **HyperSVG**, one `.svg` file to place in any page, or as an **Expe
 runs on its own, even offline.
 
 <p align="center">
-  <img src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.0/docs/readme/lamp-preview.svg" width="360" alt="An animated preview of the starter lamp: the switch is pressed, the bulb lights and the words change">
+  <img src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.1/docs/readme/lamp-preview.svg" width="360" alt="An animated preview of the starter lamp: the switch is pressed, the bulb lights and the words change">
 </p>
 <p align="center"><em>An animated preview of the starter lamp. <a href="https://timerichcreations.github.io/hypersvg/">Try the real one</a>.</em></p>
 
@@ -25,7 +25,9 @@ my-lamp/
   lamp.svg          the picture
   lamp.json         what the switch does
   experience.json   what a page may set (lit, height) and hear (switched)
-  GUIDE.md, AGENTS.md   for you and your coding assistant
+  GUIDE.md          every word and mark, with an example
+  AGENTS.md, CLAUDE.md                for your coding assistant (the same notes)
+  .claude/skills/hypersvg/SKILL.md    the HyperSVG skill, for assistants that read skills
 ```
 
 ### 2. Look
@@ -53,7 +55,7 @@ Read it as sentences. The switch turns `lit` on and off. The bulb shows `on` or 
 
 | `lit` is false | `lit` is true |
 |---|---|
-| <img src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.0/docs/readme/lamp-off.svg" width="240" alt="The lamp switched off"> | <img src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.0/docs/readme/lamp-on.svg" width="240" alt="The lamp switched on"> |
+| <img src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.1/docs/readme/lamp-off.svg" width="240" alt="The lamp switched off"> | <img src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.1/docs/readme/lamp-on.svg" width="240" alt="The lamp switched on"> |
 
 ### 3. Change
 
@@ -98,7 +100,7 @@ npx @hypersvg/core pack --asset my-lamp out
 Put `out/lamp.svg` next to your web page, and add one line that loads the player:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.0/engine/v2/web/asset-web.mjs"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.1/engine/v2/web/asset-web.mjs"></script>
 
 <hypersvg-asset src="lamp.svg" lit="true">
   <img src="lamp.svg" alt="A lamp">
@@ -110,7 +112,7 @@ picture until the player is ready. In an `<img>` alone, a design tool or a READM
 picture.
 
 - Serve the page over http or https. Opening it straight from disk does not work, because the player loads the file.
-- Keep the exact version in the address (`@2.0.0-next.0`), so an update never changes your page by surprise.
+- Keep the exact version in the address (`@2.0.0-next.1`), so an update never changes your page by surprise.
 - To host the player yourself (for offline use or a strict site), copy `node_modules/@hypersvg/core` to your site
   and point the script line at your copy. [Embedding](docs/browser-embedding.md) has the details.
 
@@ -131,8 +133,8 @@ The npm name `hypersvg` belongs to another package, so write `npx @hypersvg/core
 - **Scenes, stories and reusable parts:** the [guide](GUIDE.md) goes from the lamp to a two-scene harbour.
 - **Working examples:** [docs/guide/examples/](docs/guide/examples/).
 - **HyperSVGs in your site or app:** [embedding](docs/browser-embedding.md).
-- **Test it in a browser:** `npx hypersvg test my-lamp --quick` (with Playwright installed).
+- **Test it in a browser:** `npx @hypersvg/core test my-lamp --quick` (with Playwright installed).
 - **Coding assistants:** [AGENTS.md](AGENTS.md). **Add-ons:** [EXTENDING.md](EXTENDING.md).
 - **The specification:** [spec/2.0](spec/2.0/README.md). **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md).
 
-HyperSVG 2.0 is a release candidate (`2.0.0-next.0`). Licensed under [Apache-2.0](LICENSE).
+HyperSVG 2.0 is a release candidate (`2.0.0-next.1`). Licensed under [Apache-2.0](LICENSE).

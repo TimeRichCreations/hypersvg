@@ -4,7 +4,7 @@
 // - A layout `shape` that is a name must be an inline range, a name in a shape axis, or a standard shape
 //   (E-REF-UNKNOWN, 7.4).
 // - A value's or input's `initial` must satisfy its type and bounds (E-TYPE, E-RANGE, 5.1).
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { STANDARD_SHAPES, parseSize, shapeMapsOf } from '../src/layout.mjs';
 import { checkValue } from '../src/runtime.mjs';
 
@@ -25,7 +25,7 @@ export function check(ctx) {
       const d = o.drawings?.[l.id];
       if (!size || !d) return; // a bad size is the schema's; a missing file is E-FILE-MISSING
       let root;
-      try { root = parseXml(d.text); } catch { return; }
+      try { root = parseXmlShared(d.text); } catch { return; }
       const say = (msg) => report('E-SVG-ROOT', d.file, 'svg', `layout ${l.id} is for ${l.size}: ${msg} (6.6)`);
       const vb = String(root.attrs.viewBox ?? '').trim().split(/[\s,]+/).map(Number);
       // A width or height that differs from the viewBox is reported by the drawing schema; here: missing ones.

@@ -4,7 +4,7 @@
 //   block that declares it (or of the experience, for a scene, shell or component); its type is a string with an
 //   `enum` that holds exactly the axis's options (E-AXIS-INPUT). The options are the entry's own list, else the
 //   shape axis's sizes and shapes, the tiers, a block's layouts or the experience's themes (layout.mjs axisOptions).
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { axisOptions } from '../src/layout.mjs';
 import { boxOf } from '../src/marks.mjs';
 
@@ -17,7 +17,7 @@ function frameNodes(o) {
   const out = [];
   for (const [layout, d] of Object.entries(o.drawings || {})) {
     let root;
-    try { root = parseXml(d.text); } catch { continue; }
+    try { root = parseXmlShared(d.text); } catch { continue; }
     const nodes = new Map();
     const walk = (n) => { if (!n.name) return; if (n.attrs.id) nodes.set(id(n.attrs.id), n); n.children.forEach(walk); };
     walk(root);

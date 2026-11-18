@@ -3,7 +3,8 @@
 //   node engine/v2/tools/test.mjs <experience folder | packed page.html> [options]
 // Options:
 //   --out <dir>          the report (report.json) and the screenshots (shots/*.jpg); default a folder in the temp folder
-//   --quick              wide only; no keys, Tab, pointer, dialog or motion checks; no speed
+//   --quick              wide only; no keys, Tab, pointer, dialog or motion checks; no speed. It still opens a browser
+//                        when Playwright is found (--node-only opens none)
 //   --speed              each scene 5 s with the CPU 4x slower (Chromium, CDP): frames a second and long tasks
 //   --browsers all       also Firefox and WebKit (wide and phone), with differences against Chromium; or a list
 //   --node-only          no browser

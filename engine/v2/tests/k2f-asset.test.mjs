@@ -140,10 +140,10 @@ export const tests = {
     const edit = (d, rel, fn) => { const f = path.join(d, ...rel.split('/')); fs.writeFileSync(f, fn(fs.readFileSync(f, 'utf8'))); };
     const refusal = async (d) => { try { await packAsset(d, temp()); return null; } catch (e) { return e; } };
     const broken = copy(); edit(broken, 'scenes/lamp/scene.json', (t) => t.replace('"target": "glow"', '"target": "glo"'));
-    ok(/errors/.test((await refusal(broken))?.message), 'a checker error refuses');
+    ok(/refusing to pack the asset: \d+ errors?$/.test((await refusal(broken))?.message), 'a checker error refuses');
     const needs = copy(); edit(needs, 'experience.json', (t) => t.replace('"language": "en",', '"language": "en", "needs": ["seats"],'));
     const r = await refusal(needs);
-    ok(r && (/E-ASSET/.test(r.message) || /errors/.test(r.message)), r?.message);
+    ok(r && (/E-ASSET/.test(r.message) || /errors?$/.test(r.message)), r?.message);
     const meta = copy(); edit(meta, 'scenes/lamp/lamp.svg', (t) => t.replace('<title>', '<metadata>{"derived": "edited"}</metadata>\n<title>'));
     ok(/tool record/.test((await refusal(meta))?.message), 'a drawing with its own tool record');
   },

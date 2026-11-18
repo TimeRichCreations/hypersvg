@@ -1,0 +1,12 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "badge",
+  "about": {"title": "Badge", "description": "A conformance asset: one scene that places a component."},
+  "language": "en",
+  "inputs": {
+    "name": {"kind": "content", "type": "string", "maxLength": 20, "initial": "Robin"}
+  },
+  "blocks": {"tag": "components/tag/component.json"},
+  "story": {"start": "card", "scenes": {"card": "scenes/card/scene.json"}, "endless": true}
+}

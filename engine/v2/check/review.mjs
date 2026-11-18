@@ -9,7 +9,7 @@
 //   space; a drawing that is merely the nearest is not). The scale is the frame fitted into the space (a shell's stage
 //   slot too). Layouts with a
 //   layout plan are W-PLAN-SCALE's (plans.mjs). A text that a fit rule may shrink is measured by the browser test.
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { parseTemplate } from '../src/formula.mjs';
 import { chooseLayout, shapeMapsOf, parseSize, applies } from '../src/layout.mjs';
 import { viewBoxOf, worldOf, measure } from '../src/plan.mjs';
@@ -20,9 +20,9 @@ export const REFERENCE_SIZES = ['1280x800', '390x844'];
 const MAX_CHOICES = 16; // a template with more possible texts than this is not compared
 
 const parse = (text) => {
-  let root; try { root = parseXml(text); } catch { return null; }
+  let root; try { root = parseXmlShared(text); } catch { return null; }
   const byId = new Map();
-  const walk = (n, parent) => { if (!n.name) return; n.parent = parent; if (n.attrs.id) byId.set(n.attrs.id, n); n.children.forEach(c => walk(c, n)); };
+  const walk = (n, parent) => { if (!n.name) return; if (n.parent !== parent) n.parent = parent; if (n.attrs.id) byId.set(n.attrs.id, n); n.children.forEach(c => walk(c, n)); };
   walk(root, null);
   return { root, byId };
 };

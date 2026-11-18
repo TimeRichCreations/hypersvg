@@ -3,7 +3,7 @@
 // JSON names it anywhere: a route key of a track or binding, a video binding's target, the block's `places` list, a
 // rule's subject, a capability's settings, or the experience's JSON. Names are read as words of the JSON's strings, so
 // a formula counts too.
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { boxOf } from '../src/marks.mjs';
 
 const WORD = /[a-z][a-z0-9]*(?:-[a-z0-9]+)*/g;
@@ -23,7 +23,7 @@ export function check(ctx) {
     const local = (x) => (x === ns ? x : x.startsWith(`${ns}__`) ? x.slice(ns.length + 2) : x);
     let named = null;
     for (const d of Object.values(o.drawings || {})) {
-      let root; try { root = parseXml(d.text); } catch { continue; }
+      let root; try { root = parseXmlShared(d.text); } catch { continue; }
       const walk = (n) => {
         if (!n.name) return;
         const kind = n.attrs['data-hsvg-route'] !== undefined ? `route place (data-hsvg-route="${n.attrs['data-hsvg-route']}")` : boxOf(n.attrs) === 'video' ? 'video box (data-hsvg-fit="video")' : null;

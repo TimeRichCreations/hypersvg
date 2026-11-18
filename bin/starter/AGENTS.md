@@ -13,4 +13,6 @@ npx @hypersvg/core pack --asset . out   # a HyperSVG: out/<id>.svg
 ```
 
 4. 0 findings from check means it is ready to pack. Fix each finding as its message says.
+   The working example folders and the spec are not in this folder. After `npm install @hypersvg/core` they are in
+   `node_modules/@hypersvg/core/docs/guide/examples/` and `node_modules/@hypersvg/core/spec/2.0/`.
 5. To rename the lamp, change the ids and file names together, then delete `lamp.json` and `lamp.svg`.

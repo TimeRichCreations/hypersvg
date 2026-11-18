@@ -3,7 +3,8 @@
 // one only, and its channel token (base64url, at least 128 bits) must then be on every message. A message with
 // another token, or from any window but the parent, is dropped with no reply.
 // Envelope {channel, v: 1, id, call, args}; reply {channel, id, ok: true, value} or {channel, id, ok: false,
-// error: {code, message}}. An `on` call subscribes; each delivery is {channel, v: 1, call: 'on', name, detail}.
+// error: {code, message}}. The reply to `emit` waits for the step and carries its result {name, payload, outputs}, as
+// host.emit's promise gives it (added after 2.0.0-next.0). An `on` call subscribes; each delivery is {channel, v: 1, call: 'on', name, detail}.
 // A message over 64 KiB (the UTF-8 bytes of its JSON) is refused with E-RANGE. The hello reply ({v: 1}) waits until
 // the page is ready. destroy and pagehide close the link, and the page then says {channel, call: 'bye'} to the host.
 // A {call: 'ping'} from the parent after the hello (it carries no token) is answered {channel, call: 'pong'}: the host
@@ -42,7 +43,12 @@ export function frameLink(win) {
         const k = eventKey(n);
         if (d.call === 'on') { if (!subs.has(k)) subs.set(k, host.on(n, ({ name, detail }) => post({ channel, v: 1, call: 'on', name, detail }))); }
         else if (d.call === 'off') { subs.get(k)?.(); subs.delete(k); }
-        else { const v = host[d.call](...args); if (VALUED.has(d.call)) value = v ?? null; }
+        else {
+          const v = host[d.call](...args);
+          // emit resolves the step's result {name, payload, outputs}, as host.emit does (D63): the reply waits for it.
+          if (d.call === 'emit') return void v.then((value) => post({ channel, id: d.id, ok: true, value }), (e) => post({ channel, id: d.id, ...fail(e.code || 'E-HOST-CALL', e.message) }));
+          if (VALUED.has(d.call)) value = v ?? null;
+        }
         r = { ok: true, value };
       } catch (e) { r = fail(e?.code || 'E-HOST-CALL', String(e?.message ?? e)); }
     }

@@ -18,6 +18,7 @@
   "outputs": {
     "score": {"kind": "result", "type": "number", "minimum": 0, "maximum": 99, "value": "score"},
     "done": {"kind": "event"},
+    "waved": {"kind": "event"},
     "trips": {"kind": "record", "maxRows": 20, "row": {"type": "object", "properties": {
       "stop": {"type": "string", "maxLength": 12}}, "required": ["stop"], "additionalProperties": false}}
   },
@@ -47,13 +48,19 @@
                 {"call": "player.attach", "with": {"part": "'lead'", "to": "'spare.lid-point'"}}]}],
     "missed": [{"actions": [{"set": "note", "to": "'Try again.'"}, {"stop": "roll", "keep": true},
               {"call": "player.attach", "with": {"part": "'lead'", "to": "null"}}]}],
-    "picked": [{"actions": [{"set": "flight", "to": "pick === 'a' ? 1 : 0"}]}]
+    "picked": [{"actions": [{"set": "flight", "to": "pick === 'a' ? 1 : 0"}]}],
+    "ended:wave": [{"guard": "!event.interrupted", "actions": [{"emit": "waved"}]}]
   },
   "machines": [{"id": "buoy", "initial": "on", "states": {
-    "on": {"after": [{"delayMs": 1000, "target": "off"}]}, "off": {"after": [{"delayMs": 500, "target": "on"}]}}}],
+    "on": {"after": [{"delayMs": 1000, "target": "off"}]}, "off": {"after": [{"delayMs": 500, "target": "on"}]}}},
+    {"id": "ferry", "initial": "docked", "states": {
+    "docked": {"on": {"load": [{"id": "sail", "target": "sailing"}]}},
+    "sailing": {"after": [{"delayMs": 2000, "target": "docked", "actions": [{"set": "note", "to": "'Back in port'"}]}]}}}],
   "clips": {
     "roll": {"durationMs": 800, "loop": true, "speed": "max(0.25, pace)",
-      "tracks": [{"target": "wheel", "channel": "rotate", "keys": [[0, 0], [800, 360]]}]}
+      "tracks": [{"target": "wheel", "channel": "rotate", "keys": [[0, 0], [800, 360]]}]},
+    "flutter": {"durationMs": 600, "tracks": [{"target": "flag", "channel": "scale", "axis": "y", "keys": [[0, 1], [300, 0.8], [600, 1]]}]},
+    "wave": {"durationMs": 900, "tracks": [{"target": "flag", "channel": "scale", "axis": "y", "keys": [[0, 1], [300, 0.8], [600, 1], [900, 1]]}]}
   },
   "bindings": [
     {"target": "title", "text": "{{ note }}", "fit": {"box": "title-box", "minFontPx": 18, "maxLines": 2}},

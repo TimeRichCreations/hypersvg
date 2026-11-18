@@ -3,12 +3,12 @@
 // player box. A component used in a slot counts its own surface times the slot's share of the scene's area. Over the
 // experience's filterSurface limit (4 by default, or as it raises it), play would refuse the mount with E-MOUNT-LIMIT;
 // the checker warns first. It is an estimate: text and missing references are left out, as at play.
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { filterSurface } from '../src/limits-runtime.mjs';
 import { activeLimits, raisedLimits } from '../src/limits.mjs';
 
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
-const parse = (text) => { try { return parseXml(text); } catch { return null; } };
+const parse = (text) => { try { return parseXmlShared(text); } catch { return null; } };
 const vbArea = (root) => { const v = String(root?.attrs?.viewBox || '').trim().split(/[\s,]+/).map(Number); return v.length === 4 && v[2] > 0 && v[3] > 0 ? v[2] * v[3] : 0; };
 
 // The surface of a block's drawing (its first frame), with its uses' surfaces in their slots. depth guards nesting.

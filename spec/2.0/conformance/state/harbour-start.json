@@ -1,0 +1,91 @@
+{
+ "now": 0,
+ "seq": 0,
+ "blocks": {
+  "experience": {
+   "kind": "experience",
+   "values": {
+    "best": 0
+   },
+   "inputs": {
+    "title": "Harbour day",
+    "pace": 2,
+    "shopLink": "https://example.org/harbour"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 0
+  },
+  "shell": {
+   "kind": "shell",
+   "def": "shell",
+   "parent": null,
+   "values": {
+    "settingsOpen": false
+   },
+   "inputs": {},
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 0
+  },
+  "gate": {
+   "kind": "scene",
+   "def": "gate",
+   "parent": null,
+   "values": {},
+   "inputs": {},
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 0
+  }
+ },
+ "timers": [],
+ "records": {},
+ "ambient": {
+  "reducedMotion": false,
+  "timeLimits": 1,
+  "inputMode": "pointer",
+  "language": "en",
+  "muted": false,
+  "volume": 1,
+  "voice": false,
+  "canReturn": false,
+  "size": {
+   "shape": "",
+   "width": 0,
+   "height": 0
+  }
+ },
+ "story": {
+  "current": "gate",
+  "stack": [],
+  "counts": {},
+  "visits": {
+   "gate": 1
+  },
+  "resume": null,
+  "painted": {
+   "gate": true
+  },
+  "held": [],
+  "endedReported": {},
+  "chapterSeen": {
+   "id": "",
+   "index": 0,
+   "count": 0
+  },
+  "heldSeen": {
+   "experience": true,
+   "shell": true,
+   "gate": true
+  },
+  "pausedBy": []
+ },
+ "pauses": []
+}

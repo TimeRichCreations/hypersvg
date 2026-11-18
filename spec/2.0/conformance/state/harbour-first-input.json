@@ -1,0 +1,226 @@
+{
+ "now": 400,
+ "seq": 1,
+ "blocks": {
+  "experience": {
+   "kind": "experience",
+   "values": {
+    "best": 0
+   },
+   "inputs": {
+    "title": "Harbour day",
+    "pace": 2,
+    "shopLink": "https://example.org/harbour"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 0
+  },
+  "shell": {
+   "kind": "shell",
+   "def": "shell",
+   "parent": null,
+   "values": {
+    "settingsOpen": false
+   },
+   "inputs": {},
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 0
+  },
+  "harbour": {
+   "kind": "scene",
+   "def": "harbour",
+   "parent": null,
+   "values": {
+    "score": 0,
+    "note": "Ahoy!",
+    "lampOn": false,
+    "speed": 0,
+    "wind": 0,
+    "pick": "",
+    "flight": 0,
+    "tension": 1,
+    "stops": [
+     "Mill",
+     "Quay",
+     "Point"
+    ]
+   },
+   "inputs": {},
+   "machines": {
+    "buoy": [
+     "on"
+    ],
+    "ferry": [
+     "docked"
+    ]
+   },
+   "uses": [
+    {
+     "id": "lead"
+    },
+    {
+     "id": "spare"
+    },
+    {
+     "id": "crates",
+     "keys": [
+      "0",
+      "1",
+      "2"
+     ]
+    }
+   ],
+   "clips": {
+    "roll": {
+     "startedAt": 400,
+     "speed": 2
+    }
+   },
+   "attach": {},
+   "born": 400
+  },
+  "harbour/lead": {
+   "kind": "component",
+   "def": "crate",
+   "parent": "harbour",
+   "values": {},
+   "inputs": {
+    "name": "Lead"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 400
+  },
+  "harbour/spare": {
+   "kind": "component",
+   "def": "crate",
+   "parent": "harbour",
+   "values": {},
+   "inputs": {
+    "name": "Spare"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 400
+  },
+  "harbour/crates[0]": {
+   "kind": "component",
+   "def": "crate",
+   "parent": "harbour",
+   "values": {},
+   "inputs": {
+    "name": "Mill"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 400
+  },
+  "harbour/crates[1]": {
+   "kind": "component",
+   "def": "crate",
+   "parent": "harbour",
+   "values": {},
+   "inputs": {
+    "name": "Quay"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 400
+  },
+  "harbour/crates[2]": {
+   "kind": "component",
+   "def": "crate",
+   "parent": "harbour",
+   "values": {},
+   "inputs": {
+    "name": "Point"
+   },
+   "machines": {},
+   "uses": [],
+   "clips": {},
+   "attach": {},
+   "born": 400
+  }
+ },
+ "timers": [
+  {
+   "due": 1400,
+   "scale": 1,
+   "seq": 0,
+   "owner": "harbour",
+   "mid": "buoy",
+   "path": [
+    "on"
+   ],
+   "index": 0
+  }
+ ],
+ "records": {},
+ "ambient": {
+  "reducedMotion": false,
+  "timeLimits": 1,
+  "inputMode": "pointer",
+  "language": "en",
+  "muted": false,
+  "volume": 1,
+  "voice": false,
+  "canReturn": false,
+  "size": {
+   "shape": "",
+   "width": 0,
+   "height": 0
+  }
+ },
+ "story": {
+  "current": "harbour",
+  "stack": [],
+  "counts": {
+   "in": 1
+  },
+  "visits": {
+   "gate": 1,
+   "harbour": 1
+  },
+  "resume": null,
+  "painted": {
+   "gate": true,
+   "harbour": true
+  },
+  "held": [],
+  "endedReported": {
+   "harbour": 1
+  },
+  "chapterSeen": {
+   "id": "",
+   "index": 0,
+   "count": 0
+  },
+  "heldSeen": {
+   "experience": true,
+   "shell": true,
+   "harbour": true,
+   "harbour/lead": true,
+   "harbour/spare": true,
+   "harbour/crates[0]": true,
+   "harbour/crates[1]": true,
+   "harbour/crates[2]": true
+  },
+  "pausedBy": []
+ },
+ "pauses": [],
+ "firstInput": true
+}

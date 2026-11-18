@@ -6,8 +6,8 @@ This section defines the few ideas everything else is built from. Every later se
 meanings. Section 11 lists the words; where an older spec used a word differently, the rename table of A13.4 gives the new name.
 
 The section numbers skip 1.9 and 1.11: those sections moved out, and the table at the end says where. The examples
-name pieces that ship with the core: the one-page example (`docs/one-page/example/`), the guide's harbour
-(`docs/guide/examples/harbour/`) and the orientation recipe (`skill/2.0/examples/recipes/orientation/`).
+name pieces that ship with the core: the one-page example (`docs/one-page/example/`), the guide's examples (the lamp,
+the harbour and the ad in `docs/guide/examples/`) and the orientation recipe (`skill/2.0/examples/recipes/orientation/`).
 
 ## 1.1 Principles
 
@@ -17,8 +17,8 @@ name pieces that ship with the core: the one-page example (`docs/one-page/exampl
    they are. JSON describes content, values, behaviour and rules. There is one format, played directly.
 3. **No code in content.** Content never contains scripts, HTML or selectors. Conditions and computed values use one
    small formula language with a closed grammar and budgets (section 5).
-4. **Every change passes the same checks.** A value can change through a control, a reaction, an editor, an AI agent,
-   an HTML widget or a server. Each change is checked for type, bounds and rules. An edit is also checked against
+4. **Every change passes the same checks.** A value can change through a control, a reaction, an editor, an add-on
+   or the host. Each change is checked for type, bounds and rules. An edit is also checked against
    editor rights; a change while playing, against the seat's inputs and the host's grants (A9.7).
 5. **Rules are invariants.** A rule says what must always hold. It is proven from the files, by playing, or by
    review. Blocks declare which rules they guarantee.
@@ -38,18 +38,23 @@ faces of the block whose drawing holds it.
 |---|---|---|---|
 | **element** | Plain SVG: a path, rect, text. Needs no name. | SVG | the shading inside an arm |
 | **part** | A named piece of one drawing that does something (its jobs, 1.6) | SVG | the star of the one-page example, a price label, a wheel |
-| **component** | A reusable block with its own drawing and its own JSON document; it may hold other components | SVG + JSON | a card of Memory match, a button, an offer block, a set of answer cards |
-| **scene** | One moment: a game screen, an ad moment, a slide | JSON, naming SVG drawings | the play scene of Memory match, one step of an animated ad |
-| **shell** | The screen around scenes: a master drawing with slots for the **stage** (where scenes play) and for pieces that stay, such as a top bar (10.1) | JSON, naming SVG drawings | the harbour recipe's frame, with its stage slot and its turn button |
-| **experience** | Scenes linked in a story graph | JSON | Memory match, an ad, a lesson |
+| **component** | A reusable block with its own drawing and its own JSON document; it may hold other components | SVG + JSON | the harbour's crate, a button, an offer block, a set of answer cards |
+| **scene** | One moment: a game screen, an ad moment, a slide | JSON, naming SVG drawings | the harbour scene of the guide's harbour, one step of an animated ad |
+| **shell** | The screen around scenes: a master drawing with slots for the **stage** (where scenes play) and for pieces that stay, such as a top bar (10.1) | JSON, naming SVG drawings | the harbour's shell, with its stage slot and its settings dialog |
+| **experience** | Scenes linked in a story graph | JSON | the harbour, an ad, a lesson |
 
-A **frame** is one drawing of a block at one size or shape (a 300×250 ad, Memory match's tall phone drawing, a button
+A **frame** is one drawing of a block at one size or shape (a 300×250 ad, the guide ad's 160×600 drawing, a button
 drawn for a narrow slot). Scenes, components and shells all have frames. It is not a rung.
 
 The **host** is where an experience runs: its own page, an ad placement, a portal, an app, an AI assistant, or someone
 else's web page (section 10). The host is not a rung.
 
-Drawings mark only element, part, component and screen. (A **compound**, components arranged as one, is now a
+An experience ships as one of **two outputs** (D45). An **Experience** is one offline `.html` page that holds the
+files and the player (10.8). An **asset** is a small experience, one drawing and its JSON with no kit and no add-on;
+it also ships as a **HyperSVG**, one `.svg` file that shows its rest pose anywhere and plays when a page loads the
+player (2.13, 10.14). Both are the same format, checked by the same checker.
+
+Drawings mark three kinds: part, component and screen (4.1); an element carries no mark. (A **compound**, components arranged as one, is now a
 component that holds other components. The upgrade tool rewrites `data-hsvg-kind="compound"`.) Scenes, shells and experiences are JSON
 documents that refer to drawings.
 
@@ -75,7 +80,7 @@ that brings its own drawing and always has its JSON document; for a drawing that
 
 | Face | Question it answers | Contents |
 |---|---|---|
-| **places** | Where can things go? | slots (attach points too), fit boxes, repeats, protected areas, routes, page hooks (1.7) |
+| **places** | Where can things go? | slots (attach points too), fit boxes, repeats, protected areas, routes (1.7) |
 | **inputs** | What can be changed from outside? | content fields, triggers and knobs (section 5) |
 | **rules** | What must always hold? | invariants the block guarantees, each with a strength (section 8) |
 | **outputs** | What does it report? | typed events, results and records (5.4, 5.12) |
@@ -89,7 +94,7 @@ values the block reads. A **trigger** is an input with no stored value: somethin
 | Part of the body | Meaning |
 |---|---|
 | **values** | Named, typed, bounded data with a lifetime: `moment` (while its owner is active: a scene from entry to exit, a component while mounted), `run` (until the experience closes or restarts), `session` (until the browser session ends) or `saved` (across runs). |
-| **behaviour** | What happens: **reactions** to events, **machines** (state machines), **actions** (one operation each, such as writing a value), **clips** (motion over time), **bindings** from values to the drawing, and **effects** (running motion recipes, such as a spring). |
+| **behaviour** | What happens: **reactions** to events, **machines** (state machines), **actions** (one operation each, such as writing a value), **clips** (motion over time), and **bindings** from values to the drawing. Running effects (particles) are the `effects` add-on. |
 
 Behaviour never reaches outside its block except through outputs and the actions the host grants (section 5).
 
@@ -106,7 +111,7 @@ a control, a clip). The drawing says what a part is and may do; the JSON says wh
 | **moves** | a pivot, a range, `follow` another part | an arm, a wheel |
 | **holds content** | a content field with limits | a headline, a price, a photo |
 | **takes colour** | a colour role from the theme | a button surface |
-| **reacts** | it is the target of a **control**: something a person presses, picks, slides or drags; using it writes a value or queues an event (5.11) | a button, a draggable parcel |
+| **reacts** | it is the target of a **control**: something a person presses, switches, picks, slides, turns or drags; using it writes a value or queues an event (5.11) | a button, a draggable parcel |
 | **is a place** | it is a slot, fit box, repeat, protected area or route (1.7) | a mount point, a caption box |
 | **has variants** | drawn alternatives selected by a value | a mouth open or closed, a happy or sad face |
 
@@ -117,27 +122,29 @@ Paint order is document order. A part may declare its layer (`data-hsvg-layer`) 
 
 ## 1.7 Places
 
-Five kinds of place are drawn in a block's drawing. The sixth, the page hook, is on the host page.
+Five kinds of place are drawn in a block's drawing. (The `page` add-on adds a page hook, an element of a host page
+that the site owner marks and allows, `data-hsvg-hook`.)
 
 | Place | Meaning |
 |---|---|
 | **slot** | A drawn place where a component or a scene is mounted. |
-| **fit box**, **repeat** | A drawn box with a purpose (`data-hsvg-fit`): fitting text, holding a layout plan, showing a recorded video; a group whose child slots hold repeated items (`data-hsvg-repeat`). |
+| **fit box**, **repeat** | A drawn box with a purpose (`data-hsvg-fit`): fitting text, or a box an add-on fills (a layout plan, a recorded
+video); a group whose child slots hold repeated items (`data-hsvg-repeat`). |
 | **attach point** | An empty slot `<g>` inside a moving part that a use can ride on (`bike.basket-point`, 6.9). |
 | **protected area** | A box that must stay visible (a face, a logo, a product). |
 | **route** | A drawn path things move along (a road, a surface to walk on). |
-| **page hook** | An element of a host page that the site owner marks and allows (`data-hsvg-hook`). |
 
 ## 1.8 Joining: the story graph
 
 Scenes are joined in a **story graph**. Each **link** fires on an event (an answer, a finish line), on time
-(`afterMs`, a number of milliseconds, or `afterLine`, when a spoken line ends) or on a **choice** (an option offered to a seat, which fires the link when picked).
+(`afterMs`, a number of milliseconds) or on a **choice** (an option that fires the link when picked; an add-on such
+as `widgets` shows it, 3.5). An add-on's event can fire a link too, such as `lines:ended:<line>` when a spoken line ends.
 A timeline is a graph whose links are all timed. A lesson or game uses event links. An interactive video mixes both.
 A **visit** opens another scene and returns to the one that opened it, through a stack of at most 16.
 
 One engine clock drives each experience. Scenes, components and stage slots may each have a local clock: its own
-start time, pause and speed, counted from the engine clock. A data story's stage slot may take its local time from
-the scroll position instead (3.10).
+start time, pause and speed, counted from the engine clock (3.10). Taking a slot's time from the scroll position is a
+2.1 draft.
 
 ## 1.10 Representations
 
@@ -175,7 +182,7 @@ the one-page guide and this chapter).
 3. Everything else is an add-on, ours or anyone's, through the same door.
 4. The formula language (5.6) is settled. Its function list is a slot under rule 2.
 
-**The core boundary (D28, D30, D31).** Every word of the format is in exactly one place:
+**The core boundary (D28, D30, D31, D39 to D45).** Every word of the format is in exactly one place:
 
 | Place | What it holds | Where it is written |
 |---|---|---|
@@ -186,6 +193,16 @@ the one-page guide and this chapter).
 
 The SVG side is closed too: an add-on never adds a drawing mark (6.1). The core is released first, with the door and
 its example add-ons; the built-in add-ons follow in their own release, each with a version and a tier (D30).
+
+- **Growth slots (D39).** Besides calls, events and settings, an add-on may add a control kind, a binding channel and
+  a clip track channel, each a value that carries its name (`"kind": "acme.text-input"`). No core word or mark.
+- **The closed box (D40).** Nothing new arrives while a page runs, except data and pictures through the host API.
+- **A lean base (D41).** The base holds the core spec, the engine (player, checker, packer and tests), one tiny
+  example per door, a short guide, one skill and the `hypersvg` command. Kits, templates, libraries, showcases and the
+  official add-ons have their own repositories.
+- **A stable standard (D42).** Files made for 2.0 keep working in every 2.x; the base changes only by a recorded
+  decision, and versions follow semver.
+- **Two outputs (D45).** An Experience (one `.html` page) and a HyperSVG (one `.svg`), from the same format (1.2).
 
 **The chapters.**
 
@@ -201,7 +218,7 @@ its example add-ons; the built-in add-ons follow in their own release, each with
 | 8. Rules | what a rule is; the rule language is in the tool reference (A11) |
 | 9. The engine | the execution model: store, transactions, one writer, one clock, lifecycle, replay, checks, limits |
 | 10. Hosts and delivery | shell, landmarks, hosts, grants, host API, the door, packing, `needs`, the checker, the accessibility contract |
-| 11. Vocabulary | core words, defaults, retired words, look-alikes |
+| 11. Vocabulary | core words, retired words, look-alikes, defaults, renamed words |
 | 12. Writing an add-on | the door: presets, logic modules and capabilities, with worked examples |
 
 ## Moved out of this chapter

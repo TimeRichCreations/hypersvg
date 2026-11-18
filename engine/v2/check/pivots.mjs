@@ -3,7 +3,7 @@
 // passes every other check and every test that reads values. The box is measured in the coordinates the part's
 // children are drawn in (where the pivot is written): every shape below it, through inner transforms. Text counts as
 // its start point; a part that draws no shape is not judged.
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { IDENTITY, mul, parseTransform, shapeBox, transformBox, emptyBox, isEmpty, union, addPoint } from './paint/geometry.mjs';
 
 const SKIP = new Set(['defs', 'symbol', 'clipPath', 'mask', 'filter', 'marker', 'pattern', 'linearGradient', 'radialGradient', 'title', 'desc', 'metadata']);
@@ -56,7 +56,7 @@ export function check(ctx) {
   const { experience: exp, report } = ctx;
   const owners = [...Object.values(exp.scenes || {}), ...Object.values(exp.blocks || {}), ...(exp.shell ? [exp.shell] : [])];
   for (const o of owners) for (const d of Object.values(o.drawings || {})) {
-    let root; try { root = parseXml(d.text); } catch { continue; }
+    let root; try { root = parseXmlShared(d.text); } catch { continue; }
     for (const p of pivotsOutside(root)) {
       report('W-PIVOT-OUTSIDE', d.file, p.id ?? '', `part ${p.id}: its pivot ${p.pivot.join(' ')} is outside what it draws (${r1(p.box.x0)} ${r1(p.box.y0)} to ${r1(p.box.x1)} ${r1(p.box.y1)}), so it turns or grows around a point away from it; move data-hsvg-pivot onto the part (its hinge or centre), or check that the art did not move without it (6.2.1)`);
     }

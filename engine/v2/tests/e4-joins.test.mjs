@@ -323,13 +323,13 @@ Object.assign(tests, {
 
 // ---- item 8: small ----
 Object.assign(tests, {
-  'small: START names hsvg preview; the README names proof.mjs guide, the guides folder and the studio\'s browser test; preview speaks of srcdoc; the fast run has the studio test'() {
+  'small: START names hsvg preview; the README names proof.mjs guide and the guide format, not the studio (outside the base); preview speaks of srcdoc; the fast run has the studio test'() {
     const read = (...p) => fs.readFileSync(path.join(repo, ...p), 'utf8');
     const start = read('kit', '2.0', 'START.md');
     ok(/hsvg\.mjs preview/.test(start) && !/not in this kit yet/.test(start), 'START.md names preview');
     const readme = read('engine', 'v2', 'README.md');
-    ok(readme.includes('proof.mjs guide') && readme.includes('tools/proof/guides/'), 'README: proof.mjs guide and the guides folder');
-    ok(readme.includes('node examples/2.0-ad-studio/tests/studio-browser.mjs'), 'README: the studio browser test');
+    ok(readme.includes('proof.mjs guide') && readme.includes('tools/proof/FORMAT.md'), 'README: proof.mjs guide and the guide format');
+    ok(!readme.includes('node examples/2.0-ad-studio/tests/studio-browser.mjs'), 'README: the studio browser test is not in the base, so the engine README does not list it');
     ok(/srcdoc frame \(its sounds/.test(read('engine', 'v2', 'tools', 'preview.mjs')), 'preview.mjs: srcdoc');
     ok(read('engine', 'v2', 'tests', 'run.mjs').includes("'studio.test.mjs'"), 'run.mjs runs the studio test');
   },

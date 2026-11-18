@@ -1,0 +1,233 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "one-page-stars",
+ "about": "Four presses, each playing the pop clip; one press while the clip still runs. Then reduced motion, and one more press.",
+ "package": {
+  "folder": "docs/one-page/example",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:3777d82237c0cb2894675c9f83b3019949a260f9adc6f08790127de7827b811d",
+   "scenes/hello/hello.svg": "sha256:12f35af95b75ad21792f2b914613b09496609412c7eeffd94118f309712e773c",
+   "scenes/hello/scene.json": "sha256:80b61bd21672481078c6f667091b07bf71ab74301704e13ab00c134f87987512"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:7a78344ba20e561ad49f40345c7db172965369a944e94bec2179c40c51cdd8f4",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "hello",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "hello"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:5676eb63635196a2bb89cd282754b7b6012c6a04bd5b18994b6433b289cc853e",
+   "heard": [
+    {
+     "t": 300,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add"
+    ]
+   },
+   "fingerprint": "sha256:f6767dd3b50e69996268a95c81e87fd383d734cf910baf54e950f18cfcde0fde",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 500,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add"
+    ]
+   },
+   "fingerprint": "sha256:99c2b7839b3c41465565972e47c49440f48f793936dde0e3891a55529d134abe",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1200,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add"
+    ]
+   },
+   "fingerprint": "sha256:9c59dff922974f1fe0c2cf505c048194327568a61c652cb4935b61ed0e9e25af",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2000,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add"
+    ]
+   },
+   "fingerprint": "sha256:187f3ee07743940e67371a8e53a39ee86dad6df2bff2852e13ae8b2d7c486713",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2100,
+    "source": "motion",
+    "payload": [
+     true
+    ]
+   },
+   "fingerprint": "sha256:ecd562d8f2c6ace2e7cf164ad737a2008d4801a83fda216027a60fc4ace47597",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2500,
+    "source": "activate",
+    "payload": [
+     "hello",
+     "add"
+    ]
+   },
+   "fingerprint": "sha256:595663e8772a31773ff207351dacb6bed57d1005a1692558bcbfda1fa7614d6a",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 3000,
+  "fingerprint": "sha256:d97d1d5097c36ebb3d4e81fd7d2ea4729d7d41b99f9d9f443a0ab405e2710c5b",
+  "heard": [],
+  "state": {
+   "now": 3000,
+   "seq": 5,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "hello": {
+     "kind": "scene",
+     "def": "hello",
+     "parent": null,
+     "values": {
+      "stars": 5
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": true,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    },
+    "motionSystem": true,
+    "motionChosen": false
+   },
+   "story": {
+    "current": "hello",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "hello": 1
+    },
+    "resume": null,
+    "painted": {
+     "hello": true
+    },
+    "held": [],
+    "endedReported": {
+     "hello": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "hello": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

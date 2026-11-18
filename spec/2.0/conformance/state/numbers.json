@@ -1,0 +1,24 @@
+{
+ "now": 1500,
+ "seq": 0,
+ "blocks": {
+  "experience": {
+   "values": {
+    "big": 1e+21,
+    "small": 1e-7,
+    "third": 0.3333333333333333,
+    "tiny": 5e-324,
+    "safe": 9007199254740991,
+    "half": 0.5,
+    "neg": -12.25,
+    "zero": 0,
+    "whole": 100
+   }
+  }
+ },
+ "timers": [],
+ "records": {},
+ "ambient": {},
+ "story": null,
+ "pauses": []
+}

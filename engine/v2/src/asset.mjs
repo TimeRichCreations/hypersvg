@@ -42,7 +42,7 @@ export function makeAsset({ id, drawing, files }) {
 }
 
 // Reads a HyperSVG: {id, drawing, files} with every member's text (the drawing too), after the member check. Throws
-// E-ASSET for a file that is no HyperSVG, E-PACKAGE-MEMBER or E-PACKAGE-DIGEST for a file that was changed after
+// E-ASSET for a file that is no HyperSVG (or whose drawing has a tool record of its own), E-PACKAGE-MEMBER or E-PACKAGE-DIGEST for a file that was changed after
 // packing (a tampered asset). maxBytes: the size limit (the asset limit of the host, dataBytesEach by default).
 export function readAsset(svg, { maxBytes = Infinity } = {}) {
   if (typeof svg !== 'string') throw fault('E-ASSET', 'a HyperSVG is text');
@@ -71,6 +71,9 @@ export function readAsset(svg, { maxBytes = Infinity } = {}) {
   files[a.drawing] = svg.slice(0, at) + svg.slice(at + meta.length);
   const bad = memberFindings(a.members, Object.keys(files), (p) => sha256(enc.encode(files[p])));
   if (bad.length) throw fault(bad[0].code, `the asset was changed after it was packed: ${bad.map(d => d.message).join('; ')}`, { diagnostics: bad });
+  // An asset's drawing carries no tool record of its own (2.13, 10.15 step 7): a hand-made one is refused, as the packer
+  // refuses to make one.
+  if (/<metadata\b/.test(files[a.drawing])) throw fault('E-ASSET', `the drawing ${a.drawing} has a tool record (<metadata>) of its own; an asset's drawing carries none`);
   return { id: a.id, drawing: a.drawing, files };
 }
 

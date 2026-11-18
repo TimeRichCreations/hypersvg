@@ -17,7 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { folderSource } from '../src/load.mjs';
+import { folderSource, loadExperience } from '../src/load.mjs';
 import { checkExperience } from '../check/index.mjs';
 import { checkCatalogue, findItems } from '../check/catalogue.mjs';
 import { digestOf } from '../check/digest.mjs';
@@ -126,7 +126,7 @@ async function bringKits(dir, doc, from) {
 async function pinKitDigests(dir) {
   const file = path.join(dir, 'experience.json');
   const source = await folderSource(dir);
-  const exp = checkExperience(source, schemas()).experience;
+  const exp = loadExperience(source, schemas()).experience; // the loaded kits; the full check runs after (checkFolder)
   const doc = readJson(file);
   let changed = false;
   const kit = exp?.kit;

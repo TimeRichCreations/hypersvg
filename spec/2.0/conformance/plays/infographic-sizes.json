@@ -1,0 +1,234 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "infographic-sizes",
+ "about": "A data-drawn chart: the start, a size change and time running.",
+ "package": {
+  "folder": "skill/2.0/examples/kinds/infographic",
+  "experience": "experience.json",
+  "files": {
+   "components/bar/bar.svg": "sha256:377bcbff5ec81430beaacd9577b5c93698e7d415355b02319c2bb0e08b2b6c08",
+   "components/bar/component.json": "sha256:c2a35d680b897b29858c0205f44493baf621e92203cb7aa7ceaabbc2282714de",
+   "data/fruit.json": "sha256:30cef2cda1b1a57f48d5bb7919e8a656a155f576cff7e8ac7e4b140c5c96af70",
+   "experience.json": "sha256:52ffe2a0e742b1f45457b277d41f50f3f5a03edba1934966bb8b1bb47a74f11d",
+   "scenes/chart/chart.svg": "sha256:e24744b426ca4e9163c6bd4eb90773cdc57c5cc6763c543f05d2b9a281dc1cc1",
+   "scenes/chart/scene.json": "sha256:e0ae64c1f06d443c32040f576803b54d5788ee97f382e22c5fdf8df098ff4e96"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:6dd8342c24aa608155d7c672273f6049f80938b6e8974185d881ea4598afdf98",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "chart",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "chart"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 800,
+    "source": "setSize",
+    "payload": [
+     {
+      "shape": "square",
+      "width": 600,
+      "height": 600
+     }
+    ]
+   },
+   "fingerprint": "sha256:55514f376e4439156d9a4243ab1beccd95a9d8c16a5da1f891621edebe89089f",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 3000,
+  "fingerprint": "sha256:bd92166967a815b0f998160eb758e1781f8553d1e0b700b4bad2179a112a2eb4",
+  "heard": [],
+  "state": {
+   "now": 3000,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "chart": {
+     "kind": "scene",
+     "def": "chart",
+     "parent": null,
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [
+      {
+       "id": "bars",
+       "keys": [
+        "apples",
+        "pears",
+        "plums",
+        "figs"
+       ]
+      }
+     ],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "chart/bars[apples]": {
+     "kind": "component",
+     "def": "bar",
+     "parent": "chart",
+     "values": {},
+     "inputs": {
+      "name": "Apples",
+      "share": 0.9
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "chart/bars[pears]": {
+     "kind": "component",
+     "def": "bar",
+     "parent": "chart",
+     "values": {},
+     "inputs": {
+      "name": "Pears",
+      "share": 0.5
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "chart/bars[plums]": {
+     "kind": "component",
+     "def": "bar",
+     "parent": "chart",
+     "values": {},
+     "inputs": {
+      "name": "Plums",
+      "share": 0.3
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "chart/bars[figs]": {
+     "kind": "component",
+     "def": "bar",
+     "parent": "chart",
+     "values": {},
+     "inputs": {
+      "name": "Figs",
+      "share": 0.15
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "square",
+     "width": 600,
+     "height": 600
+    }
+   },
+   "story": {
+    "current": "chart",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "chart": 1
+    },
+    "resume": null,
+    "painted": {
+     "chart": true
+    },
+    "held": [],
+    "endedReported": {
+     "chart": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "chart": true,
+     "chart/bars[apples]": true,
+     "chart/bars[pears]": true,
+     "chart/bars[plums]": true,
+     "chart/bars[figs]": true
+    },
+    "pausedBy": []
+   },
+   "pauses": []
+  }
+ }
+}

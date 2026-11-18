@@ -1,0 +1,311 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "orientation-walk",
+ "about": "A seeded random walk of up to 10 steps (seed 5).",
+ "package": {
+  "folder": "skill/2.0/examples/recipes/orientation",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:529693d5d562dececd4d27e947f68628c241fb944670f20c2ed913b727d3f53f",
+   "scenes/harbour/harbour-square.svg": "sha256:d63e736f216666dd7817b7dcc03e44c945bd1a8ca2fa2175d9d0bdbf71c1d9ec",
+   "scenes/harbour/harbour-tall.svg": "sha256:a6b0f38ba615b7a549e0e536749ca01c3ca48a3e2593bc8157e51271501149a7",
+   "scenes/harbour/harbour-wide.svg": "sha256:f400f6ba280b7871d81d0fdd0eb6707350f7f258a4040ea1ee4d579d329a0a4e",
+   "scenes/harbour/scene.json": "sha256:6c493be685f9867543b4c83b809d1847ff43a94bd9a7efa5801a84c2a418fbc6",
+   "shell/frame.json": "sha256:f2ae61f2e807acc7353eb19c926f5e687b0a8b123ca9215df01922f699bd6320",
+   "shell/frame.svg": "sha256:00453eca3babe48ca3417736a33cdaf44c01dfbaf970d4413fe1ded3f838d667"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:90466adc78987ece6454512f6b40a0e681ad8e184330b2238ab076713ff29f77",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "harbour",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "harbour"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:78fe33a398d06f604fe67ac0c8b5f80efa6b443ee34047fcbdb4f50af503a8d0",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     434
+    ]
+   },
+   "fingerprint": "sha256:e2733323673a1a7c83fb6042292f3ba9720bde80ad46837621b4fa78d7baeef1",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 374,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:3872290e32ea3852c0fc06ae25d3778bc5fb3a767304966ec19b5a5efeb104f0",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 982,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:d8e3040ff68659096c1cbe3b6c6ac4ac1673c2d5438273b4c9ede70db8725299",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1846,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:dc6d3c3037cf209424299e4fc4aa441151308acb8b5dce6fc2e225b8351307a3",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2866,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:a1f6f2ba32c5492ee3d796ad473367634ba975669b2507ae3762607baa7f069e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3690,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:d198c828c594af1d1e322342b9bcaa7d0d4f3eec9dd7d4528abf8f05782ca012",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4514,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:33e21fa6bf49d160454c33ce100365099e2ce65be3bca6feae84f2cde5d4bbac",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5026,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:c70f4992b03f2c538e55e6da573eac8423ab5644d4d1dc7f7dc6b470b865b904",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5330,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:fb2b7fc9f57f50b9b2b8c898def6b2dc8dc0bb5f3427763efdfd30c5e8a2d26b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 6046,
+    "source": "activate",
+    "payload": [
+     "frame",
+     "width",
+     100
+    ]
+   },
+   "fingerprint": "sha256:0219b4367ec177353cf1672b3d4f00ac4e9f318c1227a1a8066ecc453cd897ab",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 6998,
+  "fingerprint": "sha256:063df579771e8334aa2bd7fea1d1dc1dbcdab884e7651ab630552700c83f5072",
+  "heard": [],
+  "state": {
+   "now": 6998,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "frame": {
+     "kind": "shell",
+     "def": "frame",
+     "parent": null,
+     "values": {
+      "w": 100,
+      "h": 300,
+      "tmp": 0
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "harbour": {
+     "kind": "scene",
+     "def": "harbour",
+     "parent": null,
+     "values": {
+      "taps": 0
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "harbour",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "harbour": 1
+    },
+    "resume": null,
+    "painted": {
+     "harbour": true
+    },
+    "held": [],
+    "endedReported": {
+     "harbour": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "frame": true,
+     "harbour": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

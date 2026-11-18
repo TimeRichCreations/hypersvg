@@ -1,0 +1,247 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "orientation-shapes",
+ "about": "One scene in three shapes: taps between size changes.",
+ "package": {
+  "folder": "skill/2.0/examples/recipes/orientation",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:529693d5d562dececd4d27e947f68628c241fb944670f20c2ed913b727d3f53f",
+   "scenes/harbour/harbour-square.svg": "sha256:d63e736f216666dd7817b7dcc03e44c945bd1a8ca2fa2175d9d0bdbf71c1d9ec",
+   "scenes/harbour/harbour-tall.svg": "sha256:a6b0f38ba615b7a549e0e536749ca01c3ca48a3e2593bc8157e51271501149a7",
+   "scenes/harbour/harbour-wide.svg": "sha256:f400f6ba280b7871d81d0fdd0eb6707350f7f258a4040ea1ee4d579d329a0a4e",
+   "scenes/harbour/scene.json": "sha256:6c493be685f9867543b4c83b809d1847ff43a94bd9a7efa5801a84c2a418fbc6",
+   "shell/frame.json": "sha256:f2ae61f2e807acc7353eb19c926f5e687b0a8b123ca9215df01922f699bd6320",
+   "shell/frame.svg": "sha256:00453eca3babe48ca3417736a33cdaf44c01dfbaf970d4413fe1ded3f838d667"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:90466adc78987ece6454512f6b40a0e681ad8e184330b2238ab076713ff29f77",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "harbour",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "harbour"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:e6ae9d7da4a79078ae0c89cef884dac49d37b340b9996fe7bdac0a6df276dfc5",
+   "heard": [
+    {
+     "t": 300,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 300,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "tap"
+    ]
+   },
+   "fingerprint": "sha256:89b55d1aedd41e967fce56679e65dfd4ee97667e294c837699d4726da0d6f159",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 600,
+    "source": "setSize",
+    "payload": [
+     {
+      "shape": "tall",
+      "width": 400,
+      "height": 800
+     }
+    ]
+   },
+   "fingerprint": "sha256:9d793830c8e4c1be3083ff27dfd8c857272a136878af1acbe6983269a42ce514",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 900,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "tap"
+    ]
+   },
+   "fingerprint": "sha256:3cf2b37cf3ae403878d5b8a4b75a3fec11cafc494b6b3a3b3bc7db370bf3fe19",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1200,
+    "source": "setSize",
+    "payload": [
+     {
+      "shape": "square",
+      "width": 600,
+      "height": 600
+     }
+    ]
+   },
+   "fingerprint": "sha256:ffa351726d55ff9d6421cec07a70148ce464c5c74d96dbdd8e5a6a59264e0ea4",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1500,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "tap"
+    ]
+   },
+   "fingerprint": "sha256:29a59e0a20d85e020b9dc7a21b8511a1c4ebe747245683bdf4cbbf91da6c39a3",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 1500,
+  "fingerprint": "sha256:29a59e0a20d85e020b9dc7a21b8511a1c4ebe747245683bdf4cbbf91da6c39a3",
+  "heard": [],
+  "state": {
+   "now": 1500,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "frame": {
+     "kind": "shell",
+     "def": "frame",
+     "parent": null,
+     "values": {
+      "w": 400,
+      "h": 300,
+      "tmp": 0
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "harbour": {
+     "kind": "scene",
+     "def": "harbour",
+     "parent": null,
+     "values": {
+      "taps": 3
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "square",
+     "width": 600,
+     "height": 600
+    }
+   },
+   "story": {
+    "current": "harbour",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "harbour": 1
+    },
+    "resume": null,
+    "painted": {
+     "harbour": true
+    },
+    "held": [],
+    "endedReported": {
+     "harbour": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "frame": true,
+     "harbour": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

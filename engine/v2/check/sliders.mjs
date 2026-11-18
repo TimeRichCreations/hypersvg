@@ -11,7 +11,7 @@
 // clip track writes the target's rotate (E-WRITER).
 // W-CONTROL-STILL (K1): no binding of the target's axis channel (rotate, translate-x or translate-y; a handle that
 // follows a leader, the leader's) reads the slider's value, directly or through a computed value: the part does not
-// show its value at rest.
+// show its value at rest. The suggested binding maps the value's bounds onto the range (say.mjs, mapFormula).
 // E-TYPE (K1): `held` (press, slider) and `checked` (press) name a boolean value of the block.
 // W-LABEL-HAS-VALUE (E2): a slider's `label` template reads the slider's own `value`, directly or through a computed
 // value. The value is already spoken as the value (and as `valueText`), so a screen reader says it twice.
@@ -57,7 +57,7 @@ export function check(ctx) {
     if (!sitesOf.has(o)) { try { sitesOf.set(o, blockSites(o.doc, { experience: o === expOwner, decls: declsFor(o.doc, exp) })); } catch { sitesOf.set(o, []); } }
     return sitesOf.get(o);
   };
-  for (const o of owners) { travels(o, report); turns(o, report); still(o, report); flags(o, exp, report); named(o, report); }
+  for (const o of owners) { travels(o, report); turns(o, report); still(o, exp, report); flags(o, exp, report); named(o, report); }
   for (const o of owners) {
     const shared = o.doc?.kind === 'scene' || o.doc?.kind === 'shell';
     for (const [id, c] of Object.entries(o.doc?.controls || {})) {
@@ -166,7 +166,8 @@ function flags(o, exp, report) {
   }
 }
 // A slider whose part does not show its value at rest: no binding of its channel reads the value (5.11).
-function still(o, report) {
+function still(o, exp, report) {
+  const shared = o.doc?.kind === 'scene' || o.doc?.kind === 'shell';
   const binds = Array.isArray(o.doc?.bindings) ? o.doc.bindings : [];
   for (const [id, c] of Object.entries(o.doc?.controls || {})) {
     if (!c || (c.kind !== 'slider' && c.kind !== 'dial') || typeof c.target !== 'string' || typeof c.value !== 'string' || !Array.isArray(c.range)) continue;
@@ -179,7 +180,10 @@ function still(o, report) {
     }
     if (binds.some(b => b && parts.has(b.target) && channelOf(b) === ch && reads(o.doc, b, c.value))) continue;
     const what = c.kind === 'dial' ? 'turning part' : 'handle';
-    report('W-CONTROL-STILL', o.file, `/controls/${id}`, `${c.kind} ${id}: the ${what} ${c.target} does not show its value at rest; bind it to ${c.value}: add the binding ${bindingFor(c, c.target)} (5.11)`);
+    const knob = exp.doc.inputs?.[c.value]?.kind === 'knob' ? exp.doc.inputs[c.value] : undefined;
+    const d = knob ?? o.doc.values?.[c.value] ?? (shared ? exp.doc.values?.[c.value] : undefined);
+    const unit = c.kind === 'dial' ? 'degrees from its drawn angle' : 'drawing units from its drawn place';
+    report('W-CONTROL-STILL', o.file, `/controls/${id}`, `${c.kind} ${id}: the ${what} ${c.target} does not show its value at rest; bind it to ${c.value}: add the binding ${bindingFor(c, c.target, d)} (5.11). The binding moves it by its number in ${unit}, so it maps the value's bounds onto the range: (v - min) / (max - min) * span`);
   }
 }
 

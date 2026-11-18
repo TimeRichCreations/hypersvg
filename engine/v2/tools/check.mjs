@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { folderSource, loadExperience } from '../src/load.mjs';
 import { checkExperience } from '../check/index.mjs';
 import { playingOnly } from '../check/rules/index.mjs';
-import { describe } from '../check/diagnostics.mjs';
+import { describe, findingLine, findingCount } from '../check/diagnostics.mjs';
 import { loadSchemas } from '../schema/load.mjs';
 import { rightsTable, kitRightsTable } from './change/rights.mjs';
 import { loadPreviousKit } from './previous-kit.mjs';
@@ -53,8 +53,7 @@ if (args.includes('--rights')) {
 if (fs.existsSync(path.join(dir, 'kit.json')) && !fs.existsSync(path.join(dir, 'experience.json'))) {
   const found = checkKitFolder(dir, schemas);
   for (const d of found) console.log(`${d.code} ${d.file} ${d.path}: ${d.message}`);
-  const by = {}; for (const d of found) by[d.code] = (by[d.code] || 0) + 1;
-  console.log(`${found.length} findings ${JSON.stringify(by)}`);
+  console.log(findingCount(found));
   process.exit(found.some(d => d.code.startsWith('E-')) ? 1 : 0);
 }
 const source = await folderSource(dir, { kits });
@@ -74,15 +73,14 @@ const notRun = r.experience && (!only || only.includes('rules')) ? playingOnly(r
 // --json: every finding has its level (error or warning), and its file and line (a drawing finding: the SVG file).
 if (args.includes('--json')) console.log(JSON.stringify([...found.map(d => ({ code: d.code, level: d.code.startsWith('E-') ? 'error' : 'warning', ...d })), ...notRun.map(x => ({ code: 'NOT-RUN', severity: 'not-run', ...x }))], null, 1));
 else {
-  for (const d of found.slice(0, 200)) console.log(`${d.code} ${d.file}${d.line ? `:${d.line}${d.column ? `:${d.column}` : ''}` : ''} ${d.pointer}: ${d.message}`);
+  for (const d of found.slice(0, 200)) console.log(findingLine(d));
   for (const x of notRun.slice(0, 200)) console.log(`NOT-RUN ${x.file} ${x.path}: rule ${x.rule ?? '?'} (${x.kind}) needs a ${x.proof} proof: ${x.why}`);
   if (notRun.length) { const k = {}; for (const x of notRun) k[x.proof] = (k[x.proof] || 0) + 1; console.log(`${notRun.length} rules not-run ${JSON.stringify(k)}: not a pass; play, a measurer, the host or a person settles them (8.8)`); }
   // The grants asked for from use (10.5, D31.4): the packer writes them; the host decides.
   const asked = r.experience?.derivedGrants || {};
   const askList = [...(asked.openUrl ? ['openUrl'] : []), ...(asked.storage || []).map(s => `storage ${s}`)];
   if (askList.length) console.log(asksLine(askList));
-  const by = {}; for (const d of found) by[d.code] = (by[d.code] || 0) + 1;
-  console.log(`${found.length} findings ${JSON.stringify(by)}`);
+  console.log(findingCount(found));
 }
 // Errors (E-) fail the check; warnings (W-) are listed only.
 process.exit(r.diags.some(d => d.code?.startsWith('E-')) ? 1 : 0);

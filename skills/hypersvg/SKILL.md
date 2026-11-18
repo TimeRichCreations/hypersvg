@@ -79,15 +79,24 @@ into a **HyperSVG** (one `.svg` for a web page) or an **Experience** (one offlin
   other files). Gradients, clip paths, masks and `url(#id)` references inside the file are fine.
 - **Names**: two kinds. **Value names** (values, inputs, outputs, events) are camelCase with no dashes: `pickA`,
   `nextLight`. **Ids** (parts, controls, options, clips, machines, states, scenes) are lower case with dashes:
-  `lamp-red`, `pick-a`. Each at most 48 characters.
+  `lamp-red`, `pick-a`. Each at most 48 characters. A block's ids are unique across kinds: a control and a clip
+  cannot both be `wave` (`E-ID-DUPLICATE`).
 - **Formulas**: every value slot is a formula. **Text in a formula is in single quotes**: `"to": "'Done'"`,
   `"variant": "on ? 'on' : 'off'"`, `{"play": "'bell'", "as": "sound"}`. Only `text` and `label` bindings are plain
-  words with `{{ formula }}` inside. Operators: `+ - * / %`, `=== !== < <= > >=`, `&& || !`, `a ? b : c`.
+  words with `{{ formula }}` inside. Operators: `+ - * / %` (`+` also joins
+  two strings), `=== !== < <= > >=`, `&& || !`, `a ? b : c`. Actions run in order; each sees the writes before it.
   Functions (the list is closed): `min max clamp floor ceil round pow sqrt exp log sin cos length at includes lookup
-  append filter count sum minBy fold sort range pick shuffle random active numberText formatNumber plural`.
+  append filter count sum minBy fold sort range pick shuffle random active numberText formatNumber plural`
+  (`plural` needs a words file; write `n === 1 ? 'life' : 'lives'` instead).
 - **Always write** the `kind` of every control, input and output, and `axis` on `move` bindings and sliders.
 - **Variants**: each direct child `<g>` of a part carries `data-hsvg-variant`; all but one have `display="none"`.
-- **Numbers have bounds**: every number value and input states `minimum` and `maximum` (`E-KEY-REQUIRED`).
+  On a control's part, `idle hover pressed selected focus disabled` belong to the engine: never bind them (`E-WRITER`).
+- **Numbers have bounds**: every number value and input states `minimum` and `maximum` (`E-KEY-REQUIRED`). A
+  `knob` is a bounded number, a boolean, or a string with `enum`; every string states `maxLength`:
+  `{"kind": "knob", "type": "string", "enum": ["s", "m"], "initial": "s", "maxLength": 1}`.
+- **Built-in names**: never name a value or input `now`, `elapsed`, `size`, `language`, `muted`, `volume`, `voice`,
+  `layout`, `visits`, `chapter`, `inputMode`, `spoken`, `canReturn`, `reducedMotion` or `timeLimits`
+  (`W-NAME-HIDES`); they are the engine's ambient inputs (`elapsed` is read in formulas).
 - **Motion**: a part moves, turns, scales or fades only on channels its `data-hsvg-motion` lists, within the
   ranges: `data-hsvg-motion="rotate -135..135; opacity 0..1"`. The channels: `move-x`, `move-y`, `rotate`, `lean`,
   `scale`, `scale-x`, `scale-y`, `opacity`, `draw`, `line`, `wipe`. Its pivot (`data-hsvg-pivot="x y"`) sits inside
@@ -96,13 +105,17 @@ into a **HyperSVG** (one `.svg` for a web page) or an **Experience** (one offlin
 - **Control names**: a control is named by the single `<text>` drawn inside it. With two or more texts, or none,
   give it a `label`; add a `label` binding when the name changes (`"label": "Answer A: {{ questions[step].a }}"`).
   A `label` starts with the words drawn on the control (`W-NAME-HIDES-LABEL`): "Start: turn the blades", not
-  "Begin" over a button that shows "Start".
+  "Begin" over a button that shows "Start". A slider or dial handle has no text: give it a `label`. A choice's
+  `label` names the group only; each option is named by its own `label`, else by its drawn words.
 - **Roles**: built-in role words include `action`, `next`, `back`, `close`, `answer`, `question`, `feedback`,
   `message`, `decoration` and `icon`. Other plain words (`wheel`, `lamp`) are listed in `experience.json`:
   `"roles": {"wheel": {"appliesTo": ["part"]}}`, or the checker warns. An element with a role (or any other job)
   also carries `data-hsvg-kind="part"` (`W-KIND-MISSING`).
-- **Colours**: a theme colour goes through `data-hsvg-color="accent"` and a `color` binding (default `as` `marked`).
-  `color` with `as` `fill` or `stroke` takes `#rrggbb`, never a role name.
+- **Colours**: a theme colour goes through `data-hsvg-color="accent"` (or `"stroke:accent"`) on a paint and a
+  `color` binding on a part around it (default `as` `marked`), e.g. `"color": "pick === 'teal' ? 'accent-2' :
+  'accent'"`. `color` with `as` `fill` or `stroke` takes `#rrggbb`, never a role name. The roles' hex values live in
+  `experience.json`: `"theme": "shop", "themes": {"shop": {"colorRoles": {...}}}` with all eight roles (`surface`,
+  `ink`, `accent`, `accent-2`, `muted`, `success`, `warning`, `danger`).
 - **Values and inputs.** `values` holds a block's own state, in the scene (private to it) or in `experience.json`
   (shared by every scene, and the only values an experience output can read). `inputs` (`knob`, `content`,
   `trigger`) are what a page may set. A control may write a knob directly with `"value": "<knob>"`, but a `set`
@@ -114,11 +127,13 @@ into a **HyperSVG** (one `.svg` for a web page) or an **Experience** (one offlin
 
 **Controls** (`kind`, plus `target`, `event`, `label`, `enabled` as a yes-or-no formula): `button`, `toggle` (writes
 a boolean `value`), `choice` (`options`, writes `value`), `slider` (`axis`, `range` = the handle's travel in drawing
-units; the value's `minimum` and `maximum` map onto it; `positions` to snap; bind the handle with
-`{"target": "handle", "move": "speed", "axis": "x"}` so it shows the value), `dial` (`range` = degrees of turn such
-as `[-135, 135]`; the value's `minimum` and `maximum` map onto it; `positions` to snap; bind `rotate` to the value so
-the part shows it), `drag` (`drops`,
-`accept`, `event`). When you hide a control with a `visible` binding, give it `"enabled"` with the same yes-or-no formula.
+units from where it is drawn; the value's `minimum` and `maximum` map onto it; `positions` snaps it, else a drag
+gives round values (tenths for 10 to 100); `move` is in drawing units, not along `range`: draw the handle at the
+minimum, `"range": [0, L]`, bind `{"target": "handle", "move": "(v - min) / (max - min) * L", "axis": "x"}`
+(`W-CONTROL-STILL` gives it with your numbers); `valueText` with the unit,
+`"{{ round(v) }} km/h"`, or the browser pass warns `T-NO-VALUETEXT`), `dial` (`range` = degrees of turn such
+as `[-135, 135]`, mapped the same way; see Patterns), `drag` (`drops`, `accept`, `event`, `missEvent`, `snap`;
+see Patterns). When you hide a control with a `visible` binding, give it `"enabled"` with the same yes-or-no formula.
 **Actions**: `set` (`to`), `if` (`then`, `else`), `emit` (an event; `as` record or trigger), `play` (a clip; `as`
 sound), `stop`, `open`, `close` (a dialog), `call` (`player.setting`, `player.attach`, `player.openUrl`,
 `player.resetSaved`). **Bindings**: `text` (with `fit` to wrap in a box), `label`, `visible`, `variant`, `color`,
@@ -141,7 +156,11 @@ input), `entry` (actions run when the block starts), `machines` (states, `after`
   [-135, 135], "positions": 21, "label": "Temperature", "valueText": "{{ temperature }} °C"}}`, a binding
   `{"target": "knob", "rotate": "(temperature - 10) / 20 * 270 - 135"}`, and on the part
   `data-hsvg-pivot` at its centre and `data-hsvg-motion="rotate -135..135"`.
-- **Animate**: a clip in `clips`, started by `{"play": "<clip>"}`; the part lists the channel in `data-hsvg-motion`.
+- **Animate**: `"clips": {"blink": {"durationMs": 3200, "loop": true, "tracks": [{"target": "eyes", "channel":
+  "scale", "axis": "y", "keys": [[0, 1], [3000, 1], [3100, 0.1], [3200, 1]]}]}}`, started by `{"play": "blink"}` (in
+  `entry` to run from the start). The part lists the channel: `scale` with `axis` `y` is `scale-y 0.1..1`.
+- **Fill a gauge**: `{"target": "column", "scale": "temp / 50", "axis": "y"}`, with `data-hsvg-motion="scale-y 0..1"`
+  and `data-hsvg-pivot` at the column's base.
 - **Speed that follows a value**: a clip's `speed` is read once, at `play`. For blades that turn as fast as a slider
   says, bind `rotate` to the clock `elapsed` (milliseconds) and keep the angle smooth when the speed changes. Number
   values `speed`, `rate` (0 to 2 turns a second), `phase` (0 to 360) and `since` (0 to 1000000000000), then:
@@ -154,7 +173,11 @@ input), `entry` (actions run when the block starts), `machines` (states, `after`
   ```
 
   The blades part has `data-hsvg-pivot` at the hub and `data-hsvg-motion="rotate 0..360"`.
-- **Timed steps**: a machine whose states use `after: [{"delayMs": 800, "target": "next"}]`.
+- **Timed steps**: `"machines": [{"id": "clock", "initial": "idle", "states": {"idle": {"on": {"go": [{"id":
+  "start", "target": "running"}]}}, "running": {"after": [{"delayMs": 1000, "target": "running", "actions": [{"set":
+  "left", "to": "max(left - 1, 0)"}]}], "on": {"go": [{"id": "pause", "target": "idle"}]}}}}]`. A self-target repeats
+  the timer. States may also have `entry` and `exit` actions. An `emit` needs an `outputs` entry only when the page
+  should hear it.
 - **A sound**: `"audioSynths": {"click": {"wave": "sine", "from": 880, "to": 660, "durationMs": 90, "gain": 0.4}}`
   in `experience.json`, then `{"play": "'click'", "as": "sound"}`. Sound is never the only signal.
 - **Content as data** (a quiz, steps): one array value, and formulas that read it.
@@ -181,7 +204,14 @@ input), `entry` (actions run when the block starts), `machines` (states, `after`
 - **Long text**: a `text` binding with `"fit": {"box": "q-box", "minFontPx": 16, "maxLines": 3}`, and a box part in
   the drawing: `<rect id="q-box" data-hsvg-kind="part" data-hsvg-fit="" x="40" y="80" width="320" height="90"
   fill="none"/>`. Draw a short placeholder text, since a still picture shows the drawn text.
-- **More scenes**: add scenes to `story.scenes` and `links` that fire on an event (`GUIDE.md` section 5).
+- **Drag and drop**: `"apple": {"kind": "drag", "target": "apple", "drops": ["bin-fruit", "bin-veg"], "accept":
+  "event.drop === 'bin-fruit'", "event": "appleIn", "missEvent": "appleMissed", "enabled": "!appleDone"}`. A refused
+  drop, or one on no bin, goes home and sends `missEvent`; an accepted one also goes home unless `"snap": true` (it then sits on the
+  drop). A dragged part needs no motion mark. Hide a sorted item with `visible` and the same `enabled`.
+- **More scenes**: in `experience.json`, `"story": {"start": "shore", "scenes": {"shore": "shore.json", "sea":
+  "sea.json"}, "links": [{"id": "to-sea", "from": "shore", "on": "goNext", "to": "sea"}, {"id": "to-shore", "from":
+  "sea", "on": "goBack", "to": "shore"}], "endless": true}`. `on` is a control's `event` (or an `emit`); the scene
+  needs no reaction for it. Without `endless`, a scene with no way out is an ending.
 
 ## Common findings and their fixes
 
@@ -195,12 +225,16 @@ input), `entry` (actions run when the block starts), `machines` (states, `after`
 | `E-MOTION-RANGE` ... not proven | Wrap the binding's formula in `clamp(..., min, max)` |
 | `W-NAME-HIDES-LABEL` | Start the `label` with the words drawn on the control |
 | `W-KIND-MISSING` | Add `data-hsvg-kind="part"` to the element |
-| `W-CONTROL-STILL` | Add the binding the message gives, so the handle shows its value |
+| `W-CONTROL-STILL` | Add the binding the message gives: it maps the value onto the `range` |
+| `E-ID-DUPLICATE` | Two things in one block share an id: rename one (`wave` control, `arm-wave` clip) |
+| `E-WRITER` | A `variant` binding writes a control state (`idle`, `pressed`...): rename the variants |
 | `E-WRITE-INPUT` | A `set` wrote an input: declare a value under `values` and write that instead |
 | `E-MOTION-RANGE` | Add the channel and range to the part's `data-hsvg-motion` |
 | `E-A11Y-NAME` | One `<text>` inside the control, or a `label` |
 | `E-SVG-UNSAFE` | Remove the script, event attribute or outside address |
 | `E-WORD-RENAMED` | Use the word the message names |
+| `W-NAME-HIDES` | A value or input uses a built-in name such as `size`: rename it |
+| `T-NAME-HIDES-LABEL` | Start the control's or option's `label` with its drawn words |
 | `W-ROLE-UNKNOWN` | List the role in `experience.json` `roles` |
 | `T-HIT-SMALL`, `T-TEXT-SMALL` | Draw controls and text larger (44 px hit area at phone width) |
 | `T-TEXT-CLIPPED` | Keep text inside the drawing's `viewBox`, or wrap it with `fit` |
@@ -211,12 +245,12 @@ input), `entry` (actions run when the block starts), `machines` (states, `after`
   with each attribute setting the input of the same name:
 
   ```html
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.0/engine/v2/web/asset-web.mjs"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.1/engine/v2/web/asset-web.mjs"></script>
   <hypersvg-asset src="thermostat.svg" temperature="12"><img src="thermostat.svg" alt="A thermostat"></hypersvg-asset>
   ```
 
   Serve the page over http or https. Text only: no sound files, pictures, fonts or add-ons (made sounds are fine).
 - **Experience** (`pack`): one `.html` a person opens on its own, offline. Holds everything.
 
-Read `GUIDE.md` (in the package) for every word and mark with an example, and `docs/guide/examples/` for working
-folders.
+Read `GUIDE.md` (in your folder) for every word and mark with an example. Working folders are in
+`node_modules/@hypersvg/core/docs/guide/examples/` (`lamp`, `light`, `list`, `harbour`, `ad`).

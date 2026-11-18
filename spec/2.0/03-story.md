@@ -91,7 +91,7 @@ someone picks.
 | `carry` | Destination input name to value, evaluated when the link fires. A formula, text in single quotes (D36, 5.6.1). A name that is not an input of the destination is `E-REF-UNKNOWN` | `"carry":{"destination":"event.stop"}` |
 | `max` | The link fires at most this many times within the graph lifetime (1..1024) | `"max":2` |
 | `visit` | `true`: suspend `from` instead of ending it (3.7) | `"visit":true` |
-| `transition` | `cut` (default), `fade` or `slide`; `fade` and `slide` need `transitionMs` 1..2000. `slide` moves the new scene in from the end side (the right in a left-to-right language) and the old one out; `slideFrom: "start"` reverses it. Under reduced motion a `slide` is a `cut`, and a `fade` is also a cut. A fade overlaps: the new scene's clock starts when the link fires, and the leaving scene is shown fading out over it but takes no input and runs nothing | `"transition":"fade","transitionMs":300` |
+| `transition` | `cut` (default), `fade` or `slide`; `fade` and `slide` need `transitionMs` 1..2000. `slide` moves the new scene in from the end side (the right in a left-to-right language) and the old one out; `slideFrom` is `end` (default) or `start`, which reverses it. Under reduced motion a `slide` is a `cut`, and a `fade` is also a cut. A fade overlaps: the new scene's clock starts when the link fires, and the leaving scene is shown fading out over it but takes no input and runs nothing | `"transition":"fade","transitionMs":300` |
 
 Exactly one of `on`, `afterMs` and `choice`, and exactly one of `to` and `return`, is required (`E-KEY-REQUIRED`,
 `E-KEY-CONFLICT`); `visit` with `return`, and `carry` with `return`, conflict (`E-KEY-CONFLICT`); `fade` without
@@ -222,7 +222,7 @@ is no longer eligible, and the next link in order is tried. A link with `max` ca
 
 **Visit counts.** `visits` is a built-in read-only map (5.5): `visits['quiz']` is how many times the scene `quiz` has
 been entered within the graph lifetime (3.8), counting fresh entries, not returns. The engine keeps it with the link
-counts, and `resetSaved` clears both. A scene that was never entered reads 0; a key that is not a scene id is
+counts, and `player.resetSaved` clears both. A scene that was never entered reads 0; a key that is not a scene id is
 `E-REF-UNKNOWN`. Start and resume entries count as visits. This is how the upgrade tool converts the earlier
 portal story files' visit counts (A13.10): `visits['quiz'] >= 2`. **[files]**, **[playing]**
 
@@ -356,7 +356,9 @@ engine for stage slots and the shell, the stage slot for its scene, the scene fo
 - A child player (a preview inside an editor) runs on its parent's clock and starts at zero when mounted; it is a
   host matter, not content.
 
-**Scroll as a source.** A stage slot may take its time from scroll position instead of the engine clock:
+**Scroll as a source (a 2.1 draft).** This text is kept for 2.1 (`drafts/scroll-clock-2.1.json`). No 2.0 engine runs
+it, and a 2.0 file that writes `source` or `spanMs` is `E-DRAFT`. In 2.1, a stage slot may take its time from scroll
+position instead of the engine clock:
 
 ```json
 "clock": {"source": "scroll", "spanMs": 12000}

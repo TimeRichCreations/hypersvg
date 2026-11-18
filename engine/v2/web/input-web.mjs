@@ -40,6 +40,13 @@ function groupStop(it, order) {
   return peers.find(x => x.el.getAttribute('tabindex') === '0') || peers[0] || it;
 }
 
+// A control target's spoken name (10.13): its disabledLabel while it cannot be used, else its own label, else its
+// target's data-hsvg-label; with none, the drawn words name it by themselves (undefined). A choice's label names its
+// radiogroup only (5.11): an option is named by the option's own label, never the choice's. tpl renders a template.
+export function controlName(c, option, on, tpl, drawnLabel) {
+  if (!on && c.disabledLabel) return tpl(c.disabledLabel);
+  return (option !== undefined ? tpl(c.options[option].label) : tpl(c.label)) || drawnLabel || undefined;
+}
 export function attachInput(player, state, container, win) {
   const doc = win.document;
   // Every listener goes on one cleanup list, so destroy() leaves nothing behind (10.6).
@@ -57,6 +64,12 @@ export function attachInput(player, state, container, win) {
     const a = doc.activeElement;
     return (!a || a === doc.body || a === doc.documentElement) && owner() === container;
   };
+  // firstInput (10.4, 5.12): the first trusted press, key press or pointer-down in the player, once per run. These
+  // capture listeners run before the press itself, so firstInput comes before openUrl on a click-area press. The
+  // engine ignores a second one in the same run.
+  const first = (ev) => { if (ev.isTrusted && !state.stopped && !player.state.firstInput) report(player.firstInput()); };
+  listen(container, 'pointerdown', first, true);
+  listen(doc, 'keydown', (ev) => forMe(ev) && first(ev), true);
   const KEY = /^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$/;
   const LOOKS = ['disabled', 'pressed', 'selected', 'focus', 'hover', 'idle'];
   let items = [];            // [{addr, cid, c, option, node, el}] in document order
@@ -76,6 +89,7 @@ export function attachInput(player, state, container, win) {
   // plain outline stays. Both use the theme's focus colour.
   const ringId = `${state.namespace || ''}hsvg-focus-${++ringCount}`;
   const style = doc.createElement('style');
+  if (state.nonce) style.nonce = state.nonce;
   cleanups.push(() => style.remove());
   doc.head.appendChild(style);
   let ringDefs = null; // the hidden <div data-hsvg-ring> whose <svg> holds this player's ring filter
@@ -144,7 +158,7 @@ export function attachInput(player, state, container, win) {
       ringDefs = doc.createElement('div');
       ringDefs.setAttribute('data-hsvg-ring', '');
       ringDefs.setAttribute('aria-hidden', 'true');
-      ringDefs.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
+      ringDefs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
       ringDefs.appendChild(build(['svg', { width: '0', height: '0' }]));
       cleanups.push(() => ringDefs.remove());
     }
@@ -153,7 +167,7 @@ export function attachInput(player, state, container, win) {
     set(want, 'data-player-ring', on === want ? ringId : `${ringId}-copy`);
     ringOn = want;
   }
-  const build = ([name, attrs, kids = []]) => { const e = doc.createElementNS(SVGNS, name); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); for (const k of kids) e.appendChild(build(k)); return e; };
+  const build = ([name, attrs, kids = []]) => { const e = doc.createElementNS(SVGNS, name); for (const [k, v] of Object.entries(attrs)) { if (k === 'style') e.style.cssText = v; else e.setAttribute(k, v); } for (const k of kids) e.appendChild(build(k)); return e; };
   listen(win, 'resize', () => { if (!state.destroyed) ring(); });
 
   const visible = (el) => {
@@ -262,9 +276,7 @@ export function attachInput(player, state, container, win) {
       const on = player.controlEnabled(addr, it.cid, it.option);
       const shown = visible(el) && inDialog(el);
       set(el, 'data-player-control', '');
-      const optionLabel = it.option !== undefined ? tpl(addr, c.options[it.option].label) : '';
-      // 10.13: the control's label, else its target's data-hsvg-label (the drawn words name it by themselves).
-      const name = !on && c.disabledLabel ? tpl(addr, c.disabledLabel) : (optionLabel || tpl(addr, c.label) || it.node.attrs?.['data-hsvg-label']);
+      const name = controlName(c, it.option, on, t => tpl(addr, t), it.node.attrs?.['data-hsvg-label']);
       set(el, 'aria-label', name || null);
       set(el, 'aria-disabled', on ? null : 'true');
       if (isPress(c.kind) || c.kind === 'snapshot') { set(el, 'role', c.kind === 'toggle' ? 'checkbox' : 'button'); set(el, 'tabindex', shown && on ? 0 : -1); }
@@ -469,13 +481,13 @@ export function attachInput(player, state, container, win) {
     let r;
     try { r = player.activate(it.addr, it.cid, drop); report(r); } finally { state.trustedActivation = false; }
     if (accepted && r?.ok && !r.ignored && !state.stopped && player.state.blocks[it.addr]) {
-      report(player.transaction('person', () => { const b = player.state.blocks[it.addr]; b.snaps = { ...(b.snaps || {}), [it.cid]: drop }; })); player.afterCommit?.();
+      report(player.snap(it.addr, it.cid, drop));
     }
     after();
   }
   function unsnap(it) {
     if (player.state.blocks[it.addr]?.snaps?.[it.cid] === undefined) return false;
-    report(player.transaction('person', () => { const b = player.state.blocks[it.addr]; const s = { ...b.snaps }; delete s[it.cid]; b.snaps = s; })); player.afterCommit?.();
+    report(player.snap(it.addr, it.cid));
     return true;
   }
   function keyboardDropMove(dir) {
@@ -777,7 +789,7 @@ export function attachInput(player, state, container, win) {
     }
     if (code === 'Escape' && player.openDialogs?.().length) {
       const top = player.openDialogs().at(-1);
-      report(player.transaction('person', () => player.dialog(top.id, false))); player.afterCommit?.(); after(); ev.preventDefault(); return;
+      report(player.closeDialog(top.id)); after(); ev.preventDefault(); return;
     }
     if (drag?.keyboard) {
       if (/^Arrow/.test(code)) { keyboardDropMove(code === 'ArrowLeft' || code === 'ArrowUp' ? -1 : 1); ev.preventDefault(); return; }

@@ -1,0 +1,188 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "ad-sizes",
+ "about": "The ad in its sizes: the player box changes, and the host sets the headline.",
+ "package": {
+  "folder": "docs/guide/examples/ad",
+  "experience": "experience.json",
+  "files": {
+   "ad-160x600.svg": "sha256:7755da6366adeeccc1eefee6aaadafda856a4f504162e0b18564a96312ac3f9c",
+   "ad-728x90.svg": "sha256:7d194c4f73964c8275a3e2240d656604152f14ae36ebf29eca43bb50675d73bf",
+   "ad.json": "sha256:e8a53378e7790e0d30da531df393093f06fd6e2ed09f288f2d90eba98e2cb5ef",
+   "experience.json": "sha256:47d571890ab238d80ad2a713df11113be84929e5f5ad41c8aece0ddcc494a602"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:be555ea93938113c929c4d7ebba672664398155d9b0c0c3280ebeb13edde7639",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "ad",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "ad"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1000,
+    "source": "setSize",
+    "payload": [
+     {
+      "shape": "tall",
+      "width": 160,
+      "height": 600
+     }
+    ]
+   },
+   "fingerprint": "sha256:1c4c7af47f4bcf4b79053e8c841f5cfa5d53744897a91aa9a18fa7202620a4df",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2000,
+    "source": "setSize",
+    "payload": [
+     {
+      "shape": "wide",
+      "width": 728,
+      "height": 90
+     }
+    ]
+   },
+   "fingerprint": "sha256:9df2d199c09459d5b1ee780479659f972b882e0536514180ebfefc35a630f714",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2500,
+    "source": "setInput",
+    "payload": [
+     "headline",
+     "Fresh today",
+     "host"
+    ]
+   },
+   "fingerprint": "sha256:42afa18f54ecb28198dee68f8d9785121a4243943d68bcd4ab531613574c1e40",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 4000,
+  "fingerprint": "sha256:15473f1ba94bf67927645899e545c51f31e36d7b3400eecce8467b2bff8fbd82",
+  "heard": [],
+  "state": {
+   "now": 4000,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {
+      "headline": "Fresh today"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "ad": {
+     "kind": "scene",
+     "def": "ad",
+     "parent": null,
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "wide",
+     "width": 728,
+     "height": 90
+    }
+   },
+   "story": {
+    "current": "ad",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "ad": 1
+    },
+    "resume": null,
+    "painted": {
+     "ad": true
+    },
+    "held": [],
+    "endedReported": {
+     "ad": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "ad": true
+    },
+    "pausedBy": []
+   },
+   "pauses": []
+  }
+ }
+}

@@ -111,7 +111,7 @@ try {
   want(r.hello && r.hello.v === 1 && r.tokenLength >= 22, 'hello is answered {v: 1}');
   want(r.volume === 0.2 && r.name === 'Robin', 'set an input, read it back');
   want(r.scene === 'hello', 'scene() answers the scene');
-  want(r.emit === null, 'emit a trigger');
+  want(r.emit?.name === 'start' && Array.isArray(r.emit.outputs), `emit a trigger: resolves the step's result (${JSON.stringify(r.emit)})`);
   want(r.heard.length === 1 && r.heard[0][0] === 'entered' && r.heard[0][1] === 'hello' && r.heardAfterOff === 1, 'an on delivery arrives; off stops it');
   want(r.refused === 'E-RANGE' && r.private === 'E-HOST-PRIVATE', 'refused calls reject with their codes');
   want(r.big === 'E-RANGE', 'a message over 64 KiB is refused with E-RANGE');

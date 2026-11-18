@@ -1,0 +1,461 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "harbour-win",
+ "about": "The gate, then ten loads: the score reaches 10 and done is heard (a win). The ferry sails on each load and its 2 s timer runs out between loads. A host input sets the title first.",
+ "package": {
+  "folder": "docs/guide/examples/harbour",
+  "experience": "experience.json",
+  "files": {
+   "crate/component.json": "sha256:5c6ce40c1c1c739226b02fbfedf661ee07ce40e1363198123193de04b97c901d",
+   "crate/crate.svg": "sha256:dd143e13d3d25cf2a585f46ed24997c5b428087564411a7b1007561f14d4f221",
+   "experience.json": "sha256:af88c2d7acd2ffa603cd7f465fed36f1363ad074a4f337d62a1a9b1cb269eb59",
+   "gate.json": "sha256:55dfb25d8c5d4c6e0cf02a50bdfb262e046263036c92e8e70bccecbd36db0881",
+   "gate.svg": "sha256:785866cde97be7021e0a164aba29af92ba9eed0ea64c411746ae89d92f18470c",
+   "harbour.json": "sha256:d8058dfd05573c2ebf93c2d97217ef2cad10e5bc2631ca396aa2a674d2036c2b",
+   "harbour.svg": "sha256:d4a899a8a23f423c853310dd27fa65334cb62b01eae0b0387de5de95ec4d9b14",
+   "shell.json": "sha256:62aab62e75f605c5e9ab2bb6abf1cbc709c1a97655d9c795e02ea6ab140621db",
+   "shell.svg": "sha256:7af9d812f061819f73dcb7980978e65534cb3ba56a7337a09125e2f6915b9839"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {
+   "title": "Quay day"
+  },
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:955f87ec708281cb21ef6d41afa036f74b87e5f9ee620bf75cee1d0a14f32464",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "gate",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 500,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:4f5e766caadc5e010b13bebbd25600a9382c3668caafab7494856af44013d98f",
+   "heard": [
+    {
+     "t": 500,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 500,
+    "source": "activate",
+    "payload": [
+     "gate",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:265d220db267dcdd203ca2cbeda237776cdb4b06ac6f4d8005ff50e1f270561c",
+   "heard": [
+    {
+     "t": 500,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "harbour",
+      "link": "in"
+     }
+    },
+    {
+     "t": 500,
+     "name": "ended",
+     "detail": {
+      "scene": "harbour"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 1200,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:b24655a6974798601fc2bf82b2d5c15c86375091cd31f99c29136f13ccf0b4f4",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1900,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:9caffd91b60aa26fb5f387544f108727600146314b19eeb5bbcc0d9cde84c092",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2600,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:5d1726440fe44d84b3081e0e820b4cf5cac903e3243817435a4b992e98d3a10d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5200,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:83f15ceadb166d35d1f08a3ad2f2a9617adcb623d944040e9ecab114931c9440",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5900,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:ff09e2d5e79c25eff3e4b5588f739e38c207c72db3ff449343415a6f0f90ce45",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 6600,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:fb7dc58534a1efbf9fd59c0a12de8e7c60293e406bc2efa4478680d11ea3f425",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 9200,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:404d42efea81428ed6ba23c36d5e6f1715737bd7c1826013dd7025da0da456dd",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 9900,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:517fffab04f97891f78c102648d6596a416c38784af3fdd75359f9d388a33310",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 10600,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:03870a545504470643d8e0e10a04ea0b24dee272d64a52701b0754a15ecaef04",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13200,
+    "source": "activate",
+    "payload": [
+     "harbour",
+     "go"
+    ]
+   },
+   "fingerprint": "sha256:6efa70394421e6dd4b20936c708374faecd12cf466d82e254f8e2e45dce2ae77",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 16400,
+  "fingerprint": "sha256:db01da43fbb0c0195b759130f5b86c93157743e47cf3629653f23fd264f41d00",
+  "heard": [],
+  "state": {
+   "now": 16400,
+   "seq": 25,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {
+      "best": 0
+     },
+     "inputs": {
+      "title": "Quay day",
+      "pace": 2,
+      "shopLink": "https://example.org/harbour"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "shell": {
+     "kind": "shell",
+     "def": "shell",
+     "parent": null,
+     "values": {
+      "settingsOpen": false
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "harbour": {
+     "kind": "scene",
+     "def": "harbour",
+     "parent": null,
+     "values": {
+      "score": 10,
+      "note": "Back in port",
+      "lampOn": false,
+      "speed": 0,
+      "wind": 0,
+      "pick": "",
+      "flight": 0,
+      "tension": 1,
+      "stops": [
+       "Mill",
+       "Quay",
+       "Point"
+      ]
+     },
+     "inputs": {},
+     "machines": {
+      "buoy": [
+       "on"
+      ],
+      "ferry": [
+       "docked"
+      ]
+     },
+     "uses": [
+      {
+       "id": "lead"
+      },
+      {
+       "id": "spare"
+      },
+      {
+       "id": "crates",
+       "keys": [
+        "0",
+        "1",
+        "2"
+       ]
+      }
+     ],
+     "clips": {
+      "roll": {
+       "startedAt": 500,
+       "speed": 2
+      }
+     },
+     "attach": {},
+     "born": 500
+    },
+    "harbour/lead": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Lead"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 500
+    },
+    "harbour/spare": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Spare"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 500
+    },
+    "harbour/crates[0]": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Mill"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 500
+    },
+    "harbour/crates[1]": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Quay"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 500
+    },
+    "harbour/crates[2]": {
+     "kind": "component",
+     "def": "crate",
+     "parent": "harbour",
+     "values": {},
+     "inputs": {
+      "name": "Point"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 500
+    }
+   },
+   "timers": [
+    {
+     "due": 16500,
+     "scale": 1,
+     "seq": 24,
+     "owner": "harbour",
+     "mid": "buoy",
+     "path": [
+      "on"
+     ],
+     "index": 0
+    }
+   ],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "harbour",
+    "stack": [],
+    "counts": {
+     "in": 1
+    },
+    "visits": {
+     "gate": 1,
+     "harbour": 1
+    },
+    "resume": null,
+    "painted": {
+     "gate": true,
+     "harbour": true
+    },
+    "held": [],
+    "endedReported": {
+     "harbour": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "shell": true,
+     "harbour": true,
+     "harbour/lead": true,
+     "harbour/spare": true,
+     "harbour/crates[0]": true,
+     "harbour/crates[1]": true,
+     "harbour/crates[2]": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

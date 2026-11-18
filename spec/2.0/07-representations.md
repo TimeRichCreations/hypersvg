@@ -360,6 +360,35 @@ another; an experience's `theme` overrides it. From a kit document:
 - A theme is not a **variant** (a drawn alternative of a part) and not a style pack (a drawing technique, kept in
   plugins).
 
+### 7.7.1 Host colours (experimental)
+
+Added after `2.0.0-next.0`. **Experimental** (D65): it may change in a minor version, with a note.
+
+A host may pass its own colours for some or all of the experience's colour roles when it mounts it: the mount option
+`colors` (`{accent: '#bf360c', 'on-accent': '#ffffff'}`, 10.6) or the `<hypersvg-asset>` attribute `colors`
+(`"accent: #bf360c; on-accent: #ffffff"`, 10.14). The player checks the set once, before the first paint.
+
+- **Values.** Each key is one of the experience's colour roles: a role of the theme the drawing may show. Each value
+  is a six-digit hex colour, as in a theme. Anything else refuses the whole set (`W-HOST-COLOR-VALUE`).
+- **The contrast rules of a declared theme.** The set, laid over a theme's colour roles, must keep the pairs of 7.7:
+  ink, muted, success, warning and danger on surface 4.5:1; the focus colour (`accent-2`) on surface 3:1; each
+  `on-<role>` on `<role>` 4.5:1; each text style's colour on surface and its text on its highlight at the text ratio
+  (8.9); and each `contrast` rule of the documents whose subject is a colour role and whose `against` is another.
+  Only pairs with a host colour on one side are checked; the others are the author's, which the checker proves.
+- **The themes checked.** With a host theme pick (7.1), that theme only: the theme comes first, then the colours.
+  Without one, every declared theme with colour roles, since an input may switch between them while the page plays.
+- **All or nothing.** If every pair holds, the colours apply on top of the active theme, in every theme the drawing
+  shows, and the player's own controls and captions use them as theme colours. If one pair fails, none apply: the
+  author's theme is used unchanged, and the host hears `W-HOST-COLOR-CONTRAST`, naming the pair, the theme, the ratio
+  and the ratio needed. The host hears a warning through `onError` (or the element's `hsvg:error`); the experience
+  plays on.
+- **Brand parts stay as drawn.** A host colour reaches only a paint that names a colour role with `data-hsvg-color`
+  (6.2). A part without a colour role keeps its drawn paint in every case. There is no mark or key for this: an author
+  who wants a part to keep its colour leaves the role off it.
+- Host colours change how things look, nothing else, as a theme does. They are not saved, not part of the state, and
+  never reach the experience's values. They do not change reduced motion (5.5). The base has no high-contrast setting
+  of its own; the focus mark keeps its forced-colours form (6.6) whatever the colours.
+
 ## 7.8 Languages
 
 Language is an axis. Its options are lowercase language tags (BCP 47): `en`, `de`, `ar`, `en-in`.

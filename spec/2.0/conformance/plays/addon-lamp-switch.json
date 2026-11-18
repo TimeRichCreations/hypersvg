@@ -1,0 +1,200 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "addon-lamp-switch",
+ "about": "A capability add-on (example.tint) that only draws: the switch, pressed three times.",
+ "package": {
+  "folder": "engine/v2/addons/examples/lamp",
+  "experience": "experience.json",
+  "files": {
+   "experience.json": "sha256:fea8bda7db47223c0b15361dee17ed0a6afc77b49e1ff628298df463a35ce69a",
+   "scenes/room/room.svg": "sha256:6d712c215947e148e1627f0679f8f5781725182f1087a5ea219bc2427d8f2122",
+   "scenes/room/scene.json": "sha256:4a59ca229fbbaf7b6ed454c54dea0e01e9a231b7fdc1c276102c00b36efb8590"
+  },
+  "addons": {
+   "example.tint@1.0.0": "sha256:a8686d1c61f062992c868bf5f814855a3bf5fa30a04429c62f088a68510412b6"
+  }
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:7e6ea26366bb4792d2ab84228581d275969ea9dc10a9505edd27868ebeb1a563",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "room",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "room"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 400,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:728b5bf4a927dc9e4b5d9337ec206b91b1ce4b1bbfd052926508d114f40d97d3",
+   "heard": [
+    {
+     "t": 400,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 400,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch"
+    ]
+   },
+   "fingerprint": "sha256:a493d598f379e865486f49a44cc03c27570d5e7362848fa271b46c23ff48c942",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 800,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch"
+    ]
+   },
+   "fingerprint": "sha256:d2f045d4899fc7cdb12529dd4d999628bcc54b625e6d738cdac0c77d65121e32",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1600,
+    "source": "activate",
+    "payload": [
+     "room",
+     "switch"
+    ]
+   },
+   "fingerprint": "sha256:5a769c9c66292ea1f82938e941cc6724607d1dd1ec28b3d13977924fbb82e303",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 2500,
+  "fingerprint": "sha256:d846d9a2c5cec9b376854a7690fb4870ca02bccd27bf19cef27a77138ef0c523",
+  "heard": [],
+  "state": {
+   "now": 2500,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "room": {
+     "kind": "scene",
+     "def": "room",
+     "parent": null,
+     "values": {
+      "lit": true
+     },
+     "inputs": {
+      "shade": "#ffcc33"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "room",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "room": 1
+    },
+    "resume": null,
+    "painted": {
+     "room": true
+    },
+    "held": [],
+    "endedReported": {
+     "room": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "room": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

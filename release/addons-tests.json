@@ -106,6 +106,11 @@
   "moved": true,
   "why": "tests a built-in capability or module (D30); the file moves to hypersvg-addons."
  },
+ "engine/v2/tests/d55-on-demand.test.mjs": {
+  "tests": "all",
+  "moved": true,
+  "why": "tests the modules of built-in capabilities loaded on demand (D55, D30); the file moves to hypersvg-addons."
+ },
  "engine/v2/tests/e1-fixes.test.mjs": {
   "tests": [
    "a kit experience whose scenes are uses (not files) has no places read, and does not fail",
@@ -208,6 +213,10 @@
   ],
   "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
  },
+ "engine/v2/tests/m1-addon-moves.test.mjs": {
+  "tests": "all",
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
+ },
  "engine/v2/tests/q1-plan-fitbox.test.mjs": {
   "tests": [
    "baked: the derived frames carry the moved region; a baked page shows it where the live one does"
@@ -222,6 +231,10 @@
    "widgets: outline shapes give the corner radius; extends applies"
   ],
   "why": "needs a built-in capability, its manifest or an example that needs one (D30); runs in the hypersvg-addons checks."
+ },
+ "engine/v2/tests/r1-replay-addons.test.mjs": {
+  "tests": "all",
+  "why": "imports a built-in capability's code when it loads, so none of its tests can run in the core; it runs in the hypersvg-addons checks until the file is split."
  },
  "engine/v2/tests/r1-richtext-check.test.mjs": {
   "tests": "all",

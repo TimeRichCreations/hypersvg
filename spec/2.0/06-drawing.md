@@ -15,7 +15,7 @@ This is the complete list of `data-hsvg-*` attributes a 2.0 drawing may carry: t
 lists values, the first listed is the default. **The SVG side is closed (D28, D34):** every mark is core, whatever
 the experience's `needs`; an add-on never adds a mark or a mark value (its settings live in `addons.<name>`). Route places and video boxes are
 core marks too; a marked place that nothing names is ignored by the engine, and the checker warns (`W-PLACE-UNUSED`,
-5.10). Any other `data-hsvg-*` attribute is an error. Today's earlier marks and the common wrong guesses
+5.10). Any other `data-hsvg-*` attribute is an error. The earlier marks and the common wrong guesses
 (`data-hsvg-look`, `data-hsvg-paint`, `data-hsvg-region`, `data-hsvg-name`, `data-hsvg-part`, …) are `E-WORD-RENAMED`,
 with the final form in the message; the tool record of a derived frame is in `<metadata>` (6.6). Marks of earlier formats are converted by the upgrade tool
 (A13.9); the variant marks it lists (such as `data-hsvg-state-name`) are still read as aliases, each reported (`W-MARK-ALIAS`). `E-MARK-UNKNOWN`,
@@ -93,7 +93,7 @@ refused with a message that shows the new form: `data-hsvg-motion "rotate(-90 90
 "rotate -90..90"`. The upgrade tool converts every drawing (`scale(1 1.2)` to `scale 1..1.2`, `translate(60)` to
 `move-x -60..60; move-y -60..60`, `rotate(*)` to `rotate *`). `E-MARK-VALUE` (files).
 
-Today's earlier channel names are `E-WORD-RENAMED` with the final one: `translate-x` is `move-x`, `translate-y` is
+The earlier channel names are `E-WORD-RENAMED` with the final one: `translate-x` is `move-x`, `translate-y` is
 `move-y`, `translate` is `move-x` and `move-y`, `skew` is `lean`, `dash` is `draw` and `stroke-width` is `line` (D33)
 (files).
 
@@ -184,7 +184,7 @@ An ad button with a text place, its fit box, an icon place and colour roles (its
   `viewBox`: `{"target": "icon", "variant": "status", "as": "icon"}` with `status` holding `'clock'`. The id is looked
   up in the active theme's `icons` set, then in the icon-set resources in declaration order; with no match the drawn
   icon stays. The drawing inside an icon place holds no parts (the copy carries no ids). A binding as `icon` on a part
-  that is no icon place is `E-PLACE` (files, playing). Today's `data-hsvg-icon` is `E-WORD-RENAMED` (D33) (files).
+  that is no icon place is `E-PLACE` (files, playing). The earlier `data-hsvg-icon` is `E-WORD-RENAMED` (D33) (files).
 
   ```svg
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-hsvg-version="2.0">
@@ -214,7 +214,7 @@ paint appears at most once; empty values, unknown paints and mixed bare and qual
 - **Text styles.** `data-hsvg-text-style` names a theme text style for a text: `heading`, `body`, `caption` or a kit's
   own (7.7, D37). With a theme, the text takes the style's font; without one, its drawn `font-family` stays. A `<g>`
   passes it down. Checked with its kit, the style must exist in every theme (`E-THEME-ROLES`); checked alone, a style
-  other than `heading`, `body` and `caption` warns (`W-COLOR-ROLE-THEME`). Today's `display` and `text` are
+  other than `heading`, `body` and `caption` warns (`W-COLOR-ROLE-THEME`). The earlier `display` and `text` are
   `E-WORD-RENAMED`: write `heading` and `body` (files). Example:
   `<text id="card__title" data-hsvg-kind="part" data-hsvg-text-style="heading" …>Harbour days</text>`.
 
@@ -292,7 +292,7 @@ it behaves (`label`, not `white-text` or `top-text`; no category prefix: `label`
    `pricing` component with `message.kicker`); the duty is for its own role only.
 6. **Side.** A side is a role word after the role: `data-hsvg-role="hand left"` (`left`, `right` as the viewer sees
    the picture; `near`, `far` from the viewer). It qualifies the part's role, so presets find the near wing or the left
-   ear. It never changes behaviour on its own. One role word and one side at most; today's `data-hsvg-side` is
+   ear. It never changes behaviour on its own. One role word and one side at most; the earlier `data-hsvg-side` is
    `E-WORD-RENAMED` (D33) (files).
 7. **Protected areas** are role words too, on an unpainted `<rect>`: `keep-inside`, `keep-clear`, `keep-empty`, or
    `keep-inside keep-clear` (5.10). `E-PLACE`, `E-MARK-VALUE` (files).
@@ -341,7 +341,7 @@ what it paints. Descendants inherit it; a descendant may set its own. The first 
 | `decoration` | Glows, sparkles, shadows: paint that may give way when the picture is simplified (D35) | It holds no content binding and no control. Give-way steps may simplify it. Assistive technology does not see it. |
 
 `data-hsvg-layer="decoration"` is a layer value; `data-hsvg-role="decoration"` (6.3) is a role, ornament that screen
-readers skip. One does not imply the other (D35). Today's `data-hsvg-paint` is `E-WORD-RENAMED`: write
+readers skip. One does not imply the other (D35). The earlier `data-hsvg-paint` is `E-WORD-RENAMED`: write
 `data-hsvg-layer` with the same value (files).
 
 ```svg
@@ -418,7 +418,7 @@ frames are component drawings (2.10). The block's document names its frames thro
   baked frame's record also holds the text give-way steps the bake took (`"steps"`: `<rule id>:<step>`, once per time,
   space-separated, A11.5), so a baked page shows its steps in the ladder's read-out and the ambient `layout` value as
   a live one does; the plan's steps are in the receipt. A malformed record is `E-MARK-VALUE`. The packer keeps the
-  record in a derived frame (the player reads it) and strips it from every other drawing. Today's
+  record in a derived frame (the player reads it) and strips it from every other drawing. The earlier
   `data-hsvg-derived` and `data-hsvg-steps` are `E-WORD-RENAMED` (D33):
   `<metadata>{"derived": "derived", "steps": "fits-title:shrink"}</metadata>`. An
   edited frame is never overwritten without an explicit request. Only an explicit promote makes it a drawn frame: it
@@ -539,6 +539,20 @@ every key and overshoot stays inside the part's motion range. `E-MOTION-RANGE` *
   enters afresh (as 0.1's stop did). A marker exactly at
   `durationMs` fires. `ended:<clip-id>` fires
   once per run: at the natural end, or with `interrupted: true` when stopped or replaced. **[playing]**
+- **Saying "done".** A page hears that an action has finished when the block reacts to `ended:<clip-id>` and emits
+  an output event the experience declares (5.12). The host hears it with `player.on` (10.6). The guard skips a run
+  that was stopped or replaced. A flag that waves when its button is pressed, in `experience.json`:
+  `"outputs": {"waved": {"kind": "event"}}`, and in the scene:
+
+  ```json
+  "on": {
+    "press:go": [{"actions": [{"play": "wave"}]}],
+    "ended:wave": [{"id": "say-done", "guard": "!event.interrupted", "actions": [{"emit": "waved"}]}]
+  }
+  ```
+
+  The page: `player.on('waved', () => nextStep())`. It hears `waved` once, when the wave ends. Under reduced
+  motion `ended` still fires at the clip's normal end. **[playing]**
 - Markers fire once per crossed iteration on speed-adjusted time, in reverse order on ping-pong reverse runs. Each
   crossing is a deadline on the one schedule (3.10), so large and split advances give the same events. More than 100
   crossings of one clip at one engine millisecond is a runaway clip: `E-EVENT-LOOP`. A marker's event becomes an output when declared as an output event (5.12). **[playing]**
@@ -564,7 +578,7 @@ A binding's key is its word (D33). There are ten: `text`, `label`, `visible`, `v
 | `color` (`as` `marked`, `fill`, `stroke`) | As `marked`: a formula giving a colour role name, with an optional `role`, a colour role the part's drawing marks. As `fill` or `stroke`: a `#rrggbb` colour formula, with an optional `glide` | Which theme colour role paints the part (7.7): its paints marked with `role` take that role's colour; without `role`, every marked paint of the part does; a part with no marked paint takes it as its fill. As `fill` or `stroke`, that paint (6.7) |
 | `move` (`axis` `x`, `y` or `route`, required) | Numeric formula; optional `glide`; `route` names the route for `axis` `route` | The motion of 6.7 |
 | `rotate` (`as` `spin`, `lean`) | Numeric formula; optional `glide` | The motion of 6.7 |
-| `scale` (`as` `stretch`, `line`, `box`; `axis` `both`, `x`, `y` for `stretch`) | As `stretch` or `line`: numeric formula; optional `glide`. As `box`: a formula giving `[width, height]` in the drawing's units, each at least 1, with an optional `anchor`, `[x, y]` of `start`, `middle` or `end` (default the middle); the target is a `<rect>` slot or region | The motion of 6.7. On `axis` `x`, −1 mirrors the part about its pivot and keeps its text readable: a formula that gives only −1 and 1 faces a part left or right, and needs no motion range. As `box`: the rectangle's size while playing, about its anchor; what is placed in it sees a new space and chooses again: its frame, layout, tier and give-way steps (7.4, 7.9, A11.5) |
+| `scale` (`as` `stretch`, `line`, `box`; `axis` `both`, `x`, `y` for `stretch`) | As `stretch` or `line`: numeric formula; optional `glide`. As `box`: a formula giving `[width, height]` in the drawing's units, each at least 1, with an optional `anchor`, `[x, y]` of `start`, `middle` or `end` (default the middle); the target is a `<rect>` slot or fit box | The motion of 6.7. On `axis` `x`, −1 mirrors the part about its pivot and keeps its text readable: a formula that gives only −1 and 1 faces a part left or right, and needs no motion range. As `box`: the rectangle's size while playing, about its anchor; what is placed in it sees a new space and chooses again: its frame, layout, tier and give-way steps (7.4, 7.9, A11.5) |
 | `opacity` | Numeric formula; optional `glide` | The motion of 6.7 |
 | `draw` (`as` `line`, `wipe`, `points`) | As `line` or `wipe`: numeric formula; optional `glide`; `start` for `line`. As `points`: a formula giving 2 to 512 (`linePoints`) numbers (y values, spread evenly in x) or `[x, y]` pairs; `area` names a drawn `<rect>` part, the plot box; optional `range`: `{"x": [lo, hi], "y": [lo, hi]}` (default x: the item indexes, y: 0..1); the target is a `<polyline>` | The motion of 6.7. As `points`: the polyline's points: each value mapped into the area's box, y upwards; a value outside its range sits on the box's edge. The drawing keeps the line's style, the axes and the frame |
 | an add-on's name | An object the add-on's manifest closes (`draws`, chapter 12): `{"target": "screen", "media": {...}}` | What that add-on paints on the target. It is the target's only writer |
@@ -642,7 +656,7 @@ point. A use's block lists it in `places` as a `slot` (4.3):
 - The slot is drawn in every frame (and listed in the use's `places`). `part` is a use; a drawn part moves with its
   parent or follows a leader (6.2.1). Loops are refused when the checker can see them; at run time an attach onto a
   slot inside the use itself faults. `E-REF-UNKNOWN`, `E-CYCLE` **[files]**, **[playing]**
-- Today's `data-hsvg-anchor` is `E-WORD-RENAMED`: draw an empty slot `<g>` at the point (D33) (files).
+- The earlier `data-hsvg-anchor` is `E-WORD-RENAMED`: draw an empty slot `<g>` at the point (D33) (files).
 - Attachments are part of the store: rolled back with a failed transaction, kept by a visit and across redraws,
   cleared on the owner's fresh entry. Write an initial attachment as an `entry` action. **[playing]**
 - At most 256 `player.attach` calls per block. **[files]**

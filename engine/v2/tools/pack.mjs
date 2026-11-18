@@ -1,6 +1,8 @@
 // The packer: turns a checked 2.0 experience folder into ONE offline HTML file (10.9) and its package.json (10.8).
+// API labels (spec 10.16, D63), as the package's ./pack: pack, packAsset and PackError are stable; pack()'s options
+// host, allow, kits, test and acceptFindings are experimental, sizes and date internal; every other export is internal.
 // Usage: node engine/v2/tools/pack.mjs <experience folder> <out folder> [--host <host-profile.json>] [--test] [--allow <add-on id>] [--kit <kit folder>] [--verbose]
-//        node engine/v2/tools/pack.mjs --asset <asset folder> <out folder>    (one HyperSVG, <out>/<id>.svg; D45, packAsset)
+//        node engine/v2/tools/pack.mjs --asset <asset folder> <out folder>    (one HyperSVG, <out>/<id>.svg; prints its integrity value; D45, D56, packAsset)
 // Writes <out>/<id>.html and <out>/package.json (a second experience packed into the same folder replaces its
 // package.json, and the packer says so). --verbose names the files left out (not reached); without it, they are
 // counted. Refuses (exit 1) when the checker finds an error (E-); warnings (W-) are printed and do not stop it. --accept-findings packs a folder with known errors anyway and lists them (for
@@ -34,6 +36,7 @@ import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { folderSource, loadExperience } from '../src/load.mjs';
 import { checkExperience } from '../check/index.mjs';
+import { describe, findingLine } from '../check/diagnostics.mjs';
 import { refusedLimits, refusalMessage, FORMAT } from '../src/limits.mjs';
 import { packageNeeds, capabilityNames } from '../src/capabilities.mjs';
 import { experienceResources } from '../src/host-profile.mjs';
@@ -52,6 +55,7 @@ import { moduleDigest } from '../modules/make-lock.mjs';
 import { addonSnapshot, importGraph, IMPORT_RE, EXPORT_DECL_RE, EXPORT_LIST_RE } from './addons.mjs';
 import { roleOf } from '../src/marks.mjs';
 import { makeAsset } from '../src/asset.mjs';
+import { ON_DEMAND, addonFile, usesSound } from '../src/on-demand.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(here, '..', '..', '..');
@@ -130,10 +134,18 @@ export function capabilityModules(needs = []) {
 // module's own cost: the gzip level 9 size of the bundle with the module, less the bundle without it. ids: capability
 // ids with a module. pinned: logic modules' pinned names (chess@0.1.0); each counts as a capability bundle (10.11).
 // Each row carries its limit from limits.json (FORMAT) and whether it is over.
-const gz9 = (text) => gzipSync(Buffer.from(text), { level: 9 }).length;
+// A pack measures the same engine bundles again and again (the core, each capability's row): the gzip size and the
+// stripped source are kept by their text for this process, a few dozen at most.
+const kept = (max) => { const m = new Map(); return (key, make) => { if (m.has(key)) return m.get(key); const v = make(); if (m.size >= max) m.delete(m.keys().next().value); m.set(key, v); return v; }; };
+const gzKept = kept(64);
+const gz9 = (text) => gzKept(text, () => gzipSync(Buffer.from(text), { level: 9 }).length);
+const stripKept = kept(256);
 // source: measure the modules as written, comments included (for comparison; the limits apply to the built bundle).
+// sound (added after 2.0.0-next.0): the audio code (web/audio-web.mjs and the mixer) is not in the core; a page carries it
+// only when its experience uses sound, and its row is its own cost, at most capabilityBundleBytes, like a capability's.
 const coreSizes = {};
-export function engineSizes(ids = [], pinned = [], { source = false, addons = [] } = {}) {
+export const AUDIO = path.join(ENGINE_DIR, 'web', 'audio-web.mjs');
+export function engineSizes(ids = [], pinned = [], { source = false, addons = [], sound = true } = {}) {
   const strip = !source;
   const coreSize = (coreSizes[strip] ??= gz9(bundle(ENTRY, [], { strip }).defs));
   const core = { gzip9: coreSize, max: FORMAT.coreBundleBytes, over: coreSize > FORMAT.coreBundleBytes };
@@ -148,7 +160,7 @@ export function engineSizes(ids = [], pinned = [], { source = false, addons = []
     const gzip9 = gz9(bundle(ENTRY, [file], { strip, texts }).defs) - coreSize;
     return { id, gzip9, max: FORMAT.capabilityBundleBytes, over: gzip9 > FORMAT.capabilityBundleBytes };
   });
-  return { core, capabilities, modules, addons: addonRows };
+  return { core, capabilities, modules, addons: addonRows, ...(sound ? { sound: row('sound', AUDIO) } : {}) };
 }
 // The findings for sizes over their limits, shaped as the checker's: code E-ENGINE-SIZE (10.11), and `limit`, the
 // limit's id in limits.json.
@@ -157,6 +169,7 @@ export function sizeFindings(sizes) {
   if (sizes.core.over) out.push({ code: 'E-ENGINE-SIZE', limit: 'coreBundleBytes', file: 'engine', path: 'core', message: `the core player's bundle is ${sizes.core.gzip9} bytes gzip 9, over coreBundleBytes ${sizes.core.max} (10.11)` });
   for (const c of sizes.capabilities) if (c.over) out.push({ code: 'E-ENGINE-SIZE', limit: 'capabilityBundleBytes', file: 'engine', path: `capabilities/${c.id}`, message: `the ${c.id} capability module adds ${c.gzip9} bytes gzip 9, over capabilityBundleBytes ${c.max} (10.11)` });
   for (const a of sizes.addons || []) if (a.over) out.push({ code: 'E-ENGINE-SIZE', limit: 'capabilityBundleBytes', file: 'engine', path: `addons/${a.id}`, message: `the add-on ${a.id} adds ${a.gzip9} bytes gzip 9, over capabilityBundleBytes ${a.max} (10.11, 12): make its code smaller` });
+  if (sizes.sound?.over) out.push({ code: 'E-ENGINE-SIZE', limit: 'capabilityBundleBytes', file: 'engine', path: 'sound', message: `the audio code adds ${sizes.sound.gzip9} bytes gzip 9, over capabilityBundleBytes ${sizes.sound.max} (10.11)` });
   for (const m of sizes.modules || []) if (m.over) out.push({ code: 'E-ENGINE-SIZE', limit: 'capabilityBundleBytes', file: 'engine', path: `modules/${m.id}`, message: `the logic module ${m.id} adds ${m.gzip9} bytes gzip 9, over capabilityBundleBytes ${m.max} (10.11)` });
   return out;
 }
@@ -263,7 +276,8 @@ export function bundle(entryFile, extraFiles = [], { strip = true, confined = []
     let src = sealed ? given.get(path.resolve(file)) : fs.readFileSync(file, 'utf8');
     // The production build (10.11): the engine's comments stay in its source files; a logic module ships as reviewed.
     if (strip && file.startsWith(ENGINE_DIR + path.sep) && !file.startsWith(MODULES_DIR + path.sep) && !file.startsWith(ADDONS_DIR + path.sep)) {
-      try { src = stripComments(src); } catch (e) { throw new PackError(`${rel}: ${e.message}`); }
+      const text = src;
+      try { src = stripKept(text, () => stripComments(text)); } catch (e) { throw new PackError(`${rel}: ${e.message}`); }
     }
     // A logic module's loops and function bodies are metered (tools/meter.mjs, Q1c finding 6): its time budget holds
     // even if it never calls step(). Its reviewed text is otherwise carried as it is.
@@ -772,7 +786,7 @@ export async function pack(expDir, outDir, { acceptFindings = false, host = null
   const absent = result.diags.filter(d => d.code === 'W-ADDON-ABSENT');
   if (absent.length) throw new PackError(`refusing to pack: ${absent.map(d => d.message.slice(6, d.message.indexOf(':'))).join(', ')} not in this release; pack with the hypersvg-addons release (W-ADDON-ABSENT)`, absent);
   const errors = result.diags.filter(d => d.code?.startsWith('E-'));
-  if (errors.length && !acceptFindings) throw new PackError(`refusing to pack: ${errors.length} errors`, errors);
+  if (errors.length && !acceptFindings) throw new PackError(`refusing to pack: ${errors.length} ${errors.length === 1 ? 'error' : 'errors'}`, errors);
   // Errors packed with --accept-findings are written into the page and the descriptor, so the page never passes
   // for a clean one: package.json "findings", <html data-hsvg-findings> and a small visible notice.
   const accepted = errors.map(d => ({ code: d.code, file: d.file ?? '', path: d.path ?? '' }));
@@ -844,7 +858,10 @@ export async function pack(expDir, outDir, { acceptFindings = false, host = null
   const outside = addonCode(result.experience, source, needs, allow);
   if (outside.refused.length) throw new PackError('refusing to pack: an add-on cannot be carried (E-ADDON)', outside.refused);
   // The engine's size limits (10.11), on the core and the capability modules this page carries.
-  const sizes = givenSizes ?? engineSizes(caps.map(c => c.id), logic.map(m => m.pinned), { addons: outside.list }); // sizes: given by a test only
+  // Sound (added after 2.0.0-next.0): the audio code only when a document declares a sound resource or a made sound.
+  const e = result.experience;
+  const sound = e ? usesSound([e.doc, e.shell?.doc, ...Object.values(e.scenes || {}).map(b => b.doc), ...Object.values(e.blocks || {}).map(b => b.doc)]) : true;
+  const sizes = givenSizes ?? engineSizes(caps.map(c => c.id), logic.map(m => m.pinned), { addons: outside.list, sound }); // sizes: given by a test only
   const oversize = sizeFindings(sizes);
   // The core, a capability or a module over its cap refuses (D18, D19: the core's cap is a refusal again).
   if (oversize.length && !acceptFindings) throw new PackError(`refusing to pack: the engine is over its size limits (10.11)`, oversize);
@@ -852,7 +869,7 @@ export async function pack(expDir, outDir, { acceptFindings = false, host = null
   // A kit experience is flattened into the form the player plays (D19): the page carries no kit loader.
   const kitted = kit || picked.length ? flattenKit(texts) : null;
   const withDoor = outside.list.length > 0;
-  const extra = [...caps.map(c => c.file), ...logic.map(m => m.file), ...outside.list.map(a => a.file), ...(withDoor ? [ADDON_DOOR] : []), ...(logic.length || withDoor ? [MODULE_PORT] : [])];
+  const extra = [...(sound ? [AUDIO] : []), ...caps.map(c => c.file), ...logic.map(m => m.file), ...outside.list.map(a => a.file), ...(withDoor ? [ADDON_DOOR] : []), ...(logic.length || withDoor ? [MODULE_PORT] : [])];
   const bundled = bundle(ENTRY, extra, { confined: outside.list.filter(a => a.kind === 'module').flatMap(a => a.files), labels: Object.fromEntries(outside.list.flatMap(a => a.labels)), texts: Object.assign({}, ...outside.list.map(a => a.texts)) });
   const nOf = (file) => bundled.extras[extra.indexOf(file)];
   // Each outside add-on registers with the digest the packer hashed (src/addon-door.mjs).
@@ -926,15 +943,31 @@ ${accepted.length ? `${findingsNotice(accepted)}\n` : ''}<script>${script}</scri
     fs.writeFileSync(path.join(ev, 'index.json'), JSON.stringify({ receipts: baked.receipts.map(r => ({ id: r.id, run: r.run, subject: r.subject, digest: r.digest, status: r.status })) }, null, 2) + '\n');
   }
   return { htmlPath, packagePath, bytes: Buffer.byteLength(html), engineBytes: Buffer.byteLength(bundled.defs), members: Object.keys(members).length, id, csp,
-    modules: bundled.files.length, files: bundled.files, capabilities: caps.map(c => c.id), logicModules: logic.map(m => m.pinned), addons: outside.list.map(a => a.pinned), sizes, findings: [...result.diags, ...oversize], accepted,
+    modules: bundled.files.length, files: bundled.files, sound, capabilities: caps.map(c => c.id), logicModules: logic.map(m => m.pinned), addons: outside.list.map(a => a.pinned), sizes, findings: [...result.diags, ...oversize], accepted,
     baked: { members: Object.keys(baked.texts).sort(), receipts: baked.receipts, skipped: baked.skipped }, kitted: !!kitted, leftOut, replacedPackage };
 }
 
 // A reusable asset as one HyperSVG (D45, 10.14): pack --asset <folder> <out> writes <out>/<id>.svg, the start scene's
 // drawing with the asset's other files in its tool record as data (src/asset.mjs). The checker runs first, as for any
 // pack, and refuses on any error. An asset holds only what the shared player can check and play from text: its
-// documents and drawings. So it refuses a kit, an add-on or capability (any need), a file that is not text (a picture,
+// documents and drawings. So it refuses a kit, an add-on or capability (any need but a capability that loads on demand,
+// D55: effects or physics, which it pins), a file that is not text (a picture,
 // a sound, a font), and a drawing with a tool record of its own. The file is at most dataBytesEach bytes.
+// It prints the file's integrity value (sha256-<base64>, D56, added after 2.0.0-next.0): a host stores it and places
+// the file with it (web/asset-lean.mjs), so the page can skip the schema check.
+const mapTexts = (texts) => ({ read: (rel) => (Object.hasOwn(texts, rel) ? texts[rel] : null) });
+// The pin of each on-demand capability whose module this release holds (D55): {id: {version, pinned, digest}}, the
+// SHA-256 of engine/v2/web/addons/<id>-<version>.mjs as committed (tools/bundle-addons.mjs makes them).
+export function addonPins(root = repo) {
+  const out = {};
+  for (const id of ON_DEMAND) {
+    let version;
+    try { version = JSON.parse(fs.readFileSync(path.join(root, 'spec', '2.0', 'capabilities', `${id}.json`), 'utf8')).about.version; } catch { continue; }
+    const file = path.join(root, 'engine', 'v2', 'web', 'addons', addonFile(id, version));
+    if (fs.existsSync(file)) out[id] = { version, pinned: `${id}@${version}`, digest: 'sha256:' + sha256hex(fs.readFileSync(file)) };
+  }
+  return out;
+}
 export async function packAsset(expDir, outDir) {
   expDir = path.resolve(expDir);
   const schemas = loadSchemas(path.join(repo, 'spec', '2.0'));
@@ -943,19 +976,42 @@ export async function packAsset(expDir, outDir) {
   const source = { ...folder, read(rel) { const t = folder.read(rel); if (t !== null) reached.add(path.posix.normalize(String(rel))); return t; } };
   const result = checkExperience(source, schemas);
   const errors = result.diags.filter(d => d.code?.startsWith('E-') || d.code === 'W-ADDON-ABSENT');
-  if (errors.length) throw new PackError(`refusing to pack the asset: ${errors.length} errors`, errors);
+  if (errors.length) throw new PackError(`refusing to pack the asset: ${errors.length} ${errors.length === 1 ? 'error' : 'errors'}`, errors);
   const exp = result.experience;
   const refuse = (why) => { throw new PackError(`refusing to pack the asset (E-ASSET): ${why}`, [{ code: 'E-ASSET', file: '', path: '', message: why }]); };
   const id = exp.doc.id;
   if (typeof id !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(id)) refuse(`the experience id "${id}" cannot name a file`);
   if (exp.kit || Object.keys(exp.picked?.kits || {}).length) refuse('an asset uses no kit or library; pack it as an experience');
+  // A pinned capability (D55, added after 2.0.0-next.0): effects or physics, pinned by version and the digest of the
+  // module a page loads (engine/v2/web/addons/, tools/bundle-addons.mjs). The file carries the pin, never the code.
   const needs = packageNeeds(exp);
-  if (needs.length) refuse(`an asset needs no add-on or capability, and this one needs ${needs.join(', ')}; pack it as an experience`);
+  const pins = addonPins();
+  const other = needs.filter(n => !ON_DEMAND.includes(n));
+  if (other.length) refuse(`an asset names in needs only a capability that loads on demand (${ON_DEMAND.join(', ')}), and this one needs ${other.join(', ')}; pack it as an experience`);
+  const absent = needs.filter(n => !pins[n]);
+  if (absent.length) refuse(`it needs ${absent.join(', ')}, whose module this release does not hold (engine/v2/web/addons/; it comes with the add-ons): pack it as an experience`);
+  const given = exp.doc.about?.trust?.pins || {};
+  for (const n of needs) {
+    const own = Object.keys(given).filter(k => k.startsWith(`${n}@`));
+    if (own.some(k => k !== pins[n].pinned || given[k] !== pins[n].digest)) refuse(`about.trust.pins pins ${own.map(k => `${k} ${given[k]}`).join(', ')}, but this release's module is ${pins[n].pinned} ${pins[n].digest}: remove the pin, and pack --asset writes it`);
+  }
   const all = listFiles(expDir).filter(f => f !== 'package.json');
   const hiddenReached = [...reached].filter(hidden);
   if (hiddenReached.length) refuse(`it reaches hidden files: ${hiddenReached.sort().join(', ')}`);
   const texts = {};
   for (const rel of [...reached].sort()) if (TEXT_EXT.has(path.posix.extname(rel)) && all.includes(rel)) texts[rel] = fs.readFileSync(path.join(expDir, ...rel.split('/')), 'utf8');
+  // Presets are expanded at pack (D23), so the file carries only data: a page's lean load reads no preset.
+  for (const [rel, d] of Object.entries(exp.presetExpanded || {})) if (rel in texts) texts[rel] = JSON.stringify(d, null, 2) + '\n';
+  // The pins of its needs, written into experience.json (D55).
+  if (needs.length) {
+    const top = JSON.parse(texts['experience.json']);
+    top.about = { ...top.about, trust: { ...top.about?.trust, pins: { ...top.about?.trust?.pins, ...Object.fromEntries(needs.map(n => [pins[n].pinned, pins[n].digest])) } } };
+    texts['experience.json'] = JSON.stringify(top, null, 2) + '\n';
+  }
+  if (needs.length || Object.keys(exp.presetExpanded || {}).length) {
+    const again = checkExperience(mapTexts(texts), schemas).diags.filter(d => d.code?.startsWith('E-'));
+    if (again.length) throw new PackError('refusing to pack the asset: its expanded files do not check', again);
+  }
   const binaries = referencedBinaries(exp, all.filter(f => !hidden(f)), texts);
   if (binaries.length) refuse(`an asset holds only text: its documents and drawings; it uses ${binaries.join(', ')}`);
   // The drawing it shows: the start scene's drawing.
@@ -973,7 +1029,9 @@ export async function packAsset(expDir, outDir) {
   const svgPath = path.join(outDir, `${id}.svg`);
   fs.writeFileSync(svgPath, svg);
   const leftOut = all.filter(f => !(f in texts));
-  return { svgPath, bytes, id, drawing, members: Object.keys(texts).length, findings: result.diags, leftOut };
+  // The file's integrity value (D56): the browser's Subresource Integrity form, for a host to store after this check.
+  const integrity = `sha256-${crypto.createHash('sha256').update(svg, 'utf8').digest('base64')}`;
+  return { svgPath, bytes, id, drawing, members: Object.keys(texts).length, findings: result.diags, leftOut, start, scenes: Object.keys(exp.doc.story?.scenes || {}).length, integrity };
 }
 
 // The id of another experience whose package.json is in the out folder (F1a item 7): a second pack into one folder
@@ -981,14 +1039,26 @@ export async function packAsset(expDir, outDir) {
 function otherPackage(file, id) {
   try { const old = JSON.parse(fs.readFileSync(file, 'utf8')); return old?.kind === 'package' && typeof old.id === 'string' && old.id !== id ? old.id : null; } catch { return null; }
 }
+// The notes `init` writes beside the lamp (AGENTS.md, CLAUDE.md, GUIDE.md, .claude/): never part of a page, so a
+// pack leaves them out without a word.
+export const initNote = (f) => /^(?:AGENTS|CLAUDE|GUIDE)\.md$/.test(f) || f.startsWith('.claude/');
 // The packer's closing lines (F1a item 7): the files left out, counted (named with --verbose), and a replaced
-// package.json.
-export function packNotes(r, verbose = false) {
+// package.json. what: 'experience' or 'asset'.
+export function packNotes(r, verbose = false, what = 'experience') {
   const out = [];
-  const n = r.leftOut?.length || 0;
-  if (n) out.push(verbose ? `left out (not reached by the experience): ${r.leftOut.join(', ')}` : `left out: ${n} file${n === 1 ? '' : 's'} not reached by the experience (--verbose names them)`);
+  const left = (r.leftOut || []).filter(f => !initNote(f));
+  const n = left.length;
+  if (n) out.push(verbose ? `left out (not reached by the ${what}): ${left.join(', ')}` : `left out: ${n} file${n === 1 ? '' : 's'} not reached by the ${what} (--verbose names them)`);
   if (r.replacedPackage) out.push(`replaced ${r.packagePath}: it was the package file of ${r.replacedPackage}. Pack each experience into its own folder to keep both`);
   return out;
+}
+
+// The findings as check prints them (file:line:col pointer: message), read again from the folder.
+async function findingLines(diags, dir, kits) {
+  if (!diags.length) return [];
+  let source = { read: () => null };
+  try { source = await folderSource(path.resolve(dir), { kits }); } catch { /* lines without places */ }
+  return describe(diags, source).map(d => findingLine({ ...d, file: d.file ?? '' }));
 }
 
 // Command line.
@@ -1007,13 +1077,15 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (!exp || !out) { console.log('usage: node engine/v2/tools/pack.mjs --asset <asset folder> <out folder>'); process.exit(2); }
     try {
       const r = await packAsset(exp, path.resolve(out));
-      for (const d of r.findings) console.log(`${d.code} ${d.file} ${d.path}: ${d.message}`);
+      for (const line of await findingLines(r.findings, exp, {})) console.log(line);
       console.log(`wrote ${r.svgPath}`);
       console.log(`${r.bytes} bytes, ${r.members} members; it shows ${r.drawing}`);
-      if (r.leftOut.length) console.log(`left out: ${r.leftOut.length} file${r.leftOut.length === 1 ? '' : 's'} not reached by the asset${args.includes('--verbose') ? `: ${r.leftOut.join(', ')}` : ' (--verbose names them)'}`);
+      if (r.scenes > 1) console.log(`its still picture is the start scene, ${r.start}: an <img> or a design tool shows only that scene. All ${r.scenes} scenes play where a page places it with the player`);
+      console.log(`integrity ${r.integrity}`);
+      for (const line of packNotes(r, args.includes('--verbose'), 'asset')) console.log(line);
     } catch (e) {
       if (!(e instanceof PackError)) throw e;
-      for (const d of e.diags.slice(0, 200)) console.log(`${d.code} ${d.file} ${d.path}: ${d.message}`);
+      for (const line of await findingLines(e.diags.slice(0, 200), exp, {})) console.log(line);
       console.log(e.message);
       process.exit(1);
     }
@@ -1024,7 +1096,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (!exp || !out || (hi >= 0 && !hostFile)) { console.log('usage: node engine/v2/tools/pack.mjs <experience folder> <out folder> [--host <host-profile.json>] [--test] [--allow <add-on id>] [--kit <kit folder>] [--verbose]\n       node engine/v2/tools/pack.mjs --asset <asset folder> <out folder>'); process.exit(2); }
   try {
     const r = await pack(exp, path.resolve(out), { acceptFindings, test, allow, kits, host: hostFile ? fs.readFileSync(path.resolve(hostFile), 'utf8') : null });
-    for (const d of r.findings) console.log(`${d.code} ${d.file} ${d.path}: ${d.message}`);
+    for (const line of await findingLines(r.findings, exp, kits)) console.log(line);
     console.log(`wrote ${r.htmlPath}`);
     console.log(`wrote ${r.packagePath}`);
     console.log(`${r.bytes} bytes (${(r.bytes / 1048576).toFixed(2)} MiB), ${r.members} members, ${r.modules} engine modules (${r.engineBytes} bytes)`);
@@ -1037,7 +1109,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     for (const line of packNotes(r, args.includes('--verbose'))) console.log(line);
   } catch (e) {
     if (!(e instanceof PackError)) throw e;
-    for (const d of e.diags.slice(0, 200)) console.log(`${d.code} ${d.file} ${d.path}: ${d.message}`);
+    for (const line of await findingLines(e.diags.slice(0, 200), exp, kits)) console.log(line);
     console.log(e.message);
     process.exit(1);
   }

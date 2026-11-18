@@ -152,6 +152,27 @@ export const tests = {
       ok(line.includes('W-CONTROL-STILL /controls/turn'), line.join('; '));
     });
   },
+  'item 1 checker: W-CONTROL-STILL suggests a binding that maps the value\'s bounds onto the range'() {
+    const said = async (edit) => {
+      const f = await files();
+      f['components/knob/component.json'] = JSON.parse(f['components/knob/component.json']);
+      edit(f, f['components/knob/component.json']);
+      return checkExperience(source(f), schemas()).diags.filter(d => d.code === 'W-CONTROL-STILL').map(d => d.message).join('; ');
+    };
+    return Promise.all([
+      said((f, c) => { c.bindings.splice(0, 1); }),
+      said((f, c) => {
+        c.values.level = { type: 'number', minimum: 10, maximum: 100, initial: 10 };
+        c.controls.turn = { kind: 'slider', axis: 'x', target: 'knob', value: 'level', range: [0, 200], label: 'Level' };
+        c.bindings.splice(0, 1);
+        f['components/knob/knob.svg'] = f['components/knob/knob.svg'].replace('rotate -135..135', 'move-x 0..200');
+      }),
+    ]).then(([dial, slider]) => {
+      ok(dial.includes('"rotate": "-135 + share * 270"'), dial);
+      ok(slider.includes('"move": "(level - 10) / 90 * 200", "axis": "x"'), slider);
+      ok(slider.includes('(v - min) / (max - min) * span'), slider);
+    });
+  },
   // ---------- item 2: positions may be a formula ----------
   'item 2: positions from an input, proven in 2..1000 (5.6.7)'() {
     const withStep = (c, pos, lo = 0.01) => {

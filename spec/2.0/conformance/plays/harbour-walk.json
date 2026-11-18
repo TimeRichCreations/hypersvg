@@ -1,0 +1,674 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "harbour-walk",
+ "about": "A seeded random walk of up to 40 steps (seed 7).",
+ "package": {
+  "folder": "docs/guide/examples/harbour",
+  "experience": "experience.json",
+  "files": {
+   "crate/component.json": "sha256:5c6ce40c1c1c739226b02fbfedf661ee07ce40e1363198123193de04b97c901d",
+   "crate/crate.svg": "sha256:dd143e13d3d25cf2a585f46ed24997c5b428087564411a7b1007561f14d4f221",
+   "experience.json": "sha256:af88c2d7acd2ffa603cd7f465fed36f1363ad074a4f337d62a1a9b1cb269eb59",
+   "gate.json": "sha256:55dfb25d8c5d4c6e0cf02a50bdfb262e046263036c92e8e70bccecbd36db0881",
+   "gate.svg": "sha256:785866cde97be7021e0a164aba29af92ba9eed0ea64c411746ae89d92f18470c",
+   "harbour.json": "sha256:d8058dfd05573c2ebf93c2d97217ef2cad10e5bc2631ca396aa2a674d2036c2b",
+   "harbour.svg": "sha256:d4a899a8a23f423c853310dd27fa65334cb62b01eae0b0387de5de95ec4d9b14",
+   "shell.json": "sha256:62aab62e75f605c5e9ab2bb6abf1cbc709c1a97655d9c795e02ea6ab140621db",
+   "shell.svg": "sha256:7af9d812f061819f73dcb7980978e65534cb3ba56a7337a09125e2f6915b9839"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:f7c5081f0525dbc59d485702ac6bc40e024806ae571cf2430160086ba12c9b5b",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "gate",
+      "link": ""
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:ebc276b72d7da1d3ec92079b779a0a8235d5391bb76cc4cf760bac3c25534d5d",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:23af2f3388bf1b89e4ead12e2d0b947372c5466f47d32b7a4ef5f79419f57c3d",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 516,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:5e682e1ef6cd6902f7536cbb9317c3b3cc31a2a67c1c07b13d063da356332179",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1356,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:684cc3c5feff41676346aa8fde0ba2357fabc5cb16d11f9afa5718051b92c7f0",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1756,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:8e3af707fd4454ef366461cc4249eee800183ec16c80a8f7446a94e8ee5d3376",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 2068,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:5ed971cbd674a26ee3a533b9e8471d1d63e313b0d2972b75afd795d4d4c041e0",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3168,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:4aaf60d120e7bdeb1af3e647367a9ea8bbe5e5ab39762a087e6ec2b0f0096323",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 3824,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:8704632b9cfdf68c4cb2b3fbc239f494d43d420484cea01241edf0380e795679",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 4900,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:ab02367a6adcde6b9f78fa57679df0bea6548dad911f0ca5c826dd907c3ae9e0",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 5496,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:1588fa36a15e7b2d51aedf2af999334873313b14c4d06a3fdbf7461383376be6",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 6108,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:fa7c24325eaeb8b9a336ba2c23694854a170ccae0881dc9da67ea903e924c764",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 7304,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:4b6405980b221959c0c2569d16ace88629fb960aff06d92d1ecf1530fa78242c",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8320,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:a4531ecbd5f3f3126693fa8c2d2bd84f57b11634c59ba3dfa3538d71b94e6287",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 8740,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:45c16a2eba0c5a268a3d6f226d5220ca52a2d5c70a715243022d93874347aa3a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 9868,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:0d1b16213340c21f16eccb94670e3675dec90367d7c17672f9c47fb55f671d95",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 10952,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:3fbb3224ab0619e739b8efba3a8551a80640ae6f0d6583731a77eb746be72b99",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 11712,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:5499ea40964b558de7f64a261f14c5cefe26e67d8ea37cc4d74d58cc9b3ca86b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 12672,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:ee770121d53486017699a49065a170c99391134b9780906eabf9351167f88a7f",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13128,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:c40b734f69a7bef98f5c68924b0f6c38cd0a1ef1f5e95357105068a467266874",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 13648,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:7d59c29a511cbb03155508954540a9f08623190bb39212c3b633a0abef2f84db",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 14020,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:346ba1c9fd9cdf7622334e60cc585513033a9caaeb4b7d41d8efbb624eadaaab",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 14504,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:af2647e9cb918bc5c5dc478f6a93e2b1f8089628d4560189a7966515cef1fba9",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 15364,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:e104671ca85c553e5f94522a44daf44696f0b1a94672edd6f93645cdec5209b7",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 15692,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:27bfef41d7b3ee774982e4c2d60064476e45349174e355cf9ee46d6ddb80acd9",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 16536,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:0a4fddefd429b227acabdd6a9566da6ce51dd8b6d1eb2aca40d1fbba6b963e80",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 17048,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:0c2af66a15176e6a8289a11fbf1e43f5e08384049a774b3cb1ea2408528b2217",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 17504,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:6f7028a229d8fe2a071b6760114e909b949a080ba390f2d95b0b126b0370ee65",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 17852,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:142e9129976845988ef5900bb53fbd8a87fca91bd14e1e7a091ac28d7bd7b536",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 18212,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:d49e73daaf051e07763858ca11863501319249b37ef3d8c82413097350ad85b0",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 19080,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:1bc46a82e319bb4392bec3c85bf0eff1db150185f57d4b46b0bc7e1598a33739",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 20124,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:fb2c32e091b59b1f0e440cb277beb39223d20215df6874f4c6478148c5a7ee42",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 21184,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:7c7e08ef3b92fa842c0f22e4a246783b7dd8c1c2deb2ba7aeb18011a8079f008",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 22088,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:61e5fc3e86d26ee35dccac33fa665543c5ca8ee3447e18f7d822f795776cef35",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 22900,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "gear",
+     null
+    ]
+   },
+   "fingerprint": "sha256:14d286d853133c745945c34cd60be6cd04f3cdac30dc9c58d08dea08ee17be7c",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 23224,
+    "source": "closeDialog",
+    "payload": [
+     "settings"
+    ]
+   },
+   "fingerprint": "sha256:9ceaa9d5649f78d2447ff39eb0d0bc58fd0b4fb33dbab87f5ce8dd6deb4e1e08",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 24012,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:78fa08a5398701dab01f92f762cb9fc9420c6bbebf172b82127f955e3eb408fd",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 24616,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:c3f3cb8a7f373f14f98461c00340d7e2f5bf47f5a96833f24aa261e731e0d6cd",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 25128,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:87c4144159893b17bad82ad33f01d49bfc69dcc4bed5edb243490a8f0ef3265b",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 25928,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "forget",
+     null
+    ]
+   },
+   "fingerprint": "sha256:15f3543dd6a6b1ae36ceaa7226d1d82f64d9cfc9d3f5803da8ca9075644e4e5a",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 26500,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:66d32362494c1f756074a39362aef9338022579cd99ba6aff932328e9d428f3e",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 27284,
+    "source": "activate",
+    "payload": [
+     "shell",
+     "shut",
+     null
+    ]
+   },
+   "fingerprint": "sha256:1e31d01dd8b5668158e1b696e60a9ab4b458cb10c82202b6eeb4a1c72139607b",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 27936,
+  "fingerprint": "sha256:906fba0019a3a436b53f529c932a1c7ebb6e55e0f93edd7294691c20723344e9",
+  "heard": [],
+  "state": {
+   "now": 27936,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {
+      "best": 0
+     },
+     "inputs": {
+      "title": "Harbour day",
+      "pace": 2,
+      "shopLink": "https://example.org/harbour"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "shell": {
+     "kind": "shell",
+     "def": "shell",
+     "parent": null,
+     "values": {
+      "settingsOpen": false
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "gate": {
+     "kind": "scene",
+     "def": "gate",
+     "parent": null,
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "gate",
+    "stack": [],
+    "counts": {},
+    "visits": {},
+    "resume": null,
+    "painted": {
+     "gate": true
+    },
+    "held": [],
+    "endedReported": {},
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "shell": true,
+     "gate": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

@@ -382,6 +382,9 @@ export function infer(tree, env, report) {
         const l = arg(0); const col = arg(1); arg(2); const fb = arg(3);
         want(l, 'array', 'lookup'); want(col, 'string', 'lookup column');
         const row = l.t === 'array' ? (l.item || T.any()) : T.any();
+        // A row is an object (5.6.4). On a row that is an array the column is read as an index ("0"), as the engine
+        // does today; the checker warns (D64).
+        if (row.t === 'array') report('lookupArray', 'lookup reads rows that are arrays; a row is an object, and a column of an array row is read as its index. Use objects for rows, or at(row, index) (5.6.4)');
         return join(row, fb);
       }
       case 'append': {

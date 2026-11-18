@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" data-hsvg-version="2.0" data-hsvg-kind="screen">
+<title>Chime</title>
+<desc>A button that plays a made sound.</desc>
+<rect width="400" height="300" fill="#1d2b36" data-hsvg-layer="backdrop"/>
+<g id="content" data-hsvg-layer="content">
+  <g id="ding" data-hsvg-kind="part" data-hsvg-label="Ding"><rect x="100" y="100" width="200" height="100" rx="24" fill="#2f80ed"/></g>
+</g>
+</svg>

@@ -1,0 +1,256 @@
+{
+ "format": "hsvg-play/1",
+ "engine": "2.0.0-next.1",
+ "name": "list-walk",
+ "about": "A seeded random walk of up to 10 steps (seed 3).",
+ "package": {
+  "folder": "docs/guide/examples/list",
+  "experience": "experience.json",
+  "files": {
+   "coast.json": "sha256:4a76a05f88b0f94e2284ee333a8db5756280ec96498c3e862a1e8527d1e4111f",
+   "coast.svg": "sha256:47795e75c63ae9fbddaf56d6725a89cb7eed26ad8e5719588591519771aa7863",
+   "experience.json": "sha256:980ae1ad68229a8749f5406a1d6980c1cb1bbae30a6f465c552dec64e2739c23",
+   "sign/component.json": "sha256:752a51f0f0bb9312f40a82699b82d14928b68c0aa2b434a903668d8519cfe8e2",
+   "sign/sign.svg": "sha256:3f595d5f1031e0a939644c70768d63befc725aa50ad076eb6d1b61ba20ab1f86"
+  },
+  "addons": {}
+ },
+ "start": {
+  "epochMs": 1767225600000,
+  "inputs": {},
+  "stored": null
+ },
+ "steps": [
+  {
+   "move": {
+    "t": 0,
+    "source": "start",
+    "payload": [
+     {
+      "reducedMotion": false,
+      "timeLimits": 1,
+      "inputMode": "pointer",
+      "language": "en",
+      "muted": false,
+      "volume": 1,
+      "voice": false,
+      "canReturn": false,
+      "size": {
+       "shape": "",
+       "width": 0,
+       "height": 0
+      }
+     }
+    ]
+   },
+   "fingerprint": "sha256:d81057b551be1ed78f9be480759eda47607d4688fe71d3ef0d98ef8a05da7f95",
+   "heard": [
+    {
+     "t": 0,
+     "name": "entered",
+     "detail": {
+      "slot": "stage",
+      "scene": "coast",
+      "link": ""
+     }
+    },
+    {
+     "t": 0,
+     "name": "ended",
+     "detail": {
+      "scene": "coast"
+     }
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "firstInput",
+    "payload": []
+   },
+   "fingerprint": "sha256:d7ace0823a76ae0c2726c7c1db4f9236c9f84e90d99b525316d2a6a7505a213c",
+   "heard": [
+    {
+     "t": 0,
+     "name": "firstInput",
+     "detail": {}
+    }
+   ]
+  },
+  {
+   "move": {
+    "t": 0,
+    "source": "activate",
+    "payload": [
+     "coast",
+     "next",
+     null
+    ]
+   },
+   "fingerprint": "sha256:8fcc43d1eb96f724bb8d37a111f9b81a21466e9665d9a6145136cd628b988016",
+   "heard": []
+  },
+  {
+   "move": {
+    "t": 1132,
+    "source": "activate",
+    "payload": [
+     "coast",
+     "next",
+     null
+    ]
+   },
+   "fingerprint": "sha256:106ea1656fa00896bf63ea7b9ab98c3ed100c4aef8c0ff8855646950f62bafd9",
+   "heard": []
+  }
+ ],
+ "end": {
+  "t": 8300,
+  "fingerprint": "sha256:46d79896d4464e88619a548f24b5319a53893b6652692e06d6da22c166c3ac57",
+  "heard": [],
+  "state": {
+   "now": 8300,
+   "seq": 0,
+   "blocks": {
+    "experience": {
+     "kind": "experience",
+     "values": {},
+     "inputs": {},
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "coast": {
+     "kind": "scene",
+     "def": "coast",
+     "parent": null,
+     "values": {
+      "towns": [
+       {
+        "name": "Harbour Row",
+        "x": 0
+       },
+       {
+        "name": "Mill Lane",
+        "x": 200
+       },
+       {
+        "name": "The Point",
+        "x": 400
+       }
+      ],
+      "stop": 2
+     },
+     "inputs": {},
+     "machines": {},
+     "uses": [
+      {
+       "id": "signs",
+       "keys": [
+        "0",
+        "1",
+        "2"
+       ]
+      }
+     ],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "coast/signs[0]": {
+     "kind": "component",
+     "def": "sign",
+     "parent": "coast",
+     "values": {},
+     "inputs": {
+      "name": "Harbour Row"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "coast/signs[1]": {
+     "kind": "component",
+     "def": "sign",
+     "parent": "coast",
+     "values": {},
+     "inputs": {
+      "name": "Mill Lane"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    },
+    "coast/signs[2]": {
+     "kind": "component",
+     "def": "sign",
+     "parent": "coast",
+     "values": {},
+     "inputs": {
+      "name": "The Point"
+     },
+     "machines": {},
+     "uses": [],
+     "clips": {},
+     "attach": {},
+     "born": 0
+    }
+   },
+   "timers": [],
+   "records": {},
+   "ambient": {
+    "reducedMotion": false,
+    "timeLimits": 1,
+    "inputMode": "pointer",
+    "language": "en",
+    "muted": false,
+    "volume": 1,
+    "voice": false,
+    "canReturn": false,
+    "size": {
+     "shape": "",
+     "width": 0,
+     "height": 0
+    }
+   },
+   "story": {
+    "current": "coast",
+    "stack": [],
+    "counts": {},
+    "visits": {
+     "coast": 1
+    },
+    "resume": null,
+    "painted": {
+     "coast": true
+    },
+    "held": [],
+    "endedReported": {
+     "coast": 1
+    },
+    "chapterSeen": {
+     "id": "",
+     "index": 0,
+     "count": 0
+    },
+    "heldSeen": {
+     "experience": true,
+     "coast": true,
+     "coast/signs[0]": true,
+     "coast/signs[1]": true,
+     "coast/signs[2]": true
+    },
+    "pausedBy": []
+   },
+   "pauses": [],
+   "firstInput": true
+  }
+ }
+}

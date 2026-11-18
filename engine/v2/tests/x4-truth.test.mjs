@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFile } from 'node:child_process';
 import { repo, eq, ok, schemas, mapSource } from './helpers.mjs';
 import { checkExperience } from '../check/index.mjs';
 import { base } from './check-refs.test.mjs';
@@ -16,10 +16,17 @@ const codesOf = (files, only) => checkExperience(mapSource(files), schemas(), on
 
 const checkTool = path.join(repo, 'engine', 'v2', 'tools', 'check.mjs');
 const runCheck = (dir, ...a) => spawnSync(process.execPath, [checkTool, dir, ...a], { encoding: 'utf8' });
+// The same, as a promise, so several checks run side by side: {stdout, status}.
+const checkLater = (dir, ...a) => new Promise(done => execFile(process.execPath, [checkTool, dir, ...a], { encoding: 'utf8', maxBuffer: 64 << 20 }, (err, stdout) => done({ stdout, status: err ? err.code : 0 })));
 // A scratch copy of a folder; fn(dir) runs on it and the copy is removed after.
 function onCopy(from, fn) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hsvg-x4-'));
   try { fs.cpSync(from, dir, { recursive: true }); return fn(dir); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+}
+// The same for an async fn: the copy is removed when its promise settles.
+async function onCopyLater(from, fn) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hsvg-x4-'));
+  try { fs.cpSync(from, dir, { recursive: true }); return await fn(dir); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 const readJson = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const writeJson = (f, v) => fs.writeFileSync(f, JSON.stringify(v, null, 2));
@@ -27,8 +34,8 @@ const firstRun = path.join(repo, 'skill', '2.0', 'examples', 'first-run');
 
 export const tests = {
   // ----- baggage 1: a rule kind with no evaluator is reported not-run, never passed -----
-  'X4 baggage 1: fonts and colors rules with no evaluator are listed not-run by check.mjs'() {
-    onCopy(firstRun, (dir) => {
+  async 'X4 baggage 1: fonts and colors rules with no evaluator are listed not-run by check.mjs'() {
+    await onCopyLater(firstRun, async (dir) => {
       const svgFile = path.join(dir, 'scenes', 'hello', 'hello.svg');
       const svg = fs.readFileSync(svgFile, 'utf8').replace('font-family="sans-serif" font-size="28" fill="#153b4b"', 'font-family="Comic Sans MS" font-size="28" fill="#ff00ff"');
       fs.writeFileSync(svgFile, svg);
@@ -37,33 +44,33 @@ export const tests = {
       s.rules = [{ id: 'f1', kind: 'fonts', subject: 'part:count', families: ['Inter'] },
         { id: 'c1', kind: 'colors', subject: 'part:count', roles: { accent: ['#000000'] }, exhaustive: true }];
       writeJson(f, s);
-      const plain = runCheck(dir);
-      ok(/\n0 findings \{\}\n$/.test(plain.stdout) && plain.status === 0, plain.stdout); // not findings, and no failure
+      const [plain, json] = await Promise.all([checkLater(dir), checkLater(dir, '--json')]);
+      ok(/\n0 findings\n$/.test(plain.stdout) && plain.status === 0, plain.stdout); // not findings, and no failure
       ok(/NOT-RUN scenes\/hello\/scene\.json \/rules\/0: rule f1 \(fonts\) needs a files proof/.test(plain.stdout), plain.stdout);
       ok(/NOT-RUN scenes\/hello\/scene\.json \/rules\/1: rule c1 \(colors\)/.test(plain.stdout), plain.stdout);
       ok(/2 rules not-run \{"files":2\}/.test(plain.stdout), plain.stdout);
-      const j = JSON.parse(runCheck(dir, '--json').stdout);
+      const j = JSON.parse(json.stdout);
       eq(j.filter(x => x.severity === 'not-run').map(x => [x.rule, x.proof]), [['f1', 'files'], ['c1', 'files']]);
     });
   },
 
   // ----- power 3, speed 11: a repeated use's maxItems must fit its repeat region's slots (4.5, E-REPEAT-CAPACITY) -----
-  'X4 power 3: maxItems 7 or 500 over a 6-slot repeat region is E-REPEAT-CAPACITY, 6 passes'() {
+  async 'X4 power 3: maxItems 7 or 500 over a 6-slot repeat region is E-REPEAT-CAPACITY, 6 passes'() {
     const dash = path.join(repo, 'skill', '2.0', 'examples', 'recipes', 'live-dashboard');
-    const codes = (n, plain = false) => onCopy(dash, (dir) => {
+    const codes = (n, plain = false) => onCopyLater(dash, async (dir) => {
       const f = path.join(dir, 'experience.json');
       const e = readJson(f);
       e.data.readings.maxRows = n; e.inputs.readings.maxItems = n;
       if (plain) { delete e.inputs.readings.table; delete e.inputs.readings.live; delete e.inputs.readings.contentType; }
       writeJson(f, e);
-      const j = JSON.parse(runCheck(dir, '--json').stdout).filter(x => x.code === 'E-REPEAT-CAPACITY');
+      const j = JSON.parse((await checkLater(dir, '--json')).stdout).filter(x => x.code === 'E-REPEAT-CAPACITY');
       return j.map(x => x.message);
     });
-    eq(codes(6), []);
-    const seven = codes(7);
+    const [six, seven, many, plainSeven] = await Promise.all([codes(6), codes(7), codes(500), codes(7, true)]);
+    eq(six, []);
     ok(seven.length === 1 && /use hours may have 7 rows .* repeat group hours .* draws 6 slots/.test(seven[0]), JSON.stringify(seven));
-    ok(codes(500).some(m => /500 rows .* more than the 256 live repeated uses/.test(m)), 'liveRepeatedUses');
-    ok(codes(7, true).length === 1, 'a plain array input with maxItems 7');
+    ok(many.some(m => /500 rows .* more than the 256 live repeated uses/.test(m)), 'liveRepeatedUses');
+    ok(plainSeven.length === 1, 'a plain array input with maxItems 7');
   },
 
   // ----- architecture 5: one name is not both an input and an output (5.4) -----
@@ -155,11 +162,12 @@ export const tests = {
   },
 
   // ----- newcomer F1: the front page leads with 2.0 and sends 0.1 readers to their own page -----
-  'X4 newcomer F1: README.md leads with 2.0 (the kit, START.md, the skill); its links resolve; its commands run'() {
+  'X4 newcomer F1: README.md leads with 2.0 (the published package, the release record); its links resolve; its commands run'() {
     const text = fs.readFileSync(path.join(repo, 'README.md'), 'utf8');
     const first = text.indexOf('## ');
     const lead = text.slice(0, text.indexOf('\n## ', first + 3));
-    for (const s of ['hsvg/2.0', 'kit/2.0/build.mjs', 'kit/2.0/START.md', 'skill/2.0/SKILL.md', 'engine/v2/tools/check.mjs']) ok(lead.includes(s), `the first section names ${s}`);
+    for (const s of ['hsvg/2.0', '@hypersvg/core', 'docs/releases/2.0.0-next.0/RECORD.md']) ok(lead.includes(s), `the first section names ${s}`);
+    ok(text.includes('engine/v2/tools/check.mjs'), 'the README names the 2.0 checker');
     ok(!/engine\/tools\/check\.mjs|experience\/0\.1/.test(lead), 'the first section is 2.0 only');
     ok(text.includes('](docs/guide/README-0.1.md)'), 'a link to the 0.1 page');
     const links = (file) => [...fs.readFileSync(file, 'utf8').matchAll(/\]\(([^)#:]+)(#[^)]*)?\)/g)].map(m => path.resolve(path.dirname(file), m[1]));
@@ -167,21 +175,21 @@ export const tests = {
     // the root commands: check gives 0 findings, pack writes the page the text names
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'hsvg-x4-readme-'));
     try {
-      const ex = path.join(repo, 'skill', '2.0', 'examples', 'first-run');
+      const ex = path.join(repo, 'docs', 'guide', 'examples', 'lamp');
       ok(/0 findings/.test(runCheck(ex).stdout), 'check');
-      const p = spawnSync(process.execPath, [path.join(repo, 'engine', 'v2', 'tools', 'pack.mjs'), ex, path.join(out, 'first-run')], { encoding: 'utf8' });
+      const p = spawnSync(process.execPath, [path.join(repo, 'engine', 'v2', 'tools', 'pack.mjs'), ex, path.join(out, 'lamp')], { encoding: 'utf8' });
       eq(p.status, 0, p.stderr);
-      ok(text.includes('out/first-run/first-run.html') && fs.existsSync(path.join(out, 'first-run', 'first-run.html')), 'the packed page is where the README says');
+      ok(text.includes('out/lamp/lamp.html') && fs.existsSync(path.join(out, 'lamp', 'lamp.html')), 'the packed page is where the README says');
     } finally { fs.rmSync(out, { recursive: true, force: true }); }
   },
 
   // ----- newcomer F4, F6: the messages say how to fix it -----
-  'X4 newcomer F4: a link on an event nothing sends says how to send it; an event the scene sends needs no outputs (D31.4)'() {
+  async 'X4 newcomer F4: a link on an event nothing sends says how to send it; an event the scene sends needs no outputs (D31.4)'() {
     const wc = path.join(repo, 'skill', '2.0', 'examples', 'water-cycle');
-    const msg = (edit) => onCopy(wc, (dir) => { edit(dir); return JSON.parse(runCheck(dir, '--json').stdout).filter(x => x.code === 'E-REF-UNKNOWN').map(x => x.message); });
-    const never = msg((dir) => { const f = path.join(dir, 'experience.json'); fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('"on": "finished", "to": "ending"', '"on": "finish", "to": "ending"')); });
+    const msg = (edit) => onCopyLater(wc, async (dir) => { edit(dir); return JSON.parse((await checkLater(dir, '--json')).stdout).filter(x => x.code === 'E-REF-UNKNOWN').map(x => x.message); });
+    const [never, undeclared] = await Promise.all([msg((dir) => { const f = path.join(dir, 'experience.json'); fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('"on": "finished", "to": "ending"', '"on": "finish", "to": "ending"')); }),
+      msg((dir) => { const f = path.join(dir, 'scenes', 'quiz', 'scene.json'); fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('"outputs": {"finished": {"kind": "event"}},', '')); })]);
     ok(never.length === 1 && never[0].includes('send it from quiz') && never[0].includes('{"emit": "finish"}'), JSON.stringify(never));
-    const undeclared = msg((dir) => { const f = path.join(dir, 'scenes', 'quiz', 'scene.json'); fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('"outputs": {"finished": {"kind": "event"}},', '')); });
     eq(undeclared, [], 'quiz sends finished and a link hears it: no outputs entry is needed');
   },
   'X4 newcomer F6: a literal clip key outside the motion range says the key and what to change, not clamp'() {

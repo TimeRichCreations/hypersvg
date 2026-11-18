@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { roleOf } from '../src/marks.mjs';
 
 // Where a drawing finding is: the element's id, else its name and line (check.mjs --json gives the line).
@@ -73,7 +73,7 @@ export function check(ctx) {
     const roots = [];
     for (const d of Object.values(o.drawings || {})) {
       let root;
-      try { root = parseXml(d.text); } catch { continue; }
+      try { root = parseXmlShared(d.text); } catch { continue; }
       roots.push(root);
       if (seenFiles.has(d.file)) continue;
       seenFiles.add(d.file);

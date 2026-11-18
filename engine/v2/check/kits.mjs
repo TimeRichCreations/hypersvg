@@ -3,7 +3,7 @@
 //   E-KIT-PIN       the pin's digest against the kit's computed digest (A9.3);
 //   E-KIT-VERSION   a new kit version against the one before (checkKitVersion; the family runs it with opts.previousKit);
 //   E-ROLE-KIT      a kit's role words that redefine a core role or alias (6.3);
-//   E-THEME-ROLES   a kit theme without a colour or type role the kit's drawings use (7.7);
+//   E-THEME-ROLES   a kit theme without a colour role or text style the kit's drawings use (7.7);
 //   E-SEAL          a `with` or promotion that reaches a sealed definition's body instead of an input (4.6, 4.7);
 //   E-SEAL-LEAK     a sealed body that reads or writes a name outside the block (4.6);
 //   E-SEAL-DIGEST   a sealed definition in a reviewed kit with a missing or wrong digest (4.6, A9.3);
@@ -20,7 +20,7 @@ import { checkCatalogue } from './catalogue.mjs';
 import { blockSites, declsFor } from './formula/sites.mjs';
 import { AMBIENT } from './formula/index.mjs';
 import { ROLES, parseColorRole } from './drawing-rules.mjs';
-import { parseXml } from '../schema/xml.mjs';
+import { parseXmlShared } from './xml-shared.mjs';
 import { settingsOf } from '../src/widgets-of.mjs';
 
 const esc = (s) => String(s).replace(/~/g, '~0').replace(/\//g, '~1');
@@ -324,7 +324,7 @@ export function check(ctx) {
   }
 }
 
-// E-THEME-ROLES: every theme of the kit has every colour role and type role its drawings use (7.7).
+// E-THEME-ROLES: every theme of the kit has every colour role and text style its drawings use (7.7).
 function themeRoles(kit, report) {
   const themes = kit.doc.themes || {};
   if (!Object.keys(themes).length) return;
@@ -332,7 +332,7 @@ function themeRoles(kit, report) {
   for (const def of Object.values(kit.blocks)) {
     for (const d of Object.values(def.drawings || {})) {
       let root;
-      try { root = parseXml(d.text); } catch { continue; }
+      try { root = parseXmlShared(d.text); } catch { continue; }
       walkXml(root, (n) => {
         const cr = n.attrs['data-hsvg-color'];
         if (cr !== undefined) for (const [, role] of parseColorRole(cr).pairs || []) color.add(role);
@@ -345,7 +345,7 @@ function themeRoles(kit, report) {
     const base = t?.extends && themes[t.extends] ? themes[t.extends] : {};
     const has = (k) => new Set([...Object.keys(base?.[k] || {}), ...Object.keys(t?.[k] || {})]);
     const c = has('colorRoles'); const ty = has('typeRoles');
-    const missing = [...[...color].filter(r => !c.has(r)).map(r => `colour role ${r}`), ...[...type].filter(r => !ty.has(r)).map(r => `type role ${r}`)];
+    const missing = [...[...color].filter(r => !c.has(r)).map(r => `colour role ${r}`), ...[...type].filter(r => !ty.has(r)).map(r => `text style ${r}`)];
     if (missing.length) report('E-THEME-ROLES', kit.file, `/themes/${esc(id)}`, `theme ${id} lacks ${missing.join(', ')}, which the kit uses`);
   }
 }

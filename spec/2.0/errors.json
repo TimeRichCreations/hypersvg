@@ -66,8 +66,8 @@
       "proof": [
         "files"
       ],
-      "reason": "A `data-hsvg-kind` value is not `part`, `component`, `compound` or `screen`, or a component drawing breaks its shape (not one top-level `component` or `compound` `<g>` with no `transform`, or a component inside another).",
-      "fix": "Use one of the four kinds, keep one root `<g>` with no `transform` in a component drawing, and use a slot and a use instead of nesting a component."
+      "reason": "A `data-hsvg-kind` value is not `part`, `component` or `screen`, or a component drawing breaks its shape (not one top-level `component` `<g>` with no `transform`, or a component inside another). The older kind `compound` is now `component`.",
+      "fix": "Use one of the three kinds, keep one root `<g>` with no `transform` in a component drawing, and use a slot and a use instead of nesting a component."
     },
     {
       "code": "W-KIND-MISSING",
@@ -238,7 +238,7 @@
       "proof": [
         "files"
       ],
-      "reason": "Checked alone, a colour role is outside the core roles, or a type role is something other than `display` and `text`.",
+      "reason": "Checked alone, a colour role is outside the core roles, or a text style is something other than `heading`, `body` and `caption`.",
       "fix": "Use a core role, or check the drawing together with the kit whose themes define the role."
     },
     {
@@ -265,8 +265,21 @@
         "files",
         "playing"
       ],
-      "reason": "Content sits in front of an overlay, or an overlay covers a control or a `keep-clear` safe area at rest.",
+      "reason": "Content sits in front of an overlay, or an overlay covers a control or a `keep-clear` protected area at rest.",
       "fix": "Reorder the layers or move the overlay so it does not cover the content, the control or the `keep-clear` area."
+    },
+    {
+      "code": "W-LOOKUP-ARRAY",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.6.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A lookup reads rows that are arrays. A row is an object; on an array row the column is read as an index, such as \"0\".",
+      "fix": "Make each row an object with named columns, or read an array row with at(row, index)."
     },
     {
       "code": "W-SOUND-UNPLAYABLE",
@@ -427,6 +440,19 @@
       ],
       "reason": "A `text` or `label` binding shows two quote marks (`''`), a bare name of the block's own (`score`), or words that name a value after a colon or an equals sign (`Score: score`) or a name no word is spelt like (`bestScore`), as written: words a person reads are plain words with `{{ }}` around a formula (D36).",
       "fix": "Write `\"\"` for no text, or the words the message gives, such as `Score: {{ score }}`, to show the value."
+    },
+    {
+      "code": "W-MATH-UNROUNDED",
+      "severity": "warning",
+      "section": "5",
+      "where": [
+        "5.6.4"
+      ],
+      "proof": [
+        "files"
+      ],
+      "reason": "A `pow`, `exp`, `log`, `sin` or `cos` result reaches a guard or condition, a value that is written, or an output, with no `round`, `floor` or `ceil` around it. These functions give the platform's result within 1 unit in the last place, so another implementation of the logic may decide otherwise (D62). It is a note: the file still plays.",
+      "fix": "Wrap the result in `round(...)`, `floor(...)` or `ceil(...)` to the precision the decision needs, such as `round(sin(angle) * 100) / 100`."
     },
     {
       "code": "E-KEY-CONFLICT",
@@ -800,7 +826,7 @@
         "files"
       ],
       "reason": "No binding of a slider's or dial's part reads its value: a `rotate` binding for a dial, a `move` binding (with the slider's `axis`) for a slider. The part follows the pointer while held, then goes back to where it is drawn, so it does not show its value at rest.",
-      "fix": "Bind the part to the value, for example `{\"target\": \"pointer\", \"rotate\": \"-135 + (heat - 50) / 200 * 270\"}` for a dial, or `{\"target\": \"handle\", \"move\": \"speed\", \"axis\": \"x\"}` for a slider."
+      "fix": "Bind the part to the value, mapped onto the control's `range`: `start + (v - min) / (max - min) * span`. A `move` binding moves the part by its number in drawing units and a `rotate` binding turns it by degrees; neither reads the `range`. For example `{\"target\": \"pointer\", \"rotate\": \"-135 + (heat - 50) / 200 * 270\"}` for a dial with `range` `[-135, 135]` and `heat` from 50 to 250, or `{\"target\": \"handle\", \"move\": \"(speed - 10) / 90 * 200\", \"axis\": \"x\"}` for a slider with `range` `[0, 200]` and `speed` from 10 to 100."
     },
     {
       "code": "W-CONTROL-DRAWN",
@@ -984,7 +1010,7 @@
       "proof": [
         "files"
       ],
-      "reason": "A formula or parent reads a value it may not see, such as something outside a component or compound, or a value of a used block that is not a declared output.",
+      "reason": "A formula or parent reads a value it may not see, such as something outside a component, or a value of a used block that is not a declared output.",
       "fix": "Pass the value in as an input, or read only declared outputs."
     },
     {
@@ -1472,7 +1498,7 @@
       "severity": "error",
       "section": "5",
       "where": [
-        "5.15.2",
+        "5.15.3",
         "10.5",
         "10.6",
         "A9.2",
@@ -1510,6 +1536,19 @@
       ],
       "reason": "A frame link message names a call that is not one of the host API's verbs, or its envelope version is not 1.",
       "fix": "Send one of the calls 10.6 lists, with `v: 1`."
+    },
+    {
+      "code": "E-HOST-ERROR",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "10.6"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "The host's error callback or the element's hsvg:error heard a failure that has no code of its own: a listener or move hook that threw a plain error, a store that failed, or a file the page could not fetch.",
+      "fix": "Read the message and the source. Fix the host code that threw, or the address that could not be fetched."
     },
     {
       "code": "E-HOST-LIMIT",
@@ -1617,7 +1656,7 @@
       "where": [
         "5.3.1",
         "5.8",
-        "5.15.2",
+        "5.15.3",
         "10.7",
         "A5.1"
       ],
@@ -1782,8 +1821,36 @@
         "files",
         "playing"
       ],
-      "reason": "A theme of a kit lacks a colour role or type role that the kit uses.",
+      "reason": "A theme of a kit lacks a colour role or text style that the kit uses.",
       "fix": "Add the missing role to every theme of the kit."
+    },
+    {
+      "code": "W-HOST-COLOR-CONTRAST",
+      "severity": "warning",
+      "section": "7",
+      "where": [
+        "7.7.1",
+        "10.6"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A host's colours (the experimental mount option `colors`) put a pair of colour roles under its contrast ratio in a theme the drawing may show. The message names the pair, the theme, the ratio and the ratio needed. None of the host's colours apply; the author's theme is used.",
+      "fix": "Choose colours that keep every pair at its ratio (7.7), or set the other role of the pair too."
+    },
+    {
+      "code": "W-HOST-COLOR-VALUE",
+      "severity": "warning",
+      "section": "7",
+      "where": [
+        "7.7.1",
+        "10.6"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A host's colours (the experimental mount option `colors`) are not an object of colour roles, name a role the experience does not have, or give a value that is not a six-digit hex colour. None of the host's colours apply; the author's theme is used.",
+      "fix": "Pass `{role: '#rrggbb'}` with only the experience's own colour roles."
     },
     {
       "code": "E-SEAL",
@@ -1993,7 +2060,8 @@
       "section": "2",
       "where": [
         "2.13",
-        "10.14"
+        "10.14",
+        "10.15"
       ],
       "proof": [
         "files",
@@ -2001,6 +2069,48 @@
       ],
       "reason": "A HyperSVG (D45) is refused: it has no asset record right after its <svg> start tag, the record is not well formed or holds other keys, or the asset holds what an asset cannot hold (a kit, a need, a file that is not text, a drawing with its own tool record, more than dataBytesEach bytes). Nothing plays.",
       "fix": "Pack the asset folder again with pack --asset; make it an experience if it needs add-ons or pictures."
+    },
+    {
+      "code": "E-ASSET-INTEGRITY",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "2.13",
+        "10.14"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A HyperSVG placed with integrity (D56) is refused: the value is not sha256- and a base64 SHA-256, or the file's exact bytes do not match it. Nothing plays, and nothing of the file shows (D58).",
+      "fix": "Check the file again with the full checker and store its new value (pack --asset prints it), or serve the file that was checked."
+    },
+    {
+      "code": "E-ADDON-MISSING",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "2.13",
+        "10.14"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "A HyperSVG names a pinned capability (D55), but the page cannot load its module from the add-on address: no file is there, the address cannot be reached, or the page does not let the module run (a Content Security Policy without blob: in script-src). Nothing plays; the rest pose shows. Added after 2.0.0-next.0.",
+      "fix": "Serve the module file the message names at the add-on address, or give the address where it is served (addonBase, or the element's addon-base). Under a Content Security Policy, allow blob: in script-src."
+    },
+    {
+      "code": "E-ADDON-DIGEST",
+      "severity": "error",
+      "section": "10",
+      "where": [
+        "2.13",
+        "10.14"
+      ],
+      "proof": [
+        "playing"
+      ],
+      "reason": "The module a page loaded for a pinned capability (D55) is not the reviewed one: its exact bytes do not match the HyperSVG's pin, or it is not that capability (another id, a page part, no install). Nothing plays; the rest pose shows. Added after 2.0.0-next.0.",
+      "fix": "Serve the module file of the pinned version unchanged, or pack the HyperSVG again with pack --asset against the module the page serves."
     },
     {
       "code": "E-PACKAGE-DIGEST",
