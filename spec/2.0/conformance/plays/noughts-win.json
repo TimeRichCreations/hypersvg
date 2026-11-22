@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "noughts-win",
  "about": "Easy level: X takes cells and wins against the logic module example.noughts. Bolt's reply waits on timers.",
  "package": {

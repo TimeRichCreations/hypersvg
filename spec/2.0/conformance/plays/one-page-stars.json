@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "one-page-stars",
  "about": "Four presses, each playing the pop clip; one press while the clip still runs. Then reduced motion, and one more press.",
  "package": {

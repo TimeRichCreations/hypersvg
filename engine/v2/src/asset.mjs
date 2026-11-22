@@ -44,7 +44,16 @@ export function makeAsset({ id, drawing, files }) {
 // Reads a HyperSVG: {id, drawing, files} with every member's text (the drawing too), after the member check. Throws
 // E-ASSET for a file that is no HyperSVG (or whose drawing has a tool record of its own), E-PACKAGE-MEMBER or E-PACKAGE-DIGEST for a file that was changed after
 // packing (a tampered asset). maxBytes: the size limit (the asset limit of the host, dataBytesEach by default).
-export function readAsset(svg, { maxBytes = Infinity } = {}) {
+export function readAsset(svg, { maxBytes = Infinity } = {}) { return read(svg, maxBytes, true); }
+
+// Internal (added after 2.0.0-next.1): the asset of a file whose exact bytes matched the host's integrity value
+// (web/asset-lean.mjs). The whole-file digest already covered every byte, so the members' digests are not computed
+// again; the record's shape, its member names and paths are checked as readAsset checks them. It returns readAsset's
+// {id, drawing, files} with digests, the record's member digests, which assetPackage takes instead of hashing again.
+export function readTrustedAsset(svg, { maxBytes = Infinity } = {}) { return read(svg, maxBytes, false); }
+
+const DIGEST = /^sha256:[0-9a-f]{64}$/;
+function read(svg, maxBytes, hash) {
   if (typeof svg !== 'string') throw fault('E-ASSET', 'a HyperSVG is text');
   const bytes = enc.encode(svg).length;
   if (bytes > maxBytes) throw fault('E-ASSET', `the HyperSVG is ${bytes} bytes, more than ${maxBytes}`);
@@ -69,20 +78,22 @@ export function readAsset(svg, { maxBytes = Infinity } = {}) {
   }
   const meta = m[0];
   files[a.drawing] = svg.slice(0, at) + svg.slice(at + meta.length);
-  const bad = memberFindings(a.members, Object.keys(files), (p) => sha256(enc.encode(files[p])));
+  if (!hash && Object.values(a.members).some(d => typeof d !== 'string' || !DIGEST.test(d))) throw fault('E-ASSET', 'a member digest of the asset record is not "sha256:" and 64 hex digits');
+  const bad = memberFindings(a.members, Object.keys(files), hash ? (p) => sha256(enc.encode(files[p])) : (p) => a.members[p]);
   if (bad.length) throw fault(bad[0].code, `the asset was changed after it was packed: ${bad.map(d => d.message).join('; ')}`, { diagnostics: bad });
   // An asset's drawing carries no tool record of its own (2.13, 10.15 step 7): a hand-made one is refused, as the packer
   // refuses to make one.
   if (/<metadata\b/.test(files[a.drawing])) throw fault('E-ASSET', `the drawing ${a.drawing} has a tool record (<metadata>) of its own; an asset's drawing carries none`);
-  return { id: a.id, drawing: a.drawing, files };
+  return hash ? { id: a.id, drawing: a.drawing, files } : { id: a.id, drawing: a.drawing, files, digests: { ...a.members } };
 }
 
 // The package mount() takes (10.6, web/mount-web.mjs) for an asset's files: each member's bytes and a package.json
-// listing them, as the packer would.
-export function assetPackage({ id, files }) {
+// listing them, as the packer would. digests (internal): known digests of members whose text is unchanged
+// (readTrustedAsset's), used instead of hashing those members again.
+export function assetPackage({ id, files, digests = null }) {
   const pkg = {};
   for (const [p, t] of Object.entries(files)) pkg[p] = enc.encode(t);
-  const members = sorted(Object.fromEntries(Object.entries(pkg).map(([p, b]) => [p, sha256(b)])));
+  const members = sorted(Object.fromEntries(Object.entries(pkg).map(([p, b]) => [p, digests && Object.hasOwn(digests, p) ? digests[p] : sha256(b)])));
   pkg['package.json'] = enc.encode(JSON.stringify({ format: ASSET_FORMAT, kind: 'package', id, experience: 'experience.json', needs: [], members }));
   return pkg;
 }

@@ -19,7 +19,8 @@ node engine/v2/tools/check.mjs <folder> --review            # also the review fi
 node engine/v2/tools/pack.mjs <experience folder> <out folder>              # an Experience: one offline HTML file + package.json
 node engine/v2/tools/pack.mjs <folder> <out> --host <host-profile.json>     # with a host profile in the page
 node engine/v2/tools/pack.mjs <folder> <out> --accept-findings              # pack despite errors (tests only)
-node engine/v2/tools/bundle-asset.mjs [--check]                            # the one-file HyperSVG player for a CDN: engine/v2/web/hypersvg-asset.js (run it after an engine change)
+node engine/v2/tools/bundle-asset.mjs [--check]                            # the one-file HyperSVG players for a CDN: engine/v2/web/hypersvg-asset.js (full) and hypersvg-asset-lean.js (lean, no schemas inside); run it after an engine change
+node engine/v2/tools/module-list.mjs [--core] <entry> [<entry> ...]        # every repository file the entries load as modules, sorted (what a host copies)
 node engine/v2/tools/bundle-addons.mjs [--check]                           # the modules a page loads for a HyperSVG that pins effects or physics: engine/v2/web/addons/ (D55; comes with the add-ons)
 node engine/v2/tools/pack.mjs <folder> <out> --allow <owner.name>           # carry a module or capability add-on: you allow it as the page's host (spec 12)
 node engine/v2/tools/pack.mjs --asset <asset folder> <out>                  # one HyperSVG, <out>/<id>.svg (spec 2.13, 10.14)
@@ -92,6 +93,7 @@ node engine/v2/tests/browser/x3-browser.mjs           # a key fault stops before
 node engine/v2/tests/browser/input-browser.mjs        # controls by real mouse and keyboard, roles, focus
 node engine/v2/tests/browser/mount-browser.mjs        # the host API: mount, read, set, pause, restart, destroy
 node engine/v2/tests/browser/r1-replay-browser.mjs    # record a play in a page through mount (onMove, clock), replay it in Node: the same fingerprint after every move
+node engine/v2/tests/browser/sleep-browser.mjs        # sleep: no frames while idle, no drawing off the screen; timers, outputs, diaries and plays as with sleep off; main-thread cost
 node engine/v2/tests/browser/shell-browser.mjs        # the shell: stage, dialogs, the settings form, the table widget
 node engine/v2/tests/browser/ai-browser.mjs           # the AI fixture: quick replies, written answers, intents
 node engine/v2/tests/browser/fit-browser.mjs          # text fitting on a small fixture
@@ -124,10 +126,13 @@ node engine/v2/tests/browser/k2f-asset-browser.mjs     # the HyperSVG (D45): the
 node engine/v2/tests/browser/asset-integrity-browser.mjs   # integrity (D56): a match plays with no schemas fetched, a wrong value is refused, hostile files never reach the page
 node engine/v2/tests/browser/d55-on-demand-browser.mjs     # a HyperSVG that pins effects or physics (D55): the module loaded on demand, its digest checked, refusals show the rest pose
 node engine/v2/tests/browser/sound-on-demand-browser.mjs  # sound only when used (after 2.0.0-next.0): no audio code for a silent HyperSVG; a made sound plays at the first press on every path
+node engine/v2/tests/browser/onefile-lean-browser.mjs     # the lean one-file player: an integrity mount fetches nothing but the file; a made sound plays at the first press
+node engine/v2/tests/browser/lean-fallback-browser.mjs    # the lean player without integrity: plays through the full one-file player (fullPlayer), no schemas from the host, every option unchanged, under two content security policies
 node engine/v2/tests/browser/n5-host-browser.mjs          # host additions (after 2.0.0-next.0): theme pick, CSP nonce, hidden fault box, host words, place(name), the one-file player
 node engine/v2/tests/browser/f1-host-picks-browser.mjs     # the host's pick on a host-selected language or theme axis applies, and the host's theme wins over an input pick (7.1)
 node engine/v2/tests/browser/host-colors-browser.mjs      # host colours (experimental, 7.7.1): checked at mount, all or nothing, on every mount and the element; --shots <folder>
 node engine/v2/tests/browser/f1-choice-roles-browser.mjs   # choice options stay radios while a clip on another part plays (5.11)
+node engine/v2/tests/browser/host-mute-browser.mjs        # the host's mute (experimental, next.2): muted at mount, host.mute(on) at once, the person's mute stays, safe without sound
 node engine/v2/tests/browser/k2g-hooks-browser.mjs     # a --test page's hooks: play and stop a clip and paint, each part's painted box, a fault stops the page
 node engine/v2/tests/browser/k2g-sound-browser.mjs     # made sounds (audioSynths) really play: after a click each tone and noise node starts, and its stop comes after its start
 node engine/v2/tests/browser/k2g-polish-browser.mjs    # a control's name on the page: its label, else its part's data-hsvg-label, else its drawn words (10.13); test.mjs --min-width runs the phone pass at that width
@@ -207,6 +212,11 @@ host.on('entered', fn); host.read('score'); host.set('name', 'Ana'); host.pause(
   `timeLimits`, `pause`, `resume`, `paused`, `scene`, `restart`, `clearStorage`, `setPartition`, `destroy`. `set` is
   checked before any write. Experimental (spec 10.16): `place(name)` on a page, `seat()` with the seats add-on and
   `ladder()` with the ladder add-on. In test mode it also has `internal` (internal).
+- The host's mute (experimental, added for 2.0.0-next.2): the option `muted: true` on every mount (and `play()`)
+  starts the piece silent; `host.mute(on)` silences it at once, or lets it sound again. Sound plays only when neither
+  the host nor the person muted it: `mute(false)` never unmutes a person's own mute. `mute` does nothing on a piece
+  without sound and never throws for `true` or `false`, so a host can call it on every mount. It changes no state and
+  nothing in a diary.
 - The host ports `aiPort`, `pagePort` and `modulePort` come from `web/mount-web.mjs` too (`@hypersvg/core/mount`).
   They are experimental.
 
@@ -250,6 +260,75 @@ link.close();
 - `destroy` inside the page, or the page closing, ends the link.
 - Test: `node engine/v2/tests/browser/frame-link-browser.mjs` (fast page-side tests: `tests/x5-frame-link.test.mjs`).
 
+## Files a host copies for the module player
+
+A host that serves the module player (`web/asset-web.mjs`, not a one-file build) copies exactly these files, at
+these paths: `node engine/v2/tools/module-list.mjs --core engine/v2/web/asset-web.mjs` prints them. The tool follows
+static imports and relative dynamic imports to the end; `--core` reads `src/capabilities/all.mjs` as the empty module
+the core ships. A test fails when this list and the tool differ. The core schemas (`spec/2.0/schemas/core/`) and the
+add-ons (`engine/v2/web/addons/`) are fetched as data, not loaded as modules, so they are not in the list.
+
+```text
+engine/v2/schema/check-document.mjs
+engine/v2/schema/drafts.mjs
+engine/v2/schema/drawing-check.mjs
+engine/v2/schema/json-strict.mjs
+engine/v2/schema/validate.mjs
+engine/v2/schema/xml.mjs
+engine/v2/src/addons.mjs
+engine/v2/src/asset-safety.mjs
+engine/v2/src/asset.mjs
+engine/v2/src/binding-words.mjs
+engine/v2/src/capabilities.mjs
+engine/v2/src/capabilities/all.mjs
+engine/v2/src/drawing.mjs
+engine/v2/src/ends.mjs
+engine/v2/src/entry-key.mjs
+engine/v2/src/error-detail.mjs
+engine/v2/src/fit.mjs
+engine/v2/src/formula.mjs
+engine/v2/src/grants-asked.mjs
+engine/v2/src/host-colors.mjs
+engine/v2/src/host-profile.mjs
+engine/v2/src/host-words.mjs
+engine/v2/src/host.mjs
+engine/v2/src/integrity.mjs
+engine/v2/src/kit.mjs
+engine/v2/src/layout.mjs
+engine/v2/src/limits-runtime.mjs
+engine/v2/src/limits.mjs
+engine/v2/src/load-asset.mjs
+engine/v2/src/load-checks.mjs
+engine/v2/src/load.mjs
+engine/v2/src/logic-core.mjs
+engine/v2/src/marks.mjs
+engine/v2/src/members.mjs
+engine/v2/src/mixer.mjs
+engine/v2/src/on-demand.mjs
+engine/v2/src/paint-channels.mjs
+engine/v2/src/physics.mjs
+engine/v2/src/read.mjs
+engine/v2/src/repack.mjs
+engine/v2/src/route.mjs
+engine/v2/src/runtime.mjs
+engine/v2/src/sleep.mjs
+engine/v2/src/storage.mjs
+engine/v2/src/story.mjs
+engine/v2/src/tiers.mjs
+engine/v2/src/transform.mjs
+engine/v2/src/version.mjs
+engine/v2/web/asset-lean.mjs
+engine/v2/web/asset-schemas.mjs
+engine/v2/web/asset-web.mjs
+engine/v2/web/audio-web.mjs
+engine/v2/web/input-web.mjs
+engine/v2/web/logic-port.mjs
+engine/v2/web/mount-checked.mjs
+engine/v2/web/on-demand-web.mjs
+engine/v2/web/place-web.mjs
+engine/v2/web/player-web.mjs
+```
+
 ## How the engine is built
 
 The engine has three layers. Each lives in its own files.
@@ -284,7 +363,9 @@ The engine has three layers. Each lives in its own files.
 | `src/limits.mjs`, `src/limits-runtime.mjs` | The format limits, raised limits and admission (9.8.1). `limits.mjs` is generated |
 | `src/runtime.mjs`, `src/formula.mjs` | Values, formulas, reactions, machines, actions, steps that roll back (stage 2) |
 | `src/story.mjs` | Scenes, links, timed links, visits, chapters (stage 3) |
-| `src/logic.mjs` | The logic-only entry (9.6, added after `2.0.0-next.0`): plays a checked experience with no page, feeds it the moves a page's move hook heard, and gives the state fingerprint (9.6.1) |
+| `src/sleep.mjs` | Sleep (experimental): what is scheduled next (`nextDue`) and the frames a sleeping page catches up (`framesSince`) |
+| `src/logic.mjs` | The logic-only entry (9.6, added after `2.0.0-next.0`): plays a checked experience with no page, feeds it the moves a page's move hook heard, and gives the state fingerprint (9.6.1); it checks a package, then plays it with `src/logic-core.mjs`. Also exports `readAsset` and `VERSION` (experimental, added for `2.0.0-next.2`) |
+| `src/logic-core.mjs` | The logic core (added for `2.0.0-next.2`): `logic()` for an experience already read, and the state fingerprint; no checker in its imports (`tests/n15c-logic-port.test.mjs`) |
 | `src/drawing.mjs` | Frames, uses, bindings, clips, variants, the theme (stage 4) |
 | `src/layout.mjs`, `src/fit.mjs` | Which layout applies (7.4), and text fitting (7.6) |
 | `src/plan.mjs` | The layout-plan solver (7.5). The core never imports it; the packer bakes plans with it, and the `fit` add-on solves them while playing |
@@ -303,7 +384,8 @@ The engine has three layers. Each lives in its own files.
 | `web/player-web.mjs` | The player in a page: `boot()` for test and packed pages, `play()` |
 | `web/mount-web.mjs` | `mount()` for hosts (10.6): checks the package, then plays it |
 | `web/asset-web.mjs` | HyperSVGs in a page (D45, 10.14): `mount(element, assetSvg, inputs)`, the `<hypersvg-asset>` element, `inputs()`; one player for many assets. Not in the core bundle |
-| `web/asset-lean.mjs` | The lean entry (D56, added after 2.0.0-next.0), the package's `./asset-lean` (D58): the `<hypersvg-asset>` element and `mountAsync` with `integrity`; loads the checker and schemas only for a file placed without integrity |
+| `web/asset-lean.mjs` | The lean entry (D56, added after 2.0.0-next.0), the package's `./asset-lean` (D58): the `<hypersvg-asset>` element and `mountAsync` with `integrity`; loads the checker and schemas only for a file placed without integrity; with `fullPlayer` (experimental), or by default in the lean one-file player, that file is checked by the full one-file player, fetched once per page |
+| `web/logic-port.mjs` | `logicPort` (internal, added for `2.0.0-next.2`): a page player's logic-only engine for the replay recorder, frozen; `loadTrusted(files)` reads a file as the lean mount does. `asset-lean.mjs`, `asset-web.mjs` and the one-file players export it |
 | `src/asset.mjs` | The HyperSVG file: write it, read it and check its record and digests (shared by the packer, `unpack` and the page) |
 | `src/asset-safety.mjs` | The safety pass for a HyperSVG (D56): no script, foreign content, event handler or outside address; needs no schemas |
 | `src/integrity.mjs` | A HyperSVG's integrity value (`sha256-<base64>`, D56): parse, hash and compare |
@@ -338,6 +420,11 @@ by scene. That comparison and its report stay with the authors, since 0.1 files 
 - **Repeated uses** (4.5) follow a changed list: kept keys keep their uses, new keys mount, gone keys leave after
   their exit lists. Duplicate keys are `E-ID-DUPLICATE`.
 - **Focus** (5.11): after a scene change, focus is on the new scene's first control.
+- **Sleep** (`play()` option `sleep`, experimental, off by default): with nothing scheduled and nothing moving, the
+  page asks for no frames. A timer set for the next deadline, input, `set`, `emit`, any host call, a size or
+  visibility change wakes it; it first runs the frames it missed, so every deadline and output keeps its engine time.
+  Off the screen, nothing is drawn and the engine runs on; the current state is drawn when the piece comes back.
+  `node engine/v2/tests/run.mjs sleep` and `tests/browser/sleep-browser.mjs` prove both.
 - **Resizable slots** (6.8 `scale` as `box`, 5.10): a `scale` binding as `box` gives a `<rect>` slot or fit box a
   size about its anchor; what is placed in it chooses its frame and layout again, with every value kept. A slider
   handle can write the values.

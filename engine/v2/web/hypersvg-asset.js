@@ -1,29 +1,30 @@
-/*! HyperSVG player, licensed under the Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0). Copyright 2026 TimeRich Creations. */
+/*! HyperSVG one-file player (full), engine 2.0.0-next.2. HyperSVG player, licensed under the Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0). Copyright 2026 TimeRich Creations. */
 // The HyperSVG player in one module, made by engine/v2/tools/bundle-asset.mjs from engine/v2/web/asset-bundle-entry.mjs.
-// Experimental (spec 10.16): this file and its exports, the same names as ./asset.
+// Experimental (spec 10.16): this file and its exports, the same names as ./asset; checkedParts and logicPort are internal.
 const defs = {}; const cache = {};
 const __hsvgHere = import.meta.url; // the add-on modules and a pinned capability's schema (D55) are fetched from the package beside it
 function req(n) { if (n in cache) return cache[n]; const exp = cache[n] = {}; defs[n](exp); return exp; }
 defs[0] = function (exp) { 'use strict'; // engine/v2/web/asset-bundle-entry.mjs
 
-const checked = req(43);
-const assetLoad = req(44);
+const checked = req(46);
+const assetLoad = req(47);
 const { bundleCheck } = req(2);
 const __reexport1_0 = req(1);
 bundleCheck(checked.mountChecked, assetLoad.loadAsset);
+const checkedParts = Object.freeze({ mountChecked: checked.mountChecked, loadAsset: assetLoad.loadAsset });
 
-exp.mount = __reexport1_0.mount; exp.mountAsync = __reexport1_0.mountAsync; exp.useSchemas = __reexport1_0.useSchemas; exp.sharedSchemas = __reexport1_0.sharedSchemas; exp.HyperSvgAsset = __reexport1_0.HyperSvgAsset; exp.VERSION = __reexport1_0.VERSION; exp.elementVersion = __reexport1_0.elementVersion; exp.repack = __reexport1_0.repack; exp.readAsset = __reexport1_0.readAsset;
+exp.mount = __reexport1_0.mount; exp.mountAsync = __reexport1_0.mountAsync; exp.useSchemas = __reexport1_0.useSchemas; exp.sharedSchemas = __reexport1_0.sharedSchemas; exp.HyperSvgAsset = __reexport1_0.HyperSvgAsset; exp.VERSION = __reexport1_0.VERSION; exp.elementVersion = __reexport1_0.elementVersion; exp.repack = __reexport1_0.repack; exp.readAsset = __reexport1_0.readAsset; exp.logicPort = __reexport1_0.logicPort; exp.checkedParts = checkedParts;
 };
 defs[1] = function (exp) { 'use strict'; // engine/v2/web/asset-web.mjs
 exp.mount = mount;
-const { mountChecked } = req(43);
-const { loadAsset } = req(44);
-const { readAsset } = req(30);
-const { FORMAT } = req(7);
+const { mountChecked } = req(46);
+const { loadAsset } = req(47);
+const { readAsset } = req(22);
+const { FORMAT } = req(9);
 const { place } = req(2);
-req(50);
+req(53);
 const __reexport2_0 = req(2);
-const __reexport42_1 = req(42);
+const __reexport45_1 = req(45);
 
 function mount(element, assetSvg, inputs = {}, options = {}) {
   const asset = readAsset(assetSvg, { maxBytes: FORMAT.dataBytesEach });
@@ -31,33 +32,35 @@ function mount(element, assetSvg, inputs = {}, options = {}) {
   if (!schemas || typeof schemas !== 'object' || !schemas.kinds) throw new TypeError('mount needs options.schemas (spec/2.0/schemas): an asset is checked before it plays');
   return place(element, asset, inputs, rest, (el, pkg, o) => mountChecked(el, pkg, { ...o, schemas }, loadAsset));
 }
+const __reexport3_2 = req(3);
 
-exp.mountAsync = __reexport2_0.mountAsync; exp.useSchemas = __reexport2_0.useSchemas; exp.sharedSchemas = __reexport2_0.sharedSchemas; exp.HyperSvgAsset = __reexport2_0.HyperSvgAsset; exp.VERSION = __reexport2_0.VERSION; exp.elementVersion = __reexport2_0.elementVersion; exp.repack = __reexport42_1.repack; exp.readAsset = readAsset;
+exp.mountAsync = __reexport2_0.mountAsync; exp.useSchemas = __reexport2_0.useSchemas; exp.sharedSchemas = __reexport2_0.sharedSchemas; exp.HyperSvgAsset = __reexport2_0.HyperSvgAsset; exp.VERSION = __reexport2_0.VERSION; exp.elementVersion = __reexport2_0.elementVersion; exp.repack = __reexport45_1.repack; exp.readAsset = readAsset; exp.logicPort = __reexport3_2.logicPort;
 };
 defs[2] = function (exp) { 'use strict'; // engine/v2/web/asset-lean.mjs
 exp.place = place; exp.leanLoad = leanLoad; exp.bundleCheck = bundleCheck; exp.mountAsync = mountAsync; exp.useSchemas = useSchemas; exp.sharedSchemas = sharedSchemas; exp.colorsText = colorsText; exp.elementVersion = elementVersion;
-const { play } = req(3);
-const { readAsset, assetPackage } = req(30);
-const { readExperience } = req(5);
-const { withUsedGrants } = req(32);
-const { checkValue, checkContent } = req(9);
-const { FORMAT } = req(7);
-const { assetSafety } = req(33);
-const { verifyIntegrity } = req(34);
-const { VERSION } = req(4);
-const { addPlace } = req(35);
-const { errorDetail } = req(36);
-const { SCHEMAS_BASE, SCHEMAS, ADDONS_BASE } = req(37);
-const { applyHostWords } = req(38);
-const { hostColors } = req(39);
-const { assetNeeds, assetAddons, assetUsesSound } = req(40);
-const { loadAddons } = req(41);
+const { play } = req(27);
+const { readAsset, readTrustedAsset, assetPackage } = req(22);
+const { readExperience } = req(23);
+const { withUsedGrants } = req(25);
+const { checkValue, checkContent } = req(6);
+const { FORMAT } = req(9);
+const { assetSafety } = req(37);
+const { verifyIntegrity } = req(38);
+const { VERSION } = req(26);
+const { addPlace } = req(39);
+const { errorDetail } = req(20);
+const { SCHEMAS_BASE, SCHEMAS, ADDONS_BASE } = req(40);
+const where = req(40);
+const { applyHostWords } = req(41);
+const { hostColors } = req(42);
+const { assetNeeds, assetAddons, assetUsesSound } = req(43);
+const { loadAddons } = req(44);
 
 const fault = (code, message, extra = {}) => Object.assign(new Error(message), { code, ...extra });
 const TEXT = /\.(json|svg|csv|txt|vtt)$/;
 const BOUNDS = ['type', 'minimum', 'maximum', 'step', 'enum', 'maxLength', 'contentType'];
 const MAX = { maxBytes: FORMAT.dataBytesEach };
-function place(element, asset, inputs, { partition = null, onError = null, test = false, timeLimits = null, faultBox = true, nonce = null, theme = null, options = {}, hostWords = null, clock = null, onMove = null, modules = null, colors = null } = {}, mountPackage) {
+function place(element, asset, inputs, { partition = null, onError = null, test = false, timeLimits = null, faultBox = true, nonce = null, theme = null, options = {}, hostWords = null, clock = null, onMove = null, modules = null, colors = null, sleep, muted } = {}, mountPackage) {
   const bad = Object.keys(asset.files).filter(p => !TEXT.test(p));
   if (bad.length) throw fault('E-ASSET', `an asset holds only its documents and drawings, not ${bad.join(', ')}`);
   let doc;
@@ -79,13 +82,15 @@ function place(element, asset, inputs, { partition = null, onError = null, test 
     throw fault('E-AXIS-INPUT', `theme ${JSON.stringify(theme)} is not one of the HyperSVG's themes (${Object.keys(doc?.themes || {}).join(', ') || 'it declares none'})`);
   }
   const files = { ...asset.files };
+  const digests = asset.digests ? { ...asset.digests } : null;
   if (Object.keys(given).length || theme != null) {
     const copy = structuredClone(doc);
     if (theme != null) copy.theme = theme;
     for (const [name, v] of Object.entries(given)) copy.inputs[name].initial = v;
     files['experience.json'] = JSON.stringify(copy);
+    if (digests) delete digests['experience.json'];
   }
-  const host = mountPackage(element, assetPackage({ id: asset.id, files }), { partition: partition ?? `asset-${asset.id}`, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme, colors });
+  const host = mountPackage(element, assetPackage({ id: asset.id, files, digests }), { partition: partition ?? `asset-${asset.id}`, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme, colors, sleep, muted });
   for (const [name, v] of Object.entries(given)) if (JSON.stringify(host.read(name)) !== JSON.stringify(v)) host.set(name, v);
   host.inputs = () => Object.entries(decls).map(([name, d]) => ({
     name, kind: d.kind, ...Object.fromEntries(BOUNDS.filter(k => d[k] !== undefined).map(k => [k, structuredClone(d[k])])),
@@ -104,40 +109,65 @@ function leanLoad(source) {
   if (r.experience?.doc) { const g = withUsedGrants(r.experience); r.experience.derivedGrants = g.derived; if (Object.keys(g.derived).length) r.experience.doc.grants = g.grants; }
   return r;
 }
-function leanMount(container, pkg, { partition, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme = null, colors = null }) {
+function leanMount(container, pkg, { partition, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme = null, colors = null, sleep, muted }) {
   const dec = new TextDecoder();
   const files = {};
   for (const [p, b] of Object.entries(pkg)) if (TEXT.test(p) && p !== 'package.json') files[p] = dec.decode(b);
   const assets = (p) => { const b = pkg[p]; if (!b) throw new Error(`no member ${p}`); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
   const loaded = leanLoad({ read: (rel) => (rel in files ? files[rel] : null) });
   const language = loaded.experience ? applyHostWords(loaded.experience, hostWords) : null;
-  const state = play(container, { files, schemas: null, assets, partition, onError, test, members: pkg, load: () => loaded, timeLimits, faultBox, nonce, options, language, clock, onMove, modules, theme, colors, checkColors: hostColors });
+  const state = play(container, { files, schemas: null, assets, partition, onError, test, members: pkg, load: () => loaded, timeLimits, faultBox, nonce, options, language, clock, onMove, modules, theme, colors, checkColors: hostColors, sleep, muted });
   if (!state.player) throw fault(state.stopped.code, state.stopped.message, { address: state.stopped.address });
   return addPlace(state);
 }
 let bundled = null;
 function bundleCheck(mountChecked, loadAsset) { bundled = [{ mountChecked }, { loadAsset }]; }
-async function checkedMount(schemas) {
-  const [{ mountChecked }, { loadAsset }] = bundled ?? await Promise.all([import('./mount-checked.mjs'), import('../src/load-asset.mjs')]);
+async function checkedMount(schemas, full = null) {
+  const [{ mountChecked }, { loadAsset }] = bundled ?? (full ? await partsOf(full) : await Promise.all([Promise.resolve().then(() => req(46)), Promise.resolve().then(() => req(47))]));
   return (element, pkg, options) => mountChecked(element, pkg, { ...options, schemas }, loadAsset);
 }
 const needSchemas = (schemas) => { if (!schemas || typeof schemas !== 'object' || !schemas.kinds) throw new TypeError('mount needs options.schemas (spec/2.0/schemas): an asset is checked before it plays'); };
+const FULL_PLAYER = where.FULL_PLAYER ?? null;
+const fulls = new Map();
+function fullAddress(given) {
+  if (bundled) return null;
+  const a = given ?? FULL_PLAYER;
+  if (a == null) return null;
+  try { return new URL(a, globalThis.document?.baseURI).href; } catch { return String(a); }
+}
+function fullPlayer(address) {
+  let got = fulls.get(address);
+  if (!got) {
+    got = import(address).then((m) => {
+      if (m.VERSION !== VERSION) throw fault('E-ASSET', `the full player ${address} is version ${m.VERSION ?? 'unknown'}, this player is ${VERSION}: serve the full one-file player of version ${VERSION}`);
+      if (!m.checkedParts?.mountChecked || !m.checkedParts?.loadAsset || typeof m.sharedSchemas !== 'function') throw fault('E-ASSET', `${address} is not the full one-file player of version ${VERSION} (it has no checked mount)`);
+      return m;
+    }, (e) => { throw fault('E-ASSET', `cannot load the full player ${address}: ${e?.message || e}`); });
+    fulls.set(address, got);
+  }
+  return got;
+}
+const partsOf = async (address) => { const m = await fullPlayer(address); return [{ mountChecked: m.checkedParts.mountChecked }, { loadAsset: m.checkedParts.loadAsset }]; };
 const textOf = (bytes) => new TextDecoder().decode(bytes);
-async function mountAsync(element, asset, inputs = {}, { integrity = null, schemas = null, addonBase = null, ...options } = {}) {
+async function mountAsync(element, asset, inputs = {}, { integrity = null, schemas = null, addonBase = null, fullPlayer: given = null, ...options } = {}) {
   const bytes = typeof asset === 'string' ? new TextEncoder().encode(asset) : asset instanceof ArrayBuffer ? new Uint8Array(asset) : asset;
   if (!(bytes instanceof Uint8Array)) throw fault('E-ASSET', 'a HyperSVG is text or its bytes');
   const text = typeof asset === 'string' ? asset : textOf(bytes);
   if (integrity == null) {
-    const a = readAsset(text, MAX); needSchemas(schemas);
-    const [modules, s] = await Promise.all([addonsOf(a, addonBase), withCapabilities(schemas, assetNeeds(a.files)), soundFor(a)]);
-    return place(element, a, inputs, { ...options, modules }, await checkedMount(s));
+    const a = readAsset(text, MAX);
+    const full = fullAddress(given);
+    if (full) fullPlayer(full).catch(() => {});
+    const set = schemas ?? await schemasFor(full);
+    needSchemas(set);
+    const [modules, s] = await Promise.all([addonsOf(a, addonBase), withCapabilities(set, assetNeeds(a.files)), full ? null : soundFor(a)]);
+    return place(element, a, inputs, { ...options, modules }, await checkedMount(s, full));
   }
   await verifyIntegrity(bytes, integrity);
-  const a = readAsset(text, MAX);
+  const a = readTrustedAsset(text, MAX);
   const [modules] = await Promise.all([addonsOf(a, addonBase), soundFor(a)]);
   return place(element, a, inputs, { ...options, modules }, leanMount);
 }
-const soundFor = (asset) => (!bundled && assetUsesSound(asset.files) ? import('./audio-web.mjs') : null);
+const soundFor = (asset) => (!bundled && assetUsesSound(asset.files) ? Promise.resolve().then(() => req(53)) : null);
 async function addonsOf(asset, base) {
   const needs = assetNeeds(asset.files);
   if (!needs.length) return null;
@@ -155,9 +185,15 @@ async function withCapabilities(schemas, ids, base = SCHEMAS_BASE) {
 let shared = SCHEMAS ? Promise.resolve(SCHEMAS) : null;
 const KINDS = ['experience', 'scene', 'component', 'shell'];
 function useSchemas(schemas) { shared = Promise.resolve(schemas); }
+const keep = (p) => { shared = p; p.catch(() => { if (shared === p) shared = null; }); return p; };
+function schemasFor(full) {
+  if (shared) return shared;
+  return full ? keep(fullPlayer(full).then(m => m.sharedSchemas())) : sharedSchemas();
+}
 function sharedSchemas(base = SCHEMAS_BASE) {
+  if (!shared && base === SCHEMAS_BASE && fullAddress(null)) return schemasFor(fullAddress(null));
   const get = (file) => fetch(new URL(file, base)).then((r) => { if (!r.ok) throw fault('E-ASSET', `cannot load the schema ${file} (${r.status})`); return r.json(); });
-  return (shared ??= Promise.all([...KINDS.map(k => get(`${k}.schema.json`)), get('document.schema.json'), get('drawing.rules.json')])
+  return shared ?? keep(Promise.all([...KINDS.map(k => get(`${k}.schema.json`)), get('document.schema.json'), get('drawing.rules.json')])
     .then((all) => ({ kinds: Object.fromEntries(KINDS.map((k, i) => [k, all[i]])), document: all[KINDS.length], drawing: all[KINDS.length + 1], capabilities: {}, addons: {} })));
 }
 const kebab = (s) => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
@@ -216,23 +252,25 @@ class HyperSvgAsset extends Base {
     this.ready = (async () => {
       const src = this.getAttribute('src');
       if (!src) throw fault('E-ASSET', '<hypersvg-asset> needs src, the address of a HyperSVG');
-      let text; let mountPackage; let asset;
+      let text; let mountPackage; let asset; let viaFull = false;
       const addonBase = this.getAttribute('addon-base');
       if (integrity === null) {
         let schemas;
-        [text, schemas] = await Promise.all([load(src).then(r => r.text()), sharedSchemas()]);
+        const full = fullAddress(null);
+        [text, schemas] = await Promise.all([load(src).then(r => r.text()), schemasFor(full)]);
         if (run !== this._run) return null;
         asset = readAsset(text, MAX);
-        mountPackage = await checkedMount(await withCapabilities(schemas, assetNeeds(asset.files)));
+        mountPackage = await checkedMount(await withCapabilities(schemas, assetNeeds(asset.files)), full);
+        viaFull = !!full;
       } else {
         bytes = new Uint8Array(await (await load(src)).arrayBuffer());
         await verifyIntegrity(bytes, integrity);
         matched = true;
         text = textOf(bytes);
-        asset = readAsset(text, MAX);
+        asset = readTrustedAsset(text, MAX);
         mountPackage = leanMount;
       }
-      const [modules] = await Promise.all([addonsOf(asset, addonBase), soundFor(asset)]);
+      const [modules] = await Promise.all([addonsOf(asset, addonBase), viaFull ? null : soundFor(asset)]);
       if (run !== this._run) return null;
       try { this._decls = JSON.parse(asset.files['experience.json'])?.inputs || {}; } catch { this._decls = {}; }
       if (getComputedStyle(this).display === 'inline') this.style.display = 'block';
@@ -299,1078 +337,127 @@ if (typeof customElements !== 'undefined') {
   if (!customElements.get('hypersvg-asset')) customElements.define('hypersvg-asset', HyperSvgAsset);
   else if (elementVersion() !== VERSION) console.warn(`hsvg: <hypersvg-asset> is already defined by player ${elementVersion()}; this copy (${VERSION}) is not used for it`);
 }
+const __reexport3_0 = req(3);
 
-exp.VERSION = VERSION; exp.HyperSvgAsset = HyperSvgAsset;
+exp.VERSION = VERSION; exp.logicPort = __reexport3_0.logicPort; exp.HyperSvgAsset = HyperSvgAsset;
 };
-defs[3] = function (exp) { 'use strict'; // engine/v2/web/player-web.mjs
-exp.reducedUnder = reducedUnder; exp.chooseFrame = chooseFrame; exp.learnFits = learnFits; exp.useAudio = useAudio; exp.boot = boot; exp.linkWithoutHostLine = linkWithoutHostLine; exp.play = play;
-const { readExperience } = req(5);
-const { Player } = req(8);
-const { checkSetting } = req(9);
-const { Drawing, narrowLayouts } = req(21);
-const { hostApi } = req(28);
-const { attachInput } = req(29);
-const { packageMeasures, experienceResources } = req(14);
-const __reexport4_0 = req(4);
-const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } = req(19);
-function reducedUnder(d, addr) {
-  for (const [a, r] of Object.entries(d?.ladder || {})) {
-    if (r.baked || (a !== addr && !a.startsWith(`${addr}/`))) continue;
-    if (r.steps?.length || r.texts?.some(t => t.outcome === 'given-way')) return true;
-  }
-  return false;
-}
-function chooseFrame(layouts, space, { input = null, current = null, unfit = null, reduced = null, aspectOf, maps } = {}) {
-  const notUnfit = (id) => (unfit?.has(id) ? false : undefined);
-  const c = chooseLayout(layouts, space, { input, current, fits: (id) => (reduced?.has(id) ? false : notUnfit(id)), aspectOf, maps });
-  if (c.why !== 'incomplete' || !reduced?.size) return c;
-  const r = chooseLayout(layouts, space, { input, current: null, fits: notUnfit, aspectOf, maps });
-  return r.why === 'order' ? { id: r.id, why: 'reduced' } : r;
-}
-const upFrom = (a) => (a.includes('/') ? a.slice(0, a.lastIndexOf('/')) : null);
-function reducedBlocks(d) {
-  const out = new Set();
-  const mark = (a) => { for (let x = a; x && !out.has(x); x = upFrom(x)) out.add(x); };
-  for (const [a, r] of Object.entries(d?.ladder || {})) if (!r.baked && (r.steps?.length || r.texts?.some(t => t.outcome === 'given-way'))) mark(a);
-  for (const [key, outcome] of Object.entries(d?.fits || {})) if (outcome === 'incomplete' || outcome === 'given-way') mark(key.slice(0, key.lastIndexOf('#')));
-  return out;
-}
-function learnFits(d, roots, memory) {
-  const out = { again: false, forgot: [] };
-  if (!d?.fits) return out;
-  const { layouts, unfit, reduced } = memory;
-  for (const [key, outcome] of Object.entries(d.fits)) {
-    if (outcome !== 'incomplete') continue;
-    const addr = key.slice(0, key.lastIndexOf('#'));
-    if (!roots.includes(addr)) continue;
-    const id = d.frames[addr]?.layout;
-    if (id == null || unfit[addr]?.has(id)) continue;
-    (unfit[addr] ??= new Set()).add(id);
-    out.again = true;
-  }
-  const bad = reducedBlocks(d);
-  const kept = bad.size ? Object.entries(d.choices || {}).filter(([a, c]) => c.why === 'current' && layouts[a] != null && bad.has(a)).map(([a]) => a) : [];
-  const above = new Set();
-  for (const a of kept) for (let x = upFrom(a); x && !above.has(x); x = upFrom(x)) above.add(x);
-  out.forgot = kept.filter(a => !above.has(a));
-  for (const a of out.forgot) delete layouts[a];
-  if (out.forgot.length) { out.again = true; return out; }
-  for (const addr of roots) {
-    const id = d.frames[addr]?.layout;
-    if (addr == null || id == null || reduced[addr]?.has(id) || unfit[addr]?.has(id)) continue;
-    if (!reducedUnder(d, addr)) continue;
-    (reduced[addr] ??= new Set()).add(id);
-    out.again = true;
-  }
-  return out;
-}
-let attachAudio = null;
-function useAudio(attach) { attachAudio = attach; }
-const SILENT = { log: [], lines: [], advance() {}, destroy() {}, stats: async () => ({ armed: false, requests: 0, started: 0, decoded: 0, failed: [], music: null }) };
-async function boot(container, { filesUrl, files: givenFiles = null, schemasUrl, checked = false, ...rest } = {}) {
-  let framed = false;
-  try { framed = window.top !== window.self; } catch { framed = true; }
-  const files = givenFiles || await fetch(filesUrl).then(r => r.json());
-  const schemas = checked ? null : await fetch(schemasUrl).then(r => r.json());
-  if (!checked && !rest.modules) await import('../src/capabilities/all.mjs');
-  if (!checked) await import('./audio-web.mjs');
-  const load = checked ? null : (await import('../src/load.mjs')).loadExperience;
-  return play(container, { files, schemas, test: true, wholePage: !framed, ...(load ? { load } : {}), ...rest });
-}
-function unflatten(flat, files) {
-  const e = structuredClone(flat);
-  for (const b of [e.shell, ...Object.values(e.scenes || {}), ...Object.values(e.blocks || {})]) for (const d of Object.values(b?.drawings || {})) d.text = files[d.file];
-  return e;
-}
-function linkAddresses(player, field) {
-  const inputs = player?.exp?.doc?.inputs || {};
-  const now = player?.state?.blocks?.experience?.inputs || {};
-  const names = field != null ? [field] : Object.keys(inputs).filter(n => inputs[n]?.contentType === 'url');
-  const urls = names.map(n => now[n] ?? inputs[n]?.initial).filter(u => typeof u === 'string' && u);
-  return urls.length ? urls.join(' or ') : 'its link';
-}
-function linkWithoutHostLine(player, { field = null, preview = false } = {}) {
-  const where = preview ? 'the dev player opens no link' : 'this page has no host';
-  return `openUrl refused: ${where}; a host would open ${linkAddresses(player, field)}`;
-}
-function linkWithoutHost(state, container, host) {
-  const preview = host?.preview === true;
-  let listeners = 0;
-  const on = state.host.on;
-  state.host.on = (name, fn) => {
-    const off = on(name, fn);
-    if (name !== 'openUrl' && name !== 'hsvg.openUrl') return off;
-    listeners++;
-    let gone = false;
-    return () => { if (!gone) { gone = true; listeners--; } return off(); };
-  };
-  const tell = (line) => {
-    console.log(line);
-    state.linkNotices = [...(state.linkNotices || []), line];
-    if (!preview) return;
-    let box = container.querySelector('[data-hsvg-notice="openUrl"]');
-    if (!box) {
-      box = document.createElement('div');
-      box.setAttribute('role', 'status');
-      box.setAttribute('data-hsvg-notice', 'openUrl');
-      box.style.cssText = 'position:absolute;left:0;right:0;top:0;padding:8px 12px;background:#1f3a5f;color:#fff;font:14px/1.4 system-ui,sans-serif;z-index:9';
-      if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
-      container.appendChild(box);
-    }
-    box.textContent = line;
-  };
-  let seenNotes = 0;
-  state.player.on(({ outputs }) => {
-    for (const o of outputs) if (o.name === 'openUrl' && (host == null || preview) && listeners === 0) tell(linkWithoutHostLine(state.player, { field: o.field, preview }));
-    const notes = state.player.notes || [];
-    for (; seenNotes < notes.length; seenNotes++) {
-      const n = notes[seenNotes];
-      if (n?.kind === 'grant' && /openUrl/.test(String(n.message ?? '')) && (host == null || preview) && listeners === 0) tell(linkWithoutHostLine(state.player, { preview }));
-    }
-  });
-  return (f) => { if (f?.code === 'E-GRANT' && /openUrl/.test(String(f?.message ?? ''))) tell(linkWithoutHostLine(state.player)); };
-}
-function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null }) {
-  const onError = givenOnError && ((d) => givenOnError({ ...d, code: d.code || 'E-HOST-ERROR' }));
-  const sequence = Symbol.for('hypersvg.mountSequence');
-  const namespace = `hsvg${globalThis[sequence] = (globalThis[sequence] || 0) + 1}__`;
-  const source = { read: (rel) => (rel in files ? files[rel] : null) };
-  let loaded = kitted ? { experience: unflatten(kitted, files), diags: [] } : load(source, schemas);
-  if (!loaded.experience) { const e = new Error(loaded.diags.map(d => `${d.code} ${d.file}: ${d.message}`).join('; ')); e.code = loaded.diags[0]?.code; throw e; }
-  if (host == null && previewHost) host = { preview: true, grants: structuredClone(loaded.experience.doc.grants || {}) };
-  if (start) {
-    const exp = loaded.experience;
-    loaded = { ...loaded, experience: { ...exp, doc: { ...exp.doc, story: { ...exp.doc.story, start } } } };
-  }
-  const wrap = (get) => { try { const s = get(); s.setItem('hsvg-probe', '1'); s.removeItem('hsvg-probe'); return { get: (k) => s.getItem(k), set: (k, v) => s.setItem(k, v), remove: (k) => s.removeItem(k) }; } catch { return null; } };
-  const storage = { session: wrap(() => window.sessionStorage), saved: wrap(() => window.localStorage), page: window.location.pathname, partition };
-  const measures = members ? packageMeasures(members, experienceResources(loaded.experience)) : undefined;
-  let player = null;
-  let made = null;
-  try { player = new Player(loaded.experience, { capabilities, storage, host, options, measures, modules, wallClock: clock || (() => Date.now()), onMove }); } catch (e) { if (!e?.code) throw e; made = e; }
-  const state = { player, namespace, drawing: null, scene: null, loaded, errors: [], stopped: null, nonce };
-  let running = true;
-  let linkRefused = null;
-  const halt = (f, source) => {
-    const code = f?.code || null;
-    const address = f?.address || null;
-    const message = String(f?.message ?? f);
-    state.errors.push(message);
-    if (state.stopped) return;
-    linkRefused?.(f);
-    state.stopped = { code, address, message, source };
-    running = false;
-    player?.stop?.(f, source);
-    onError?.({ code, address, message, source });
-    try { state.audio?.destroy(); } catch {   }
-    if (faultBox === false) return;
-    const box = document.createElement('div');
-    box.setAttribute('role', 'alert');
-    box.setAttribute('data-hsvg-fault', code || 'fault');
-    box.style.cssText = 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:#7a1010;color:#fff;font:15px/1.4 system-ui,sans-serif;z-index:10';
-    box.textContent = `This experience stopped: ${code || 'fault'} in ${address || 'the experience'}. ${message}`;
-    if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
-    container.appendChild(box);
-  };
-  state.fault = (r, source = 'engine') => { if (r && r.ok === false) halt(r.fault, source); return r; };
-  const stoppedAtStart = () => {
-    state.advance = () => {};
-    state.press = () => ({ ok: false, fault: state.stopped, ignored: 'stopped' });
-    state.relayout = () => {};
-    return state;
-  };
-  if (made) { halt(made, 'start'); return stoppedAtStart(); }
-  player.onStop = (f, source) => halt(f, source === 'person' ? 'control' : source);
-  player.onDeliveryError = (d) => { if (onError) onError(d); else console.error(d); };
-  let soundWarned = false;
-  const soundFailed = (path, err) => {
-    const d = { code: 'W-SOUND-UNPLAYABLE', message: `this browser cannot play the sound ${path}${err?.message ? ` (${err.message})` : ''}`, source: 'audio', path };
-    state.errors.push(d.message);
-    if (!soundWarned) { soundWarned = true; console.warn(`hsvg: ${d.message}`); }
-    onError?.(d);
-  };
-  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed }) : SILENT;
-  const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
-  if (motionQuery) { player.state.ambient.motionSystem = motionQuery.matches === true; player.state.ambient.reducedMotion = motionQuery.matches === true || player.state.ambient.motionChosen === true; }
-  const sizeNow = () => { const b = container.getBoundingClientRect(); const sp = { width: b.width, height: b.height }; return { ...sp, shape: activeShape({ ...sp, direction: directionOf(player.exp.doc, player.state.ambient?.language) }, shapeMapsOf(null, player.exp.doc)) }; };
-  if (timeLimits !== null && timeLimits !== undefined) {
-    const bad = checkSetting('timeLimits', timeLimits);
-    if (bad) { halt({ code: bad[0], address: 'experience', message: `timeLimits: ${bad[1]}` }, 'start'); return stoppedAtStart(); }
-    player.state.ambient.timeLimits = timeLimits;
-  }
-  if (language) player.state.ambient.language = language;
-  const hostSet = { theme: theme ?? undefined }; const hostDefault = {};
-  for (const a of player.exp.doc.axes || []) {
-    const id = a?.id ?? a?.axis;
-    if ((a?.axis !== 'language' && a?.axis !== 'theme') || player.options?.[id] === undefined) continue;
-    const made = Object.hasOwn(options || {}, id) || Object.hasOwn(player.host?.profile?.options || {}, id);
-    (made ? hostSet : hostDefault)[a.axis] ??= player.options[id];
-  }
-  if (language) { delete hostSet.language; delete hostDefault.language; }
-  const hostTheme = hostSet.theme;
-  if (hostTheme !== undefined && !Object.hasOwn(player.exp.doc.themes || {}, hostTheme)) {
-    halt({ code: 'E-AXIS-INPUT', address: 'experience', message: `theme ${JSON.stringify(hostTheme)} is not one of the experience's themes (${Object.keys(player.exp.doc.themes || {}).join(', ') || 'it declares none'})` }, 'start');
-    return stoppedAtStart();
-  }
-  if (hostSet.theme === undefined) delete hostSet.theme;
-  if (colors !== null && colors !== undefined && checkColors) {
-    const hc = checkColors(player.exp, colors, hostSet.theme);
-    state.colors = hc.roles;
-    for (const w of hc.warnings) { state.errors.push(w.message); if (onError) onError(w); else console.warn(`hsvg: ${w.code} ${w.message}`); }
-  }
-  const hostLanguage = hostSet.language ?? hostDefault.language;
-  if (hostLanguage !== undefined) player.state.ambient.language = hostLanguage;
-  player.setSize(sizeNow());
-  state.fault(player.start(), 'start');
-  if (state.stopped && !player.scene) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
-  state.layouts = {};
-  state.unfit = {};
-  state.reduced = {};
-  state.choices = {};
-  const allSizes = wholePage ? trueSizes(player.exp.doc) : null;
-  const sizes = player.shellId ? null : allSizes;
-  const stageSizes = player.shellId ? allSizes : null;
-  const stageChoice = (st) => { if (!stageSizes || !st) return st; const t = nearestSize(stageSizes, st); return { width: t.width, height: t.height }; };
-  const winSpace = () => { const b = container.getBoundingClientRect(); return { width: b.width, height: b.height }; };
-  const outSpace = () => {
-    const win = winSpace();
-    if (!sizes) return win;
-    state.trueSize = nearestSize(sizes, win);
-    return { width: state.trueSize.width, height: state.trueSize.height };
-  };
-  const placeTrue = (svg) => {
-    const t = state.trueSize;
-    if (!t || !svg) return;
-    svg.setAttribute('width', String(t.width * t.scale));
-    svg.setAttribute('height', String(t.height * t.scale));
-    svg.setAttribute('data-player-true-size', `${t.width}x${t.height}`);
-    Object.assign(svg.style, { position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' });
-  };
-  if (sizes && getComputedStyle(container).position === 'static') container.style.position = 'relative';
-  const spaceKey = (sp) => `${Math.round(sp.width)}x${Math.round(sp.height)}`;
-  const readPicks = () => {
-    const blocks = Object.keys(player.state.blocks).map(a => [a, player.def(a)]).filter(([, d]) => d?.axes);
-    const p = inputPicks(blocks, (a, n) => player.read(a, n));
-    p.experience = { ...hostDefault, ...p.experience, ...hostSet };
-    for (const axis of Object.keys(hostSet)) for (const b of Object.values(p.blocks)) delete b[axis];
-    return p;
-  };
-  state.picks = readPicks();
-  const bootLanguage = state.picks.experience.language;
-  if (bootLanguage && bootLanguage !== player.state.ambient.language && !state.picks.bad.length) {
-    state.fault(player.setLanguage(bootLanguage), 'start');
-    if (state.stopped) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
-    state.picks = readPicks();
-  }
-  const choose = (memory, address, block, space) => {
-    const sp = space && { ...space, direction: directionOf(player.exp.doc, player.state.ambient?.language) };
-    const maps = shapeMapsOf(block?.doc, player.exp.doc);
-    const layouts = narrowLayouts(block?.doc?.layouts, player.exp.doc, block?.doc);
-    const input = pickedLayout(layouts, picksFor(state.picks, address), maps);
-    const c = chooseFrame(layouts, sp, { input, current: memory[address] ?? null, unfit: state.unfit[address], reduced: state.reduced[address], aspectOf: aspectsOf(block), maps });
-    if (c.id != null) memory[address] = c.id;
-    state.choices[address] = c;
-    return c.id;
-  };
-  const shellId = player.shellId;
-  const blockOf = (address) => (address === shellId ? player.exp.shell : player.exp.scenes[address]);
-  const build = (memory, space) => {
-    const d = new Drawing(player, { namespace, layouts: memory, picks: state.picks, theme: state.picks.experience.theme, colors: state.colors || null, stageSizes, nonce });
-    if (shellId) {
-      d.mountShell(shellId, choose(memory, shellId, blockOf(shellId), space), space);
-      const st = d.stageSpace();
-      d.mountStage(player.scene, choose(memory, player.scene, blockOf(player.scene), stageChoice(st) || space), null, st);
-    } else d.mountScene(player.scene, choose(memory, player.scene, blockOf(player.scene), space), space);
-    return d;
-  };
-  const attach = (d) => {
-    const svg = d.toDom(document);
-    svg.setAttribute('width', '100%');
-    svg.setAttribute('height', '100%');
-    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    placeTrue(svg);
-    const old = state.drawing?.root?.dom;
-    if (old && old.parentNode === container) old.replaceWith(svg); else container.replaceChildren(svg, ...container.querySelectorAll('[data-hsvg-fault],[data-hsvg-announce]'));
-    state.drawing = d;
-  };
-  const forgetScene = () => {
-    for (const k of Object.keys(state.layouts)) if (!shellId || (k !== shellId && !k.startsWith(shellId + '/'))) delete state.layouts[k];
-    for (const k of Object.keys(state.unfit)) if (k !== shellId) delete state.unfit[k];
-    for (const k of Object.keys(state.reduced)) if (k !== shellId) delete state.reduced[k];
-  };
-  let lastSpace = null;
-  const show = () => {
-    const space = outSpace();
-    lastSpace = state.space = spaceKey(winSpace());
-    const changed = player.scene !== state.scene;
-    if (changed) forgetScene();
-    const slide = changed && state.scene !== null ? slideFor() : null;
-    endSlide();
-    const leaving = slide ? (shellId ? state.drawing?.stage?.holder?.dom?.firstElementChild : state.drawing?.root?.dom) : null;
-    if (shellId && state.drawing) {
-      const d = state.drawing;
-      const st = d.stageSpace();
-      d.mountStage(player.scene, choose(state.layouts, player.scene, blockOf(player.scene), stageChoice(st) || space), document, st);
-    } else attach(build(state.layouts, space));
-    if (slide && leaving) startSlide(slide, leaving);
-    const entered = changed && state.scene !== null;
-    state.scene = player.scene;
-    if (entered) announce(titleOf(state.drawing?.frames[player.scene]?.root));
-    paint();
-  };
-  const titleOf = (root) => {
-    const t = root?.children?.find(c => c.name === 'title');
-    const text = (n) => (n.name ? n.children.map(text).join('') : n.text || '');
-    return t ? text(t).replace(/\s+/g, ' ').trim() : '';
-  };
-  const announcer = document.createElement('div');
-  announcer.setAttribute('data-hsvg-announce', '');
-  announcer.setAttribute('role', 'status');
-  announcer.setAttribute('aria-live', 'polite');
-  announcer.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0';
-  const announce = (text) => {
-    if (!text) return;
-    if (!announcer.isConnected) container.appendChild(announcer);
-    announcer.textContent = announcer.textContent === text ? `${text}\u00a0` : text;
-    state.announced = text;
-  };
-  state.announce = announce;
-  player.on(({ outputs }) => { for (const o of outputs) if (o.name === 'entered' && o.slot === 'stage') state.enteredBy = { link: o.link, atMs: player.state.now }; });
-  const slideFor = () => {
-    const by = state.enteredBy;
-    const l = by && player.links.find(x => x.id === by.link);
-    if ((l?.transition !== 'slide' && l?.transition !== 'fade') || !(l.transitionMs > 0) || player.state.ambient.reducedMotion === true) return null;
-    if (l.transition === 'fade') return { kind: 'fade', link: l.id, atMs: by.atMs, ms: l.transitionMs };
-    const rtl = directionOf(player.exp.doc, player.state.ambient?.language) === 'rtl';
-    const sign = (rtl ? -1 : 1) * (l.slideFrom === 'start' ? -1 : 1);
-    return { kind: 'slide', link: l.id, from: l.slideFrom === 'start' ? 'start' : 'end', sign, atMs: by.atMs, ms: l.transitionMs };
-  };
-  const SVGNS = 'http://www.w3.org/2000/svg';
-  const startSlide = (slide, leaving) => {
-    leaving.setAttribute('aria-hidden', 'true');
-    leaving.setAttribute('inert', '');
-    leaving.setAttribute('data-player-leaving', slide.link);
-    leaving.style.pointerEvents = 'none';
-    for (const el of leaving.querySelectorAll('[tabindex]')) el.setAttribute('tabindex', '-1');
-    if (shellId) {
-      const d = state.drawing; const holder = d.stage.holder.dom; const b = d.stage.box;
-      const entering = holder.firstElementChild;
-      const clipId = `${namespace}hsvg-slide-${shellId}`;
-      const clip = document.createElementNS(SVGNS, 'clipPath'); clip.setAttribute('id', clipId);
-      const r = document.createElementNS(SVGNS, 'rect');
-      for (const [k, v] of Object.entries({ x: b.x, y: b.y, width: b.width, height: b.height })) r.setAttribute(k, String(v));
-      clip.appendChild(r);
-      const out = document.createElementNS(SVGNS, 'g'); out.appendChild(leaving);
-      const inn = document.createElementNS(SVGNS, 'g'); if (entering) inn.appendChild(entering);
-      holder.replaceChildren(clip, out, inn);
-      holder.setAttribute('clip-path', `url(#${clipId})`);
-      slide.place = slide.kind === 'fade'
-        ? (p) => { out.setAttribute('opacity', String(1 - p)); inn.setAttribute('opacity', String(p)); }
-        : (p) => { out.setAttribute('transform', `translate(${-slide.sign * p * b.width} 0)`); inn.setAttribute('transform', `translate(${slide.sign * (1 - p) * b.width} 0)`); };
-      if (slide.kind === 'fade') holder.replaceChildren(clip, inn, out);
-      slide.done = () => { holder.removeAttribute('clip-path'); if (entering && entering.parentNode === inn) holder.replaceChildren(entering); else { clip.remove(); out.remove(); } };
-    } else {
-      const entering = state.drawing.root.dom;
-      if (getComputedStyle(container).position === 'static') { slide.position = container.style.position; container.style.position = 'relative'; }
-      slide.overflow = container.style.overflow;
-      container.style.overflow = 'hidden';
-      Object.assign(leaving.style, { position: 'absolute', left: '0', top: '0', width: '100%', height: '100%' });
-      container.insertBefore(leaving, entering);
-      if (slide.kind === 'fade') container.insertBefore(entering, leaving);
-      slide.place = slide.kind === 'fade'
-        ? (p) => { leaving.style.opacity = String(1 - p); entering.style.opacity = p >= 1 ? '' : String(p); }
-        : (p) => { leaving.style.transform = `translateX(${-slide.sign * p * 100}%)`; entering.style.transform = p >= 1 ? '' : `translateX(${slide.sign * (1 - p) * 100}%)`; };
-      slide.done = () => { leaving.remove(); entering.style.transform = ''; entering.style.opacity = ''; container.style.overflow = slide.overflow; if (slide.position !== undefined) container.style.position = slide.position; };
-    }
-    state.slide = slide;
-    stepSlide();
-  };
-  const stepSlide = () => {
-    const sl = state.slide;
-    if (!sl) return;
-    sl.progress = Math.max(0, Math.min(1, (player.state.now - sl.atMs) / sl.ms));
-    sl.place(sl.progress);
-    if (sl.progress >= 1) endSlide();
-  };
-  const endSlide = () => { const sl = state.slide; if (!sl) return; state.slide = null; sl.place(1); sl.done(); state.slid = { link: sl.link, from: sl.from, kind: sl.kind }; };
-  const shown = (d) => JSON.stringify(Object.entries(d.frames).map(([a, f]) => [a, f.layout ?? null, f.plan?.key ?? null]).sort());
-  const relayout = (force = false, rebuild = false) => {
-    if (state.destroyed || state.stopped || !state.drawing) return;
-    const win = winSpace();
-    if (!(win.width > 0 && win.height > 0)) return;
-    const space = outSpace();
-    placeTrue(state.drawing.root?.dom);
-    const key = spaceKey(win);
-    if (key !== lastSpace) { state.unfit = {}; state.reduced = {}; lastSpace = state.space = key; } else if (!force) return;
-    const memory = { ...state.layouts };
-    const next = build(memory, space);
-    if (!rebuild && shown(next) === shown(state.drawing)) return;
-    const focused = container.contains(document.activeElement) ? document.activeElement.id : null;
-    endSlide();
-    state.layouts = memory;
-    attach(next);
-    paint();
-    state.input?.sync(true);
-    state.widgets?.sync();
-    if (focused) document.getElementById(focused)?.focus({ preventScroll: true });
-  };
-  state.relayout = relayout;
-  const checkFits = () => {
-    const d = state.drawing;
-    const { again, forgot } = learnFits(d, [player.scene, shellId], state);
-    if (!again) return;
-    relayout(true);
-    if (state.drawing !== d || forgot.length) checkFits();
-  };
-  let painted = { revision: -1, now: -1 };
-  const paint = (changed = false) => {
-    const d = state.drawing;
-    const had = d.faults.length;
-    const dirty = player.takeDirty();
-    painted = { revision: player.state.revision, now: player.state.now };
-    player.bindingPhase(() => d.paint(changed ? dirty : null));
-    stepSlide();
-    const over = d.faults.slice(had).find(f => f.code === 'E-EVENT-LOOP');
-    if (over) halt(over, 'binding');
-    if (!state.stopped) writeLayout(d);
-    if (!checking) { checking = true; try { checkPicks() || checkResized() || checkFits(); } finally { checking = false; } }
-  };
-  const checkResized = () => {
-    const d = state.drawing;
-    if (!d?.resized?.length) return false;
-    state.resizedAt = d.resized.map(r => ({ ...r }));
-    state.unfit = {}; state.reduced = {};
-    relayout(true);
-    state.widgets?.sync();
-    return true;
-  };
-  const checkPicks = () => {
-    const next = readPicks();
-    if (next.bad.length) { const b = next.bad[0]; halt({ code: 'E-AXIS-INPUT', address: b.address, message: `axis ${b.id}: ${JSON.stringify(b.value)} is not one of its options (${b.options.join(', ')})` }, 'binding'); return true; }
-    if (JSON.stringify(next) === JSON.stringify(state.picks)) return false;
-    state.picks = next;
-    const lang = next.experience.language;
-    if (lang && lang !== player.state.ambient.language) {
-      state.fault(player.setLanguage(lang), 'host');
-      if (state.stopped) return true;
-    }
-    relayout(true, true);
-    return true;
-  };
-  let checking = false;
-  let layoutKey = null; let relaying = false;
-  const writeLayout = (d) => {
-    const v = d.layoutValue();
-    const key = JSON.stringify(v);
-    if (key === layoutKey) return;
-    layoutKey = key;
-    player.state.ambient.layout = Object.freeze(v);
-    if (relaying) return;
-    relaying = true;
-    try { player.bindingPhase(() => d.paint()); } finally { relaying = false; }
-  };
-  show();
-  const input = attachInput(player, state, container, window);
-  const redrawLists = () => {
-    const focused = container.contains(document.activeElement) ? document.activeElement.id : null;
-    attach(build(state.layouts, outSpace()));
-    paint();
-    input.sync(true);
-    if (focused) document.getElementById(focused)?.focus({ preventScroll: true });
-  };
-  state.lists = player.state.lists || 0;
-  const after = () => {
-    if (state.destroyed || state.stopped) return;
-    const lists = player.state.lists || 0;
-    if (player.scene !== state.scene) { show(); input.sync(true); } else if (lists !== state.lists) redrawLists();
-    else if (player.state.revision !== painted.revision || state.slide || (state.drawing?.live?.size && player.state.now !== painted.now) || player.mouthLooks?.length) { paint(true); input.sync(); }
-    state.lists = lists;
-    for (const part of Object.values(state.caps || {})) part.sync?.();
-  };
-  state.after = after;
-  state.repaint = () => { if (!state.destroyed && !state.stopped && state.drawing) paint(true); };
-  state.input = input;
-  input.sync(true);
-  state.caps = player.caps.attach({ player, state, container, win: window, options: { widgets, onError, assets, assetsUrl, test } });
-  state.widgets = state.caps.shell || null;
-  for (const part of Object.values(state.caps)) part.sync?.();
-  state.captions = state.caps.lines || null;
-  state.host = hostApi(player, { onError, test, onRestart: () => { state.scene = null; after(); } });
-  linkRefused = linkWithoutHost(state, container, host);
-  state.ladder = () => structuredClone(state.drawing?.ladder ?? {});
-  state.host.ladder = state.ladder;
-  let last = null;
-  const tick = (t) => {
-    if (!running) return;
-    if (last !== null) state.audio.advance(Math.min(100, t - last));
-    if (last !== null && !manualClock && !state.host.paused) {
-      const results = player.advance(Math.min(100, Math.round(t - last)));
-      for (const r of results) state.fault(r, 'timer');
-    }
-    if (last !== null && running && !state.stopped) after();
-    last = t;
-    requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-  const writeSize = () => {
-    if (state.destroyed || state.stopped) return;
-    const r = player.setSize(sizeNow());
-    if (!r) return;
-    state.fault(r, 'host');
-    if (!state.stopped) after();
-  };
-  state.writeSize = writeSize;
-  if (typeof ResizeObserver === 'function') { state.resizer = new ResizeObserver(() => { relayout(); writeSize(); }); state.resizer.observe(container); }
-  const motionChanged = (ev) => {
-    if (state.destroyed || state.stopped) return;
-    const on = ev.matches === true;
-    if (player.state.ambient.motionSystem === on) return;
-    state.fault(player.motion(on), 'host');
-    if (!state.stopped) after();
-  };
-  motionQuery?.addEventListener?.('change', motionChanged);
-  const visibility = () => { if (state.destroyed) return; player.setPause('hidden', document.hidden); after(); };
-  document.addEventListener('visibilitychange', visibility);
-  const cleanups = [
-    () => state.resizer?.disconnect(),
-    () => motionQuery?.removeEventListener?.('change', motionChanged),
-    () => document.removeEventListener('visibilitychange', visibility),
-    () => state.audio.destroy(),
-    () => input.destroy(),
-    ...Object.values(state.caps || {}).map(part => () => part.destroy?.()),
-  ];
-  const destroy = state.host.destroy;
-  state.host.destroy = () => {
-    if (state.destroyed) return;
-    running = false; state.destroyed = true;
-    for (const c of cleanups.splice(0).reverse()) { try { c(); } catch (e) { onError?.({ code: e?.code || null, message: String(e?.message ?? e), source: 'destroy' }); } }
-    destroy();
-    container.replaceChildren();
-  };
-  state.advance = (ms) => { if (state.stopped) return; const rs = player.advance(ms); for (const r of rs) state.fault(r, 'timer'); if (!state.stopped) after(); };
-  state.press = (addr, cid, arg) => { if (state.stopped) return { ok: false, fault: state.stopped, ignored: 'stopped' }; const r = player.activate(addr, cid, arg); state.fault(r, 'control'); if (!state.stopped) after(); return r; };
-  const clipHook = (word) => (addr, clip) => {
-    if (state.stopped) return { ok: false, fault: state.stopped, ignored: 'stopped' };
-    const r = player.transaction('test', () => player.runActions(addr || player.scene, [{ [word]: clip }], `test ${word}`));
-    state.fault(r, 'test');
-    if (!state.stopped) after();
-    return r;
-  };
-  state.play = clipHook('play');
-  state.stop = clipHook('stop');
-  state.boxes = () => {
-    const o = container.getBoundingClientRect(); const out = {};
-    for (const el of container.querySelectorAll('[data-hsvg-kind="part"][id]')) {
-      const b = el.getBoundingClientRect(); const css = window.getComputedStyle(el);
-      out[el.id.slice(namespace.length)] = { x: b.left - o.left, y: b.top - o.top, width: b.width, height: b.height, shown: b.width > 0 && b.height > 0 && css.display !== 'none' && css.visibility !== 'hidden' };
-    }
-    return out;
-  };
-  return state;
-}
+defs[3] = function (exp) { 'use strict'; // engine/v2/web/logic-port.mjs
 
-exp.VERSION = __reexport4_0.VERSION;
+const { logic, canonicalJson, stateDocument, fingerprint, fingerprintOf } = req(4);
+const { readAsset } = req(22);
+const { readExperience } = req(23);
+const { withUsedGrants } = req(25);
+const { VERSION } = req(26);
+const TEXT = /\.(json|svg|csv|txt|vtt)$/;
+const fault = (code, message, extra = {}) => Object.assign(new Error(message), { code, ...extra });
+function loadTrusted(files) {
+  if (!files || typeof files !== 'object') throw fault('E-TYPE', 'loadTrusted takes the package\'s members: {path: text or bytes}');
+  const dec = new TextDecoder();
+  const texts = {};
+  for (const [p, v] of Object.entries(files)) {
+    if (p === 'package.json' || !TEXT.test(p)) continue;
+    texts[p] = typeof v === 'string' ? v : dec.decode(v);
+  }
+  let preset = null;
+  const r = readExperience({ read: (rel) => (rel in texts ? texts[rel] : null) }, null, { presets: { expand(doc, file) { preset ??= file; return { doc, diags: [] }; } } });
+  if (preset) throw fault('E-ASSET', `${preset}: an asset uses no add-on preset`);
+  const errors = r.diags.filter(d => d.code.startsWith('E-'));
+  if (errors.length) throw fault(errors[0].code, errors.map(d => `${d.code} ${d.file}${d.path ? ` ${d.path}` : ''}: ${d.message}`).join('; '), { diagnostics: errors });
+  if (!r.experience?.doc) throw fault('E-ASSET', 'the package has no experience');
+  const g = withUsedGrants(r.experience);
+  r.experience.derivedGrants = g.derived;
+  if (Object.keys(g.derived).length) r.experience.doc.grants = g.grants;
+  return r.experience;
+}
+const logicPort = Object.freeze({ VERSION, logic, canonicalJson, stateDocument, fingerprint, fingerprintOf, readAsset, loadTrusted });
+
+exp.logicPort = logicPort;
 };
-defs[4] = function (exp) { 'use strict'; // engine/v2/src/version.mjs
+defs[4] = function (exp) { 'use strict'; // engine/v2/src/logic-core.mjs
+exp.canonicalJson = canonicalJson; exp.stateDocument = stateDocument; exp.logic = logic;
+const { Player } = req(5);
+const { hostApi } = req(19);
+const { errorDetail } = req(20);
+const { MOVES } = req(6);
+const { sha256 } = req(21);
+const refuse = (code, message) => { const e = new Error(message); e.code = code; throw e; };
+const isObj = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+const BUILT_IN = ['entered', 'ended', 'openUrl', 'firstInput', 'hookHealth'];
+function canonicalJson(v) {
+  if (v === null || typeof v !== 'object') return v === undefined ? 'null' : JSON.stringify(v);
+  if (Array.isArray(v)) return `[${v.map(canonicalJson).join(',')}]`;
+  return `{${Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => `${JSON.stringify(k)}:${canonicalJson(v[k])}`).join(',')}}`;
+}
+function stateDocument(player) {
+  const s = player.state;
+  const free = Object.keys(player.exp.doc.inputs || {}).filter(n => player.exp.doc.inputs[n]?.contentType === 'freeText');
+  const blocks = { ...s.blocks };
+  if (free.length && blocks.experience) {
+    const inputs = { ...blocks.experience.inputs };
+    for (const n of free) if (typeof inputs[n] === 'string') inputs[n] = { freeText: inputs[n].length };
+    blocks.experience = { ...blocks.experience, inputs };
+  }
+  const { layout, ...ambient } = s.ambient;
+  void layout;
+  const doc = { now: s.now, seq: s.seq, blocks, timers: s.timers, records: s.records, ambient, story: s.story, pauses: player.hostPauses || [] };
+  if (s.firstInput) doc.firstInput = true;
+  if (player.stopped) doc.stopped = player.stopped.code || 'fault';
+  return JSON.parse(JSON.stringify(doc));
+}
+const fingerprintOf = (doc) => sha256(new TextEncoder().encode(canonicalJson(doc)));
+const fingerprint = (player) => fingerprintOf(stateDocument(player));
+function logic(source, { clock = null, epochMs = null, onMove = null, host = null, options = {}, capabilities = {}, modules = null, storage = undefined, onError = null } = {}) {
+  if (clock !== null && typeof clock !== 'function') refuse('E-TYPE', 'clock is a function (engineMs) -> UTC ms');
+  if (onMove !== null && typeof onMove !== 'function') refuse('E-TYPE', 'onMove is a function');
+  if (source && source['package.json'] instanceof Uint8Array) refuse('E-TYPE', 'the logic core takes an experience already read: give a package to ./logic, which checks it');
+  const experience = source;
+  if (!experience?.doc) refuse('E-TYPE', 'logic takes a package or a checked experience');
+  const player = new Player(experience, { capabilities, host, options, modules, storage, ...(typeof epochMs === 'number' ? { epochMs } : { wallClock: clock || (() => Date.now()) }), ...(onMove ? { onMove } : {}) });
+  const api = hostApi(player, { onError: onError && ((d) => onError(errorDetail(d))), test: true });
+  const outs = experience.doc.outputs || {};
+  const heard = [];
+  player.on(({ outputs }) => { for (const { name, ...detail } of outputs) if (BUILT_IN.includes(name) || outs[name]?.kind === 'event' || outs[name]?.kind === 'record') heard.push(JSON.parse(JSON.stringify({ t: player.state.now, name, detail }))); });
+  const advance = (ms) => {
+    if (!(typeof ms === 'number' && ms >= 0 && Number.isFinite(ms))) refuse('E-RANGE', 'advance takes a number of ms, 0 or more');
+    return player.advance(ms);
+  };
+  const feed = (move) => {
+    if (!isObj(move) || typeof move.t !== 'number' || typeof move.source !== 'string' || !Array.isArray(move.payload)) refuse('E-TYPE', 'a move is {t, source, payload}: a number, a string and an array');
+    player.fed = true;
+    if (move.t < player.state.now) refuse('E-RANGE', `a move at ${move.t} ms comes after engine time ${player.state.now} ms: feed moves in their order`);
+    if (move.t > player.state.now) advance(move.t - player.state.now);
+    const args = move.payload.map(x => (x === null ? undefined : structuredClone(x)));
+    const { source: s } = move;
+    if (s === 'setInput' && isObj(args[1]) && Number.isInteger(args[1].freeText)) args[1] = 'x'.repeat(args[1].freeText);
+    if (s !== 'advance' && MOVES.includes(s)) return player[s](...args);
+    if (s === 'door') return { ok: true, ignored: 'needs a page' };
+    const [cap, fn, ...more] = s.split('.');
+    const whole = fn ? cap + fn[0].toUpperCase() + fn.slice(1) : '';
+    if (!more.length && player.exposedNames?.has(cap) && typeof player[cap]?.[fn] === 'function') return player[cap][fn](...args) ?? { ok: true };
+    if (!more.length && player.exposedNames?.has(whole) && typeof player[whole] === 'function') return player[whole](...args) ?? { ok: true };
+    return refuse('E-REF-UNKNOWN', `${s} is not a move this player takes`);
+  };
+  return {
+    feed,
+    start: () => player.start(),
+    advance,
+    read: (name) => api.read(name),
+    heard,
+    fingerprint: () => fingerprint(player),
+    state: () => stateDocument(player),
+    get now() { return player.state.now; },
+    host: api,
+    player,
+  };
+}
 
-const VERSION = '2.0.0-next.1';
-
-exp.VERSION = VERSION;
+exp.fingerprintOf = fingerprintOf; exp.fingerprint = fingerprint;
 };
-defs[5] = function (exp) { 'use strict'; // engine/v2/src/read.mjs
-exp.readExperience = readExperience; exp.parseWords = parseWords; exp.parseCsv = parseCsv;
-const { parseStrict } = req(6);
-const { raisedLimits, activeLimits } = req(7);
-const join = (dir, rel) => {
-  const parts = (dir ? dir.split('/') : []).concat(rel.split('/'));
-  const out = [];
-  for (const p of parts) { if (p === '..') { if (!out.length) return null; out.pop(); } else if (p && p !== '.') out.push(p); }
-  return out.join('/');
-};
-const dirOf = (rel) => rel.split('/').slice(0, -1).join('/');
-function readExperience(source, schemas, opts = {}) {
-  let raised = {};
-  try { raised = raisedLimits([parseStrict(source.read('experience.json') ?? '{}')]); } catch {   }
-  const ck = opts.checkers;
-  if (schemas && !ck) throw new TypeError('checking files needs the checkers: use loadExperience (src/load.mjs)');
-  const docs = schemas ? ck.makeDocumentChecker(schemas) : { check: (text) => { try { const doc = typeof text === 'string' ? parseStrict(text) : text; return { doc, needs: doc.needs || [], diags: [] }; } catch (e) { return { doc: null, diags: [{ code: 'E-JSON', path: '', message: e.message }] }; } } };
-  const diags = [];
-  const add = (file, list) => { for (const d of list) diags.push({ file, ...d }); };
-  const named = (dir, rel, from, at) => {
-    let file = join(dir, rel);
-    const root = /^kits\/[^/]+/.exec(dir)?.[0];
-    if (file !== null && root && !file.startsWith(root + '/')) file = null;
-    if (file === null) add(from, [{ code: 'E-PATH', path: at, message: `${rel} leaves the ${root ? 'kit' : 'experience'}'s folder` }]);
-    return file;
-  };
-  const coveredBy = (inherited) => (kind) => (kind === 'scene' || kind === 'shell' ? inherited : []);
-  const readDoc = (rel, needs, from = 'experience.json', at = rel, dir = '') => {
-    if (named(dir, rel, from, at) === null) return null;
-    rel = join(dir, rel);
-    const text = source.read(rel);
-    if (text == null) { add(rel, [{ code: 'E-FILE-MISSING', path: rel, message: 'not found' }]); return null; }
-    let input = text;
-    if (opts.presets && text.includes('"presets"')) {
-      let raw = null;
-      try { raw = parseStrict(text); } catch {   }
-      if (raw && typeof raw === 'object' && !Array.isArray(raw) && raw.presets !== undefined) {
-        const x = opts.presets.expand(raw, rel);
-        add(rel, x.diags);
-        input = x.doc;
-      }
-    }
-    const r = docs.check(input, { needs, file: rel });
-    add(rel, r.diags.map(upgradeHint));
-    if (r.doc == null) return null;
-    if (Array.isArray(r.doc.machines)) {
-      const map = {};
-      r.doc.machines.forEach((m, i) => {
-        if (!m || typeof m.id !== 'string') return;
-        if (m.id in map) { add(rel, [{ code: 'E-ID-DUPLICATE', path: `machines/${i}`, message: `machine id ${m.id} is used twice` }]); return; }
-        const { id, ...rest } = m;
-        map[id] = rest;
-      });
-      r.doc.machines = map;
-    }
-    return { doc: r.doc, needs: r.needs };
-  };
-  const readDrawings = (rel, doc) => {
-    const out = {};
-    const dir = dirOf(rel);
-    const own = (doc.layouts || []).filter(l => l && typeof l.drawing === 'string').map(l => [l.id, l.drawing]);
-    const list = typeof doc.drawing === 'string' ? [['main', doc.drawing], ...own] : own;
-    for (const [id, f] of list) {
-      const file = named(dir, f, rel, id === 'main' ? 'drawing' : `layouts.${id}.drawing`);
-      if (file === null) continue;
-      const text = source.read(file);
-      if (text == null) { add(file, [{ code: 'E-FILE-MISSING', path: file, message: `named by ${rel}, not found` }]); continue; }
-      if (schemas) add(file, ck.checkDrawing(text, schemas.drawing, { addons: opts.addons || {}, markAliases: schemas.addons?.['a13-migration']?.['x-hsvg-drawing']?.markAliases }).diags);
-      out[id] = { file, text };
-    }
-    return out;
-  };
-  const words = (rel, doc) => {
-    const out = {};
-    const dir = dirOf(rel);
-    for (const [name, r] of Object.entries(doc.resources || {})) {
-      if (r.kind !== 'words') continue;
-      const file = named(dir, r.file, rel, `resources.${name}.file`);
-      if (file === null) continue;
-      const text = source.read(file);
-      if (text == null) { add(rel, [{ code: 'E-FILE-MISSING', path: r.file, message: 'words file not found' }]); continue; }
-      out[r.language] = parseWords(text, (m) => add(file, [{ code: 'E-WORDS', path: r.file, message: m }]));
-    }
-    return out;
-  };
-  const exp = readDoc('experience.json', []);
-  if (!exp) return { ok: false, diags, experience: null };
-  const needs = exp.needs ? [...exp.needs] : [];
-  const experience = { file: 'experience.json', doc: exp.doc, needs, raised, limits: activeLimits(raised), words: words('experience.json', exp.doc), data: {}, scenes: {}, blocks: {} };
-  experience.iconSets = {};
-  for (const [name, r] of Object.entries(exp.doc.resources || {})) {
-    if (r?.kind !== 'icon-set' || named('', r.file, 'experience.json', `resources.${name}.file`) === null) continue;
-    const text = source.read(r.file);
-    if (text == null) { add('experience.json', [{ code: 'E-FILE-MISSING', path: r.file, message: 'icon set not found' }]); continue; }
-    if (schemas) add(r.file, ck.checkDrawing(text, schemas.drawing, { iconSet: true }).diags);
-    experience.iconSets[name] = text;
-  }
-  for (const [name, t] of Object.entries(exp.doc.data || {})) {
-    if (t && typeof t === 'object' && t.resource === undefined) { experience.data[name] = []; continue; }
-    const res = exp.doc.resources?.[t.resource];
-    if (!res) { add('experience.json', [{ code: 'E-REF-UNKNOWN', path: `data.${name}`, message: `resource ${t.resource} is not declared` }]); continue; }
-    if (named('', res.file, 'experience.json', `resources.${t.resource}.file`) === null) continue;
-    const text = source.read(res.file);
-    if (text == null) { add('experience.json', [{ code: 'E-FILE-MISSING', path: res.file, message: 'data file not found' }]); continue; }
-    try {
-      const json = res.file.endsWith('.json');
-      const rows = json ? parseStrict(`{"rows":${text}}`).rows : parseCsv(text, t.columns);
-      if (t.columns) ck?.checkCells(rows, t.columns, json);
-      experience.data[name] = rows;
-    } catch (e) { add(res.file, [{ code: 'E-DATA', path: res.file, message: e.message }]); }
-  }
-  for (const [id, rel] of Object.entries(exp.doc.story?.scenes || {})) {
-    if (typeof rel !== 'string') continue;
-    const s = readDoc(rel, needs, 'experience.json', `story.scenes.${id}`);
-    if (s) experience.scenes[id] = { file: rel, doc: s.doc, drawings: readDrawings(rel, s.doc), words: words(rel, s.doc) };
-  }
-  for (const [id, rel] of Object.entries(exp.doc.blocks || {})) {
-    if (typeof rel !== 'string') continue;
-    const b = readDoc(rel, coveredBy(needs), 'experience.json', `blocks.${id}`);
-    if (b) experience.blocks[id] = { file: rel, doc: b.doc, drawings: readDrawings(rel, b.doc), words: words(rel, b.doc) };
-  }
-  if (typeof exp.doc.shell === 'string') {
-    const s = readDoc(exp.doc.shell, needs, 'experience.json', 'shell');
-    if (s) experience.shell = { file: exp.doc.shell, doc: s.doc, drawings: readDrawings(exp.doc.shell, s.doc), words: words(exp.doc.shell, s.doc) };
-  }
-  const kits = opts.kits;
-  const pin = kits ? kits.kitPin(exp.doc) : (exp.doc.kit && typeof exp.doc.kit === 'object' ? exp.doc.kit : null);
-  if (pin && !kits) add('experience.json', [{ code: 'E-KIT-PIN', path: '/kit', message: 'this player reads no kits: the packer flattens a kit experience (tools/pack.mjs), and the dev player loads it with src/load.mjs' }]);
-  else if (pin) {
-    const kit = kits.readKit({ source, add, named, readDoc, readDrawings, words, join, needs, coveredBy }, pin);
-    if (kit) kits.applyKit(experience, kit, (code, file, path, message) => add(file, [{ code, path, message }]));
-  }
-  else kits?.readPicks?.({ source, add, named, readDoc, readDrawings, words, join, needs: [], coveredBy }, experience);
-  return { ok: !diags.some(d => d.code.startsWith('E-')), diags, experience };
-}
-const UPGRADE_TOOL = 'the upgrade tool (A13.3, spec/2.0/reference/a13-migration.md), run on a copy';
-function upgradeHint(d) {
-  if (d.code !== 'E-HEADER' || d.path !== 'format') return d;
-  return { ...d, message: `${d.message}. Upgrade an older file first with ${UPGRADE_TOOL}. The player does not upgrade in memory` };
-}
-function parseWords(text, fail) {
-  const rows = parseCsvRows(text);
-  const head = rows.shift() || [];
-  if (head[0] !== 'id' || head[1] !== 'text' || head.length !== 2) fail?.('the header is not id,text');
-  const out = Object.create(null);
-  for (const r of rows) {
-    if (r.length === 1 && r[0] === '') continue;
-    if (Object.hasOwn(out, r[0])) fail?.(`word ${r[0]} is repeated`);
-    out[r[0]] = r[1] ?? '';
-  }
-  return out;
-}
-const JSON_NUMBER = /^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?$/;
-function parseCsv(text, columns = null) {
-  if (text.charCodeAt(0) === 0xfeff && columns) throw new Error('a data CSV has no byte order mark');
-  const rows = parseCsvRows(text);
-  const head = rows.shift() || [];
-  const body = rows.filter(r => !(r.length === 1 && r[0] === ''));
-  if (!columns) return body.map(r => Object.fromEntries(head.map((h, i) => [h, r[i]])));
-  const names = Object.keys(columns);
-  const extra = head.filter(h => !(h in columns));
-  const missing = names.filter(n => !head.includes(n));
-  if (extra.length || missing.length || new Set(head).size !== head.length) {
-    throw new Error(`the header must be exactly the declared columns${missing.length ? `; missing ${missing.join(', ')}` : ''}${extra.length ? `; not declared ${extra.join(', ')}` : ''}`);
-  }
-  return body.map((r, ri) => {
-    if (r.length !== head.length) throw new Error(`row ${ri + 1} has ${r.length} cells, the header ${head.length}`);
-    return Object.fromEntries(head.map((h, i) => [h, csvCell(r[i], columns[h].type, `row ${ri + 1}, column ${h}`)]));
-  });
-}
-function csvCell(cell, type, where) {
-  if (type === 'string') return cell;
-  if (cell === '') throw new Error(`${where}: an empty cell in a ${type} column`);
-  if (type === 'number') {
-    const n = JSON_NUMBER.test(cell) ? Number(cell) : NaN;
-    if (!Number.isFinite(n)) throw new Error(`${where}: ${JSON.stringify(cell)} is not a JSON number`);
-    return n;
-  }
-  if (type === 'boolean') {
-    if (cell !== 'true' && cell !== 'false') throw new Error(`${where}: ${JSON.stringify(cell)} is not true or false`);
-    return cell === 'true';
-  }
-  throw new Error(`${where}: a ${type} column needs a JSON file, not CSV`);
-}
-function parseCsvRows(text) {
-  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
-  const rows = []; let row = []; let cell = ''; let q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; continue; }
-    if (c === '"') q = true;
-    else if (c === ',') { row.push(cell); cell = ''; }
-    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
-    else cell += c;
-  }
-  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
-  return rows;
-}
+defs[5] = function (exp) { 'use strict'; // engine/v2/src/story.mjs
 
-exp.UPGRADE_TOOL = UPGRADE_TOOL;
-};
-defs[6] = function (exp) { 'use strict'; // engine/v2/schema/json-strict.mjs
-exp.parseStrict = parseStrict;
-const UNSAFE = new Set(['__proto__', 'prototype', 'constructor']);
-class JsonError extends Error {
-  constructor(message, at) { super(message); this.code = 'E-JSON'; this.at = at; }
-}
-function parseStrict(text) {
-  if (typeof text !== 'string') throw new JsonError('not text', 0);
-  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
-  let i = 0;
-  const ws = () => { while (i < text.length && ' \t\n\r'.includes(text[i])) i++; };
-  const fail = (m) => { throw new JsonError(`${m} at character ${i}`, i); };
-  const value = (path) => {
-    ws();
-    const c = text[i];
-    if (c === '{') return object(path);
-    if (c === '[') return array(path);
-    if (c === '"') return string();
-    if (c === 't' && text.startsWith('true', i)) { i += 4; return true; }
-    if (c === 'f' && text.startsWith('false', i)) { i += 5; return false; }
-    if (c === 'n' && text.startsWith('null', i)) { i += 4; return null; }
-    return number();
-  };
-  const object = (path) => {
-    i++;
-    const out = Object.create(null);
-    ws();
-    if (text[i] === '}') { i++; return toPlain(out); }
-    for (;;) {
-      ws();
-      if (text[i] !== '"') fail('expected a key');
-      const k = string();
-      if (UNSAFE.has(k)) fail(`the key "${k}" is refused`);
-      if (Object.prototype.hasOwnProperty.call(out, k)) fail(`the key "${k}" is repeated in ${path || 'the document'}`);
-      ws();
-      if (text[i] !== ':') fail('expected ":"');
-      i++;
-      out[k] = value(path ? `${path}.${k}` : k);
-      ws();
-      if (text[i] === ',') { i++; continue; }
-      if (text[i] === '}') { i++; return toPlain(out); }
-      fail('expected "," or "}"');
-    }
-  };
-  const array = (path) => {
-    i++;
-    const out = [];
-    ws();
-    if (text[i] === ']') { i++; return out; }
-    for (;;) {
-      out.push(value(`${path}[${out.length}]`));
-      ws();
-      if (text[i] === ',') { i++; continue; }
-      if (text[i] === ']') { i++; return out; }
-      fail('expected "," or "]"');
-    }
-  };
-  const string = () => {
-    const start = i;
-    i++;
-    let s = '';
-    for (;;) {
-      if (i >= text.length) fail('unterminated string');
-      const c = text[i];
-      if (c === '"') { i++; return s; }
-      if (c < ' ') fail('control character in a string');
-      if (c === '\\') {
-        const e = text[i + 1];
-        const map = { '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t' };
-        if (e in map) { s += map[e]; i += 2; continue; }
-        if (e === 'u') {
-          const h = text.slice(i + 2, i + 6);
-          if (!/^[0-9a-fA-F]{4}$/.test(h)) fail('bad \\u escape');
-          s += String.fromCharCode(parseInt(h, 16)); i += 6; continue;
-        }
-        fail('bad escape');
-      }
-      s += c; i++;
-    }
-    return start;
-  };
-  const number = () => {
-    const m = /^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/.exec(text.slice(i, i + 400));
-    if (!m) fail('unexpected character');
-    i += m[0].length;
-    const n = Number(m[0]);
-    if (!Number.isFinite(n)) fail('number is not finite');
-    return n;
-  };
-  ws();
-  if (text[i] !== '{') fail('a document is one JSON object');
-  const doc = value('');
-  ws();
-  if (i !== text.length) fail('text after the object');
-  return doc;
-}
-function toPlain(o) {
-  const out = {};
-  for (const k of Object.keys(o)) out[k] = o[k];
-  return out;
-}
-
-exp.JsonError = JsonError;
-};
-defs[7] = function (exp) { 'use strict'; // engine/v2/src/limits.mjs
-exp.raisedLimits = raisedLimits; exp.activeLimits = activeLimits; exp.refusedLimits = refusedLimits; exp.refusalMessage = refusalMessage;
-const FORMAT = Object.freeze({
-  soundBytesEach: 200000,
-  soundBytesAll: 2000000,
-  soundMsEach: 30000,
-  imageBytesEach: 8388608,
-  fontBytesEach: 524288,
-  fontBytesAll: 1048576,
-  videoBytesEach: 67108864,
-  dataBytesEach: 8388608,
-  iconSetBytesEach: 1048576,
-  linePoints: 512,
-  dataTableRows: 1024,
-  listItems: 1024,
-  elementsPerDrawing: 30000,
-  charactersPerDrawing: 4000000,
-  expandedElements: 100000,
-  useNesting: 8,
-  filterPrimitives: 32,
-  filterOrMaskApplications: 64,
-  styleUnits: 65536,
-  dataUriDepth: 4,
-  mountedElements: 200000,
-  liveBlockUses: 2048,
-  liveRepeatedUses: 256,
-  particleCopiesPerBlock: 256,
-  mountDepth: 16,
-  imagePixelsEach: 16777216,
-  imagePixelsAll: 67108864,
-  filterSurface: 4,
-  savedBytes: 1048576,
-  sessionBytes: 4194304,
-  effectsPerBlock: 16,
-  liveTimers: 1024,
-  eventsPerTransaction: 100,
-  actionsPerTransaction: 4096,
-  deliveriesPerTransaction: 100,
-  markerCrossingsPerMs: 100,
-  formulaStepsPerTransaction: 1000000,
-  deadlinesPerMs: 1000,
-  formulaSource: 4096,
-  formulaTokens: 1024,
-  formulaDepth: 32,
-  formulaSteps: 65536,
-  formulaArrayItems: 1024,
-  formulaResultUnits: 65536,
-  dataDepth: 16,
-  computedPerBlock: 256,
-  attachActionsPerBlock: 256,
-  visitStack: 16,
-  choiceLinksPerScene: 16,
-  chapterScenes: 64,
-  clipTracks: 1024,
-  trackKeys: 4096,
-  markers: 256,
-  particlesPerEffect: 64,
-  physicsBodies: 32,
-  physicsContacts: 32,
-  audioSynths: 64,
-  soundCopies: 4,
-  oneShotSounds: 16,
-  seats: 16,
-  seatQuestions: 64,
-  quickReplies: 6,
-  intents: 64,
-  intentExamples: 16,
-  intentAnswers: 8,
-  personaChars: 1200,
-  characterView: 16,
-  answerChars: 500,
-  answerOptions: 32,
-  aiPerMinute: 20,
-  aiTimeoutMs: 30000,
-  gameMoves: 4096,
-  shellSlots: 16,
-  formEntries: 64,
-  tableColumns: 32,
-  pageHooks: 64,
-  picksLibraries: 16,
-  picksItemsPerLibrary: 256,
-  rightsPerKit: 32,
-  layoutsPerBlock: 12,
-  capabilityBundleBytes: 10000,
-  coreBundleBytes: 120000,
-  videoBytesAll: 268435456,
-  richTextRuns: 64,
-  flowParts: 16,
-  fieldStyles: 16,
-  themeTextStyles: 32,
-  moduleCallMs: 1000,
-  askWith: 16,
-  legalEntries: 256,
-  seatValues: 64,
-  turnValues: 16,
-  legalTriggers: 16,
-});
-const UP_TO = Object.freeze({
-  soundBytesEach: 16777216,
-  soundBytesAll: 67108864,
-  soundMsEach: 1800000,
-  imageBytesEach: 33554432,
-  fontBytesEach: 4194304,
-  fontBytesAll: 16777216,
-  videoBytesEach: 1073741824,
-  dataBytesEach: 33554432,
-  iconSetBytesEach: 8388608,
-  linePoints: 1024,
-  elementsPerDrawing: 100000,
-  charactersPerDrawing: 16000000,
-  expandedElements: 400000,
-  filterOrMaskApplications: 256,
-  styleUnits: 262144,
-  mountedElements: 1000000,
-  liveBlockUses: 16384,
-  liveRepeatedUses: 4096,
-  particleCopiesPerBlock: 4096,
-  imagePixelsEach: 67108864,
-  imagePixelsAll: 268435456,
-  filterSurface: 16,
-  savedBytes: 16777216,
-  sessionBytes: 67108864,
-  effectsPerBlock: 64,
-  computedPerBlock: 1024,
-  attachActionsPerBlock: 1024,
-  choiceLinksPerScene: 64,
-  chapterScenes: 1024,
-  clipTracks: 8192,
-  trackKeys: 65536,
-  markers: 4096,
-  particlesPerEffect: 512,
-  physicsBodies: 256,
-  physicsContacts: 256,
-  audioSynths: 256,
-  soundCopies: 16,
-  oneShotSounds: 64,
-  seats: 64,
-  seatQuestions: 256,
-  quickReplies: 12,
-  intents: 512,
-  intentExamples: 64,
-  intentAnswers: 32,
-  personaChars: 4000,
-  characterView: 64,
-  gameMoves: 65536,
-  shellSlots: 64,
-  formEntries: 256,
-  tableColumns: 128,
-  pageHooks: 256,
-  rightsPerKit: 128,
-  layoutsPerBlock: 48,
-  seatValues: 256,
-  turnValues: 64,
-  legalTriggers: 64,
-});
-const SVG_LIMIT = Object.freeze({
-  elementsPerDrawing: "elementsPerDrawing",
-  charactersPerDrawing: "charactersPerDrawing",
-  expandedElements: "expandedElements",
-  useNesting: "useNesting",
-  filterPrimitives: "filterPrimitives",
-  filterOrMaskApplications: "filterOrMaskApplications",
-  styleUnits: "styleUnits",
-  dataUriDepth: "dataUriDepth",
-});
-function raisedLimits(docs) {
-  const out = {};
-  for (const d of docs) for (const [id, v] of Object.entries(d?.limits || {})) {
-    if (!(id in UP_TO) || typeof v !== 'number' || v <= FORMAT[id] || v > UP_TO[id]) continue;
-    out[id] = Math.max(out[id] ?? 0, v);
-  }
-  return out;
-}
-function activeLimits(raised = {}) { return Object.freeze({ ...FORMAT, ...raised }); }
-function refusedLimits(raised, hostProfile) {
-  const allows = hostProfile?.limits || {};
-  return Object.entries(raised).filter(([id, v]) => (allows[id] ?? FORMAT[id]) < v).map(([id, v]) => ({ id, needs: v, allows: allows[id] ?? FORMAT[id] }));
-}
-function refusalMessage(refused) {
-  return refused.map(r => `${r.id} needs ${r.needs}, the host allows ${r.allows}`).join('; ');
-}
-
-exp.FORMAT = FORMAT; exp.UP_TO = UP_TO; exp.SVG_LIMIT = SVG_LIMIT;
-};
-defs[8] = function (exp) { 'use strict'; // engine/v2/src/story.mjs
-
-const { Engine, EngineFault, OFF } = req(9);
-const { FORMAT } = req(7);
-const { endsOf } = req(20);
+const { Engine, EngineFault, OFF } = req(6);
+const { FORMAT } = req(9);
+const { endsOf } = req(18);
 
 const fault = (code, msg, addr) => { throw new EngineFault(code, msg, addr); };
 class Player extends Engine {
@@ -1672,16 +759,16 @@ class Player extends Engine {
 
 exp.endsOf = endsOf; exp.Player = Player;
 };
-defs[9] = function (exp) { 'use strict'; // engine/v2/src/runtime.mjs
+defs[6] = function (exp) { 'use strict'; // engine/v2/src/runtime.mjs
 exp.overflowFault = overflowFault; exp.checkSetting = checkSetting; exp.urlProblem = urlProblem; exp.checkValue = checkValue; exp.wordingOf = wordingOf; exp.markTextColumns = markTextColumns; exp.checkContent = checkContent;
-const { channelOf } = req(10);
-const { parse, evaluate, renderTemplate, deepEqual, FormulaError, oneName, slotFormula } = req(11);
-const { Stored } = req(12);
-const { FORMAT, raisedLimits, activeLimits, refusedLimits, refusalMessage } = req(7);
-const { installLimits } = req(13);
-const { installCapabilities, packageNeeds, needsGap, capabilityNames, registered } = req(16);
-const { isTierObject, wordingAt, fieldShown, giveWayRules } = req(18);
-const { entryKey } = req(17);
+const { channelOf } = req(7);
+const { parse, evaluate, renderTemplate, deepEqual, FormulaError, oneName, slotFormula } = req(8);
+const { Stored } = req(10);
+const { FORMAT, raisedLimits, activeLimits, refusedLimits, refusalMessage } = req(9);
+const { installLimits } = req(11);
+const { installCapabilities, packageNeeds, needsGap, capabilityNames, registered } = req(14);
+const { isTierObject, wordingAt, fieldShown, giveWayRules } = req(16);
+const { entryKey } = req(15);
 const REFUSED_ONLY = new Set(['host', 'seat', 'widget']);
 const WHOLE_FIELD = /^\s*\{\{\s*[A-Za-z_][\w.]*\s*\}\}\s*$/;
 const scaled = (t) => t.lineRun === undefined && t.cap === undefined;
@@ -3211,9 +2298,9 @@ class Engine {
 
 exp.EngineFault = EngineFault; exp.AMBIENT_SETTINGS = AMBIENT_SETTINGS; exp.OFF = OFF; exp.HOST_OUTPUTS = HOST_OUTPUTS; exp.MOVES = MOVES; exp.own = own; exp.onBound = onBound; exp.CONTENT_TYPES = CONTENT_TYPES; exp.Engine = Engine;
 };
-defs[10] = function (exp) { 'use strict'; // engine/v2/src/binding-words.mjs
+defs[7] = function (exp) { 'use strict'; // engine/v2/src/binding-words.mjs
 exp.wordOf = wordOf; exp.channelOf = channelOf; exp.propOf = propOf; exp.isMirror = isMirror;
-const { parse } = req(11);
+const { parse } = req(8);
 const BINDING_WORDS = Object.freeze(['text', 'label', 'visible', 'variant', 'color', 'move', 'rotate', 'scale', 'opacity', 'draw']);
 function wordOf(o) {
   if (!o || typeof o !== 'object') return null;
@@ -3265,9 +2352,9 @@ function isMirror(b) {
 
 exp.BINDING_WORDS = BINDING_WORDS; exp.valueOf = valueOf;
 };
-defs[11] = function (exp) { 'use strict'; // engine/v2/src/formula.mjs
+defs[8] = function (exp) { 'use strict'; // engine/v2/src/formula.mjs
 exp.parse = parse; exp.mix = mix; exp.pluralForm = pluralForm; exp.pointOrder = pointOrder; exp.evaluate = evaluate; exp.printNumber = printNumber; exp.numberText = numberText; exp.parseTemplate = parseTemplate; exp.renderTemplate = renderTemplate; exp.oneName = oneName; exp.textSlot = textSlot; exp.slotFormula = slotFormula;
-const { FORMAT } = req(7);
+const { FORMAT } = req(9);
 class FormulaError extends Error {
   constructor(code, message) { super(message); this.code = code; }
 }
@@ -3752,10 +2839,194 @@ function slotFormula(decl, src) { return src; }
 
 exp.FormulaError = FormulaError; exp.FUNCTIONS = FUNCTIONS; exp.BUILTIN_ROOT = BUILTIN_ROOT; exp.deepEqual = deepEqual; exp.isTextDecl = isTextDecl; exp.quoteText = quoteText;
 };
-defs[12] = function (exp) { 'use strict'; // engine/v2/src/storage.mjs
+defs[9] = function (exp) { 'use strict'; // engine/v2/src/limits.mjs
+exp.raisedLimits = raisedLimits; exp.activeLimits = activeLimits; exp.refusedLimits = refusedLimits; exp.refusalMessage = refusalMessage;
+const FORMAT = Object.freeze({
+  soundBytesEach: 200000,
+  soundBytesAll: 2000000,
+  soundMsEach: 30000,
+  imageBytesEach: 8388608,
+  fontBytesEach: 524288,
+  fontBytesAll: 1048576,
+  videoBytesEach: 67108864,
+  dataBytesEach: 8388608,
+  iconSetBytesEach: 1048576,
+  linePoints: 512,
+  dataTableRows: 1024,
+  listItems: 1024,
+  elementsPerDrawing: 30000,
+  charactersPerDrawing: 4000000,
+  expandedElements: 100000,
+  useNesting: 8,
+  filterPrimitives: 32,
+  filterOrMaskApplications: 64,
+  styleUnits: 65536,
+  dataUriDepth: 4,
+  mountedElements: 200000,
+  liveBlockUses: 2048,
+  liveRepeatedUses: 256,
+  particleCopiesPerBlock: 256,
+  mountDepth: 16,
+  imagePixelsEach: 16777216,
+  imagePixelsAll: 67108864,
+  filterSurface: 4,
+  savedBytes: 1048576,
+  sessionBytes: 4194304,
+  effectsPerBlock: 16,
+  liveTimers: 1024,
+  eventsPerTransaction: 100,
+  actionsPerTransaction: 4096,
+  deliveriesPerTransaction: 100,
+  markerCrossingsPerMs: 100,
+  formulaStepsPerTransaction: 1000000,
+  deadlinesPerMs: 1000,
+  formulaSource: 4096,
+  formulaTokens: 1024,
+  formulaDepth: 32,
+  formulaSteps: 65536,
+  formulaArrayItems: 1024,
+  formulaResultUnits: 65536,
+  dataDepth: 16,
+  computedPerBlock: 256,
+  attachActionsPerBlock: 256,
+  visitStack: 16,
+  choiceLinksPerScene: 16,
+  chapterScenes: 64,
+  clipTracks: 1024,
+  trackKeys: 4096,
+  markers: 256,
+  particlesPerEffect: 64,
+  physicsBodies: 32,
+  physicsContacts: 32,
+  audioSynths: 64,
+  soundCopies: 4,
+  oneShotSounds: 16,
+  seats: 16,
+  seatQuestions: 64,
+  quickReplies: 6,
+  intents: 64,
+  intentExamples: 16,
+  intentAnswers: 8,
+  personaChars: 1200,
+  characterView: 16,
+  answerChars: 500,
+  answerOptions: 32,
+  aiPerMinute: 20,
+  aiTimeoutMs: 30000,
+  gameMoves: 4096,
+  shellSlots: 16,
+  formEntries: 64,
+  tableColumns: 32,
+  pageHooks: 64,
+  picksLibraries: 16,
+  picksItemsPerLibrary: 256,
+  rightsPerKit: 32,
+  layoutsPerBlock: 12,
+  capabilityBundleBytes: 10000,
+  coreBundleBytes: 120000,
+  videoBytesAll: 268435456,
+  richTextRuns: 64,
+  flowParts: 16,
+  fieldStyles: 16,
+  themeTextStyles: 32,
+  moduleCallMs: 1000,
+  askWith: 16,
+  legalEntries: 256,
+  seatValues: 64,
+  turnValues: 16,
+  legalTriggers: 16,
+});
+const UP_TO = Object.freeze({
+  soundBytesEach: 16777216,
+  soundBytesAll: 67108864,
+  soundMsEach: 1800000,
+  imageBytesEach: 33554432,
+  fontBytesEach: 4194304,
+  fontBytesAll: 16777216,
+  videoBytesEach: 1073741824,
+  dataBytesEach: 33554432,
+  iconSetBytesEach: 8388608,
+  linePoints: 1024,
+  elementsPerDrawing: 100000,
+  charactersPerDrawing: 16000000,
+  expandedElements: 400000,
+  filterOrMaskApplications: 256,
+  styleUnits: 262144,
+  mountedElements: 1000000,
+  liveBlockUses: 16384,
+  liveRepeatedUses: 4096,
+  particleCopiesPerBlock: 4096,
+  imagePixelsEach: 67108864,
+  imagePixelsAll: 268435456,
+  filterSurface: 16,
+  savedBytes: 16777216,
+  sessionBytes: 67108864,
+  effectsPerBlock: 64,
+  computedPerBlock: 1024,
+  attachActionsPerBlock: 1024,
+  choiceLinksPerScene: 64,
+  chapterScenes: 1024,
+  clipTracks: 8192,
+  trackKeys: 65536,
+  markers: 4096,
+  particlesPerEffect: 512,
+  physicsBodies: 256,
+  physicsContacts: 256,
+  audioSynths: 256,
+  soundCopies: 16,
+  oneShotSounds: 64,
+  seats: 64,
+  seatQuestions: 256,
+  quickReplies: 12,
+  intents: 512,
+  intentExamples: 64,
+  intentAnswers: 32,
+  personaChars: 4000,
+  characterView: 64,
+  gameMoves: 65536,
+  shellSlots: 64,
+  formEntries: 256,
+  tableColumns: 128,
+  pageHooks: 256,
+  rightsPerKit: 128,
+  layoutsPerBlock: 48,
+  seatValues: 256,
+  turnValues: 64,
+  legalTriggers: 64,
+});
+const SVG_LIMIT = Object.freeze({
+  elementsPerDrawing: "elementsPerDrawing",
+  charactersPerDrawing: "charactersPerDrawing",
+  expandedElements: "expandedElements",
+  useNesting: "useNesting",
+  filterPrimitives: "filterPrimitives",
+  filterOrMaskApplications: "filterOrMaskApplications",
+  styleUnits: "styleUnits",
+  dataUriDepth: "dataUriDepth",
+});
+function raisedLimits(docs) {
+  const out = {};
+  for (const d of docs) for (const [id, v] of Object.entries(d?.limits || {})) {
+    if (!(id in UP_TO) || typeof v !== 'number' || v <= FORMAT[id] || v > UP_TO[id]) continue;
+    out[id] = Math.max(out[id] ?? 0, v);
+  }
+  return out;
+}
+function activeLimits(raised = {}) { return Object.freeze({ ...FORMAT, ...raised }); }
+function refusedLimits(raised, hostProfile) {
+  const allows = hostProfile?.limits || {};
+  return Object.entries(raised).filter(([id, v]) => (allows[id] ?? FORMAT[id]) < v).map(([id, v]) => ({ id, needs: v, allows: allows[id] ?? FORMAT[id] }));
+}
+function refusalMessage(refused) {
+  return refused.map(r => `${r.id} needs ${r.needs}, the host allows ${r.allows}`).join('; ');
+}
 
-const { checkValue } = req(9);
-const { storageGrant, restoredRecord } = req(13);
+exp.FORMAT = FORMAT; exp.UP_TO = UP_TO; exp.SVG_LIMIT = SVG_LIMIT;
+};
+defs[10] = function (exp) { 'use strict'; // engine/v2/src/storage.mjs
+
+const { checkValue } = req(6);
+const { storageGrant, restoredRecord } = req(11);
 const SCOPES = ['session', 'saved'];
 const clone = (v) => (v === undefined ? undefined : structuredClone(v));
 const PARTITION = /^[A-Za-z0-9._-]{1,128}$/;
@@ -3848,10 +3119,10 @@ class Stored {
 
 exp.Stored = Stored;
 };
-defs[13] = function (exp) { 'use strict'; // engine/v2/src/limits-runtime.mjs
+defs[11] = function (exp) { 'use strict'; // engine/v2/src/limits-runtime.mjs
 exp.imageSize = imageSize; exp.imagePixels = imagePixels; exp.storageGrant = storageGrant; exp.restoredRecord = restoredRecord; exp.installLimits = installLimits; exp.jsonUnits = jsonUnits; exp.bboxOf = bboxOf; exp.filterSurface = filterSurface; exp.watchArt = watchArt;
-const { admitHost, budgetResults, expired } = req(14);
-const { parseTransform } = req(15);
+const { admitHost, budgetResults, expired } = req(12);
+const { parseTransform } = req(13);
 let EngineFault = class extends Error { constructor(code, m, a) { super(`${code} ${a || ''}: ${m}`); this.code = code; this.address = a; } };
 const fault = (code, msg, addr) => { throw new EngineFault(code, msg, addr); };
 const utf8 = (s) => new TextEncoder().encode(s).length;
@@ -4167,7 +3438,7 @@ function watchArt(drawing) {
 
 
 };
-defs[14] = function (exp) { 'use strict'; // engine/v2/src/host-profile.mjs
+defs[12] = function (exp) { 'use strict'; // engine/v2/src/host-profile.mjs
 exp.profileProblems = profileProblems; exp.effectiveGrants = effectiveGrants; exp.steeringCeiling = steeringCeiling; exp.readableFloor = readableFloor; exp.hostBudget = hostBudget; exp.budgetResults = budgetResults; exp.packageMeasures = packageMeasures; exp.hostOptions = hostOptions; exp.expired = expired; exp.admitHost = admitHost; exp.experienceResources = experienceResources;
 const STEERING = ['none', 'ask', 'guided', 'open'];
 const READABLE_DEFAULT = 12;
@@ -4326,7 +3597,7 @@ function experienceResources(e) {
 
 exp.STEERING = STEERING; exp.READABLE_DEFAULT = READABLE_DEFAULT;
 };
-defs[15] = function (exp) { 'use strict'; // engine/v2/src/transform.mjs
+defs[13] = function (exp) { 'use strict'; // engine/v2/src/transform.mjs
 exp.parseTransform = parseTransform;
 const IDENTITY = [1, 0, 0, 1, 0, 0];
 const mul = (m, n) => [m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1], m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3], m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5]];
@@ -4350,10 +3621,10 @@ function parseTransform(s) {
 
 exp.IDENTITY = IDENTITY; exp.mul = mul;
 };
-defs[16] = function (exp) { 'use strict'; // engine/v2/src/capabilities.mjs
+defs[14] = function (exp) { 'use strict'; // engine/v2/src/capabilities.mjs
 exp.register = register; exp.unregister = unregister; exp.registered = registered; exp.packageNeeds = packageNeeds; exp.capabilityNames = capabilityNames; exp.timerView = timerView; exp.makeDoor = makeDoor; exp.makePageDoor = makePageDoor; exp.installCapabilities = installCapabilities; exp.needsGap = needsGap;
-const { entryKey } = req(17);
-const { slotFormula, quoteText } = req(11);
+const { entryKey } = req(15);
+const { slotFormula, quoteText } = req(8);
 const registry = new Map();
 function register(cap) {
   if (!cap || typeof cap.id !== 'string') throw new Error('a capability needs an id');
@@ -4651,7 +3922,7 @@ class Installed {
 
 exp.OWNED_FIELDS = OWNED_FIELDS; exp.OWNED_EFFECT_KINDS = OWNED_EFFECT_KINDS; exp.OWNED_BINDING_KEYS = OWNED_BINDING_KEYS; exp.OWNED_CONTENT_TYPES = OWNED_CONTENT_TYPES; exp.HUMAN_ONLY_CALLS = HUMAN_ONLY_CALLS; exp.TEXT_BINDING_KEYS = TEXT_BINDING_KEYS; exp.TEXT_CALL_INPUTS = TEXT_CALL_INPUTS;
 };
-defs[17] = function (exp) { 'use strict'; // engine/v2/src/entry-key.mjs
+defs[15] = function (exp) { 'use strict'; // engine/v2/src/entry-key.mjs
 exp.entryKey = entryKey;
 const known = new WeakMap();
 function walk(node, at, map) {
@@ -4670,9 +3941,9 @@ function entryKey(owner, entry) {
 
 
 };
-defs[18] = function (exp) { 'use strict'; // engine/v2/src/tiers.mjs
+defs[16] = function (exp) { 'use strict'; // engine/v2/src/tiers.mjs
 exp.isTierObject = isTierObject; exp.wordingAt = wordingAt; exp.wordingsDown = wordingsDown; exp.fieldShown = fieldShown; exp.tierEntry = tierEntry; exp.chooseTier = chooseTier; exp.badSteps = badSteps; exp.giveWayRules = giveWayRules; exp.ladderOrder = ladderOrder; exp.runLadder = runLadder;
-const { inRange, rangeOf } = req(19);
+const { inRange, rangeOf } = req(17);
 const TIERS = ['short', 'medium', 'rich'];
 const tierRank = (t) => TIERS.indexOf(t);
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -4777,7 +4048,7 @@ function runLadder(rules, { holds, apply, related = () => false, maxMoves = 512 
 
 exp.TIERS = TIERS; exp.tierRank = tierRank; exp.STEPS = STEPS; exp.STEPS_BY_KIND = STEPS_BY_KIND; exp.FIT_STEPS = FIT_STEPS; exp.DEFAULT_FIT_STEPS = DEFAULT_FIT_STEPS;
 };
-defs[19] = function (exp) { 'use strict'; // engine/v2/src/layout.mjs
+defs[17] = function (exp) { 'use strict'; // engine/v2/src/layout.mjs
 exp.activeShape = activeShape; exp.parseSize = parseSize; exp.inRange = inRange; exp.shapeMapsOf = shapeMapsOf; exp.rangeOf = rangeOf; exp.applies = applies; exp.viewBoxAspect = viewBoxAspect; exp.directionOf = directionOf; exp.chooseLayout = chooseLayout; exp.aspectsOf = aspectsOf; exp.axisOptions = axisOptions; exp.inputAxes = inputAxes; exp.inputPicks = inputPicks; exp.picksFor = picksFor; exp.pickedLayout = pickedLayout; exp.trueSizes = trueSizes; exp.nearestSize = nearestSize; exp.resizedBox = resizedBox; exp.sizeValue = sizeValue;
 const STANDARD_SHAPES = {
   skyscraper: { maxAspect: 0.45 },
@@ -4949,7 +4220,7 @@ function sizeValue(v) {
 
 exp.STANDARD_SHAPES = STANDARD_SHAPES;
 };
-defs[20] = function (exp) { 'use strict'; // engine/v2/src/ends.mjs
+defs[18] = function (exp) { 'use strict'; // engine/v2/src/ends.mjs
 exp.endsOf = endsOf;
 function endsOf(story, links = story?.links || [], shellId = null) {
   if (Array.isArray(story?.ends)) return story.ends;
@@ -4961,24 +4232,1367 @@ function endsOf(story, links = story?.links || [], shellId = null) {
 
 
 };
-defs[21] = function (exp) { 'use strict'; // engine/v2/src/drawing.mjs
+defs[19] = function (exp) { 'use strict'; // engine/v2/src/host.mjs
+exp.hostPicture = hostPicture; exp.modulePort = modulePort; exp.parseHookMark = parseHookMark; exp.marksOf = marksOf; exp.findHooks = findHooks; exp.pagePort = pagePort; exp.aiPort = aiPort; exp.hostApi = hostApi;
+const { checkValue, checkContent } = req(6);
+const { FORMAT } = req(9);
+function hostPicture(b, type, limits) {
+  const no = (m) => refuse('E-HOST-PICTURE', `the picture ${m}`);
+  if (!(b instanceof Uint8Array)) no('is bytes: give a Uint8Array');
+  if (b.length > limits.imageBytesEach) no(`is ${b.length} bytes, over imageBytesEach ${limits.imageBytesEach}`);
+  const at = (i) => b[i] ?? 0; const be = (i) => at(i) * 256 + at(i + 1); const le = (i, n) => { let v = 0; for (let k = n - 1; k >= 0; k--) v = v * 256 + at(i + k); return v; };
+  const tag = (i, t) => String.fromCharCode(at(i), at(i + 1), at(i + 2), at(i + 3)) === t;
+  let shows = null; let w = 0; let h = 0;
+  if (at(0) === 137 && tag(1, 'PNG\r') && tag(12, 'IHDR')) { shows = 'image/png'; w = be(16) * 65536 + be(18); h = be(20) * 65536 + be(22); }
+  else if (at(0) === 255 && at(1) === 216) {
+    shows = 'image/jpeg';
+    for (let i = 2; i + 8 < b.length && at(i) === 255;) {
+      const m = at(i + 1);
+      if (m === 255) { i++; continue; }
+      if (m >= 192 && m <= 207 && m !== 196 && m !== 200 && m !== 204) { h = be(i + 5); w = be(i + 7); break; }
+      i += m === 1 || (m >= 208 && m <= 216) ? 2 : 2 + be(i + 2);
+    }
+  } else if (tag(0, 'RIFF') && tag(8, 'WEBP')) {
+    shows = 'image/webp';
+    if (tag(12, 'VP8X')) { w = 1 + le(24, 3); h = 1 + le(27, 3); }
+    else if (tag(12, 'VP8L')) { w = 1 + (le(21, 2) & 16383); h = 1 + (le(22, 4) >> 6 & 16383); }
+    else if (tag(12, 'VP8 ')) { w = le(26, 2) & 16383; h = le(28, 2) & 16383; }
+  }
+  if (!['image/png', 'image/jpeg', 'image/webp'].includes(type)) no(`type ${JSON.stringify(String(type)).slice(0, 40)} is not image/png, image/jpeg or image/webp (never SVG or code)`);
+  if (shows !== type) no(`bytes are ${shows ?? 'no PNG, JPEG or WebP'}, not ${type}`);
+  if (!(w > 0 && h > 0)) no('bytes give no width and height');
+  if (w * h > limits.imagePixelsEach) no(`is ${w} x ${h} pixels, over imagePixelsEach ${limits.imagePixelsEach}`);
+  let t = '';
+  for (let i = 0; i < b.length; i += 32768) t += String.fromCharCode.apply(null, b.subarray(i, i + 32768));
+  return `data:${type};base64,${btoa(t)}`;
+}
+const MODULE_PORTS = new WeakSet();
+function modulePort({ lock, maxMs, maxSteps, clock } = {}) {
+  if (!lock || typeof lock !== 'object' || Array.isArray(lock)) refuse('E-TYPE', 'modulePort takes {lock: {"<name>@<version>": "sha256:..."}}');
+  for (const [k, v] of Object.entries(lock)) if (!/^([a-z][a-z0-9]*(-[a-z0-9]+)*\.)?[a-z][a-z0-9]*(-[a-z0-9]+)*@.+$/.test(k) || !/^sha256:[0-9a-f]{64}$/.test(String(v))) refuse('E-TYPE', `lock entry ${k} is not <name>@<version>: sha256:<hex>`);
+  const limits = {};
+  if (maxMs !== undefined) { if (!(maxMs >= 1 && maxMs <= 1000)) refuse('E-RANGE', 'maxMs is 1..1000'); limits.maxMs = maxMs; }
+  if (maxSteps !== undefined) { if (!(Number.isInteger(maxSteps) && maxSteps >= 1 && maxSteps <= 10000000)) refuse('E-RANGE', 'maxSteps is 1..10,000,000'); limits.maxSteps = maxSteps; }
+  if (clock !== undefined && typeof clock !== 'function') refuse('E-TYPE', 'clock is a function');
+  const port = Object.freeze({ kind: 'module-port', lock: Object.freeze({ ...lock }), limits: Object.freeze(limits), clock: clock ?? null });
+  MODULE_PORTS.add(port);
+  return port;
+}
+const isModulePort = (p) => MODULE_PORTS.has(p);
+const HOOK_KINDS = Object.freeze(['spot', 'surface', 'target', 'control', 'grab', 'obstacle']);
+const HOOK_NAME = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+function parseHookMark(value) {
+  const hooks = []; const bad = [];
+  const tokens = String(value ?? '').split(/\s+/).filter(Boolean);
+  if (!tokens.length) bad.push('');
+  for (const t of tokens) {
+    const parts = t.split(':');
+    if (parts.length === 2 && HOOK_KINDS.includes(parts[0]) && HOOK_NAME.test(parts[1])) hooks.push({ kind: parts[0], name: parts[1] });
+    else bad.push(t);
+  }
+  return { hooks, bad };
+}
+function marksOf(el) {
+  const v = el.getAttribute?.('data-hsvg-hook');
+  return v != null ? parseHookMark(v).hooks : [];
+}
+function findHooks(root, wanted) {
+  const selector = '[data-hsvg-hook]';
+  const byName = new Map(wanted.map(w => [w.name, { kind: w.kind, elements: [] }]));
+  for (const el of root.querySelectorAll(selector)) {
+    for (const m of marksOf(el)) {
+      const w = byName.get(m.name);
+      if (w && w.kind === m.kind && !w.elements.includes(el)) w.elements.push(el);
+    }
+  }
+  const out = {};
+  for (const [name, w] of byName) {
+    const n = w.elements.length;
+    const status = w.kind === 'obstacle' ? 'found' : n === 1 ? 'found' : n === 0 ? 'missing' : 'ambiguous';
+    out[name] = { status, elements: status === 'found' ? w.elements : [] };
+  }
+  return out;
+}
+function pagePort(doc, { root = null } = {}) {
+  if (!doc || typeof doc.querySelectorAll !== 'function') refuse('E-TYPE', 'pagePort takes the host page\'s document');
+  const scope = root || doc;
+  return Object.freeze({
+    kind: 'page-port',
+    document: doc,
+    root: scope,
+    find: (wanted) => findHooks(scope, wanted),
+  });
+}
+const SOURCE = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+function aiPort(sources = {}) {
+  if (sources === null || typeof sources !== 'object' || Array.isArray(sources)) refuse('E-TYPE', 'aiPort takes {name: async function}');
+  const own = new Map();
+  for (const [name, fn] of Object.entries(sources)) {
+    if (!SOURCE.test(name) || name.length > 48) refuse('E-NAME-SHAPE', `${name} is not an AI source name`);
+    if (typeof fn !== 'function') refuse('E-TYPE', `the AI source ${name} is not a function`);
+    own.set(name, fn);
+  }
+  return Object.freeze({
+    kind: 'ai-port',
+    names: () => [...own.keys()],
+    has: (name) => own.has(name),
+    call(name, request, signal) {
+      const fn = own.get(name);
+      if (!fn) return Promise.reject(Object.assign(new Error(`no AI source ${name}`), { code: 'E-REF-UNKNOWN' }));
+      const deep = (x) => { if (x && typeof x === 'object') { for (const v of Object.values(x)) deep(v); Object.freeze(x); } return x; };
+      try { return Promise.resolve(fn(deep(structuredClone(request)), signal)); } catch (e) { return Promise.reject(e); }
+    },
+  });
+}
+const BUILT_IN = ['entered', 'ended', 'openUrl', 'firstInput', 'hookHealth'];
+const PREFIXED = ['changed'];
+const PARTITION = /^[A-Za-z0-9._-]{1,128}$/;
+const refuse = (code, message) => { const e = new Error(message); e.code = code; throw e; };
+const frozen = (x) => Object.freeze(structuredClone(x));
+const own = (x, name) => { try { return structuredClone(x); } catch { return refuse('E-TYPE', `${name}: not a JSON value`); } };
+function hostApi(player, { onError = null, test = false, onRestart = null } = {}) {
+  const doc = player.exp.doc;
+  const inputs = doc.inputs || {};
+  const outputs = doc.outputs || {};
+  const subs = new Map();
+  const pauses = new Set();
+  let delivering = false;
+  let destroyed = false;
+  const pending = [];
+  const alive = () => {
+    if (destroyed) refuse('E-HOST-CLOSED', 'the player is destroyed');
+    if (player.stopped) refuse('E-HOST-CLOSED', `the player stopped: ${player.stopped.code || 'fault'} ${player.stopped.message}`);
+  };
+  const error = (e, source) => { const d = { code: e.code || null, message: e.message, source }; if (onError) onError(d); else console.error(d); };
+  const change = (fn) => { alive(); if (delivering) { pending.push(fn); return undefined; } return fn(); };
+  const check = (r) => { if (r && r.ok === false) refuse(r.fault.code, r.fault.message); return r; };
+  player.onDeliveryError = (d) => { if (onError) onError(d); else console.error(d); };
+  const shellOuts = Object.entries(player.exp.shell?.doc?.outputs || {}).filter(([n, o]) => o?.kind === 'event' && !outputs[n]).map(([n]) => n);
+  const heard = [];
+  if (shellOuts.length && typeof player.onOutcome === 'function') {
+    const onOutcome = player.onOutcome.bind(player);
+    player.onOutcome = (address, name, payload) => { if (address === player.shellId && shellOuts.includes(name)) heard.push([player.state.outputs, name, { ...(payload ?? {}) }]); return onOutcome(address, name, payload); };
+  }
+  player.on(({ outputs: outs, deliveries = [] }) => {
+    delivering = true;
+    try {
+      const health = deliveries.filter(d => d.kind === 'page' && d.op === 'health').map(d => ['hookHealth', d.status]);
+      const changed = deliveries.filter(d => d.kind === 'input' && inputs[d.name]?.contentType !== 'freeText').map(d => ['hsvg.changed', { name: d.name, value: d.value, by: d.source }]);
+      for (const [name, detail] of [...outs.map(({ name: n, ...rest }) => [n, rest]), ...heard.splice(0).filter(([tx]) => tx === outs).map(([, n, d]) => [n, d]), ...health, ...changed]) {
+        for (const fn of subs.get(name) || []) {
+          try { fn({ name, detail: frozen(detail) }); } catch (e) { error(e, 'listener'); }
+        }
+      }
+    } finally { delivering = false; }
+    if (pending.length) queueMicrotask(() => { while (pending.length) { const fn = pending.shift(); try { fn(); } catch (e) { error(e, 'host'); } } });
+  });
+  const api = {
+    on(name, fn) {
+      alive();
+      if (typeof name === 'string' && name.startsWith('hsvg.')) {
+        const bare = name.slice(5);
+        if (PREFIXED.includes(bare)) { if (!subs.has(name)) subs.set(name, new Set()); subs.get(name).add(fn); return () => subs.get(name)?.delete(fn); }
+        if (!BUILT_IN.includes(bare)) refuse('E-REF-UNKNOWN', `${name} is not a built-in output (${[...BUILT_IN, ...PREFIXED].join(', ')})`);
+        name = bare;
+      }
+      const out = outputs[name];
+      if (!BUILT_IN.includes(name) && !shellOuts.includes(name) && !(out && (out.kind === 'event' || out.kind === 'record'))) refuse('E-REF-UNKNOWN', `${name} is not an output event or record of the experience or its shell`);
+      if (!subs.has(name)) subs.set(name, new Set());
+      subs.get(name).add(fn);
+      return () => subs.get(name)?.delete(fn);
+    },
+    read(name) {
+      alive();
+      const out = outputs[name];
+      if (out?.kind === 'result') return structuredClone(player.eval('experience', out.value));
+      const inp = inputs[name];
+      if (inp && inp.kind !== 'trigger') {
+        if (inp.contentType === 'freeText') refuse('E-HOST-PRIVATE', `${name} is free text a person typed`);
+        return structuredClone(player.state.blocks.experience.inputs[name]);
+      }
+      if (doc.values?.[name] || doc.computed?.[name]) refuse('E-HOST-PRIVATE', `${name} is inside the experience`);
+      refuse('E-REF-UNKNOWN', `${name} is not an output or input of the experience`);
+      return undefined;
+    },
+    set(name, given) {
+      alive();
+      const inp = inputs[name];
+      if (!inp || inp.kind === 'trigger') refuse(inp ? 'E-TYPE' : 'E-REF-UNKNOWN', `${name} is not a content field or knob of the experience`);
+      const value = own(given, name);
+      if (inp.contentType === 'picture' && /^host:/.test(value)) refuse('E-TYPE', `${name}: only player.picture names a host picture`);
+      const bad = inp.kind === 'content' ? checkContent(inp, value) : checkValue(inp, value);
+      if (bad) { if (player.caps?.inputHook('refused', name, inp, player.dataView()) !== undefined) change(() => player.setInput(name, value, 'host')); refuse(bad[0], `${name}: ${bad[1]}`); }
+      return change(() => check(player.setInput(name, value, 'host')));
+    },
+    emit(name, given = {}) {
+      alive();
+      const inp = inputs[name];
+      if (inp?.kind !== 'trigger') refuse('E-REF-UNKNOWN', `${name} is not a trigger of the experience`);
+      const payload = own(given, name);
+      if (Object.keys(payload).length && !inp.payload) refuse('E-TYPE', `the trigger ${name} takes no payload`);
+      if (inp.payload) { const bad = checkValue(inp.payload, payload); if (bad) refuse(bad[0], `${name}: ${bad[1]}`); }
+      let done, fail;
+      const p = new Promise((y, n) => { done = y; fail = n; });
+      p.catch(() => {});
+      change(() => {
+        try {
+          const r = check(player.trigger(name, payload, 'host'));
+          done(frozen({ name, payload, outputs: r.outputs.filter(o => BUILT_IN.includes(o.name) || outputs[o.name]).map(({ name: n, ...d }) => ({ name: n, detail: d })) }));
+        } catch (e) { fail(e); throw e; }
+      });
+      return p;
+    },
+    picture(name, bytes, type) {
+      alive();
+      const inp = inputs[name];
+      if (!inp || inp.kind !== 'content') refuse('E-REF-UNKNOWN', `${name} is not a content field of the experience`);
+      if (inp.contentType !== 'picture') refuse('E-TYPE', `${name} holds ${inp.contentType ?? inp.type}, not a picture`);
+      const uri = hostPicture(ArrayBuffer.isView(bytes) ? new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength).slice() : bytes, type, player.limits || FORMAT);
+      return change(() => check(player.hostPicture(name, uri)));
+    },
+    timeLimits(factor) { return change(() => check(player.applySettings([['timeLimits', factor]], 'host'))); },
+    mute(on = true) {
+      if (on !== true && on !== false) refuse('E-TYPE', 'mute takes true or false');
+      if (!destroyed) player.hostMute?.(on);
+    },
+    pause(reason) { alive(); pauses.add(String(reason)); change(() => player.setPause('host', true)); },
+    resume(reason) { alive(); pauses.delete(String(reason)); if (!pauses.size) change(() => player.setPause('host', false)); },
+    get paused() { return pauses.size > 0; },
+    scene(slot = 'stage') { alive(); if (slot !== 'stage') refuse('E-REF-UNKNOWN', `no stage slot ${slot}`); return player.scene; },
+    seat(seatId, filler) {
+      alive();
+      if (!player.seats) refuse('E-NEEDS-MISSING', 'seats need the seats capability, which is not installed');
+      return change(() => { const r = player.seats.host(String(seatId), String(filler)); if (!r.ok) refuse(r.error.code, r.error.message); return r; });
+    },
+    restart() { return change(() => { const r = check(player.restart()); onRestart?.(); return r; }); },
+    clearStorage() { return change(() => { player.clearStorage(); const r = check(player.restart()); onRestart?.(); return r; }); },
+    setPartition(id) {
+      alive();
+      if (typeof id !== 'string' || !PARTITION.test(id)) refuse('E-RANGE', 'a partition is 1 to 128 of A-Z a-z 0-9 . _ -');
+      return change(() => { player.opts.storage = { ...(player.opts.storage || {}), partition: id }; const r = check(player.restart()); onRestart?.(); return r; });
+    },
+    destroy() { destroyed = true; subs.clear(); pending.length = 0; },
+  };
+  if (test) api.internal = player;
+  return api;
+}
+
+exp.isModulePort = isModulePort; exp.HOOK_KINDS = HOOK_KINDS;
+};
+defs[20] = function (exp) { 'use strict'; // engine/v2/src/error-detail.mjs
+
+const errorDetail = (d) => {
+  const x = d !== null && typeof d === 'object' ? d : { message: d };
+  return { ...x, code: typeof x.code === 'string' && x.code ? x.code : 'E-HOST-ERROR', message: String(x.message ?? '') };
+};
+
+exp.errorDetail = errorDetail;
+};
+defs[21] = function (exp) { 'use strict'; // engine/v2/src/members.mjs
+exp.sha256 = sha256; exp.memberFindings = memberFindings;
+const K = new Uint32Array([
+  0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
+  0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+  0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+  0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+  0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08,
+  0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+  0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2]);
+function sha256(bytes) {
+  const n = bytes.length;
+  const total = Math.ceil((n + 9) / 64) * 64;
+  const m = new Uint8Array(total);
+  m.set(bytes);
+  m[n] = 0x80;
+  const bits = n * 8;
+  const view = new DataView(m.buffer);
+  view.setUint32(total - 8, Math.floor(bits / 0x100000000));
+  view.setUint32(total - 4, bits >>> 0);
+  const h = new Uint32Array([0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]);
+  const w = new Uint32Array(64);
+  const rot = (x, r) => (x >>> r) | (x << (32 - r));
+  for (let off = 0; off < total; off += 64) {
+    for (let i = 0; i < 16; i++) w[i] = view.getUint32(off + i * 4);
+    for (let i = 16; i < 64; i++) {
+      const a = w[i - 15]; const b = w[i - 2];
+      w[i] = (w[i - 16] + (rot(a, 7) ^ rot(a, 18) ^ (a >>> 3)) + w[i - 7] + (rot(b, 17) ^ rot(b, 19) ^ (b >>> 10))) >>> 0;
+    }
+    let [a, b, c, d, e, f, g, k] = h;
+    for (let i = 0; i < 64; i++) {
+      const t1 = (k + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) >>> 0;
+      const t2 = ((rot(a, 2) ^ rot(a, 13) ^ rot(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
+      k = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    h[0] += a; h[1] += b; h[2] += c; h[3] += d; h[4] += e; h[5] += f; h[6] += g; h[7] += k;
+  }
+  return `sha256:${[...h].map(x => x.toString(16).padStart(8, '0')).join('')}`;
+}
+function memberFindings(members, paths, digestOf) {
+  const out = [];
+  const listed = members && typeof members === 'object' && !Array.isArray(members) ? members : {};
+  const have = new Set(paths.filter(p => p !== 'package.json'));
+  for (const rel of Object.keys(listed)) if (!have.has(rel)) out.push({ code: 'E-PACKAGE-MEMBER', path: `/members/${rel}`, message: `${rel} is listed but missing from the package` });
+  for (const rel of have) if (!Object.hasOwn(listed, rel)) out.push({ code: 'E-PACKAGE-MEMBER', path: `/members/${rel}`, message: `${rel} is in the package but not in members` });
+  for (const [rel, digest] of Object.entries(listed)) if (have.has(rel) && digestOf(rel) !== digest) out.push({ code: 'E-PACKAGE-DIGEST', path: `/members/${rel}`, message: `${rel} does not match its digest` });
+  return out;
+}
+
+
+};
+defs[22] = function (exp) { 'use strict'; // engine/v2/src/asset.mjs
+exp.makeAsset = makeAsset; exp.readAsset = readAsset; exp.readTrustedAsset = readTrustedAsset; exp.assetPackage = assetPackage;
+const { sha256, memberFindings } = req(21);
+const ASSET_FORMAT = 'hsvg/2.0';
+const enc = new TextEncoder();
+const NO_MARKUP = (json) => json.replace(/[<>&]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
+const fault = (code, message, extra = {}) => Object.assign(new Error(message), { code, ...extra });
+const sorted = (o) => Object.fromEntries(Object.keys(o).sort().map(k => [k, o[k]]));
+function rootTagEnd(text) {
+  const m = /^(?:﻿)?(?:<\?xml[^?]*\?>\s*)?(?:<!--[\s\S]*?-->\s*)*<svg\b(?:[^>"']|"[^"]*"|'[^']*')*>/.exec(text);
+  return m ? m[0].length : -1;
+}
+const META = /^\r?\n<metadata>([^<]*)<\/metadata>/;
+function makeAsset({ id, drawing, files }) {
+  const text = files[drawing];
+  if (typeof text !== 'string') throw fault('E-ASSET', `the asset's drawing ${drawing} is not one of its files`);
+  const at = rootTagEnd(text);
+  if (at < 0) throw fault('E-ASSET', `${drawing} does not start with an <svg> root element`);
+  if (/<metadata\b/.test(text)) throw fault('E-ASSET', `${drawing} already has a tool record (<metadata>); the drawing of an asset carries none, the packer writes it`);
+  const members = sorted(Object.fromEntries(Object.entries(files).map(([p, t]) => [p, sha256(enc.encode(t))])));
+  const rest = sorted(Object.fromEntries(Object.entries(files).filter(([p]) => p !== drawing)));
+  const record = { asset: { format: ASSET_FORMAT, id, drawing, members, files: rest } };
+  const nl = text.slice(at).startsWith('\r\n') ? '\r\n' : '\n';
+  return `${text.slice(0, at)}${nl}<metadata>${NO_MARKUP(JSON.stringify(record))}</metadata>${text.slice(at)}`;
+}
+function readAsset(svg, { maxBytes = Infinity } = {}) { return read(svg, maxBytes, true); }
+function readTrustedAsset(svg, { maxBytes = Infinity } = {}) { return read(svg, maxBytes, false); }
+const DIGEST = /^sha256:[0-9a-f]{64}$/;
+function read(svg, maxBytes, hash) {
+  if (typeof svg !== 'string') throw fault('E-ASSET', 'a HyperSVG is text');
+  const bytes = enc.encode(svg).length;
+  if (bytes > maxBytes) throw fault('E-ASSET', `the HyperSVG is ${bytes} bytes, more than ${maxBytes}`);
+  const at = rootTagEnd(svg);
+  const m = at < 0 ? null : META.exec(svg.slice(at));
+  if (!m) throw fault('E-ASSET', 'this SVG holds no asset record: a HyperSVG has <metadata>{"asset": ...}</metadata> right after its <svg> start tag (pack --asset writes it)');
+  let record = null;
+  try { record = JSON.parse(m[1]); } catch {   }
+  const a = record?.asset;
+  if (!a || typeof a !== 'object' || Array.isArray(a) || Object.keys(record).length !== 1) throw fault('E-ASSET', 'the asset record is not one JSON object {"asset": {...}}');
+  const extra = Object.keys(a).filter(k => !['format', 'id', 'drawing', 'members', 'files'].includes(k));
+  if (extra.length) throw fault('E-ASSET', `the asset record holds ${extra.join(', ')}, which an asset cannot hold`);
+  if (a.format !== ASSET_FORMAT) throw fault('E-ASSET', `the asset's format is ${JSON.stringify(a.format)}, not ${ASSET_FORMAT}`);
+  if (typeof a.id !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(a.id)) throw fault('E-ASSET', 'the asset has no id');
+  if (typeof a.drawing !== 'string' || !a.files || typeof a.files !== 'object' || Array.isArray(a.files) || !a.members || typeof a.members !== 'object') throw fault('E-ASSET', 'the asset record needs drawing, members and files');
+  if (Object.hasOwn(a.files, a.drawing)) throw fault('E-ASSET', `the drawing ${a.drawing} is the SVG itself, not one of the files`);
+  const files = {};
+  for (const [p, t] of Object.entries(a.files)) {
+    if (typeof t !== 'string') throw fault('E-ASSET', `${p} is not text`);
+    if (!/^[A-Za-z0-9_][A-Za-z0-9._-]*(\/[A-Za-z0-9_][A-Za-z0-9._-]*)*$/.test(p) || p.split('/').includes('..')) throw fault('E-ASSET', `${p} is not a plain relative path`);
+    files[p] = t;
+  }
+  const meta = m[0];
+  files[a.drawing] = svg.slice(0, at) + svg.slice(at + meta.length);
+  if (!hash && Object.values(a.members).some(d => typeof d !== 'string' || !DIGEST.test(d))) throw fault('E-ASSET', 'a member digest of the asset record is not "sha256:" and 64 hex digits');
+  const bad = memberFindings(a.members, Object.keys(files), hash ? (p) => sha256(enc.encode(files[p])) : (p) => a.members[p]);
+  if (bad.length) throw fault(bad[0].code, `the asset was changed after it was packed: ${bad.map(d => d.message).join('; ')}`, { diagnostics: bad });
+  if (/<metadata\b/.test(files[a.drawing])) throw fault('E-ASSET', `the drawing ${a.drawing} has a tool record (<metadata>) of its own; an asset's drawing carries none`);
+  return hash ? { id: a.id, drawing: a.drawing, files } : { id: a.id, drawing: a.drawing, files, digests: { ...a.members } };
+}
+function assetPackage({ id, files, digests = null }) {
+  const pkg = {};
+  for (const [p, t] of Object.entries(files)) pkg[p] = enc.encode(t);
+  const members = sorted(Object.fromEntries(Object.entries(pkg).map(([p, b]) => [p, digests && Object.hasOwn(digests, p) ? digests[p] : sha256(b)])));
+  pkg['package.json'] = enc.encode(JSON.stringify({ format: ASSET_FORMAT, kind: 'package', id, experience: 'experience.json', needs: [], members }));
+  return pkg;
+}
+
+exp.ASSET_FORMAT = ASSET_FORMAT;
+};
+defs[23] = function (exp) { 'use strict'; // engine/v2/src/read.mjs
+exp.readExperience = readExperience; exp.parseWords = parseWords; exp.parseCsv = parseCsv;
+const { parseStrict } = req(24);
+const { raisedLimits, activeLimits } = req(9);
+const join = (dir, rel) => {
+  const parts = (dir ? dir.split('/') : []).concat(rel.split('/'));
+  const out = [];
+  for (const p of parts) { if (p === '..') { if (!out.length) return null; out.pop(); } else if (p && p !== '.') out.push(p); }
+  return out.join('/');
+};
+const dirOf = (rel) => rel.split('/').slice(0, -1).join('/');
+function readExperience(source, schemas, opts = {}) {
+  let raised = {};
+  try { raised = raisedLimits([parseStrict(source.read('experience.json') ?? '{}')]); } catch {   }
+  const ck = opts.checkers;
+  if (schemas && !ck) throw new TypeError('checking files needs the checkers: use loadExperience (src/load.mjs)');
+  const docs = schemas ? ck.makeDocumentChecker(schemas) : { check: (text) => { try { const doc = typeof text === 'string' ? parseStrict(text) : text; return { doc, needs: doc.needs || [], diags: [] }; } catch (e) { return { doc: null, diags: [{ code: 'E-JSON', path: '', message: e.message }] }; } } };
+  const diags = [];
+  const add = (file, list) => { for (const d of list) diags.push({ file, ...d }); };
+  const named = (dir, rel, from, at) => {
+    let file = join(dir, rel);
+    const root = /^kits\/[^/]+/.exec(dir)?.[0];
+    if (file !== null && root && !file.startsWith(root + '/')) file = null;
+    if (file === null) add(from, [{ code: 'E-PATH', path: at, message: `${rel} leaves the ${root ? 'kit' : 'experience'}'s folder` }]);
+    return file;
+  };
+  const coveredBy = (inherited) => (kind) => (kind === 'scene' || kind === 'shell' ? inherited : []);
+  const readDoc = (rel, needs, from = 'experience.json', at = rel, dir = '') => {
+    if (named(dir, rel, from, at) === null) return null;
+    rel = join(dir, rel);
+    const text = source.read(rel);
+    if (text == null) { add(rel, [{ code: 'E-FILE-MISSING', path: rel, message: 'not found' }]); return null; }
+    let input = text;
+    if (opts.presets && text.includes('"presets"')) {
+      let raw = null;
+      try { raw = parseStrict(text); } catch {   }
+      if (raw && typeof raw === 'object' && !Array.isArray(raw) && raw.presets !== undefined) {
+        const x = opts.presets.expand(raw, rel);
+        add(rel, x.diags);
+        input = x.doc;
+      }
+    }
+    const r = docs.check(input, { needs, file: rel });
+    add(rel, r.diags.map(upgradeHint));
+    if (r.doc == null) return null;
+    if (Array.isArray(r.doc.machines)) {
+      const map = {};
+      r.doc.machines.forEach((m, i) => {
+        if (!m || typeof m.id !== 'string') return;
+        if (m.id in map) { add(rel, [{ code: 'E-ID-DUPLICATE', path: `machines/${i}`, message: `machine id ${m.id} is used twice` }]); return; }
+        const { id, ...rest } = m;
+        map[id] = rest;
+      });
+      r.doc.machines = map;
+    }
+    return { doc: r.doc, needs: r.needs };
+  };
+  const readDrawings = (rel, doc) => {
+    const out = {};
+    const dir = dirOf(rel);
+    const own = (doc.layouts || []).filter(l => l && typeof l.drawing === 'string').map(l => [l.id, l.drawing]);
+    const list = typeof doc.drawing === 'string' ? [['main', doc.drawing], ...own] : own;
+    for (const [id, f] of list) {
+      const file = named(dir, f, rel, id === 'main' ? 'drawing' : `layouts.${id}.drawing`);
+      if (file === null) continue;
+      const text = source.read(file);
+      if (text == null) { add(file, [{ code: 'E-FILE-MISSING', path: file, message: `named by ${rel}, not found` }]); continue; }
+      if (schemas) add(file, ck.checkDrawing(text, schemas.drawing, { addons: opts.addons || {}, markAliases: schemas.addons?.['a13-migration']?.['x-hsvg-drawing']?.markAliases }).diags);
+      out[id] = { file, text };
+    }
+    return out;
+  };
+  const words = (rel, doc) => {
+    const out = {};
+    const dir = dirOf(rel);
+    for (const [name, r] of Object.entries(doc.resources || {})) {
+      if (r.kind !== 'words') continue;
+      const file = named(dir, r.file, rel, `resources.${name}.file`);
+      if (file === null) continue;
+      const text = source.read(file);
+      if (text == null) { add(rel, [{ code: 'E-FILE-MISSING', path: r.file, message: 'words file not found' }]); continue; }
+      out[r.language] = parseWords(text, (m) => add(file, [{ code: 'E-WORDS', path: r.file, message: m }]));
+    }
+    return out;
+  };
+  const exp = readDoc('experience.json', []);
+  if (!exp) return { ok: false, diags, experience: null };
+  const needs = exp.needs ? [...exp.needs] : [];
+  const experience = { file: 'experience.json', doc: exp.doc, needs, raised, limits: activeLimits(raised), words: words('experience.json', exp.doc), data: {}, scenes: {}, blocks: {} };
+  experience.iconSets = {};
+  for (const [name, r] of Object.entries(exp.doc.resources || {})) {
+    if (r?.kind !== 'icon-set' || named('', r.file, 'experience.json', `resources.${name}.file`) === null) continue;
+    const text = source.read(r.file);
+    if (text == null) { add('experience.json', [{ code: 'E-FILE-MISSING', path: r.file, message: 'icon set not found' }]); continue; }
+    if (schemas) add(r.file, ck.checkDrawing(text, schemas.drawing, { iconSet: true }).diags);
+    experience.iconSets[name] = text;
+  }
+  for (const [name, t] of Object.entries(exp.doc.data || {})) {
+    if (t && typeof t === 'object' && t.resource === undefined) { experience.data[name] = []; continue; }
+    const res = exp.doc.resources?.[t.resource];
+    if (!res) { add('experience.json', [{ code: 'E-REF-UNKNOWN', path: `data.${name}`, message: `resource ${t.resource} is not declared` }]); continue; }
+    if (named('', res.file, 'experience.json', `resources.${t.resource}.file`) === null) continue;
+    const text = source.read(res.file);
+    if (text == null) { add('experience.json', [{ code: 'E-FILE-MISSING', path: res.file, message: 'data file not found' }]); continue; }
+    try {
+      const json = res.file.endsWith('.json');
+      const rows = json ? parseStrict(`{"rows":${text}}`).rows : parseCsv(text, t.columns);
+      if (t.columns) ck?.checkCells(rows, t.columns, json);
+      experience.data[name] = rows;
+    } catch (e) { add(res.file, [{ code: 'E-DATA', path: res.file, message: e.message }]); }
+  }
+  for (const [id, rel] of Object.entries(exp.doc.story?.scenes || {})) {
+    if (typeof rel !== 'string') continue;
+    const s = readDoc(rel, needs, 'experience.json', `story.scenes.${id}`);
+    if (s) experience.scenes[id] = { file: rel, doc: s.doc, drawings: readDrawings(rel, s.doc), words: words(rel, s.doc) };
+  }
+  for (const [id, rel] of Object.entries(exp.doc.blocks || {})) {
+    if (typeof rel !== 'string') continue;
+    const b = readDoc(rel, coveredBy(needs), 'experience.json', `blocks.${id}`);
+    if (b) experience.blocks[id] = { file: rel, doc: b.doc, drawings: readDrawings(rel, b.doc), words: words(rel, b.doc) };
+  }
+  if (typeof exp.doc.shell === 'string') {
+    const s = readDoc(exp.doc.shell, needs, 'experience.json', 'shell');
+    if (s) experience.shell = { file: exp.doc.shell, doc: s.doc, drawings: readDrawings(exp.doc.shell, s.doc), words: words(exp.doc.shell, s.doc) };
+  }
+  const kits = opts.kits;
+  const pin = kits ? kits.kitPin(exp.doc) : (exp.doc.kit && typeof exp.doc.kit === 'object' ? exp.doc.kit : null);
+  if (pin && !kits) add('experience.json', [{ code: 'E-KIT-PIN', path: '/kit', message: 'this player reads no kits: the packer flattens a kit experience (tools/pack.mjs), and the dev player loads it with src/load.mjs' }]);
+  else if (pin) {
+    const kit = kits.readKit({ source, add, named, readDoc, readDrawings, words, join, needs, coveredBy }, pin);
+    if (kit) kits.applyKit(experience, kit, (code, file, path, message) => add(file, [{ code, path, message }]));
+  }
+  else kits?.readPicks?.({ source, add, named, readDoc, readDrawings, words, join, needs: [], coveredBy }, experience);
+  return { ok: !diags.some(d => d.code.startsWith('E-')), diags, experience };
+}
+const UPGRADE_TOOL = 'the upgrade tool (A13.3, spec/2.0/reference/a13-migration.md), run on a copy';
+function upgradeHint(d) {
+  if (d.code !== 'E-HEADER' || d.path !== 'format') return d;
+  return { ...d, message: `${d.message}. Upgrade an older file first with ${UPGRADE_TOOL}. The player does not upgrade in memory` };
+}
+function parseWords(text, fail) {
+  const rows = parseCsvRows(text);
+  const head = rows.shift() || [];
+  if (head[0] !== 'id' || head[1] !== 'text' || head.length !== 2) fail?.('the header is not id,text');
+  const out = Object.create(null);
+  for (const r of rows) {
+    if (r.length === 1 && r[0] === '') continue;
+    if (Object.hasOwn(out, r[0])) fail?.(`word ${r[0]} is repeated`);
+    out[r[0]] = r[1] ?? '';
+  }
+  return out;
+}
+const JSON_NUMBER = /^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?$/;
+function parseCsv(text, columns = null) {
+  if (text.charCodeAt(0) === 0xfeff && columns) throw new Error('a data CSV has no byte order mark');
+  const rows = parseCsvRows(text);
+  const head = rows.shift() || [];
+  const body = rows.filter(r => !(r.length === 1 && r[0] === ''));
+  if (!columns) return body.map(r => Object.fromEntries(head.map((h, i) => [h, r[i]])));
+  const names = Object.keys(columns);
+  const extra = head.filter(h => !(h in columns));
+  const missing = names.filter(n => !head.includes(n));
+  if (extra.length || missing.length || new Set(head).size !== head.length) {
+    throw new Error(`the header must be exactly the declared columns${missing.length ? `; missing ${missing.join(', ')}` : ''}${extra.length ? `; not declared ${extra.join(', ')}` : ''}`);
+  }
+  return body.map((r, ri) => {
+    if (r.length !== head.length) throw new Error(`row ${ri + 1} has ${r.length} cells, the header ${head.length}`);
+    return Object.fromEntries(head.map((h, i) => [h, csvCell(r[i], columns[h].type, `row ${ri + 1}, column ${h}`)]));
+  });
+}
+function csvCell(cell, type, where) {
+  if (type === 'string') return cell;
+  if (cell === '') throw new Error(`${where}: an empty cell in a ${type} column`);
+  if (type === 'number') {
+    const n = JSON_NUMBER.test(cell) ? Number(cell) : NaN;
+    if (!Number.isFinite(n)) throw new Error(`${where}: ${JSON.stringify(cell)} is not a JSON number`);
+    return n;
+  }
+  if (type === 'boolean') {
+    if (cell !== 'true' && cell !== 'false') throw new Error(`${where}: ${JSON.stringify(cell)} is not true or false`);
+    return cell === 'true';
+  }
+  throw new Error(`${where}: a ${type} column needs a JSON file, not CSV`);
+}
+function parseCsvRows(text) {
+  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
+  const rows = []; let row = []; let cell = ''; let q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; continue; }
+    if (c === '"') q = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+    else cell += c;
+  }
+  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+
+exp.UPGRADE_TOOL = UPGRADE_TOOL;
+};
+defs[24] = function (exp) { 'use strict'; // engine/v2/schema/json-strict.mjs
+exp.parseStrict = parseStrict;
+const UNSAFE = new Set(['__proto__', 'prototype', 'constructor']);
+class JsonError extends Error {
+  constructor(message, at) { super(message); this.code = 'E-JSON'; this.at = at; }
+}
+function parseStrict(text) {
+  if (typeof text !== 'string') throw new JsonError('not text', 0);
+  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
+  let i = 0;
+  const ws = () => { while (i < text.length && ' \t\n\r'.includes(text[i])) i++; };
+  const fail = (m) => { throw new JsonError(`${m} at character ${i}`, i); };
+  const value = (path) => {
+    ws();
+    const c = text[i];
+    if (c === '{') return object(path);
+    if (c === '[') return array(path);
+    if (c === '"') return string();
+    if (c === 't' && text.startsWith('true', i)) { i += 4; return true; }
+    if (c === 'f' && text.startsWith('false', i)) { i += 5; return false; }
+    if (c === 'n' && text.startsWith('null', i)) { i += 4; return null; }
+    return number();
+  };
+  const object = (path) => {
+    i++;
+    const out = Object.create(null);
+    ws();
+    if (text[i] === '}') { i++; return toPlain(out); }
+    for (;;) {
+      ws();
+      if (text[i] !== '"') fail('expected a key');
+      const k = string();
+      if (UNSAFE.has(k)) fail(`the key "${k}" is refused`);
+      if (Object.prototype.hasOwnProperty.call(out, k)) fail(`the key "${k}" is repeated in ${path || 'the document'}`);
+      ws();
+      if (text[i] !== ':') fail('expected ":"');
+      i++;
+      out[k] = value(path ? `${path}.${k}` : k);
+      ws();
+      if (text[i] === ',') { i++; continue; }
+      if (text[i] === '}') { i++; return toPlain(out); }
+      fail('expected "," or "}"');
+    }
+  };
+  const array = (path) => {
+    i++;
+    const out = [];
+    ws();
+    if (text[i] === ']') { i++; return out; }
+    for (;;) {
+      out.push(value(`${path}[${out.length}]`));
+      ws();
+      if (text[i] === ',') { i++; continue; }
+      if (text[i] === ']') { i++; return out; }
+      fail('expected "," or "]"');
+    }
+  };
+  const string = () => {
+    const start = i;
+    i++;
+    let s = '';
+    for (;;) {
+      if (i >= text.length) fail('unterminated string');
+      const c = text[i];
+      if (c === '"') { i++; return s; }
+      if (c < ' ') fail('control character in a string');
+      if (c === '\\') {
+        const e = text[i + 1];
+        const map = { '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t' };
+        if (e in map) { s += map[e]; i += 2; continue; }
+        if (e === 'u') {
+          const h = text.slice(i + 2, i + 6);
+          if (!/^[0-9a-fA-F]{4}$/.test(h)) fail('bad \\u escape');
+          s += String.fromCharCode(parseInt(h, 16)); i += 6; continue;
+        }
+        fail('bad escape');
+      }
+      s += c; i++;
+    }
+    return start;
+  };
+  const number = () => {
+    const m = /^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/.exec(text.slice(i, i + 400));
+    if (!m) fail('unexpected character');
+    i += m[0].length;
+    const n = Number(m[0]);
+    if (!Number.isFinite(n)) fail('number is not finite');
+    return n;
+  };
+  ws();
+  if (text[i] !== '{') fail('a document is one JSON object');
+  const doc = value('');
+  ws();
+  if (i !== text.length) fail('text after the object');
+  return doc;
+}
+function toPlain(o) {
+  const out = {};
+  for (const k of Object.keys(o)) out[k] = o[k];
+  return out;
+}
+
+exp.JsonError = JsonError;
+};
+defs[25] = function (exp) { 'use strict'; // engine/v2/src/grants-asked.mjs
+exp.usedGrants = usedGrants; exp.withUsedGrants = withUsedGrants;
+const LISTS = ['entry', 'exit', 'actions', 'then', 'else'];
+const SCOPES = ['session', 'saved'];
+const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+function usedGrants(exp) {
+  const docs = [exp.doc, ...Object.values(exp.scenes || {}).map(s => s.doc), ...(exp.shell ? [exp.shell.doc] : [])].filter(isObj);
+  const blocks = Object.values(exp.blocks || {}).map(b => b.doc).filter(isObj);
+  let openUrl = false;
+  const storage = new Set();
+  const walk = (n) => {
+    if (Array.isArray(n)) { n.forEach(walk); return; }
+    if (!isObj(n)) return;
+    for (const k of LISTS) if (Array.isArray(n[k])) for (const a of n[k]) if (isObj(a) && a.call === 'player.openUrl') openUrl = true;
+    for (const v of Object.values(n)) if (v && typeof v === 'object') walk(v);
+  };
+  docs.forEach(walk);
+  for (const d of [...docs, ...blocks]) for (const v of Object.values(isObj(d.values) ? d.values : {})) if (SCOPES.includes(v?.lifetime)) storage.add(v.lifetime);
+  for (const v of Object.values(isObj(exp.doc?.inputs) ? exp.doc.inputs : {})) if (v?.kind === 'knob' && SCOPES.includes(v.lifetime)) storage.add(v.lifetime);
+  if (SCOPES.includes(exp.doc?.story?.lifetime)) storage.add(exp.doc.story.lifetime);
+  return { ...(openUrl ? { openUrl: true } : {}), ...(storage.size ? { storage: SCOPES.filter(s => storage.has(s)) } : {}) };
+}
+function withUsedGrants(exp) {
+  const written = isObj(exp.doc?.grants) ? exp.doc.grants : {};
+  const used = usedGrants(exp);
+  const derived = {};
+  if (used.openUrl && written.openUrl === undefined) derived.openUrl = true;
+  const have = Array.isArray(written.storage) ? written.storage : [];
+  const more = (used.storage || []).filter(s => !have.includes(s));
+  if (more.length) derived.storage = more;
+  if (!Object.keys(derived).length) return { grants: exp.doc?.grants, derived };
+  return { grants: { ...written, ...(derived.openUrl ? { openUrl: true } : {}), ...(more.length ? { storage: [...have, ...more] } : {}) }, derived };
+}
+
+
+};
+defs[26] = function (exp) { 'use strict'; // engine/v2/src/version.mjs
+
+const VERSION = '2.0.0-next.2';
+
+exp.VERSION = VERSION;
+};
+defs[27] = function (exp) { 'use strict'; // engine/v2/web/player-web.mjs
+exp.reducedUnder = reducedUnder; exp.chooseFrame = chooseFrame; exp.learnFits = learnFits; exp.useAudio = useAudio; exp.boot = boot; exp.linkWithoutHostLine = linkWithoutHostLine; exp.play = play;
+const { readExperience } = req(23);
+const { Player } = req(5);
+const { checkSetting, MOVES } = req(6);
+const { Drawing, narrowLayouts } = req(28);
+const { hostApi } = req(19);
+const { attachInput } = req(35);
+const { nextDue, framesSince } = req(36);
+const { packageMeasures, experienceResources } = req(12);
+const __reexport26_0 = req(26);
+const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } = req(17);
+function reducedUnder(d, addr) {
+  for (const [a, r] of Object.entries(d?.ladder || {})) {
+    if (r.baked || (a !== addr && !a.startsWith(`${addr}/`))) continue;
+    if (r.steps?.length || r.texts?.some(t => t.outcome === 'given-way')) return true;
+  }
+  return false;
+}
+function chooseFrame(layouts, space, { input = null, current = null, unfit = null, reduced = null, aspectOf, maps } = {}) {
+  const notUnfit = (id) => (unfit?.has(id) ? false : undefined);
+  const c = chooseLayout(layouts, space, { input, current, fits: (id) => (reduced?.has(id) ? false : notUnfit(id)), aspectOf, maps });
+  if (c.why !== 'incomplete' || !reduced?.size) return c;
+  const r = chooseLayout(layouts, space, { input, current: null, fits: notUnfit, aspectOf, maps });
+  return r.why === 'order' ? { id: r.id, why: 'reduced' } : r;
+}
+const upFrom = (a) => (a.includes('/') ? a.slice(0, a.lastIndexOf('/')) : null);
+function reducedBlocks(d) {
+  const out = new Set();
+  const mark = (a) => { for (let x = a; x && !out.has(x); x = upFrom(x)) out.add(x); };
+  for (const [a, r] of Object.entries(d?.ladder || {})) if (!r.baked && (r.steps?.length || r.texts?.some(t => t.outcome === 'given-way'))) mark(a);
+  for (const [key, outcome] of Object.entries(d?.fits || {})) if (outcome === 'incomplete' || outcome === 'given-way') mark(key.slice(0, key.lastIndexOf('#')));
+  return out;
+}
+function learnFits(d, roots, memory) {
+  const out = { again: false, forgot: [] };
+  if (!d?.fits) return out;
+  const { layouts, unfit, reduced } = memory;
+  for (const [key, outcome] of Object.entries(d.fits)) {
+    if (outcome !== 'incomplete') continue;
+    const addr = key.slice(0, key.lastIndexOf('#'));
+    if (!roots.includes(addr)) continue;
+    const id = d.frames[addr]?.layout;
+    if (id == null || unfit[addr]?.has(id)) continue;
+    (unfit[addr] ??= new Set()).add(id);
+    out.again = true;
+  }
+  const bad = reducedBlocks(d);
+  const kept = bad.size ? Object.entries(d.choices || {}).filter(([a, c]) => c.why === 'current' && layouts[a] != null && bad.has(a)).map(([a]) => a) : [];
+  const above = new Set();
+  for (const a of kept) for (let x = upFrom(a); x && !above.has(x); x = upFrom(x)) above.add(x);
+  out.forgot = kept.filter(a => !above.has(a));
+  for (const a of out.forgot) delete layouts[a];
+  if (out.forgot.length) { out.again = true; return out; }
+  for (const addr of roots) {
+    const id = d.frames[addr]?.layout;
+    if (addr == null || id == null || reduced[addr]?.has(id) || unfit[addr]?.has(id)) continue;
+    if (!reducedUnder(d, addr)) continue;
+    (reduced[addr] ??= new Set()).add(id);
+    out.again = true;
+  }
+  return out;
+}
+let attachAudio = null;
+function useAudio(attach) { attachAudio = attach; }
+const SILENT = { log: [], lines: [], advance() {}, destroy() {}, stats: async () => ({ armed: false, requests: 0, started: 0, decoded: 0, failed: [], music: null }) };
+async function boot(container, { filesUrl, files: givenFiles = null, schemasUrl, checked = false, ...rest } = {}) {
+  let framed = false;
+  try { framed = window.top !== window.self; } catch { framed = true; }
+  const files = givenFiles || await fetch(filesUrl).then(r => r.json());
+  const schemas = checked ? null : await fetch(schemasUrl).then(r => r.json());
+  if (!checked && !rest.modules) await Promise.reject(Object.assign(new Error("engine/v2/src/capabilities/all.mjs (loaded on demand by engine/v2/web/player-web.mjs) is not part of this one-file build"), { code: 'E-ASSET' }));
+  if (!checked) await Promise.resolve().then(() => req(53));
+  const load = checked ? null : (await Promise.reject(Object.assign(new Error("engine/v2/src/load.mjs (loaded on demand by engine/v2/web/player-web.mjs) is not part of this one-file build"), { code: 'E-ASSET' }))).loadExperience;
+  return play(container, { files, schemas, test: true, wholePage: !framed, ...(load ? { load } : {}), ...rest });
+}
+function unflatten(flat, files) {
+  const e = structuredClone(flat);
+  for (const b of [e.shell, ...Object.values(e.scenes || {}), ...Object.values(e.blocks || {})]) for (const d of Object.values(b?.drawings || {})) d.text = files[d.file];
+  return e;
+}
+function linkAddresses(player, field) {
+  const inputs = player?.exp?.doc?.inputs || {};
+  const now = player?.state?.blocks?.experience?.inputs || {};
+  const names = field != null ? [field] : Object.keys(inputs).filter(n => inputs[n]?.contentType === 'url');
+  const urls = names.map(n => now[n] ?? inputs[n]?.initial).filter(u => typeof u === 'string' && u);
+  return urls.length ? urls.join(' or ') : 'its link';
+}
+function linkWithoutHostLine(player, { field = null, preview = false } = {}) {
+  const where = preview ? 'the dev player opens no link' : 'this page has no host';
+  return `openUrl refused: ${where}; a host would open ${linkAddresses(player, field)}`;
+}
+function linkWithoutHost(state, container, host) {
+  const preview = host?.preview === true;
+  let listeners = 0;
+  const on = state.host.on;
+  state.host.on = (name, fn) => {
+    const off = on(name, fn);
+    if (name !== 'openUrl' && name !== 'hsvg.openUrl') return off;
+    listeners++;
+    let gone = false;
+    return () => { if (!gone) { gone = true; listeners--; } return off(); };
+  };
+  const tell = (line) => {
+    console.log(line);
+    state.linkNotices = [...(state.linkNotices || []), line];
+    if (!preview) return;
+    let box = container.querySelector('[data-hsvg-notice="openUrl"]');
+    if (!box) {
+      box = document.createElement('div');
+      box.setAttribute('role', 'status');
+      box.setAttribute('data-hsvg-notice', 'openUrl');
+      box.style.cssText = 'position:absolute;left:0;right:0;top:0;padding:8px 12px;background:#1f3a5f;color:#fff;font:14px/1.4 system-ui,sans-serif;z-index:9';
+      if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
+      container.appendChild(box);
+    }
+    box.textContent = line;
+  };
+  let seenNotes = 0;
+  state.player.on(({ outputs }) => {
+    for (const o of outputs) if (o.name === 'openUrl' && (host == null || preview) && listeners === 0) tell(linkWithoutHostLine(state.player, { field: o.field, preview }));
+    const notes = state.player.notes || [];
+    for (; seenNotes < notes.length; seenNotes++) {
+      const n = notes[seenNotes];
+      if (n?.kind === 'grant' && /openUrl/.test(String(n.message ?? '')) && (host == null || preview) && listeners === 0) tell(linkWithoutHostLine(state.player, { preview }));
+    }
+  });
+  return (f) => { if (f?.code === 'E-GRANT' && /openUrl/.test(String(f?.message ?? ''))) tell(linkWithoutHostLine(state.player)); };
+}
+function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null, sleep = false, muted = false }) {
+  const onError = givenOnError && ((d) => givenOnError({ ...d, code: d.code || 'E-HOST-ERROR' }));
+  const sequence = Symbol.for('hypersvg.mountSequence');
+  const namespace = `hsvg${globalThis[sequence] = (globalThis[sequence] || 0) + 1}__`;
+  const source = { read: (rel) => (rel in files ? files[rel] : null) };
+  let loaded = kitted ? { experience: unflatten(kitted, files), diags: [] } : load(source, schemas);
+  if (!loaded.experience) { const e = new Error(loaded.diags.map(d => `${d.code} ${d.file}: ${d.message}`).join('; ')); e.code = loaded.diags[0]?.code; throw e; }
+  if (host == null && previewHost) host = { preview: true, grants: structuredClone(loaded.experience.doc.grants || {}) };
+  if (start) {
+    const exp = loaded.experience;
+    loaded = { ...loaded, experience: { ...exp, doc: { ...exp.doc, story: { ...exp.doc.story, start } } } };
+  }
+  const wrap = (get) => { try { const s = get(); s.setItem('hsvg-probe', '1'); s.removeItem('hsvg-probe'); return { get: (k) => s.getItem(k), set: (k, v) => s.setItem(k, v), remove: (k) => s.removeItem(k) }; } catch { return null; } };
+  const storage = { session: wrap(() => window.sessionStorage), saved: wrap(() => window.localStorage), page: window.location.pathname, partition };
+  const measures = members ? packageMeasures(members, experienceResources(loaded.experience)) : undefined;
+  let player = null;
+  let made = null;
+  try { player = new Player(loaded.experience, { capabilities, storage, host, options, measures, modules, wallClock: clock || (() => Date.now()), onMove }); } catch (e) { if (!e?.code) throw e; made = e; }
+  const state = { player, namespace, drawing: null, scene: null, loaded, errors: [], stopped: null, nonce };
+  let running = true;
+  let linkRefused = null;
+  const halt = (f, source) => {
+    const code = f?.code || null;
+    const address = f?.address || null;
+    const message = String(f?.message ?? f);
+    state.errors.push(message);
+    if (state.stopped) return;
+    linkRefused?.(f);
+    state.stopped = { code, address, message, source };
+    running = false;
+    player?.stop?.(f, source);
+    onError?.({ code, address, message, source });
+    try { state.audio?.destroy(); } catch {   }
+    if (faultBox === false) return;
+    const box = document.createElement('div');
+    box.setAttribute('role', 'alert');
+    box.setAttribute('data-hsvg-fault', code || 'fault');
+    box.style.cssText = 'position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:#7a1010;color:#fff;font:15px/1.4 system-ui,sans-serif;z-index:10';
+    box.textContent = `This experience stopped: ${code || 'fault'} in ${address || 'the experience'}. ${message}`;
+    if (getComputedStyle(container).position === 'static') container.style.position = 'relative';
+    container.appendChild(box);
+  };
+  state.fault = (r, source = 'engine') => { if (r && r.ok === false) halt(r.fault, source); return r; };
+  const stoppedAtStart = () => {
+    state.advance = () => {};
+    state.press = () => ({ ok: false, fault: state.stopped, ignored: 'stopped' });
+    state.relayout = () => {};
+    return state;
+  };
+  if (made) { halt(made, 'start'); return stoppedAtStart(); }
+  player.onStop = (f, source) => halt(f, source === 'person' ? 'control' : source);
+  player.onDeliveryError = (d) => { if (onError) onError(d); else console.error(d); };
+  let soundWarned = false;
+  const soundFailed = (path, err) => {
+    const d = { code: 'W-SOUND-UNPLAYABLE', message: `this browser cannot play the sound ${path}${err?.message ? ` (${err.message})` : ''}`, source: 'audio', path };
+    state.errors.push(d.message);
+    if (!soundWarned) { soundWarned = true; console.warn(`hsvg: ${d.message}`); }
+    onError?.(d);
+  };
+  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed, muted }) : SILENT;
+  const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  if (motionQuery) { player.state.ambient.motionSystem = motionQuery.matches === true; player.state.ambient.reducedMotion = motionQuery.matches === true || player.state.ambient.motionChosen === true; }
+  const sizeNow = () => { const b = container.getBoundingClientRect(); const sp = { width: b.width, height: b.height }; return { ...sp, shape: activeShape({ ...sp, direction: directionOf(player.exp.doc, player.state.ambient?.language) }, shapeMapsOf(null, player.exp.doc)) }; };
+  if (timeLimits !== null && timeLimits !== undefined) {
+    const bad = checkSetting('timeLimits', timeLimits);
+    if (bad) { halt({ code: bad[0], address: 'experience', message: `timeLimits: ${bad[1]}` }, 'start'); return stoppedAtStart(); }
+    player.state.ambient.timeLimits = timeLimits;
+  }
+  if (language) player.state.ambient.language = language;
+  const hostSet = { theme: theme ?? undefined }; const hostDefault = {};
+  for (const a of player.exp.doc.axes || []) {
+    const id = a?.id ?? a?.axis;
+    if ((a?.axis !== 'language' && a?.axis !== 'theme') || player.options?.[id] === undefined) continue;
+    const made = Object.hasOwn(options || {}, id) || Object.hasOwn(player.host?.profile?.options || {}, id);
+    (made ? hostSet : hostDefault)[a.axis] ??= player.options[id];
+  }
+  if (language) { delete hostSet.language; delete hostDefault.language; }
+  const hostTheme = hostSet.theme;
+  if (hostTheme !== undefined && !Object.hasOwn(player.exp.doc.themes || {}, hostTheme)) {
+    halt({ code: 'E-AXIS-INPUT', address: 'experience', message: `theme ${JSON.stringify(hostTheme)} is not one of the experience's themes (${Object.keys(player.exp.doc.themes || {}).join(', ') || 'it declares none'})` }, 'start');
+    return stoppedAtStart();
+  }
+  if (hostSet.theme === undefined) delete hostSet.theme;
+  if (colors !== null && colors !== undefined && checkColors) {
+    const hc = checkColors(player.exp, colors, hostSet.theme);
+    state.colors = hc.roles;
+    for (const w of hc.warnings) { state.errors.push(w.message); if (onError) onError(w); else console.warn(`hsvg: ${w.code} ${w.message}`); }
+  }
+  const hostLanguage = hostSet.language ?? hostDefault.language;
+  if (hostLanguage !== undefined) player.state.ambient.language = hostLanguage;
+  player.setSize(sizeNow());
+  state.fault(player.start(), 'start');
+  if (state.stopped && !player.scene) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
+  state.layouts = {};
+  state.unfit = {};
+  state.reduced = {};
+  state.choices = {};
+  const allSizes = wholePage ? trueSizes(player.exp.doc) : null;
+  const sizes = player.shellId ? null : allSizes;
+  const stageSizes = player.shellId ? allSizes : null;
+  const stageChoice = (st) => { if (!stageSizes || !st) return st; const t = nearestSize(stageSizes, st); return { width: t.width, height: t.height }; };
+  const winSpace = () => { const b = container.getBoundingClientRect(); return { width: b.width, height: b.height }; };
+  const outSpace = () => {
+    const win = winSpace();
+    if (!sizes) return win;
+    state.trueSize = nearestSize(sizes, win);
+    return { width: state.trueSize.width, height: state.trueSize.height };
+  };
+  const placeTrue = (svg) => {
+    const t = state.trueSize;
+    if (!t || !svg) return;
+    svg.setAttribute('width', String(t.width * t.scale));
+    svg.setAttribute('height', String(t.height * t.scale));
+    svg.setAttribute('data-player-true-size', `${t.width}x${t.height}`);
+    Object.assign(svg.style, { position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' });
+  };
+  if (sizes && getComputedStyle(container).position === 'static') container.style.position = 'relative';
+  const spaceKey = (sp) => `${Math.round(sp.width)}x${Math.round(sp.height)}`;
+  const readPicks = () => {
+    const blocks = Object.keys(player.state.blocks).map(a => [a, player.def(a)]).filter(([, d]) => d?.axes);
+    const p = inputPicks(blocks, (a, n) => player.read(a, n));
+    p.experience = { ...hostDefault, ...p.experience, ...hostSet };
+    for (const axis of Object.keys(hostSet)) for (const b of Object.values(p.blocks)) delete b[axis];
+    return p;
+  };
+  state.picks = readPicks();
+  const bootLanguage = state.picks.experience.language;
+  if (bootLanguage && bootLanguage !== player.state.ambient.language && !state.picks.bad.length) {
+    state.fault(player.setLanguage(bootLanguage), 'start');
+    if (state.stopped) { state.host = hostApi(player, { onError, test }); return stoppedAtStart(); }
+    state.picks = readPicks();
+  }
+  const choose = (memory, address, block, space) => {
+    const sp = space && { ...space, direction: directionOf(player.exp.doc, player.state.ambient?.language) };
+    const maps = shapeMapsOf(block?.doc, player.exp.doc);
+    const layouts = narrowLayouts(block?.doc?.layouts, player.exp.doc, block?.doc);
+    const input = pickedLayout(layouts, picksFor(state.picks, address), maps);
+    const c = chooseFrame(layouts, sp, { input, current: memory[address] ?? null, unfit: state.unfit[address], reduced: state.reduced[address], aspectOf: aspectsOf(block), maps });
+    if (c.id != null) memory[address] = c.id;
+    state.choices[address] = c;
+    return c.id;
+  };
+  const shellId = player.shellId;
+  const blockOf = (address) => (address === shellId ? player.exp.shell : player.exp.scenes[address]);
+  const build = (memory, space) => {
+    const d = new Drawing(player, { namespace, layouts: memory, picks: state.picks, theme: state.picks.experience.theme, colors: state.colors || null, stageSizes, nonce });
+    if (shellId) {
+      d.mountShell(shellId, choose(memory, shellId, blockOf(shellId), space), space);
+      const st = d.stageSpace();
+      d.mountStage(player.scene, choose(memory, player.scene, blockOf(player.scene), stageChoice(st) || space), null, st);
+    } else d.mountScene(player.scene, choose(memory, player.scene, blockOf(player.scene), space), space);
+    return d;
+  };
+  const attach = (d) => {
+    const svg = d.toDom(document);
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', '100%');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    placeTrue(svg);
+    const old = state.drawing?.root?.dom;
+    if (old && old.parentNode === container) old.replaceWith(svg); else container.replaceChildren(svg, ...container.querySelectorAll('[data-hsvg-fault],[data-hsvg-announce]'));
+    state.drawing = d;
+  };
+  const forgetScene = () => {
+    for (const k of Object.keys(state.layouts)) if (!shellId || (k !== shellId && !k.startsWith(shellId + '/'))) delete state.layouts[k];
+    for (const k of Object.keys(state.unfit)) if (k !== shellId) delete state.unfit[k];
+    for (const k of Object.keys(state.reduced)) if (k !== shellId) delete state.reduced[k];
+  };
+  let lastSpace = null;
+  const show = () => {
+    const space = outSpace();
+    lastSpace = state.space = spaceKey(winSpace());
+    const changed = player.scene !== state.scene;
+    if (changed) forgetScene();
+    const slide = changed && state.scene !== null ? slideFor() : null;
+    endSlide();
+    const leaving = slide ? (shellId ? state.drawing?.stage?.holder?.dom?.firstElementChild : state.drawing?.root?.dom) : null;
+    if (shellId && state.drawing) {
+      const d = state.drawing;
+      const st = d.stageSpace();
+      d.mountStage(player.scene, choose(state.layouts, player.scene, blockOf(player.scene), stageChoice(st) || space), document, st);
+    } else attach(build(state.layouts, space));
+    if (slide && leaving) startSlide(slide, leaving);
+    const entered = changed && state.scene !== null;
+    state.scene = player.scene;
+    if (entered) announce(titleOf(state.drawing?.frames[player.scene]?.root));
+    paint();
+  };
+  const titleOf = (root) => {
+    const t = root?.children?.find(c => c.name === 'title');
+    const text = (n) => (n.name ? n.children.map(text).join('') : n.text || '');
+    return t ? text(t).replace(/\s+/g, ' ').trim() : '';
+  };
+  const announcer = document.createElement('div');
+  announcer.setAttribute('data-hsvg-announce', '');
+  announcer.setAttribute('role', 'status');
+  announcer.setAttribute('aria-live', 'polite');
+  announcer.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0';
+  const announce = (text) => {
+    if (!text) return;
+    if (!announcer.isConnected) container.appendChild(announcer);
+    announcer.textContent = announcer.textContent === text ? `${text}\u00a0` : text;
+    state.announced = text;
+  };
+  state.announce = announce;
+  player.on(({ outputs }) => { for (const o of outputs) if (o.name === 'entered' && o.slot === 'stage') state.enteredBy = { link: o.link, atMs: player.state.now }; });
+  const slideFor = () => {
+    const by = state.enteredBy;
+    const l = by && player.links.find(x => x.id === by.link);
+    if ((l?.transition !== 'slide' && l?.transition !== 'fade') || !(l.transitionMs > 0) || player.state.ambient.reducedMotion === true) return null;
+    if (l.transition === 'fade') return { kind: 'fade', link: l.id, atMs: by.atMs, ms: l.transitionMs };
+    const rtl = directionOf(player.exp.doc, player.state.ambient?.language) === 'rtl';
+    const sign = (rtl ? -1 : 1) * (l.slideFrom === 'start' ? -1 : 1);
+    return { kind: 'slide', link: l.id, from: l.slideFrom === 'start' ? 'start' : 'end', sign, atMs: by.atMs, ms: l.transitionMs };
+  };
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const startSlide = (slide, leaving) => {
+    leaving.setAttribute('aria-hidden', 'true');
+    leaving.setAttribute('inert', '');
+    leaving.setAttribute('data-player-leaving', slide.link);
+    leaving.style.pointerEvents = 'none';
+    for (const el of leaving.querySelectorAll('[tabindex]')) el.setAttribute('tabindex', '-1');
+    if (shellId) {
+      const d = state.drawing; const holder = d.stage.holder.dom; const b = d.stage.box;
+      const entering = holder.firstElementChild;
+      const clipId = `${namespace}hsvg-slide-${shellId}`;
+      const clip = document.createElementNS(SVGNS, 'clipPath'); clip.setAttribute('id', clipId);
+      const r = document.createElementNS(SVGNS, 'rect');
+      for (const [k, v] of Object.entries({ x: b.x, y: b.y, width: b.width, height: b.height })) r.setAttribute(k, String(v));
+      clip.appendChild(r);
+      const out = document.createElementNS(SVGNS, 'g'); out.appendChild(leaving);
+      const inn = document.createElementNS(SVGNS, 'g'); if (entering) inn.appendChild(entering);
+      holder.replaceChildren(clip, out, inn);
+      holder.setAttribute('clip-path', `url(#${clipId})`);
+      slide.place = slide.kind === 'fade'
+        ? (p) => { out.setAttribute('opacity', String(1 - p)); inn.setAttribute('opacity', String(p)); }
+        : (p) => { out.setAttribute('transform', `translate(${-slide.sign * p * b.width} 0)`); inn.setAttribute('transform', `translate(${slide.sign * (1 - p) * b.width} 0)`); };
+      if (slide.kind === 'fade') holder.replaceChildren(clip, inn, out);
+      slide.done = () => { holder.removeAttribute('clip-path'); if (entering && entering.parentNode === inn) holder.replaceChildren(entering); else { clip.remove(); out.remove(); } };
+    } else {
+      const entering = state.drawing.root.dom;
+      if (getComputedStyle(container).position === 'static') { slide.position = container.style.position; container.style.position = 'relative'; }
+      slide.overflow = container.style.overflow;
+      container.style.overflow = 'hidden';
+      Object.assign(leaving.style, { position: 'absolute', left: '0', top: '0', width: '100%', height: '100%' });
+      container.insertBefore(leaving, entering);
+      if (slide.kind === 'fade') container.insertBefore(entering, leaving);
+      slide.place = slide.kind === 'fade'
+        ? (p) => { leaving.style.opacity = String(1 - p); entering.style.opacity = p >= 1 ? '' : String(p); }
+        : (p) => { leaving.style.transform = `translateX(${-slide.sign * p * 100}%)`; entering.style.transform = p >= 1 ? '' : `translateX(${slide.sign * (1 - p) * 100}%)`; };
+      slide.done = () => { leaving.remove(); entering.style.transform = ''; entering.style.opacity = ''; container.style.overflow = slide.overflow; if (slide.position !== undefined) container.style.position = slide.position; };
+    }
+    state.slide = slide;
+    stepSlide();
+  };
+  const stepSlide = () => {
+    const sl = state.slide;
+    if (!sl) return;
+    sl.progress = Math.max(0, Math.min(1, (player.state.now - sl.atMs) / sl.ms));
+    sl.place(sl.progress);
+    if (sl.progress >= 1) endSlide();
+  };
+  const endSlide = () => { const sl = state.slide; if (!sl) return; state.slide = null; sl.place(1); sl.done(); state.slid = { link: sl.link, from: sl.from, kind: sl.kind }; };
+  const shown = (d) => JSON.stringify(Object.entries(d.frames).map(([a, f]) => [a, f.layout ?? null, f.plan?.key ?? null]).sort());
+  const relayout = (force = false, rebuild = false) => {
+    if (state.destroyed || state.stopped || !state.drawing) return;
+    const win = winSpace();
+    if (!(win.width > 0 && win.height > 0)) return;
+    const space = outSpace();
+    placeTrue(state.drawing.root?.dom);
+    const key = spaceKey(win);
+    if (key !== lastSpace) { state.unfit = {}; state.reduced = {}; lastSpace = state.space = key; } else if (!force) return;
+    const memory = { ...state.layouts };
+    const next = build(memory, space);
+    if (!rebuild && shown(next) === shown(state.drawing)) return;
+    const focused = container.contains(document.activeElement) ? document.activeElement.id : null;
+    endSlide();
+    state.layouts = memory;
+    attach(next);
+    paint();
+    state.input?.sync(true);
+    state.widgets?.sync();
+    if (focused) document.getElementById(focused)?.focus({ preventScroll: true });
+  };
+  state.relayout = relayout;
+  const checkFits = () => {
+    const d = state.drawing;
+    const { again, forgot } = learnFits(d, [player.scene, shellId], state);
+    if (!again) return;
+    relayout(true);
+    if (state.drawing !== d || forgot.length) checkFits();
+  };
+  let painted = { revision: -1, now: -1 };
+  const paint = (changed = false) => {
+    const d = state.drawing;
+    const had = d.faults.length;
+    const dirty = player.takeDirty();
+    painted = { revision: player.state.revision, now: player.state.now };
+    player.bindingPhase(() => d.paint(changed ? dirty : null));
+    stepSlide();
+    const over = d.faults.slice(had).find(f => f.code === 'E-EVENT-LOOP');
+    if (over) halt(over, 'binding');
+    if (!state.stopped) writeLayout(d);
+    if (!checking) { checking = true; try { checkPicks() || checkResized() || checkFits(); } finally { checking = false; } }
+  };
+  const checkResized = () => {
+    const d = state.drawing;
+    if (!d?.resized?.length) return false;
+    state.resizedAt = d.resized.map(r => ({ ...r }));
+    state.unfit = {}; state.reduced = {};
+    relayout(true);
+    state.widgets?.sync();
+    return true;
+  };
+  const checkPicks = () => {
+    const next = readPicks();
+    if (next.bad.length) { const b = next.bad[0]; halt({ code: 'E-AXIS-INPUT', address: b.address, message: `axis ${b.id}: ${JSON.stringify(b.value)} is not one of its options (${b.options.join(', ')})` }, 'binding'); return true; }
+    if (JSON.stringify(next) === JSON.stringify(state.picks)) return false;
+    state.picks = next;
+    const lang = next.experience.language;
+    if (lang && lang !== player.state.ambient.language) {
+      state.fault(player.setLanguage(lang), 'host');
+      if (state.stopped) return true;
+    }
+    relayout(true, true);
+    return true;
+  };
+  let checking = false;
+  let layoutKey = null; let relaying = false;
+  const writeLayout = (d) => {
+    const v = d.layoutValue();
+    const key = JSON.stringify(v);
+    if (key === layoutKey) return;
+    layoutKey = key;
+    player.state.ambient.layout = Object.freeze(v);
+    if (relaying) return;
+    relaying = true;
+    try { player.bindingPhase(() => d.paint()); } finally { relaying = false; }
+  };
+  show();
+  const input = attachInput(player, state, container, window);
+  const redrawLists = () => {
+    const focused = container.contains(document.activeElement) ? document.activeElement.id : null;
+    attach(build(state.layouts, outSpace()));
+    paint();
+    input.sync(true);
+    if (focused) document.getElementById(focused)?.focus({ preventScroll: true });
+  };
+  state.lists = player.state.lists || 0;
+  let offscreen = false; let asleep = false; let queued = true; let wakeTimer = null; let period = 1000 / 60; let fresh = false; let measured = false;
+  const after = () => {
+    if (state.destroyed || state.stopped) return;
+    if (offscreen) return;
+    const lists = player.state.lists || 0;
+    if (player.scene !== state.scene) { show(); input.sync(true); } else if (lists !== state.lists) redrawLists();
+    else if (player.state.revision !== painted.revision || state.slide || (state.drawing?.live?.size && player.state.now !== painted.now) || player.mouthLooks?.length) { paint(true); input.sync(); }
+    state.lists = lists;
+    for (const part of Object.values(state.caps || {})) part.sync?.();
+  };
+  state.after = after;
+  state.repaint = () => { if (!state.destroyed && !state.stopped && state.drawing) paint(true); };
+  state.input = input;
+  input.sync(true);
+  state.caps = player.caps.attach({ player, state, container, win: window, options: { widgets, onError, assets, assetsUrl, test } });
+  state.widgets = state.caps.shell || null;
+  for (const part of Object.values(state.caps)) part.sync?.();
+  state.captions = state.caps.lines || null;
+  state.host = hostApi(player, { onError, test, onRestart: () => { state.scene = null; after(); } });
+  linkRefused = linkWithoutHost(state, container, host);
+  state.ladder = () => structuredClone(state.drawing?.ladder ?? {});
+  state.host.ladder = state.ladder;
+  let last = null;
+  const tick = (t) => {
+    if (!running) return;
+    if (last !== null) state.audio.advance(Math.min(100, t - last));
+    if (last !== null && !manualClock && !state.host.paused) {
+      const results = player.advance(Math.min(100, Math.round(t - last)));
+      for (const r of results) state.fault(r, 'timer');
+    }
+    if (last !== null && running && !state.stopped) after();
+    if (sleep) { frameDone(t); return; }
+    last = t;
+    requestAnimationFrame(tick);
+  };
+  const frameDone = (t) => {
+    queued = false;
+    if (fresh && last !== null && t - last > 0) { period = t - last; measured = true; }
+    last = t; fresh = true;
+    if (!running || state.destroyed) return;
+    const due = measured ? drowsy() : null;
+    if (due === null) { queued = true; requestAnimationFrame(tick); return; }
+    asleep = true;
+    if (Number.isFinite(due) && !manualClock) wakeTimer = setTimeout(wake, Math.max(0, due - player.state.now - (performance.now() - last)));
+  };
+  const drowsy = () => {
+    if (!offscreen && (state.slide || state.drawing?.live?.size || player.mouthLooks?.length || state.drawing?.holds?.size)) return null;
+    if (state.audio !== SILENT && !state.audio.gone && state.audio.mixer?.busy?.()) return null;
+    if (state.host.paused) return Infinity;
+    const due = nextDue(player);
+    if (due === null || (Number.isFinite(due) && !manualClock && due - player.state.now <= 2 * period)) return null;
+    return due;
+  };
+  const wake = () => {
+    if (!asleep || !running) return;
+    asleep = false; fresh = false; clearTimeout(wakeTimer); wakeTimer = null;
+    const f = framesSince(last, performance.now(), period);
+    if (f.frames) {
+      last = f.last;
+      state.audio.advance(f.frames * Math.min(100, period));
+      if (!manualClock && !state.host.paused) for (const r of player.advance(f.ms)) state.fault(r, 'timer');
+    }
+    if (!queued && running) { queued = true; requestAnimationFrame(tick); }
+  };
+  const wakeOn = (o, name) => { const fn = o[name]; o[name] = function (...a) { if (asleep) wake(); return fn.apply(this, a); }; };
+  if (sleep) {
+    for (const name of [...MOVES, 'transaction']) wakeOn(player, name);
+    for (const name of ['read', 'scene']) wakeOn(state.host, name);
+    state.wake = wake;
+    if (typeof IntersectionObserver === 'function') {
+      state.seen = new IntersectionObserver((es) => {
+        const off = !es[es.length - 1].isIntersecting;
+        if (off === offscreen || state.destroyed) return;
+        offscreen = off;
+        wake();
+        if (!off && !state.stopped) { after(); if (!queued && !asleep) { queued = true; requestAnimationFrame(tick); } }
+      });
+      state.seen.observe(container);
+    }
+  }
+  state.sleeping = () => ({ asleep, offscreen, period });
+  requestAnimationFrame(tick);
+  const writeSize = () => {
+    if (state.destroyed || state.stopped) return;
+    const r = player.setSize(sizeNow());
+    if (!r) return;
+    state.fault(r, 'host');
+    if (!state.stopped) after();
+  };
+  state.writeSize = writeSize;
+  if (typeof ResizeObserver === 'function') { state.resizer = new ResizeObserver(() => { if (asleep) wake(); relayout(); writeSize(); }); state.resizer.observe(container); }
+  const motionChanged = (ev) => {
+    if (state.destroyed || state.stopped) return;
+    const on = ev.matches === true;
+    if (player.state.ambient.motionSystem === on) return;
+    state.fault(player.motion(on), 'host');
+    if (!state.stopped) after();
+  };
+  motionQuery?.addEventListener?.('change', motionChanged);
+  const visibility = () => { if (state.destroyed) return; player.setPause('hidden', document.hidden); after(); };
+  document.addEventListener('visibilitychange', visibility);
+  const cleanups = [
+    () => state.resizer?.disconnect(),
+    () => { state.seen?.disconnect(); clearTimeout(wakeTimer); },
+    () => motionQuery?.removeEventListener?.('change', motionChanged),
+    () => document.removeEventListener('visibilitychange', visibility),
+    () => state.audio.destroy(),
+    () => input.destroy(),
+    ...Object.values(state.caps || {}).map(part => () => part.destroy?.()),
+  ];
+  const destroy = state.host.destroy;
+  state.host.destroy = () => {
+    if (state.destroyed) return;
+    running = false; state.destroyed = true;
+    for (const c of cleanups.splice(0).reverse()) { try { c(); } catch (e) { onError?.({ code: e?.code || null, message: String(e?.message ?? e), source: 'destroy' }); } }
+    destroy();
+    container.replaceChildren();
+  };
+  state.advance = (ms) => { if (state.stopped) return; const rs = player.advance(ms); for (const r of rs) state.fault(r, 'timer'); if (!state.stopped) after(); };
+  state.press = (addr, cid, arg) => { if (state.stopped) return { ok: false, fault: state.stopped, ignored: 'stopped' }; const r = player.activate(addr, cid, arg); state.fault(r, 'control'); if (!state.stopped) after(); return r; };
+  const clipHook = (word) => (addr, clip) => {
+    if (state.stopped) return { ok: false, fault: state.stopped, ignored: 'stopped' };
+    const r = player.transaction('test', () => player.runActions(addr || player.scene, [{ [word]: clip }], `test ${word}`));
+    state.fault(r, 'test');
+    if (!state.stopped) after();
+    return r;
+  };
+  state.play = clipHook('play');
+  state.stop = clipHook('stop');
+  state.boxes = () => {
+    const o = container.getBoundingClientRect(); const out = {};
+    for (const el of container.querySelectorAll('[data-hsvg-kind="part"][id]')) {
+      const b = el.getBoundingClientRect(); const css = window.getComputedStyle(el);
+      out[el.id.slice(namespace.length)] = { x: b.left - o.left, y: b.top - o.top, width: b.width, height: b.height, shown: b.width > 0 && b.height > 0 && css.display !== 'none' && css.visibility !== 'hidden' };
+    }
+    return out;
+  };
+  return state;
+}
+
+exp.VERSION = __reexport26_0.VERSION;
+};
+defs[28] = function (exp) { 'use strict'; // engine/v2/src/drawing.mjs
 exp.ease = ease; exp.sampleKeys = sampleKeys; exp.narrowLayouts = narrowLayouts;
-const { parseXml } = req(22);
-const { parseMotion } = req(23);
-const { entryKey } = req(17);
-const { OWNED_BINDING_KEYS, TEXT_BINDING_KEYS } = req(16);
+const { parseXml } = req(29);
+const { parseMotion } = req(30);
+const { entryKey } = req(15);
+const { OWNED_BINDING_KEYS, TEXT_BINDING_KEYS } = req(14);
 const drawsBox = (bd) => Object.keys(bd).some(k => Object.hasOwn(OWNED_BINDING_KEYS, k) && !Object.hasOwn(TEXT_BINDING_KEYS, k) && bd[k] && typeof bd[k] === 'object' && !Array.isArray(bd[k]));
 const richOf = (bd) => { for (const k of Object.keys(TEXT_BINDING_KEYS)) if (bd[k] && typeof bd[k] === 'object' && !Array.isArray(bd[k])) return bd[k]; return null; };
-const { isHex, mixColour, dashOf } = req(24);
-const { channelOf, valueOf, wordOf, isMirror } = req(10);
-const { routePoint } = req(25);
+const { isHex, mixColour, dashOf } = req(31);
+const { channelOf, valueOf, wordOf, isMirror } = req(7);
+const { routePoint } = req(32);
 const faultCode = (err) => err?.code || (err instanceof RangeError || err?.name === 'InternalError' ? 'E-EVENT-LOOP' : 'E-FORMULA');
-const { fitText, drawnState } = req(26);
-const { isTierObject, wordingAt, wordingsDown, fieldShown, tierEntry, chooseTier, giveWayRules, badSteps } = req(18);
-const { watchArt, bboxOf } = req(13);
-const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, pickedLayout, picksFor, resizedBox, sizeValue, nearestSize } = req(19);
-const { roleOf, boxOf, recordOf } = req(27);
-const { IDENTITY, mul, parseTransform } = req(15);
+const { fitText, drawnState } = req(33);
+const { isTierObject, wordingAt, wordingsDown, fieldShown, tierEntry, chooseTier, giveWayRules, badSteps } = req(16);
+const { watchArt, bboxOf } = req(11);
+const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, pickedLayout, picksFor, resizedBox, sizeValue, nearestSize } = req(17);
+const { roleOf, boxOf, recordOf } = req(34);
+const { IDENTITY, mul, parseTransform } = req(13);
 const clone = (n) => (n.name ? { name: n.name, attrs: { ...n.attrs }, attrOrder: [...n.attrOrder], children: n.children.map(clone) } : { text: n.text });
 const PAINT_ATTR = { fill: 'fill', stroke: 'stroke' };
 const caseOf = (text, kase, language) => (kase === 'upper' ? text.toLocaleUpperCase(language) : kase === 'lower' ? text.toLocaleLowerCase(language) : text);
@@ -6320,7 +6934,7 @@ function invert(m) {
 
 exp.clone = clone; exp.parseTransform = parseTransform; exp.SETTLE_MS = SETTLE_MS; exp.Drawing = Drawing;
 };
-defs[22] = function (exp) { 'use strict'; // engine/v2/schema/xml.mjs
+defs[29] = function (exp) { 'use strict'; // engine/v2/schema/xml.mjs
 exp.decodeEntities = decodeEntities; exp.parseXml = parseXml;
 class XmlError extends Error {
   constructor(message, at) { super(message); this.code = 'E-SVG-PARSE'; this.at = at; }
@@ -6428,7 +7042,7 @@ function parseXml(src) {
 
 exp.XmlError = XmlError;
 };
-defs[23] = function (exp) { 'use strict'; // engine/v2/src/physics.mjs
+defs[30] = function (exp) { 'use strict'; // engine/v2/src/physics.mjs
 exp.motionRanges = motionRanges; exp.motionEntries = motionEntries; exp.parseMotion = parseMotion; exp.motionDots = motionDots;
 function motionRanges(text, id) {
   const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -6476,7 +7090,7 @@ function motionDots(value) {
 
 exp.MOTION_INNER = MOTION_INNER; exp.markChannel = markChannel;
 };
-defs[24] = function (exp) { 'use strict'; // engine/v2/src/paint-channels.mjs
+defs[31] = function (exp) { 'use strict'; // engine/v2/src/paint-channels.mjs
 exp.blendHex = blendHex; exp.mixColour = mixColour; exp.dashOf = dashOf;
 const fmt = (v) => String(Math.round(v * 1e6) / 1e6);
 const HEX = /^#[0-9a-fA-F]{6}$/;
@@ -6497,7 +7111,7 @@ function dashOf(v, s = 0) {
 
 exp.isHex = isHex;
 };
-defs[25] = function (exp) { 'use strict'; // engine/v2/src/route.mjs
+defs[32] = function (exp) { 'use strict'; // engine/v2/src/route.mjs
 exp.tokens = tokens; exp.flatten = flatten; exp.routeSegments = routeSegments; exp.pointAt = pointAt; exp.routePoint = routePoint;
 const TOKEN = /[MmLlHhVvCcSsQqTtAaZz]|[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?/g;
 const ARGS = { m: 2, l: 2, h: 1, v: 1, c: 6, s: 4, q: 4, t: 2, a: 7, z: 0 };
@@ -6600,7 +7214,7 @@ function routePoint(node, p) {
 
 
 };
-defs[26] = function (exp) { 'use strict'; // engine/v2/src/fit.mjs
+defs[33] = function (exp) { 'use strict'; // engine/v2/src/fit.mjs
 exp.fontSizes = fontSizes; exp.breakLines = breakLines; exp.searchFit = searchFit; exp.fitText = fitText; exp.gap = gap; exp.drawnState = drawnState; exp.fitGeometry = fitGeometry; exp.textMeasurer = textMeasurer; exp.drawFit = drawFit; exp.restoreDrawn = restoreDrawn; exp.replays = replays;
 const NS = 'http://www.w3.org/2000/svg';
 function fontSizes(max, min) {
@@ -6736,7 +7350,7 @@ function replays(textEl, regionEl, value, drawn) {
 
 
 };
-defs[27] = function (exp) { 'use strict'; // engine/v2/src/marks.mjs
+defs[34] = function (exp) { 'use strict'; // engine/v2/src/marks.mjs
 exp.recordOf = recordOf;
 const SIDES = ['left', 'right', 'near', 'far'];
 const KEEPS = ['keep-inside', 'keep-clear', 'keep-empty'];
@@ -6752,250 +7366,7 @@ function recordOf(root) {
 
 exp.SIDES = SIDES; exp.KEEPS = KEEPS; exp.roleOf = roleOf; exp.sideOf = sideOf; exp.keepOf = keepOf; exp.boxOf = boxOf;
 };
-defs[28] = function (exp) { 'use strict'; // engine/v2/src/host.mjs
-exp.hostPicture = hostPicture; exp.modulePort = modulePort; exp.parseHookMark = parseHookMark; exp.marksOf = marksOf; exp.findHooks = findHooks; exp.pagePort = pagePort; exp.aiPort = aiPort; exp.hostApi = hostApi;
-const { checkValue, checkContent } = req(9);
-const { FORMAT } = req(7);
-function hostPicture(b, type, limits) {
-  const no = (m) => refuse('E-HOST-PICTURE', `the picture ${m}`);
-  if (!(b instanceof Uint8Array)) no('is bytes: give a Uint8Array');
-  if (b.length > limits.imageBytesEach) no(`is ${b.length} bytes, over imageBytesEach ${limits.imageBytesEach}`);
-  const at = (i) => b[i] ?? 0; const be = (i) => at(i) * 256 + at(i + 1); const le = (i, n) => { let v = 0; for (let k = n - 1; k >= 0; k--) v = v * 256 + at(i + k); return v; };
-  const tag = (i, t) => String.fromCharCode(at(i), at(i + 1), at(i + 2), at(i + 3)) === t;
-  let shows = null; let w = 0; let h = 0;
-  if (at(0) === 137 && tag(1, 'PNG\r') && tag(12, 'IHDR')) { shows = 'image/png'; w = be(16) * 65536 + be(18); h = be(20) * 65536 + be(22); }
-  else if (at(0) === 255 && at(1) === 216) {
-    shows = 'image/jpeg';
-    for (let i = 2; i + 8 < b.length && at(i) === 255;) {
-      const m = at(i + 1);
-      if (m === 255) { i++; continue; }
-      if (m >= 192 && m <= 207 && m !== 196 && m !== 200 && m !== 204) { h = be(i + 5); w = be(i + 7); break; }
-      i += m === 1 || (m >= 208 && m <= 216) ? 2 : 2 + be(i + 2);
-    }
-  } else if (tag(0, 'RIFF') && tag(8, 'WEBP')) {
-    shows = 'image/webp';
-    if (tag(12, 'VP8X')) { w = 1 + le(24, 3); h = 1 + le(27, 3); }
-    else if (tag(12, 'VP8L')) { w = 1 + (le(21, 2) & 16383); h = 1 + (le(22, 4) >> 6 & 16383); }
-    else if (tag(12, 'VP8 ')) { w = le(26, 2) & 16383; h = le(28, 2) & 16383; }
-  }
-  if (!['image/png', 'image/jpeg', 'image/webp'].includes(type)) no(`type ${JSON.stringify(String(type)).slice(0, 40)} is not image/png, image/jpeg or image/webp (never SVG or code)`);
-  if (shows !== type) no(`bytes are ${shows ?? 'no PNG, JPEG or WebP'}, not ${type}`);
-  if (!(w > 0 && h > 0)) no('bytes give no width and height');
-  if (w * h > limits.imagePixelsEach) no(`is ${w} x ${h} pixels, over imagePixelsEach ${limits.imagePixelsEach}`);
-  let t = '';
-  for (let i = 0; i < b.length; i += 32768) t += String.fromCharCode.apply(null, b.subarray(i, i + 32768));
-  return `data:${type};base64,${btoa(t)}`;
-}
-const MODULE_PORTS = new WeakSet();
-function modulePort({ lock, maxMs, maxSteps, clock } = {}) {
-  if (!lock || typeof lock !== 'object' || Array.isArray(lock)) refuse('E-TYPE', 'modulePort takes {lock: {"<name>@<version>": "sha256:..."}}');
-  for (const [k, v] of Object.entries(lock)) if (!/^([a-z][a-z0-9]*(-[a-z0-9]+)*\.)?[a-z][a-z0-9]*(-[a-z0-9]+)*@.+$/.test(k) || !/^sha256:[0-9a-f]{64}$/.test(String(v))) refuse('E-TYPE', `lock entry ${k} is not <name>@<version>: sha256:<hex>`);
-  const limits = {};
-  if (maxMs !== undefined) { if (!(maxMs >= 1 && maxMs <= 1000)) refuse('E-RANGE', 'maxMs is 1..1000'); limits.maxMs = maxMs; }
-  if (maxSteps !== undefined) { if (!(Number.isInteger(maxSteps) && maxSteps >= 1 && maxSteps <= 10000000)) refuse('E-RANGE', 'maxSteps is 1..10,000,000'); limits.maxSteps = maxSteps; }
-  if (clock !== undefined && typeof clock !== 'function') refuse('E-TYPE', 'clock is a function');
-  const port = Object.freeze({ kind: 'module-port', lock: Object.freeze({ ...lock }), limits: Object.freeze(limits), clock: clock ?? null });
-  MODULE_PORTS.add(port);
-  return port;
-}
-const isModulePort = (p) => MODULE_PORTS.has(p);
-const HOOK_KINDS = Object.freeze(['spot', 'surface', 'target', 'control', 'grab', 'obstacle']);
-const HOOK_NAME = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
-function parseHookMark(value) {
-  const hooks = []; const bad = [];
-  const tokens = String(value ?? '').split(/\s+/).filter(Boolean);
-  if (!tokens.length) bad.push('');
-  for (const t of tokens) {
-    const parts = t.split(':');
-    if (parts.length === 2 && HOOK_KINDS.includes(parts[0]) && HOOK_NAME.test(parts[1])) hooks.push({ kind: parts[0], name: parts[1] });
-    else bad.push(t);
-  }
-  return { hooks, bad };
-}
-function marksOf(el) {
-  const v = el.getAttribute?.('data-hsvg-hook');
-  return v != null ? parseHookMark(v).hooks : [];
-}
-function findHooks(root, wanted) {
-  const selector = '[data-hsvg-hook]';
-  const byName = new Map(wanted.map(w => [w.name, { kind: w.kind, elements: [] }]));
-  for (const el of root.querySelectorAll(selector)) {
-    for (const m of marksOf(el)) {
-      const w = byName.get(m.name);
-      if (w && w.kind === m.kind && !w.elements.includes(el)) w.elements.push(el);
-    }
-  }
-  const out = {};
-  for (const [name, w] of byName) {
-    const n = w.elements.length;
-    const status = w.kind === 'obstacle' ? 'found' : n === 1 ? 'found' : n === 0 ? 'missing' : 'ambiguous';
-    out[name] = { status, elements: status === 'found' ? w.elements : [] };
-  }
-  return out;
-}
-function pagePort(doc, { root = null } = {}) {
-  if (!doc || typeof doc.querySelectorAll !== 'function') refuse('E-TYPE', 'pagePort takes the host page\'s document');
-  const scope = root || doc;
-  return Object.freeze({
-    kind: 'page-port',
-    document: doc,
-    root: scope,
-    find: (wanted) => findHooks(scope, wanted),
-  });
-}
-const SOURCE = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
-function aiPort(sources = {}) {
-  if (sources === null || typeof sources !== 'object' || Array.isArray(sources)) refuse('E-TYPE', 'aiPort takes {name: async function}');
-  const own = new Map();
-  for (const [name, fn] of Object.entries(sources)) {
-    if (!SOURCE.test(name) || name.length > 48) refuse('E-NAME-SHAPE', `${name} is not an AI source name`);
-    if (typeof fn !== 'function') refuse('E-TYPE', `the AI source ${name} is not a function`);
-    own.set(name, fn);
-  }
-  return Object.freeze({
-    kind: 'ai-port',
-    names: () => [...own.keys()],
-    has: (name) => own.has(name),
-    call(name, request, signal) {
-      const fn = own.get(name);
-      if (!fn) return Promise.reject(Object.assign(new Error(`no AI source ${name}`), { code: 'E-REF-UNKNOWN' }));
-      const deep = (x) => { if (x && typeof x === 'object') { for (const v of Object.values(x)) deep(v); Object.freeze(x); } return x; };
-      try { return Promise.resolve(fn(deep(structuredClone(request)), signal)); } catch (e) { return Promise.reject(e); }
-    },
-  });
-}
-const BUILT_IN = ['entered', 'ended', 'openUrl', 'firstInput', 'hookHealth'];
-const PREFIXED = ['changed'];
-const PARTITION = /^[A-Za-z0-9._-]{1,128}$/;
-const refuse = (code, message) => { const e = new Error(message); e.code = code; throw e; };
-const frozen = (x) => Object.freeze(structuredClone(x));
-const own = (x, name) => { try { return structuredClone(x); } catch { return refuse('E-TYPE', `${name}: not a JSON value`); } };
-function hostApi(player, { onError = null, test = false, onRestart = null } = {}) {
-  const doc = player.exp.doc;
-  const inputs = doc.inputs || {};
-  const outputs = doc.outputs || {};
-  const subs = new Map();
-  const pauses = new Set();
-  let delivering = false;
-  let destroyed = false;
-  const pending = [];
-  const alive = () => {
-    if (destroyed) refuse('E-HOST-CLOSED', 'the player is destroyed');
-    if (player.stopped) refuse('E-HOST-CLOSED', `the player stopped: ${player.stopped.code || 'fault'} ${player.stopped.message}`);
-  };
-  const error = (e, source) => { const d = { code: e.code || null, message: e.message, source }; if (onError) onError(d); else console.error(d); };
-  const change = (fn) => { alive(); if (delivering) { pending.push(fn); return undefined; } return fn(); };
-  const check = (r) => { if (r && r.ok === false) refuse(r.fault.code, r.fault.message); return r; };
-  player.onDeliveryError = (d) => { if (onError) onError(d); else console.error(d); };
-  const shellOuts = Object.entries(player.exp.shell?.doc?.outputs || {}).filter(([n, o]) => o?.kind === 'event' && !outputs[n]).map(([n]) => n);
-  const heard = [];
-  if (shellOuts.length && typeof player.onOutcome === 'function') {
-    const onOutcome = player.onOutcome.bind(player);
-    player.onOutcome = (address, name, payload) => { if (address === player.shellId && shellOuts.includes(name)) heard.push([player.state.outputs, name, { ...(payload ?? {}) }]); return onOutcome(address, name, payload); };
-  }
-  player.on(({ outputs: outs, deliveries = [] }) => {
-    delivering = true;
-    try {
-      const health = deliveries.filter(d => d.kind === 'page' && d.op === 'health').map(d => ['hookHealth', d.status]);
-      const changed = deliveries.filter(d => d.kind === 'input' && inputs[d.name]?.contentType !== 'freeText').map(d => ['hsvg.changed', { name: d.name, value: d.value, by: d.source }]);
-      for (const [name, detail] of [...outs.map(({ name: n, ...rest }) => [n, rest]), ...heard.splice(0).filter(([tx]) => tx === outs).map(([, n, d]) => [n, d]), ...health, ...changed]) {
-        for (const fn of subs.get(name) || []) {
-          try { fn({ name, detail: frozen(detail) }); } catch (e) { error(e, 'listener'); }
-        }
-      }
-    } finally { delivering = false; }
-    if (pending.length) queueMicrotask(() => { while (pending.length) { const fn = pending.shift(); try { fn(); } catch (e) { error(e, 'host'); } } });
-  });
-  const api = {
-    on(name, fn) {
-      alive();
-      if (typeof name === 'string' && name.startsWith('hsvg.')) {
-        const bare = name.slice(5);
-        if (PREFIXED.includes(bare)) { if (!subs.has(name)) subs.set(name, new Set()); subs.get(name).add(fn); return () => subs.get(name)?.delete(fn); }
-        if (!BUILT_IN.includes(bare)) refuse('E-REF-UNKNOWN', `${name} is not a built-in output (${[...BUILT_IN, ...PREFIXED].join(', ')})`);
-        name = bare;
-      }
-      const out = outputs[name];
-      if (!BUILT_IN.includes(name) && !shellOuts.includes(name) && !(out && (out.kind === 'event' || out.kind === 'record'))) refuse('E-REF-UNKNOWN', `${name} is not an output event or record of the experience or its shell`);
-      if (!subs.has(name)) subs.set(name, new Set());
-      subs.get(name).add(fn);
-      return () => subs.get(name)?.delete(fn);
-    },
-    read(name) {
-      alive();
-      const out = outputs[name];
-      if (out?.kind === 'result') return structuredClone(player.eval('experience', out.value));
-      const inp = inputs[name];
-      if (inp && inp.kind !== 'trigger') {
-        if (inp.contentType === 'freeText') refuse('E-HOST-PRIVATE', `${name} is free text a person typed`);
-        return structuredClone(player.state.blocks.experience.inputs[name]);
-      }
-      if (doc.values?.[name] || doc.computed?.[name]) refuse('E-HOST-PRIVATE', `${name} is inside the experience`);
-      refuse('E-REF-UNKNOWN', `${name} is not an output or input of the experience`);
-      return undefined;
-    },
-    set(name, given) {
-      alive();
-      const inp = inputs[name];
-      if (!inp || inp.kind === 'trigger') refuse(inp ? 'E-TYPE' : 'E-REF-UNKNOWN', `${name} is not a content field or knob of the experience`);
-      const value = own(given, name);
-      if (inp.contentType === 'picture' && /^host:/.test(value)) refuse('E-TYPE', `${name}: only player.picture names a host picture`);
-      const bad = inp.kind === 'content' ? checkContent(inp, value) : checkValue(inp, value);
-      if (bad) { if (player.caps?.inputHook('refused', name, inp, player.dataView()) !== undefined) change(() => player.setInput(name, value, 'host')); refuse(bad[0], `${name}: ${bad[1]}`); }
-      return change(() => check(player.setInput(name, value, 'host')));
-    },
-    emit(name, given = {}) {
-      alive();
-      const inp = inputs[name];
-      if (inp?.kind !== 'trigger') refuse('E-REF-UNKNOWN', `${name} is not a trigger of the experience`);
-      const payload = own(given, name);
-      if (Object.keys(payload).length && !inp.payload) refuse('E-TYPE', `the trigger ${name} takes no payload`);
-      if (inp.payload) { const bad = checkValue(inp.payload, payload); if (bad) refuse(bad[0], `${name}: ${bad[1]}`); }
-      let done, fail;
-      const p = new Promise((y, n) => { done = y; fail = n; });
-      p.catch(() => {});
-      change(() => {
-        try {
-          const r = check(player.trigger(name, payload, 'host'));
-          done(frozen({ name, payload, outputs: r.outputs.filter(o => BUILT_IN.includes(o.name) || outputs[o.name]).map(({ name: n, ...d }) => ({ name: n, detail: d })) }));
-        } catch (e) { fail(e); throw e; }
-      });
-      return p;
-    },
-    picture(name, bytes, type) {
-      alive();
-      const inp = inputs[name];
-      if (!inp || inp.kind !== 'content') refuse('E-REF-UNKNOWN', `${name} is not a content field of the experience`);
-      if (inp.contentType !== 'picture') refuse('E-TYPE', `${name} holds ${inp.contentType ?? inp.type}, not a picture`);
-      const uri = hostPicture(ArrayBuffer.isView(bytes) ? new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength).slice() : bytes, type, player.limits || FORMAT);
-      return change(() => check(player.hostPicture(name, uri)));
-    },
-    timeLimits(factor) { return change(() => check(player.applySettings([['timeLimits', factor]], 'host'))); },
-    pause(reason) { alive(); pauses.add(String(reason)); change(() => player.setPause('host', true)); },
-    resume(reason) { alive(); pauses.delete(String(reason)); if (!pauses.size) change(() => player.setPause('host', false)); },
-    get paused() { return pauses.size > 0; },
-    scene(slot = 'stage') { alive(); if (slot !== 'stage') refuse('E-REF-UNKNOWN', `no stage slot ${slot}`); return player.scene; },
-    seat(seatId, filler) {
-      alive();
-      if (!player.seats) refuse('E-NEEDS-MISSING', 'seats need the seats capability, which is not installed');
-      return change(() => { const r = player.seats.host(String(seatId), String(filler)); if (!r.ok) refuse(r.error.code, r.error.message); return r; });
-    },
-    restart() { return change(() => { const r = check(player.restart()); onRestart?.(); return r; }); },
-    clearStorage() { return change(() => { player.clearStorage(); const r = check(player.restart()); onRestart?.(); return r; }); },
-    setPartition(id) {
-      alive();
-      if (typeof id !== 'string' || !PARTITION.test(id)) refuse('E-RANGE', 'a partition is 1 to 128 of A-Z a-z 0-9 . _ -');
-      return change(() => { player.opts.storage = { ...(player.opts.storage || {}), partition: id }; const r = check(player.restart()); onRestart?.(); return r; });
-    },
-    destroy() { destroyed = true; subs.clear(); pending.length = 0; },
-  };
-  if (test) api.internal = player;
-  return api;
-}
-
-exp.isModulePort = isModulePort; exp.HOOK_KINDS = HOOK_KINDS;
-};
-defs[29] = function (exp) { 'use strict'; // engine/v2/web/input-web.mjs
+defs[35] = function (exp) { 'use strict'; // engine/v2/web/input-web.mjs
 exp.controlName = controlName; exp.attachInput = attachInput; exp.stageFocus = stageFocus; exp.contrastOf = contrastOf; exp.focusColour = focusColour; exp.focusRing = focusRing; exp.ringFilter = ringFilter; exp.canRing = canRing;
 const keyOwner = new WeakMap();
 const TAP_PX = 10;
@@ -7113,11 +7484,15 @@ function attachInput(player, state, container, win) {
   }
   const build = ([name, attrs, kids = []]) => { const e = doc.createElementNS(SVGNS, name); for (const [k, v] of Object.entries(attrs)) { if (k === 'style') e.style.cssText = v; else e.setAttribute(k, v); } for (const k of kids) e.appendChild(build(k)); return e; };
   listen(win, 'resize', () => { if (!state.destroyed) ring(); });
+  const native = typeof win.Element?.prototype?.checkVisibility === 'function';
+  const SEEN = { visibilityProperty: true };
   const visible = (el) => {
     if (!el || !el.isConnected) return false;
-    for (let n = el; n && n !== container; n = n.parentElement) {
-      const s = win.getComputedStyle(n);
-      if (s.display === 'none' || s.visibility === 'hidden' || s.visibility === 'collapse') return false;
+    if (native) { if (!el.checkVisibility(SEEN)) return false; } else {
+      for (let n = el; n && n !== container; n = n.parentElement) {
+        const s = win.getComputedStyle(n);
+        if (s.display === 'none' || s.visibility === 'hidden' || s.visibility === 'collapse') return false;
+      }
     }
     const b = el.getBoundingClientRect();
     return b.width > 0 && b.height > 0;
@@ -7749,161 +8124,36 @@ function canRing(el, win) {
 
 exp.RING = RING;
 };
-defs[30] = function (exp) { 'use strict'; // engine/v2/src/asset.mjs
-exp.makeAsset = makeAsset; exp.readAsset = readAsset; exp.assetPackage = assetPackage;
-const { sha256, memberFindings } = req(31);
-const ASSET_FORMAT = 'hsvg/2.0';
-const enc = new TextEncoder();
-const NO_MARKUP = (json) => json.replace(/[<>&]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
-const fault = (code, message, extra = {}) => Object.assign(new Error(message), { code, ...extra });
-const sorted = (o) => Object.fromEntries(Object.keys(o).sort().map(k => [k, o[k]]));
-function rootTagEnd(text) {
-  const m = /^(?:﻿)?(?:<\?xml[^?]*\?>\s*)?(?:<!--[\s\S]*?-->\s*)*<svg\b(?:[^>"']|"[^"]*"|'[^']*')*>/.exec(text);
-  return m ? m[0].length : -1;
-}
-const META = /^\r?\n<metadata>([^<]*)<\/metadata>/;
-function makeAsset({ id, drawing, files }) {
-  const text = files[drawing];
-  if (typeof text !== 'string') throw fault('E-ASSET', `the asset's drawing ${drawing} is not one of its files`);
-  const at = rootTagEnd(text);
-  if (at < 0) throw fault('E-ASSET', `${drawing} does not start with an <svg> root element`);
-  if (/<metadata\b/.test(text)) throw fault('E-ASSET', `${drawing} already has a tool record (<metadata>); the drawing of an asset carries none, the packer writes it`);
-  const members = sorted(Object.fromEntries(Object.entries(files).map(([p, t]) => [p, sha256(enc.encode(t))])));
-  const rest = sorted(Object.fromEntries(Object.entries(files).filter(([p]) => p !== drawing)));
-  const record = { asset: { format: ASSET_FORMAT, id, drawing, members, files: rest } };
-  const nl = text.slice(at).startsWith('\r\n') ? '\r\n' : '\n';
-  return `${text.slice(0, at)}${nl}<metadata>${NO_MARKUP(JSON.stringify(record))}</metadata>${text.slice(at)}`;
-}
-function readAsset(svg, { maxBytes = Infinity } = {}) {
-  if (typeof svg !== 'string') throw fault('E-ASSET', 'a HyperSVG is text');
-  const bytes = enc.encode(svg).length;
-  if (bytes > maxBytes) throw fault('E-ASSET', `the HyperSVG is ${bytes} bytes, more than ${maxBytes}`);
-  const at = rootTagEnd(svg);
-  const m = at < 0 ? null : META.exec(svg.slice(at));
-  if (!m) throw fault('E-ASSET', 'this SVG holds no asset record: a HyperSVG has <metadata>{"asset": ...}</metadata> right after its <svg> start tag (pack --asset writes it)');
-  let record = null;
-  try { record = JSON.parse(m[1]); } catch {   }
-  const a = record?.asset;
-  if (!a || typeof a !== 'object' || Array.isArray(a) || Object.keys(record).length !== 1) throw fault('E-ASSET', 'the asset record is not one JSON object {"asset": {...}}');
-  const extra = Object.keys(a).filter(k => !['format', 'id', 'drawing', 'members', 'files'].includes(k));
-  if (extra.length) throw fault('E-ASSET', `the asset record holds ${extra.join(', ')}, which an asset cannot hold`);
-  if (a.format !== ASSET_FORMAT) throw fault('E-ASSET', `the asset's format is ${JSON.stringify(a.format)}, not ${ASSET_FORMAT}`);
-  if (typeof a.id !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(a.id)) throw fault('E-ASSET', 'the asset has no id');
-  if (typeof a.drawing !== 'string' || !a.files || typeof a.files !== 'object' || Array.isArray(a.files) || !a.members || typeof a.members !== 'object') throw fault('E-ASSET', 'the asset record needs drawing, members and files');
-  if (Object.hasOwn(a.files, a.drawing)) throw fault('E-ASSET', `the drawing ${a.drawing} is the SVG itself, not one of the files`);
-  const files = {};
-  for (const [p, t] of Object.entries(a.files)) {
-    if (typeof t !== 'string') throw fault('E-ASSET', `${p} is not text`);
-    if (!/^[A-Za-z0-9_][A-Za-z0-9._-]*(\/[A-Za-z0-9_][A-Za-z0-9._-]*)*$/.test(p) || p.split('/').includes('..')) throw fault('E-ASSET', `${p} is not a plain relative path`);
-    files[p] = t;
+defs[36] = function (exp) { 'use strict'; // engine/v2/src/sleep.mjs
+exp.nextDue = nextDue; exp.framesSince = framesSince;
+const { OFF } = req(6);
+function nextDue(player) {
+  if (player.stopped) return Infinity;
+  if (player.clocked) return null;
+  const rates = player.clockRates();
+  if (player.clocked) return null;
+  let due = Infinity;
+  for (const t of player.state.timers) {
+    if ((rates?.get(t.owner) ?? 1) === 0) continue;
+    if (Number.isFinite(t.due) && t.due < OFF && t.due < due) due = t.due;
   }
-  const meta = m[0];
-  files[a.drawing] = svg.slice(0, at) + svg.slice(at + meta.length);
-  const bad = memberFindings(a.members, Object.keys(files), (p) => sha256(enc.encode(files[p])));
-  if (bad.length) throw fault(bad[0].code, `the asset was changed after it was packed: ${bad.map(d => d.message).join('; ')}`, { diagnostics: bad });
-  if (/<metadata\b/.test(files[a.drawing])) throw fault('E-ASSET', `the drawing ${a.drawing} has a tool record (<metadata>) of its own; an asset's drawing carries none`);
-  return { id: a.id, drawing: a.drawing, files };
+  const cap = player.caps.clockNext(Infinity, player);
+  if (cap && cap.due < due) due = cap.due;
+  const sec = player.nowTick(Infinity, player.epochBase());
+  if (sec && sec.due < due) due = sec.due;
+  return due;
 }
-function assetPackage({ id, files }) {
-  const pkg = {};
-  for (const [p, t] of Object.entries(files)) pkg[p] = enc.encode(t);
-  const members = sorted(Object.fromEntries(Object.entries(pkg).map(([p, b]) => [p, sha256(b)])));
-  pkg['package.json'] = enc.encode(JSON.stringify({ format: ASSET_FORMAT, kind: 'package', id, experience: 'experience.json', needs: [], members }));
-  return pkg;
-}
-
-exp.ASSET_FORMAT = ASSET_FORMAT;
-};
-defs[31] = function (exp) { 'use strict'; // engine/v2/src/members.mjs
-exp.sha256 = sha256; exp.memberFindings = memberFindings;
-const K = new Uint32Array([
-  0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
-  0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
-  0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
-  0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-  0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08,
-  0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-  0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2]);
-function sha256(bytes) {
-  const n = bytes.length;
-  const total = Math.ceil((n + 9) / 64) * 64;
-  const m = new Uint8Array(total);
-  m.set(bytes);
-  m[n] = 0x80;
-  const bits = n * 8;
-  const view = new DataView(m.buffer);
-  view.setUint32(total - 8, Math.floor(bits / 0x100000000));
-  view.setUint32(total - 4, bits >>> 0);
-  const h = new Uint32Array([0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]);
-  const w = new Uint32Array(64);
-  const rot = (x, r) => (x >>> r) | (x << (32 - r));
-  for (let off = 0; off < total; off += 64) {
-    for (let i = 0; i < 16; i++) w[i] = view.getUint32(off + i * 4);
-    for (let i = 16; i < 64; i++) {
-      const a = w[i - 15]; const b = w[i - 2];
-      w[i] = (w[i - 16] + (rot(a, 7) ^ rot(a, 18) ^ (a >>> 3)) + w[i - 7] + (rot(b, 17) ^ rot(b, 19) ^ (b >>> 10))) >>> 0;
-    }
-    let [a, b, c, d, e, f, g, k] = h;
-    for (let i = 0; i < 64; i++) {
-      const t1 = (k + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) >>> 0;
-      const t2 = ((rot(a, 2) ^ rot(a, 13) ^ rot(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
-      k = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
-    }
-    h[0] += a; h[1] += b; h[2] += c; h[3] += d; h[4] += e; h[5] += f; h[6] += g; h[7] += k;
-  }
-  return `sha256:${[...h].map(x => x.toString(16).padStart(8, '0')).join('')}`;
-}
-function memberFindings(members, paths, digestOf) {
-  const out = [];
-  const listed = members && typeof members === 'object' && !Array.isArray(members) ? members : {};
-  const have = new Set(paths.filter(p => p !== 'package.json'));
-  for (const rel of Object.keys(listed)) if (!have.has(rel)) out.push({ code: 'E-PACKAGE-MEMBER', path: `/members/${rel}`, message: `${rel} is listed but missing from the package` });
-  for (const rel of have) if (!Object.hasOwn(listed, rel)) out.push({ code: 'E-PACKAGE-MEMBER', path: `/members/${rel}`, message: `${rel} is in the package but not in members` });
-  for (const [rel, digest] of Object.entries(listed)) if (have.has(rel) && digestOf(rel) !== digest) out.push({ code: 'E-PACKAGE-DIGEST', path: `/members/${rel}`, message: `${rel} does not match its digest` });
-  return out;
+function framesSince(last, now, period, cap = 100) {
+  if (!(period > 0) || !(now > last)) return { frames: 0, ms: 0, last };
+  const frames = Math.floor((now - last) / period + 1e-9);
+  return { frames, ms: frames * Math.min(cap, Math.round(period)), last: last + frames * period };
 }
 
 
 };
-defs[32] = function (exp) { 'use strict'; // engine/v2/src/grants-asked.mjs
-exp.usedGrants = usedGrants; exp.withUsedGrants = withUsedGrants;
-const LISTS = ['entry', 'exit', 'actions', 'then', 'else'];
-const SCOPES = ['session', 'saved'];
-const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
-function usedGrants(exp) {
-  const docs = [exp.doc, ...Object.values(exp.scenes || {}).map(s => s.doc), ...(exp.shell ? [exp.shell.doc] : [])].filter(isObj);
-  const blocks = Object.values(exp.blocks || {}).map(b => b.doc).filter(isObj);
-  let openUrl = false;
-  const storage = new Set();
-  const walk = (n) => {
-    if (Array.isArray(n)) { n.forEach(walk); return; }
-    if (!isObj(n)) return;
-    for (const k of LISTS) if (Array.isArray(n[k])) for (const a of n[k]) if (isObj(a) && a.call === 'player.openUrl') openUrl = true;
-    for (const v of Object.values(n)) if (v && typeof v === 'object') walk(v);
-  };
-  docs.forEach(walk);
-  for (const d of [...docs, ...blocks]) for (const v of Object.values(isObj(d.values) ? d.values : {})) if (SCOPES.includes(v?.lifetime)) storage.add(v.lifetime);
-  for (const v of Object.values(isObj(exp.doc?.inputs) ? exp.doc.inputs : {})) if (v?.kind === 'knob' && SCOPES.includes(v.lifetime)) storage.add(v.lifetime);
-  if (SCOPES.includes(exp.doc?.story?.lifetime)) storage.add(exp.doc.story.lifetime);
-  return { ...(openUrl ? { openUrl: true } : {}), ...(storage.size ? { storage: SCOPES.filter(s => storage.has(s)) } : {}) };
-}
-function withUsedGrants(exp) {
-  const written = isObj(exp.doc?.grants) ? exp.doc.grants : {};
-  const used = usedGrants(exp);
-  const derived = {};
-  if (used.openUrl && written.openUrl === undefined) derived.openUrl = true;
-  const have = Array.isArray(written.storage) ? written.storage : [];
-  const more = (used.storage || []).filter(s => !have.includes(s));
-  if (more.length) derived.storage = more;
-  if (!Object.keys(derived).length) return { grants: exp.doc?.grants, derived };
-  return { grants: { ...written, ...(derived.openUrl ? { openUrl: true } : {}), ...(more.length ? { storage: [...have, ...more] } : {}) }, derived };
-}
-
-
-};
-defs[33] = function (exp) { 'use strict'; // engine/v2/src/asset-safety.mjs
+defs[37] = function (exp) { 'use strict'; // engine/v2/src/asset-safety.mjs
 exp.drawingSafety = drawingSafety; exp.assetSafety = assetSafety;
-const { parseXml } = req(22);
+const { parseXml } = req(29);
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const XLINK_NS = 'http://www.w3.org/1999/xlink';
 const ELEMENTS = Object.freeze(['svg', 'g', 'defs', 'symbol', 'use', 'title', 'desc', 'metadata', 'path', 'rect', 'circle',
@@ -7958,9 +8208,9 @@ function assetSafety(files) {
 
 exp.ELEMENTS = ELEMENTS; exp.IMAGE_TYPES = IMAGE_TYPES;
 };
-defs[34] = function (exp) { 'use strict'; // engine/v2/src/integrity.mjs
+defs[38] = function (exp) { 'use strict'; // engine/v2/src/integrity.mjs
 exp.parseIntegrity = parseIntegrity; exp.integrityOf = integrityOf; exp.verifyIntegrity = verifyIntegrity;
-const { sha256 } = req(31);
+const { sha256 } = req(21);
 const fault = (code, message) => Object.assign(new Error(message), { code });
 const TOKEN = /^sha256-([A-Za-z0-9+/]{43}=)(?:\?\S*)?$/;
 function parseIntegrity(value) {
@@ -7987,7 +8237,7 @@ async function verifyIntegrity(bytes, value, subtle = globalThis.crypto?.subtle 
 
 
 };
-defs[35] = function (exp) { 'use strict'; // engine/v2/web/place-web.mjs
+defs[39] = function (exp) { 'use strict'; // engine/v2/web/place-web.mjs
 exp.addPlace = addPlace;
 function addPlace(state) {
   const host = state.host;
@@ -8015,24 +8265,16 @@ function addPlace(state) {
 
 
 };
-defs[36] = function (exp) { 'use strict'; // engine/v2/src/error-detail.mjs
-
-const errorDetail = (d) => {
-  const x = d !== null && typeof d === 'object' ? d : { message: d };
-  return { ...x, code: typeof x.code === 'string' && x.code ? x.code : 'E-HOST-ERROR', message: String(x.message ?? '') };
-};
-
-exp.errorDetail = errorDetail;
-};
-defs[37] = function (exp) { 'use strict'; // engine/v2/web/asset-schemas.mjs (the schemas)
+defs[40] = function (exp) { 'use strict'; // engine/v2/web/asset-schemas.mjs (the schemas)
 
 const SCHEMAS_BASE = new URL('../../../spec/2.0/schemas/core/', __hsvgHere);
 const SCHEMAS = {"kinds":{"experience":{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:hsvg:2.0:schema:core:experience","title":"HyperSVG 2.0 experience document","description":"Scenes linked in a story graph. With a kit pin it is a kit experience.","$comment":"Generated by docs/spec-2.0-work/tools/schema/make-schemas.mjs from the spec/2.0 machine files. Do not edit.","type":"object","properties":{"format":{"type":"string","const":"hsvg/2.0","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2"},"kind":{"type":"string","const":"experience","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2, 2.3"},"id":{"type":"string","x-hsvg-section":"2.2, 2.9"},"$schema":{"type":"string","x-hsvg-section":"2.2"},"about":{"$ref":"#/$defs/about","x-hsvg-section":"2.5, A9.3"},"inputs":{"$ref":"#/$defs/inputs","x-hsvg-section":"5.3"},"rules":{"$ref":"#/$defs/rules","x-hsvg-section":"8.1"},"rulePacks":{"$ref":"#/$defs/rule-pack-uses","x-hsvg-section":"8.3"},"waivers":{"$ref":"#/$defs/waivers","x-hsvg-section":"8.5"},"outputs":{"$ref":"#/$defs/outputs","x-hsvg-section":"5.4, 5.12, 5.16"},"values":{"$ref":"#/$defs/values","x-hsvg-section":"5.1"},"computed":{"type":"object","x-hsvg-section":"5.2"},"blocks":{"type":"object","x-hsvg-section":"4.3"},"story":{"$ref":"#/$defs/story","x-hsvg-section":"3.1","description":"every experience that lists no experiences has a story; a one-scene experience lists that scene in ends (3.1)"},"shell":{"type":["string","object"],"x-hsvg-section":"10.1","description":"a file path; in a kit experience {\"use\": \"\u003cdefinition id>\", \"with\": {...}}; without it the default shell applies (10.1)"},"kit":{"$ref":"#/$defs/kit-pin","x-hsvg-section":"4.9, 4.8","description":"the pin {\"id\", \"version\", \"digest\"?}; its presence makes the experience a kit experience"},"with":{"type":"object","x-hsvg-section":"4.8","description":"kit experience only: values for the kit inputs (4.8)"},"theme":{"type":"string","x-hsvg-section":"7.7"},"themes":{"$ref":"#/$defs/themes","x-hsvg-section":"7.7","description":"for an experience made without a kit (7.7)"},"roles":{"type":"object","x-hsvg-section":"6.3","description":"the experience's own role words: id to {aliases, jobGroup, appliesTo, schema?}, as a kit's (6.3)"},"audio":{"$ref":"#/$defs/audio","x-hsvg-section":"6.10","description":"the mix: groups, mutes, fadeMs (6.10)"},"axes":{"$ref":"#/$defs/axes","x-hsvg-section":"7.1"},"promote":{"$ref":"#/$defs/promote","x-hsvg-section":"4.7"},"needs":{"type":"array","x-hsvg-section":"10.11"},"addons":{"type":"object","x-hsvg-section":"12","description":"the settings of capabilities, by name: a built-in's under its bare name (physics), checked against the addons schema of its manifest (spec/2.0/capabilities/\u003cname>.json); an outside add-on's under its id (owner.name), checked against the keys its manifest declares (chapter 12)","properties":{"widgets":{"x-hsvg-owner":"widgets","x-hsvg-fill":"widgets:addons:widgets"},"page":{"x-hsvg-owner":"page","x-hsvg-fill":"page:addons:page"},"seats":{"x-hsvg-owner":"seats","x-hsvg-fill":"seats:addons:seats"},"ai":{"x-hsvg-owner":"ai","x-hsvg-fill":"ai:addons:ai"},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:addons:rich-text"},"lines":{"x-hsvg-owner":"lines","x-hsvg-fill":"lines:addons:lines"},"physics":{"x-hsvg-owner":"physics","x-hsvg-fill":"physics:addons:physics"},"synth":{"x-hsvg-owner":"synth","x-hsvg-fill":"synth:addons:synth"},"effects":{"x-hsvg-owner":"effects","x-hsvg-fill":"effects:addons:effects"},"live-data":{"x-hsvg-owner":"live-data","x-hsvg-fill":"live-data:addons:live-data"},"snapshot":{"x-hsvg-owner":"snapshot","x-hsvg-fill":"snapshot:addons:snapshot"}}},"limits":{"$ref":"#/$defs/limits","x-hsvg-section":"9.8.1","description":"capacity limits this experience needs above the format values; a host admits it only if its profile allows them"},"grants":{"$ref":"#/$defs/grants","x-hsvg-section":"10.5"},"rights":{"$ref":"#/$defs/rights","x-hsvg-section":"9.9","description":"for an experience made without a kit (9.9)"},"saveStamp":{"type":"string","x-hsvg-section":"5.1.2"},"resources":{"$ref":"#/$defs/resources","x-hsvg-section":"2.6"},"language":{"type":"string","x-hsvg-section":"2.7","description":"the default language: of the drawn text, initial content and default words (2.7)"},"data":{"$ref":"#/$defs/data-tables","x-hsvg-section":"2.8"},"audioSynths":{"$ref":"#/$defs/audioSynths","x-hsvg-section":"6.10","description":"made sounds: a pitch glide with attack and release, played by the sound action (core since D31.2)"},"picks":{"$ref":"#/$defs/picks","x-hsvg-section":"4.8","description":"pick-and-use: items of libraries (kits) this experience uses, each library pinned to one version; never in a kit experience (E-KIT-BODY)"}},"required":["format","kind","id"],"additionalProperties":false,"x-hsvg-idFromFile":"folder","allOf":[{"if":{"not":{"required":["experiences"]}},"then":{"required":["story"]}},{"if":{"required":["kit"]},"then":{"propertyNames":{"enum":["format","kind","id","$schema","kit","shell","story","with","about","axes","theme","rules","rulePacks","waivers","resources","language","data","needs","limits","grants","saveStamp","addons"],"x-hsvg-code":"E-KIT-BODY"},"x-hsvg-section":"4.2, 4.9, 4.8"},"description":"kit experience: Drawing, layouts and the behaviour keys are not experience keys at all. 4.9 says a kit experience carries the keys 4.2 lists for kit experiences and nothing else, so an experience key not in allowed is refused in a kit experience."}],"x-hsvg-notMachineChecked":[{"key":"language","requiredWhen":"the experience has words resources (2.7)"}],"$defs":{"about":{"type":"object","properties":{"title":{"type":"string","maxLength":1024},"description":{"type":"string"},"author":{"type":"string"},"credits":{"type":"array","items":{"type":"string"}},"license":{"type":"string","minLength":1},"category":{"type":"string"},"tags":{"type":"array","items":{"type":"string","pattern":"^\\P{Lu}+$"}},"preset":{"enum":["static-banner","animated-ad","interactive-ad","slide-video","interactive-video","data-story","lesson","game","website-mascot","tour"]},"ages":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"integer"}},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"derivedFrom":{"$ref":"#/$defs/derived-from"},"template":{"type":"boolean"},"level":{"enum":["import-ready","library-ready"]},"trust":{"$ref":"#/$defs/trust-record"}},"additionalProperties":false,"x-hsvg-section":"2.5, A9.3","description":"Defined in 2.5, A9.3."},"audio":{"type":"object","properties":{"groups":{"type":"object","additionalProperties":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"propertyNames":{"enum":["music","sounds","voice"]}},"mutes":{"type":"object","additionalProperties":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"propertyNames":{"enum":["music","sounds","voice"]}},"fadeMs":{"type":"number","minimum":0,"maximum":10000}},"additionalProperties":false,"x-hsvg-section":"6.10","description":"Defined in 6.10."},"audioSynths":{"type":"object","maxProperties":64,"x-hsvg-limit":"audioSynths","additionalProperties":{"type":"object","properties":{"wave":{"enum":["sine","square","triangle","sawtooth","noise"]},"from":{"type":"number","minimum":20,"maximum":20000},"to":{"type":"number","minimum":20,"maximum":20000},"durationMs":{"type":"integer","minimum":1,"maximum":10000},"gain":{"type":"number","minimum":0,"maximum":1},"attackMs":{"type":"integer","minimum":0,"maximum":10000},"releaseMs":{"type":"integer","minimum":0,"maximum":10000}},"required":["wave","from","to","durationMs","gain"],"additionalProperties":false},"x-hsvg-section":"6.10","description":"Defined in 6.10."},"axes":{"type":"array","items":{"type":"object","required":["axis"],"properties":{"axis":{"enum":["shape","layout","content","language","look","theme"]},"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"select":{"enum":["space","input","host","person"]},"subject":{"type":"string"},"default":{"type":"string"},"sizes":{"type":"object","propertyNames":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"additionalProperties":{"enum":["must","should"]}},"shapes":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/g3-shape-range"}},"tiers":{"type":"array","items":{"type":"object","required":["tier"],"properties":{"tier":{"enum":["short","medium","rich"]},"shape":{"anyOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"$ref":"#/$defs/g3-shape-range"}]}},"additionalProperties":false}},"options":{"anyOf":[{"type":"array","items":{"type":"string","maxLength":48}},{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"additionalProperties":{"type":"object","properties":{"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false}}]},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"allOf":[{"if":{"required":["select"],"properties":{"select":{"const":"input"}}},"then":{"required":["value"]},"else":{"not":{"required":["value"]}}},{"if":{"required":["axis"],"properties":{"axis":{"const":"content"}}},"then":{"properties":{"select":{"enum":["space","input"],"x-hsvg-code":"E-RANGE"}}}}]},"x-hsvg-section":"7.1","description":"Defined in 7.1."},"column-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"word":{"type":"boolean"},"text":{"type":"boolean"}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"2.8","description":"Defined in 2.8."},"data-tables":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","properties":{"resource":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"key":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"columns":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"$ref":"#/$defs/column-type"}},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"}},"required":["key","maxRows"],"additionalProperties":false},"x-hsvg-section":"2.8","description":"Defined in 2.8."},"derived-from":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"required":["id","version","digest"],"additionalProperties":false,"x-hsvg-section":"4.10, 4.4","description":"Defined in 4.10, 4.4."},"g3-shape-range":{"type":"object","properties":{"minAspect":{"type":"number"},"maxAspect":{"type":"number"},"minWidth":{"type":"number"},"maxWidth":{"type":"number"},"minHeight":{"type":"number"},"maxHeight":{"type":"number"},"minPixels":{"type":"number"},"maxPixels":{"type":"number"},"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false,"x-hsvg-section":"7.2","description":"Defined in 7.2."},"grants":{"type":"object","properties":{"storage":{"type":"array","items":{"enum":["session","saved","site"]}},"network":{"type":"array"},"ai":{"type":"object","additionalProperties":{"enum":["none","ask","guided","open"]}},"fillers":{"type":"array","items":{"type":"string"}},"signals":{"type":"array","items":{"type":"string"}},"pageActions":{"type":"array","items":{"type":"string","pattern":"^[^:\\s]+:[^:\\s]+$"}},"hooks":{"type":"array","items":{"type":"string"}},"widgets":{"type":"object","additionalProperties":{"type":"object","properties":{"set":{"type":"array","items":{"type":"string"}},"emit":{"type":"array","items":{"type":"string"}},"read":{"type":"array","items":{"type":"string"}},"listen":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}},"openUrl":{"type":"boolean"},"optional":{"type":"array","items":{"enum":["storage","network","ai","fillers","signals","pageActions","hooks","widgets","openUrl"]}}},"additionalProperties":false,"x-hsvg-section":"10.5","description":"Defined in 10.5."},"inputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$","x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","required":["kind"],"properties":{"kind":{"enum":["content","knob","trigger"]},"type":{"enum":["number","boolean","string","array","object"]},"minimum":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number","exclusiveMinimum":0},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":["boolean","array"]},"additionalProperties":{"const":false},"initial":{},"lifetime":{"enum":["run","session","saved"]},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"contentType":{"anyOf":[{"enum":["text","number","flag","choice","picture","icon","hook","color","time","point","rows","row","line","url","freeText","richText"]},{"type":"string","maxLength":97,"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-zA-Z0-9]*$","description":"an outside add-on's content type, \u003cowner.name>.\u003ctype> (door 2): its manifest's contentTypes declares it"}]},"tier":{"enum":["short","medium","rich"]},"table":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"payload":{"$ref":"#/$defs/object-type"},"styles":{"type":"array","minItems":1,"maxItems":16,"items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"x-hsvg-limit":"fieldStyles"}},"additionalProperties":false,"oneOf":[{"required":["kind","type"],"properties":{"kind":{"const":"content"},"step":false,"lifetime":false,"payload":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":["string","object"]}}}},{"if":{"properties":{"type":{"const":"array"}},"required":["type"]},"then":{"required":["items","maxItems"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"array"}}}},{"if":{"properties":{"type":{"const":"object"}},"required":["type"]},"then":{"required":["properties","required","additionalProperties"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"required":{"type":"array","items":{"type":"string"}},"initial":{"type":"object"}}}},{"if":{"properties":{"contentType":{"const":"text"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"number"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"flag"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"boolean","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"choice"}},"required":["contentType"]},"then":{"required":["type","enum"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"picture"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"icon"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"hook"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"color"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"time"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"point"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"},"initial":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}}}},{"if":{"properties":{"contentType":{"const":"rows"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"line"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"url"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"freeText"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"},"maxLength":{"minimum":1,"maximum":500,"x-hsvg-codes":{"maximum":"E-TYPE"}}}}}]},{"required":["kind","type"],"properties":{"kind":{"const":"knob"},"type":{"enum":["number","boolean","string"]},"contentType":false,"tier":false,"table":false,"payload":false,"required":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength","enum"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"string"}}}}]},{"required":["kind"],"properties":{"kind":{"const":"trigger"},"type":false,"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"required":false,"additionalProperties":false,"initial":false,"lifetime":false,"contentType":false,"tier":false,"table":false,"editableBy":{"not":{},"x-hsvg-code":"E-TYPE"}}}]},"x-hsvg-section":"5.3","description":"Defined in 5.3."},"kit-pin":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"required":["id","version"],"additionalProperties":false,"x-hsvg-section":"4.9, 4.8","description":"Defined in 4.9, 4.8."},"limits":{"type":"object","properties":{"soundBytesEach":{"type":"integer","minimum":200000,"maximum":16777216},"soundBytesAll":{"type":"integer","minimum":2000000,"maximum":67108864},"soundMsEach":{"type":"integer","minimum":30000,"maximum":1800000},"imageBytesEach":{"type":"integer","minimum":8388608,"maximum":33554432},"fontBytesEach":{"type":"integer","minimum":524288,"maximum":4194304},"fontBytesAll":{"type":"integer","minimum":1048576,"maximum":16777216},"videoBytesEach":{"type":"integer","minimum":67108864,"maximum":1073741824},"dataBytesEach":{"type":"integer","minimum":8388608,"maximum":33554432},"iconSetBytesEach":{"type":"integer","minimum":1048576,"maximum":8388608},"linePoints":{"type":"integer","minimum":512,"maximum":1024},"elementsPerDrawing":{"type":"integer","minimum":30000,"maximum":100000},"charactersPerDrawing":{"type":"integer","minimum":4000000,"maximum":16000000},"expandedElements":{"type":"integer","minimum":100000,"maximum":400000},"filterOrMaskApplications":{"type":"integer","minimum":64,"maximum":256},"styleUnits":{"type":"integer","minimum":65536,"maximum":262144},"mountedElements":{"type":"integer","minimum":200000,"maximum":1000000},"liveBlockUses":{"type":"integer","minimum":2048,"maximum":16384},"liveRepeatedUses":{"type":"integer","minimum":256,"maximum":4096},"particleCopiesPerBlock":{"type":"integer","minimum":256,"maximum":4096},"imagePixelsEach":{"type":"integer","minimum":16777216,"maximum":67108864},"imagePixelsAll":{"type":"integer","minimum":67108864,"maximum":268435456},"filterSurface":{"type":"integer","minimum":4,"maximum":16},"savedBytes":{"type":"integer","minimum":1048576,"maximum":16777216},"sessionBytes":{"type":"integer","minimum":4194304,"maximum":67108864},"effectsPerBlock":{"type":"integer","minimum":16,"maximum":64},"computedPerBlock":{"type":"integer","minimum":256,"maximum":1024},"attachActionsPerBlock":{"type":"integer","minimum":256,"maximum":1024},"choiceLinksPerScene":{"type":"integer","minimum":16,"maximum":64},"chapterScenes":{"type":"integer","minimum":64,"maximum":1024},"clipTracks":{"type":"integer","minimum":1024,"maximum":8192},"trackKeys":{"type":"integer","minimum":4096,"maximum":65536},"markers":{"type":"integer","minimum":256,"maximum":4096},"particlesPerEffect":{"type":"integer","minimum":64,"maximum":512},"physicsBodies":{"type":"integer","minimum":32,"maximum":256},"physicsContacts":{"type":"integer","minimum":32,"maximum":256},"audioSynths":{"type":"integer","minimum":64,"maximum":256},"soundCopies":{"type":"integer","minimum":4,"maximum":16},"oneShotSounds":{"type":"integer","minimum":16,"maximum":64},"seats":{"type":"integer","minimum":16,"maximum":64},"seatQuestions":{"type":"integer","minimum":64,"maximum":256},"quickReplies":{"type":"integer","minimum":6,"maximum":12},"intents":{"type":"integer","minimum":64,"maximum":512},"intentExamples":{"type":"integer","minimum":16,"maximum":64},"intentAnswers":{"type":"integer","minimum":8,"maximum":32},"personaChars":{"type":"integer","minimum":1200,"maximum":4000},"characterView":{"type":"integer","minimum":16,"maximum":64},"gameMoves":{"type":"integer","minimum":4096,"maximum":65536},"shellSlots":{"type":"integer","minimum":16,"maximum":64},"formEntries":{"type":"integer","minimum":64,"maximum":256},"tableColumns":{"type":"integer","minimum":32,"maximum":128},"pageHooks":{"type":"integer","minimum":64,"maximum":256},"rightsPerKit":{"type":"integer","minimum":32,"maximum":128},"layoutsPerBlock":{"type":"integer","minimum":12,"maximum":48},"seatValues":{"type":"integer","minimum":64,"maximum":256},"turnValues":{"type":"integer","minimum":16,"maximum":64},"legalTriggers":{"type":"integer","minimum":16,"maximum":64}},"additionalProperties":false,"x-hsvg-section":"9.8.1","description":"Defined in 9.8.1."},"object-type":{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false}},"required":["type","properties","required","additionalProperties"],"additionalProperties":false,"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"outputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","minimum","maximum","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","maxLength","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","items","maxItems","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","properties","required","additionalProperties","kind","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"event"},"payload":{"$ref":"#/$defs/object-type"}},"required":["kind"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"record"},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"},"row":{"allOf":[{"$ref":"#/$defs/object-type"},{"properties":{"properties":{"propertyNames":{"not":{"enum":["atMs","seat","filler"]},"x-hsvg-code":"E-NAME-RESERVED"}}}}]}},"required":["kind","maxRows","row"],"additionalProperties":false}]},"x-hsvg-section":"5.4, 5.12, 5.16","description":"Defined in 5.4, 5.12, 5.16."},"picks":{"type":"array","minItems":1,"maxItems":16,"x-hsvg-limit":"picksLibraries","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"items":{"type":"array","minItems":1,"maxItems":256,"x-hsvg-limit":"picksItemsPerLibrary","uniqueItems":true,"items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}}},"required":["id","version","items"],"additionalProperties":false},"x-hsvg-section":"4.8","description":"Defined in 4.8."},"promote":{"type":"array","items":{"type":"object","properties":{"from":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"as":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"initial":{}},"required":["from"],"additionalProperties":false},"x-hsvg-section":"4.7","description":"Defined in 4.7."},"resources":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"image"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"width":{"type":"number"},"height":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"font"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"family":{"type":"string"},"weight":{"oneOf":[{"type":"number"},{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}]},"style":{"enum":["normal","italic"]}},"required":["kind","file","digest","family"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"sound"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"durationMs":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"icon-set"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"data"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"words"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"}},"required":["kind","file","digest","language"],"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"video"}},"description":"a video resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"},{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}},"description":"a captions resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"}]},"x-hsvg-section":"2.6","description":"Defined in 2.6."},"rights":{"type":"object","maxProperties":32,"propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"label":{"type":"string"},"may":{"type":"array","items":{"enum":["edit","review","publish","changeKit"]}}}},"x-hsvg-limit":"rightsPerKit","x-hsvg-section":"9.9","description":"Defined in 9.9."},"rule-pack-uses":{"type":"array","items":{"anyOf":[{"type":"string","minLength":1},{"type":"object","required":["use"],"properties":{"use":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*@[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$","maxLength":128},"with":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"additionalProperties":{"type":["string","number","boolean"]}}},"additionalProperties":false}]},"x-hsvg-section":"8.3","description":"Defined in 8.3."},"rules":{"type":"array","items":{"type":"object","required":["id","kind"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep","protected","fonts","colors","readable","contrast","keyboard","hit-target","reduced-motion","focus","captions","timing","answers-spread","feedback","scoring","on-route","solvable","prompt-limit","pause-offscreen","dismissible","budget","no-copy","judgement"],"x-hsvg-code":"E-RULE"},"subject":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]},"strength":{"enum":["must","should","give-way"],"x-hsvg-code":"E-RULE"},"proof":{"type":["string","array"],"if":{"type":"string"},"then":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"},"else":{"minItems":1,"items":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"}}},"when":{"type":["string","number","boolean"]},"layouts":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"waivableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"weight":{"type":"number","minimum":0,"maximum":10},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"],"x-hsvg-code":"E-RULE"}},"priority":{"type":"number","minimum":0,"maximum":1},"floor":{"type":"object","minProperties":1,"properties":{"minTextPx":{"type":"number"},"minShare":{"type":"number"},"keep":{"const":true}},"additionalProperties":false},"reviewBy":{"const":"person"}},"allOf":[{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"inside"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"of":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}},"additionalProperties":false,"required":["of"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"clear"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"of":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fits"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"intrinsic"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"relation"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"is":{"enum":["beside","overlay"]},"to":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false,"required":["is","to"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reading-order"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"order":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}},"additionalProperties":false,"required":["order"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"minLength":{"type":["number","string"]},"maxLength":{"anyOf":[{"type":["number","string"]},{"type":"object","propertyNames":{"type":"string","pattern":"^(default|[a-z]{2,3}(-[a-z0-9]{2,8})*)$"},"additionalProperties":{"type":["number","string"]}}]},"maxLines":{"type":["number","string"]},"case":{"enum":["upper","lower","title"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keep"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["shrink","mark-only","simplify"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"protected"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fonts"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"families":{"type":"array","items":{"type":"string"}}},"additionalProperties":false,"required":["families"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"colors"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"roles":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"array","items":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}}},"exhaustive":{"type":["boolean","string"]}},"additionalProperties":false,"required":["roles"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"readable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minTextPx":{"type":["number","string"]},"byRole":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":["number","string"]}}},"additionalProperties":false,"required":["minTextPx"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"contrast"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ratio":{"type":["number","string"]},"largeRatio":{"type":["number","string"]},"against":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keyboard"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"hit-target"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minPx":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reduced-motion"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"focus"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"timing"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"answers-spread"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"positions":{"type":["number","string"]},"column":{"type":"string"}},"additionalProperties":false,"required":["positions"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"feedback"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"answer":{"type":"string"},"shows":{"type":"string"},"withinMs":{"type":["number","string"]},"minShowMs":{"type":["number","string"]}},"additionalProperties":false,"required":["answer","shows","withinMs","minShowMs"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"scoring"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"once":{"type":["boolean","string"]},"per":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"on-route"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"route":{"type":"string"},"tolerance":{"type":["number","string"]}},"additionalProperties":false,"required":["route"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"solvable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"goal":{"type":"string"},"searchBudget":{"type":["integer","string"],"minimum":1,"maximum":1000000}},"additionalProperties":false,"required":["goal"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"prompt-limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"count":{"type":["number","string"]},"windowMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"pause-offscreen"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"dismissible"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"budget"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"measure":{"enum":["archiveBytes","unpackedBytes","files","fontBytes","soundBytes","videoBytes","lengthMs","tableRows","repeatItems","pathsRewritten","suspendChars"],"x-hsvg-code":"E-RULE"},"maximum":{"type":["number","string"]},"on":{"type":"string"}},"additionalProperties":false,"required":["measure","maximum"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"no-copy"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minBytes":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"judgement"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ask":{"type":"string","minLength":1}},"additionalProperties":false,"required":["ask"]}},{"if":{"type":"object","required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"required":["steps","floor"]},"else":{"not":{"anyOf":[{"required":["steps"]},{"required":["priority"]},{"required":["floor"]}]}}},{"if":{"required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"properties":{"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep"],"x-hsvg-code":"E-RULE"}}}}]},"x-hsvg-section":"8.1","description":"Defined in 8.1."},"story":{"type":"object","properties":{"start":{"oneOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"type":"array","minItems":1,"items":{"type":"object","properties":{"to":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"when":{"type":["string","number","boolean"],"maxLength":4096}},"required":["to"],"additionalProperties":false}}]},"scenes":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"string","minLength":1},{"type":"object","properties":{"use":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"with":{"type":"object","additionalProperties":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096},{"type":"object","description":"a tier object or a language object, for a text content field (5.3.1)"},{"type":"array","items":{"type":"object"},"maxItems":1024,"x-hsvg-limit":"dataTableRows","description":"literal rows, for a rows content field (5.6.1)"}]}}},"required":["use"]}]}},"links":{"type":"array","items":{"$ref":"#/$defs/story-link"}},"ends":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"resumeAt":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"lifetime":{"enum":["run","session","saved"]},"endless":{"type":"boolean"},"chapters":{"type":"array","items":{"$ref":"#/$defs/story-chapter"}}},"required":["start","scenes"],"additionalProperties":false,"x-hsvg-section":"3.1","description":"Defined in 3.1."},"story-chapter":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"scenes":{"type":"array","minItems":1,"maxItems":64,"items":{"oneOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"type":"object","properties":{"scene":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"skipWhen":{"type":["string","number","boolean"],"maxLength":4096}},"required":["scene"],"additionalProperties":false}]},"x-hsvg-limit":"chapterScenes"},"next":{"type":"string","minLength":1},"back":{"type":"string","minLength":1},"after":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"before":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"transition":{"enum":["cut","fade","slide"]},"transitionMs":{"type":"number","minimum":1,"maximum":2000},"slideFrom":{"enum":["end","start"]}},"required":["id","scenes"],"additionalProperties":false,"allOf":[{"if":{"type":"object","required":["next"]},"then":{"required":["after"]}},{"if":{"type":"object","required":["transition"],"properties":{"transition":{"enum":["fade","slide"]}}},"then":{"required":["transitionMs"]}}],"x-hsvg-section":"3.12","description":"Defined in 3.12."},"story-link":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"from":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"to":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"return":{"type":"boolean"},"on":{"type":"string","minLength":1},"afterMs":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":1,"maximum":3600000}},"choice":{"type":"string"},"when":{"type":["string","number","boolean"],"maxLength":4096},"carry":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"max":{"type":"integer","minimum":1,"maximum":1024},"visit":{"type":"boolean"},"transition":{"enum":["cut","fade","slide"]},"transitionMs":{"type":"number","minimum":1,"maximum":2000},"slideFrom":{"enum":["end","start"]}},"required":["from"],"additionalProperties":false,"allOf":[{"anyOf":[{"required":["on"]},{"required":["afterMs"]},{"required":["choice"]}],"x-hsvg-code":"E-KEY-REQUIRED"},{"not":{"anyOf":[{"required":["on","afterMs"]},{"required":["on","choice"]},{"required":["afterMs","choice"]}]},"x-hsvg-code":"E-KEY-CONFLICT"},{"anyOf":[{"required":["to"]},{"required":["return"]}],"x-hsvg-code":"E-KEY-REQUIRED"},{"not":{"required":["to","return"]},"x-hsvg-code":"E-KEY-CONFLICT"},{"not":{"anyOf":[{"required":["visit","return"]},{"required":["carry","return"]}]},"x-hsvg-code":"E-KEY-CONFLICT"},{"if":{"type":"object","required":["transition"],"properties":{"transition":{"enum":["fade","slide"]}}},"then":{"required":["transitionMs"]}}],"x-hsvg-section":"3.2","description":"Defined in 3.2."},"themes":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"colorRoles":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"anyOf":[{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"},{"type":"object","required":["initial"],"properties":{"initial":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"},"enum":{"type":"array","items":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}}}}]}},"typeRoles":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","required":["font"],"properties":{"font":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"byLanguage":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"additionalProperties":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"fallback":{"type":"string"}},"additionalProperties":false}},"spacing":{"type":"object","additionalProperties":{"anyOf":[{"type":"number"},{"type":"object","required":["initial"],"properties":{"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number"},"enum":{"type":"array"}}}]}},"outline":{"type":"object","properties":{"control":{"enum":["rounded","square","pill"]},"radius":{"anyOf":[{"type":"number"},{"type":"object","required":["initial"],"properties":{"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number"},"enum":{"type":"array"}}}]},"border":{"type":"object","properties":{"width":{"anyOf":[{"type":"number"},{"type":"object","required":["initial"],"properties":{"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number"},"enum":{"type":"array"}}}]},"style":{"enum":["solid","dashed","dotted"]}},"additionalProperties":false}},"additionalProperties":false},"motion":{"type":"object","properties":{"durationMs":{"anyOf":[{"type":"number"},{"type":"object","required":["initial"],"properties":{"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number"},"enum":{"type":"array"}}}]},"easing":{"type":"string","pattern":"^(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\\(\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*\\))$"}},"additionalProperties":false},"icons":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"extends":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"about":{"type":"object","properties":{"family":{"type":"string"},"tone":{"type":"array","items":{"type":"string"}},"ground":{"enum":["light","dark","any"]}},"additionalProperties":false}},"additionalProperties":false},"x-hsvg-section":"7.7","description":"Defined in 7.7."},"trust-record":{"type":"object","properties":{"provenance":{"type":"object","properties":{"madeWith":{"type":"array","items":{"type":"string"}},"madeBy":{"type":"array","items":{"type":"string","pattern":"^(person|agent):.+$"}},"sources":{"type":"array","items":{"type":"string"}},"inferred":{"type":"array","items":{"type":"string"}},"substitutions":{"type":"array","items":{"type":"object","properties":{"resource":{"type":"string"},"with":{"type":"string"},"reason":{"type":"string"}}}},"upgradedFrom":{"type":"object"},"notes":{"type":"string","maxLength":4000}},"additionalProperties":false},"review":{"type":"array","items":{"type":"object","properties":{"status":{"enum":["draft","candidate","accepted","blocked"]},"by":{"type":"string","pattern":"^(person|agent):.+$"},"date":{"type":"string","pattern":"^[0-9]{4}-[0-9]{2}-[0-9]{2}([T ].*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"note":{"type":"string","maxLength":2000},"of":{"type":"string"},"signature":{"type":"object","properties":{"key":{"type":"string"},"alg":{"const":"ed25519"},"value":{"type":"string"}},"required":["key","alg","value"],"additionalProperties":false}},"required":["status","by","date","digest"],"additionalProperties":false,"allOf":[{"if":{"properties":{"status":{"const":"blocked"}},"required":["status"]},"then":{"required":["note"]}},{"if":{"properties":{"status":{"const":"accepted"}},"required":["status"]},"then":{"properties":{"by":{"not":{"pattern":"^agent:"},"x-hsvg-code":"E-TRUST-REVIEW"}}}}]}},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"pins":{"type":"object","propertyNames":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-z0-9]*(-[a-z0-9]+)*@.+$"},"additionalProperties":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"signature":{"type":"object","properties":{"by":{"type":"string"},"key":{"type":"string"},"alg":{"const":"ed25519"},"over":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"value":{"type":"string"}},"required":["by","key","alg","over","value"],"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"A9.3","description":"Defined in A9.3."},"value-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"values":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"initial":{"type":"number"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","minimum","maximum","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"initial":{"type":"boolean"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"initial":{"type":"string"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","maxLength","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"initial":{"type":"array"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","items","maxItems","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"initial":{"type":"object"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","properties","required","additionalProperties","initial"],"additionalProperties":false}]},"x-hsvg-section":"5.1","description":"Defined in 5.1."},"waivers":{"type":"array","items":{"type":"object","required":["rule","by"],"properties":{"rule":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-z0-9]*(-[a-z0-9]+)*$"},"subject":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"theme":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"reason":{"type":"string","minLength":1,"x-hsvg-codes":{"minLength":"E-WAIVER-REASON"}},"by":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"until":{"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}},"additionalProperties":false,"allOf":[{"required":["reason"],"x-hsvg-code":"E-WAIVER-REASON"}]},"x-hsvg-section":"8.5","description":"Defined in 8.5."}}},"scene":{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:hsvg:2.0:schema:core:scene","title":"HyperSVG 2.0 scene document","description":"One moment: a scene, an ad moment, a slide, a node of the story graph.","$comment":"Generated by docs/spec-2.0-work/tools/schema/make-schemas.mjs from the spec/2.0 machine files. Do not edit.","type":"object","properties":{"format":{"type":"string","const":"hsvg/2.0","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2"},"kind":{"type":"string","const":"scene","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2, 2.3"},"id":{"type":"string","x-hsvg-section":"2.2, 2.9"},"$schema":{"type":"string","x-hsvg-section":"2.2"},"about":{"$ref":"#/$defs/about","x-hsvg-section":"2.5, A9.3"},"drawing":{"type":"string","x-hsvg-section":"4.2, 2"},"layouts":{"$ref":"#/$defs/layouts","x-hsvg-section":"7.4"},"places":{"$ref":"#/$defs/places","x-hsvg-section":"4.3"},"inputs":{"$ref":"#/$defs/inputs","x-hsvg-section":"5.3"},"rules":{"$ref":"#/$defs/rules","x-hsvg-section":"8.1"},"rulePacks":{"$ref":"#/$defs/rule-pack-uses","x-hsvg-section":"8.3"},"waivers":{"$ref":"#/$defs/waivers","x-hsvg-section":"8.5"},"outputs":{"$ref":"#/$defs/outputs","x-hsvg-section":"5.4, 5.12, 5.16"},"values":{"$ref":"#/$defs/values","x-hsvg-section":"5.1"},"computed":{"type":"object","x-hsvg-section":"5.2"},"on":{"$ref":"#/$defs/reactions","x-hsvg-section":"5.13"},"entry":{"$ref":"#/$defs/action-list","x-hsvg-section":"5.13"},"exit":{"$ref":"#/$defs/action-list","x-hsvg-section":"5.13"},"machines":{"$ref":"#/$defs/machines","x-hsvg-section":"5.14"},"clips":{"$ref":"#/$defs/clips","x-hsvg-section":"6.7"},"bindings":{"$ref":"#/$defs/bindings","x-hsvg-section":"6.8"},"mouth":{"$ref":"#/$defs/mouth","x-hsvg-section":"6.11"},"controls":{"$ref":"#/$defs/controls","x-hsvg-section":"5.11"},"uses":{"$ref":"#/$defs/uses","x-hsvg-section":"4.3"},"hideSlots":{"$ref":"#/$defs/hideSlots","x-hsvg-section":"10.1"},"clock":{"$ref":"#/$defs/clock","x-hsvg-section":"3.10"},"firstFocus":{"type":"string","x-hsvg-section":"3.7"},"music":{"$ref":"#/$defs/music","x-hsvg-section":"6.10","description":"the scene music {sound, fadeMs, gain} (6.10)"},"axes":{"$ref":"#/$defs/axes","x-hsvg-section":"7.1"},"seal":{"type":"string","x-hsvg-section":"4.6"},"promote":{"$ref":"#/$defs/promote","x-hsvg-section":"4.7"},"needs":{"type":"array","x-hsvg-section":"10.11"},"addons":{"type":"object","x-hsvg-section":"12","description":"the settings of capabilities, by name: a built-in's under its bare name (physics), checked against the addons schema of its manifest (spec/2.0/capabilities/\u003cname>.json); an outside add-on's under its id (owner.name), checked against the keys its manifest declares (chapter 12)","properties":{"widgets":{"x-hsvg-owner":"widgets","x-hsvg-fill":"widgets:addons:widgets"},"page":{"x-hsvg-owner":"page","x-hsvg-fill":"page:addons:page"},"seats":{"x-hsvg-owner":"seats","x-hsvg-fill":"seats:addons:seats"},"ai":{"x-hsvg-owner":"ai","x-hsvg-fill":"ai:addons:ai"},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:addons:rich-text"},"lines":{"x-hsvg-owner":"lines","x-hsvg-fill":"lines:addons:lines"},"physics":{"x-hsvg-owner":"physics","x-hsvg-fill":"physics:addons:physics"},"synth":{"x-hsvg-owner":"synth","x-hsvg-fill":"synth:addons:synth"},"effects":{"x-hsvg-owner":"effects","x-hsvg-fill":"effects:addons:effects"},"live-data":{"x-hsvg-owner":"live-data","x-hsvg-fill":"live-data:addons:live-data"},"snapshot":{"x-hsvg-owner":"snapshot","x-hsvg-fill":"snapshot:addons:snapshot"}}},"resources":{"$ref":"#/$defs/resources","x-hsvg-section":"2.6"},"language":{"type":"string","x-hsvg-section":"2.7","description":"the default language: of the drawn text, initial content and default words (2.7)"},"data":{"$ref":"#/$defs/data-tables","x-hsvg-section":"2.8"}},"required":["format","kind","id"],"additionalProperties":false,"x-hsvg-idFromFile":"folder-or-flat-file","allOf":[{"anyOf":[{"required":["drawing"]},{"required":["layouts"]}],"x-hsvg-code":"E-KEY-REQUIRED","description":"one of drawing, layouts is required (4.2)"}],"$defs":{"about":{"type":"object","properties":{"title":{"type":"string","maxLength":1024},"description":{"type":"string"},"author":{"type":"string"},"credits":{"type":"array","items":{"type":"string"}},"license":{"type":"string","minLength":1},"category":{"type":"string"},"tags":{"type":"array","items":{"type":"string","pattern":"^\\P{Lu}+$"}},"preset":{"enum":["static-banner","animated-ad","interactive-ad","slide-video","interactive-video","data-story","lesson","game","website-mascot","tour"]},"ages":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"integer"}},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"derivedFrom":{"$ref":"#/$defs/derived-from"},"template":{"type":"boolean"},"level":{"enum":["import-ready","library-ready"]},"trust":{"$ref":"#/$defs/trust-record"}},"additionalProperties":false,"x-hsvg-section":"2.5, A9.3","description":"Defined in 2.5, A9.3."},"action":{"type":"object","oneOf":[{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"set":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"to":{"type":["string","number","boolean"],"maxLength":4096}},"required":["set","to"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"if":{"type":["string","number","boolean"],"maxLength":4096},"then":{"$ref":"#/$defs/action-list"},"else":{"$ref":"#/$defs/action-list"}},"required":["if","then"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"emit":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-zA-Z0-9]*$","maxLength":97},"with":{"type":"object","additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"as":{"enum":["event","record","trigger"]},"itemKey":{"type":["string","number","boolean"],"maxLength":4096}},"required":["emit"],"additionalProperties":false,"allOf":[{"if":{"required":["itemKey"]},"then":{"required":["as"],"properties":{"as":{"const":"trigger"}}}}]},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"play":{"type":"string","maxLength":4096},"as":{"enum":["clip","sound"]},"volume":{"type":"number","minimum":0,"maximum":1},"group":{"enum":["sounds","voice"]}},"required":["play"],"additionalProperties":false,"allOf":[{"if":{"not":{"required":["as"],"properties":{"as":{"const":"sound"}}}},"then":{"properties":{"play":{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"volume":false,"group":false}}}]},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"stop":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"keep":{"type":"boolean"}},"required":["stop"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"open":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"required":["open"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"close":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"required":["close"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"call":{"type":"string","minLength":1},"with":{"type":"object","additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"to":{"type":"object","additionalProperties":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}}},"required":["call"],"additionalProperties":false}],"x-hsvg-section":"5.15","description":"Defined in 5.15."},"action-list":{"type":"array","items":{"$ref":"#/$defs/action"},"x-hsvg-section":"5.13","description":"Defined in 5.13."},"axes":{"type":"array","items":{"type":"object","required":["axis"],"properties":{"axis":{"enum":["shape","layout","content","language","look","theme"]},"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"select":{"enum":["space","input","host","person"]},"subject":{"type":"string"},"default":{"type":"string"},"sizes":{"type":"object","propertyNames":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"additionalProperties":{"enum":["must","should"]}},"shapes":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/g3-shape-range"}},"tiers":{"type":"array","items":{"type":"object","required":["tier"],"properties":{"tier":{"enum":["short","medium","rich"]},"shape":{"anyOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"$ref":"#/$defs/g3-shape-range"}]}},"additionalProperties":false}},"options":{"anyOf":[{"type":"array","items":{"type":"string","maxLength":48}},{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"additionalProperties":{"type":"object","properties":{"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false}}]},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"allOf":[{"if":{"required":["select"],"properties":{"select":{"const":"input"}}},"then":{"required":["value"]},"else":{"not":{"required":["value"]}}},{"if":{"required":["axis"],"properties":{"axis":{"const":"content"}}},"then":{"properties":{"select":{"enum":["space","input"],"x-hsvg-code":"E-RANGE"}}}}]},"x-hsvg-section":"7.1","description":"Defined in 7.1."},"bindings":{"type":"array","items":{"type":"object","required":["target"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"text":{"type":"string"},"case":{"enum":["upper","lower"]},"fit":{"anyOf":[{"$ref":"#/$defs/g3-fit"},{"enum":["contain","cover"]}]},"label":{"type":"string"},"visible":{"type":["string","number","boolean"]},"variant":{"type":["string","number","boolean"]},"color":{"type":["string","number","boolean"]},"role":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"move":{"type":["string","number","boolean"]},"rotate":{"type":["string","number","boolean"]},"scale":{"type":["string","number","boolean"],"maxLength":4096},"opacity":{"type":["string","number","boolean"]},"draw":{"type":["string","number","boolean"]},"motion.morph":{"type":["string","number"],"x-hsvg-owner":"motion"},"as":{"enum":["drawn","picture","icon","marked","fill","stroke","spin","lean","stretch","line","box","wipe","points"]},"axis":{"enum":["x","y","route","both"]},"glide":{"type":"object","required":["durationMs"],"properties":{"durationMs":{"type":"number","minimum":1,"maximum":10000},"easing":{"$ref":"#/$defs/g3-easing"}},"additionalProperties":false},"route":{"type":"string","maxLength":48},"to":{"type":"string","maxLength":48,"x-hsvg-owner":"motion"},"start":{"type":["number","string"]},"area":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"range":{"type":"object","properties":{"x":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"y":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false},"anchor":{"type":"array","minItems":2,"maxItems":2,"items":{"enum":["start","middle","end"]}},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:draws:rich-text"},"media":{"x-hsvg-owner":"media","x-hsvg-fill":"media:draws:media"}},"additionalProperties":false,"allOf":[{"oneOf":[{"required":["text"]},{"required":["label"]},{"required":["visible"]},{"required":["variant"]},{"required":["color"]},{"required":["move"]},{"required":["rotate"]},{"required":["scale"]},{"required":["opacity"]},{"required":["draw"]},{"required":["motion.morph"]},{"required":["rich-text"]},{"not":{"propertyNames":{"not":{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$"}}},"description":"a binding an add-on draws (a key that is its owner.name, door 2) or an add-on's channel (\u003cid>.\u003cchannel>, D39)"}]},{"if":{"required":["variant"]},"then":{"properties":{"as":{"enum":["drawn","picture","icon"]}}}},{"if":{"required":["color"]},"then":{"properties":{"as":{"enum":["marked","fill","stroke"]}}}},{"if":{"required":["rotate"]},"then":{"properties":{"as":{"enum":["spin","lean"]}}}},{"if":{"required":["scale"]},"then":{"properties":{"as":{"enum":["stretch","line","box"]}}}},{"if":{"required":["draw"]},"then":{"properties":{"as":{"enum":["line","wipe","points"]}}}},{"if":{"anyOf":[{"required":["text"]},{"required":["label"]},{"required":["visible"]},{"required":["move"]},{"required":["opacity"]},{"required":["motion.morph"]}]},"then":{"not":{"required":["as"]}}},{"if":{"required":["move"]},"then":{"required":["axis"],"properties":{"axis":{"enum":["x","y","route"]}}}},{"if":{"required":["axis"]},"then":{"anyOf":[{"required":["move"]},{"required":["scale"],"not":{"required":["as"],"properties":{"as":{"enum":["line","box"]}}},"properties":{"axis":{"enum":["both","x","y"]}}}]}},{"if":{"required":["role"]},"then":{"required":["color"]}},{"if":{"anyOf":[{"required":["fit"]},{"required":["case"]}]},"then":{"anyOf":[{"required":["text"]},{"required":["rich-text"]}]}},{"if":{"required":["route"]},"then":{"required":["move"],"properties":{"axis":{"const":"route"}}}},{"if":{"required":["draw","as"],"properties":{"as":{"const":"points"}}},"then":{"required":["area"]}},{"if":{"anyOf":[{"required":["area"]},{"required":["range"]}]},"then":{"required":["draw","as"],"properties":{"as":{"const":"points"}}}},{"if":{"required":["anchor"]},"then":{"required":["scale","as"],"properties":{"as":{"const":"box"}}}},{"if":{"required":["to"]},"then":{"required":["motion.morph"]}}],"patternProperties":{"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$":{"type":["object","string","number"],"description":"an add-on's key: an object is a binding the outside add-on owner.name draws (door 2, D31.5; its manifest's draws.binding says what fits); a formula is a built-in add-on's channel \u003cname>.\u003cchannel> (D39; its manifest's paints)"},"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$":{"type":["string","number"],"description":"an outside add-on's channel \u003cowner.name>.\u003cchannel> (D39): a formula inside its manifest's paints.\u003cchannel>.value"}}},"x-hsvg-section":"6.8","description":"Defined in 6.8."},"clips":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","required":["durationMs","tracks"],"properties":{"durationMs":{"type":"number","minimum":1,"maximum":3600000},"loop":{"anyOf":[{"type":"boolean"},{"type":"integer","minimum":1,"maximum":1000000}]},"loopMode":{"enum":["repeat","ping-pong","hold"]},"speed":{"type":["string","number"],"minimum":0.01,"maximum":100},"lane":{"type":"string","minLength":1,"maxLength":48},"reducedMotion":{"enum":["finish","rest","keep"]},"tracks":{"type":"array","minItems":1,"maxItems":1024,"items":{"type":"object","required":["target","channel","keys"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"channel":{"type":"string","allOf":[{"if":{"enum":["motion.morph"]},"then":{"x-hsvg-owner":"motion"}}],"anyOf":[{"enum":["move","rotate","scale","opacity","color","draw","variant","motion.morph"]},{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$","description":"an add-on's channel \u003cid>.\u003cchannel> (D39): its manifest's paints"}]},"keys":{"type":"array","minItems":1,"maxItems":4096,"items":{"type":"array","minItems":2,"maxItems":3,"prefixItems":[{"type":"number","minimum":0},{"type":["string","number","boolean"]},{"$ref":"#/$defs/g3-easing"}]},"x-hsvg-limit":"trackKeys"},"stagger":{"type":"object","required":["targets","eachMs"],"properties":{"targets":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"eachMs":{"type":"number","minimum":0,"maximum":10000}},"additionalProperties":false},"route":{"type":"string","maxLength":48},"to":{"type":"string","maxLength":48,"x-hsvg-owner":"motion"},"start":{"type":["number","string"]},"as":{"enum":["spin","lean","stretch","line","fill","stroke","wipe"]},"axis":{"enum":["x","y","route","both"]}},"additionalProperties":false,"allOf":[{"if":{"properties":{"channel":{"const":"move"}}},"then":{"required":["axis"],"properties":{"axis":{"enum":["x","y","route"]},"as":false}}},{"if":{"properties":{"channel":{"const":"rotate"}}},"then":{"properties":{"as":{"enum":["spin","lean"]},"axis":false}}},{"if":{"properties":{"channel":{"const":"scale"}}},"then":{"properties":{"as":{"enum":["stretch","line"]},"axis":{"enum":["both","x","y"]}}}},{"if":{"properties":{"channel":{"const":"color"}}},"then":{"required":["as"],"properties":{"as":{"enum":["fill","stroke"]},"axis":false}}},{"if":{"properties":{"channel":{"const":"draw"}}},"then":{"properties":{"as":{"enum":["line","wipe"]},"axis":false}}},{"if":{"properties":{"channel":{"enum":["opacity","variant","motion.morph"]}}},"then":{"properties":{"as":false,"axis":false}}},{"if":{"properties":{"channel":{"pattern":"\\."}}},"then":{"properties":{"as":false,"axis":false}}}]},"x-hsvg-limit":"clipTracks"},"markers":{"type":"array","maxItems":256,"items":{"type":"object","required":["id","atMs","event"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"atMs":{"type":"number","minimum":0},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"additionalProperties":false},"x-hsvg-limit":"markers"}},"additionalProperties":false},"x-hsvg-section":"6.7","description":"Defined in 6.7."},"clock":{"type":"object","properties":{"speed":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":0.01,"maximum":100,"x-hsvg-code":"E-CLOCK-SPEED"}},"paused":{"type":["string","boolean"],"maxLength":4096},"source":{"enum":["scroll"]},"spanMs":{"type":"integer","minimum":1,"maximum":3600000}},"required":[],"additionalProperties":false,"x-hsvg-section":"3.10","description":"Defined in 3.10."},"column-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"word":{"type":"boolean"},"text":{"type":"boolean"}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"2.8","description":"Defined in 2.8."},"controls":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"button"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"toggle"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"choice"},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"options":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"value":{"type":["string","number","boolean"],"maxLength":4096},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"label":{"type":"string"},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}}},"required":["target","value"],"additionalProperties":false}}},"required":["kind","options"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"slider"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"axis":{"enum":["x","y"]},"range":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"positions":{"type":["integer","string"],"minimum":2,"maximum":1000,"maxLength":4096},"valueText":{"type":"string"},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"dial"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"range":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"positions":{"type":["integer","string"],"minimum":2,"maximum":1000,"maxLength":4096},"valueText":{"type":"string"},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"drag"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"drops":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"accept":{"type":["string","number","boolean"],"maxLength":4096},"missEvent":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"picked":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"snap":{"type":"boolean"}},"required":["kind","target"],"additionalProperties":false},{"type":"object","description":"an add-on's control kind \u003cid>.\u003cname> (D39): the add-on's manifest declares it under controls","properties":{"kind":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$","not":{"enum":["button","toggle","choice","slider","dial","drag"]}},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false}]},"x-hsvg-section":"5.11","description":"Defined in 5.11."},"data-tables":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","properties":{"resource":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"key":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"columns":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"$ref":"#/$defs/column-type"}},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"}},"required":["key","maxRows"],"additionalProperties":false},"x-hsvg-section":"2.8","description":"Defined in 2.8."},"derived-from":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"required":["id","version","digest"],"additionalProperties":false,"x-hsvg-section":"4.10, 4.4","description":"Defined in 4.10, 4.4."},"g3-easing":{"anyOf":[{"type":"string","pattern":"^(linear|ease|ease-in|ease-out|ease-in-out|hold|theme|cubic-bezier\\(\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*\\))$"},{"type":"array","minItems":4,"maxItems":4,"prefixItems":[{"type":"number","minimum":0,"maximum":1},{"type":"number","minimum":-4,"maximum":4},{"type":"number","minimum":0,"maximum":1},{"type":"number","minimum":-4,"maximum":4}]}],"x-hsvg-section":"6.7","description":"Defined in 6.7."},"g3-fit":{"type":"object","properties":{"box":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"fontPx":{"type":"number","minimum":1,"maximum":1000},"minFontPx":{"type":"number","minimum":1,"maximum":1000},"maxLines":{"type":"integer","minimum":1,"maximum":32},"wrap":{"enum":["words","none"]},"lineHeight":{"type":"number","minimum":0.5,"maximum":4},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"]}}},"if":{"type":"object","required":["box"]},"then":{"required":["minFontPx"]},"additionalProperties":false,"required":["box","minFontPx"],"x-hsvg-section":"7.6","description":"Defined in 7.6."},"g3-layout-plan":{"type":"object","required":["place","kind"],"properties":{"place":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["free","row","column","grid"]},"gap":{"type":["number","string"]},"padding":{"type":["number","string"]},"scale":{"type":"object","required":["reference","minimum","maximum"],"properties":{"reference":{"type":"number","exclusiveMinimum":0},"minimum":{"type":"number"},"maximum":{"type":"number"}},"additionalProperties":false},"columns":{"type":"integer","minimum":1},"children":{"type":"array","items":{"$ref":"#/$defs/g3-plan-child"}},"repeat":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"}},"additionalProperties":false,"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-plan-child":{"type":"object","required":["node"],"properties":{"size":{"type":"number"},"share":{"type":"object","required":["id","minimum","initial","maximum"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}}},"additionalProperties":false},"weight":{"type":"number","exclusiveMinimum":0},"box":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number","minimum":0,"maximum":1}},"node":{"$ref":"#/$defs/g3-plan-node"},"label":{"type":"string"}},"additionalProperties":false,"allOf":[{"not":{"required":["size","share"]}},{"not":{"required":["size","weight"]}},{"not":{"required":["size","box"]}},{"not":{"required":["share","weight"]}},{"not":{"required":["share","box"]}},{"not":{"required":["weight","box"]}}],"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-plan-node":{"oneOf":[{"type":"object","required":["item"],"properties":{"item":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"fit":{"enum":["contain","cover","stretch"]},"align":{"anyOf":[{"enum":["start","middle","end"]},{"type":"array","minItems":2,"maxItems":2,"items":{"enum":["start","middle","end"]}}]},"focal":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}},"maxSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"crop":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}},"label":{"type":"string"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"enum":["free","row","column","grid"]},"gap":{"type":["number","string"]},"padding":{"type":["number","string"]},"columns":{"type":"integer","minimum":1},"children":{"type":"array","items":{"$ref":"#/$defs/g3-plan-child"}},"repeat":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"}},"additionalProperties":false}],"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-shape-range":{"type":"object","properties":{"minAspect":{"type":"number"},"maxAspect":{"type":"number"},"minWidth":{"type":"number"},"maxWidth":{"type":"number"},"minHeight":{"type":"number"},"maxHeight":{"type":"number"},"minPixels":{"type":"number"},"maxPixels":{"type":"number"},"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false,"x-hsvg-section":"7.2","description":"Defined in 7.2."},"grants":{"type":"object","properties":{"storage":{"type":"array","items":{"enum":["session","saved","site"]}},"network":{"type":"array"},"ai":{"type":"object","additionalProperties":{"enum":["none","ask","guided","open"]}},"fillers":{"type":"array","items":{"type":"string"}},"signals":{"type":"array","items":{"type":"string"}},"pageActions":{"type":"array","items":{"type":"string","pattern":"^[^:\\s]+:[^:\\s]+$"}},"hooks":{"type":"array","items":{"type":"string"}},"widgets":{"type":"object","additionalProperties":{"type":"object","properties":{"set":{"type":"array","items":{"type":"string"}},"emit":{"type":"array","items":{"type":"string"}},"read":{"type":"array","items":{"type":"string"}},"listen":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}},"openUrl":{"type":"boolean"},"optional":{"type":"array","items":{"enum":["storage","network","ai","fillers","signals","pageActions","hooks","widgets","openUrl"]}}},"additionalProperties":false,"x-hsvg-section":"10.5","description":"Defined in 10.5."},"hideSlots":{"type":"array","maxItems":16,"items":{"type":"string","maxLength":48},"x-hsvg-limit":"shellSlots","x-hsvg-section":"10.1","description":"Defined in 10.1."},"inputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$","x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","required":["kind"],"properties":{"kind":{"enum":["content","knob","trigger"]},"type":{"enum":["number","boolean","string","array","object"]},"minimum":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number","exclusiveMinimum":0},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":["boolean","array"]},"additionalProperties":{"const":false},"initial":{},"lifetime":{"enum":["run","session","saved"]},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"contentType":{"anyOf":[{"enum":["text","number","flag","choice","picture","icon","hook","color","time","point","rows","row","line","url","freeText","richText"]},{"type":"string","maxLength":97,"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-zA-Z0-9]*$","description":"an outside add-on's content type, \u003cowner.name>.\u003ctype> (door 2): its manifest's contentTypes declares it"}]},"tier":{"enum":["short","medium","rich"]},"table":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"payload":{"$ref":"#/$defs/object-type"},"styles":{"type":"array","minItems":1,"maxItems":16,"items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"x-hsvg-limit":"fieldStyles"}},"additionalProperties":false,"oneOf":[{"required":["kind","type"],"properties":{"kind":{"const":"content"},"step":false,"lifetime":false,"payload":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":["string","object"]}}}},{"if":{"properties":{"type":{"const":"array"}},"required":["type"]},"then":{"required":["items","maxItems"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"array"}}}},{"if":{"properties":{"type":{"const":"object"}},"required":["type"]},"then":{"required":["properties","required","additionalProperties"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"required":{"type":"array","items":{"type":"string"}},"initial":{"type":"object"}}}},{"if":{"properties":{"contentType":{"const":"text"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"number"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"flag"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"boolean","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"choice"}},"required":["contentType"]},"then":{"required":["type","enum"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"picture"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"icon"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"hook"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"color"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"time"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"point"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"},"initial":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}}}},{"if":{"properties":{"contentType":{"const":"rows"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"line"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"url"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"freeText"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"},"maxLength":{"minimum":1,"maximum":500,"x-hsvg-codes":{"maximum":"E-TYPE"}}}}}]},{"required":["kind","type"],"properties":{"kind":{"const":"knob"},"type":{"enum":["number","boolean","string"]},"contentType":false,"tier":false,"table":false,"payload":false,"required":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength","enum"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"string"}}}}]},{"required":["kind"],"properties":{"kind":{"const":"trigger"},"type":false,"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"required":false,"additionalProperties":false,"initial":false,"lifetime":false,"contentType":false,"tier":false,"table":false,"editableBy":{"not":{},"x-hsvg-code":"E-TYPE"}}}]},"x-hsvg-section":"5.3","description":"Defined in 5.3."},"layouts":{"type":"array","maxItems":12,"items":{"type":"object","required":["id"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"shape":{"anyOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"$ref":"#/$defs/g3-shape-range"}]},"drawing":{"type":"string","minLength":1},"layoutPlan":{"$ref":"#/$defs/g3-layout-plan"},"resize":{"$ref":"#/$defs/resize"},"fit":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/g3-fit"}},"label":{"type":"string"}},"additionalProperties":false,"allOf":[{"not":{"required":["size","shape"]},"x-hsvg-code":"E-KEY-CONFLICT"},{"anyOf":[{"required":["size"]},{"required":["shape"]}],"x-hsvg-code":"E-KEY-REQUIRED"},{"anyOf":[{"required":["drawing"]},{"required":["layoutPlan"]}],"x-hsvg-code":"E-KEY-REQUIRED"}]},"x-hsvg-limit":"layoutsPerBlock","x-hsvg-section":"7.4","description":"Defined in 7.4."},"machine-node":{"type":"object","properties":{"initial":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"states":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/machine-node"}},"on":{"type":"object","additionalProperties":{"type":"array","items":{"$ref":"#/$defs/machine-transition"}}},"after":{"type":"array","items":{"$ref":"#/$defs/machine-timer"}},"entry":{"$ref":"#/$defs/action-list"},"exit":{"$ref":"#/$defs/action-list"}},"additionalProperties":false,"if":{"type":"object","required":["states"]},"then":{"required":["initial"],"x-hsvg-codes":{"required":"E-MACHINE-INITIAL"}},"else":{"not":{"required":["initial"]},"x-hsvg-code":"E-MACHINE-INITIAL"},"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machine-timer":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"delayMs":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":1,"maximum":3600000}},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"actions":{"$ref":"#/$defs/action-list"}},"required":["delayMs"],"additionalProperties":false,"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machine-transition":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"actions":{"$ref":"#/$defs/action-list"}},"required":["id"],"additionalProperties":false,"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machines":{"type":"array","items":{"type":"object","required":["id"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"initial":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"states":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/machine-node"}},"on":{"type":"object","additionalProperties":{"type":"array","items":{"$ref":"#/$defs/machine-transition"}}},"after":{"type":"array","items":{"$ref":"#/$defs/machine-timer"}},"entry":{"$ref":"#/$defs/action-list"},"exit":{"$ref":"#/$defs/action-list"}},"additionalProperties":false},"x-hsvg-section":"5.14","description":"Defined in 5.14."},"mouth":{"type":"object","required":["target"],"properties":{"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"leadMs":{"type":"number","minimum":0,"maximum":1000},"blendMs":{"type":"number","minimum":0,"maximum":1000},"cues":{"type":"object","required":["A","B","C","D","E","F","G","H","X"],"properties":{"A":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"B":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"C":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"D":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"E":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"F":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"G":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"H":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"X":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"6.11","description":"Defined in 6.11."},"music":{"type":"object","required":["sound"],"properties":{"sound":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"fadeMs":{"type":"number","minimum":0,"maximum":10000},"gain":{"type":"number","minimum":0,"maximum":1},"whilePaused":{"enum":["play","pause"]}},"additionalProperties":false,"x-hsvg-section":"6.10","description":"Defined in 6.10."},"object-type":{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false}},"required":["type","properties","required","additionalProperties"],"additionalProperties":false,"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"outputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","minimum","maximum","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","maxLength","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","items","maxItems","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","properties","required","additionalProperties","kind","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"event"},"payload":{"$ref":"#/$defs/object-type"}},"required":["kind"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"record"},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"},"row":{"allOf":[{"$ref":"#/$defs/object-type"},{"properties":{"properties":{"propertyNames":{"not":{"enum":["atMs","seat","filler"]},"x-hsvg-code":"E-NAME-RESERVED"}}}}]}},"required":["kind","maxRows","row"],"additionalProperties":false}]},"x-hsvg-section":"5.4, 5.12, 5.16","description":"Defined in 5.4, 5.12, 5.16."},"places":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"kind":{"enum":["slot","fit","repeat","keep","route","part"]}},"required":["kind"],"additionalProperties":false},"x-hsvg-section":"4.3","description":"Defined in 4.3."},"promote":{"type":"array","items":{"type":"object","properties":{"from":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"as":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"initial":{}},"required":["from"],"additionalProperties":false},"x-hsvg-section":"4.7","description":"Defined in 4.7."},"reactions":{"type":"object","additionalProperties":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"actions":{"$ref":"#/$defs/action-list"}},"required":["actions"],"additionalProperties":false}},"x-hsvg-section":"5.13","description":"Defined in 5.13."},"resize":{"oneOf":[{"type":"string","enum":["fixed-aspect","fixed","stretch-x","stretch-y","nine-slice","hug","fill","cover","tile"]},{"oneOf":[{"type":"object","required":["kind"],"properties":{"kind":{"const":"fixed-aspect"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"fixed"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"enum":["stretch-x","stretch-y"]},"ends":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"nine-slice"},"insets":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"hug"},"padding":{"type":["string","number"]}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"fill"},"align":{"enum":["start","middle","end"]}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"cover"},"safe":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}},"focal":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"tile"},"tile":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}]}],"x-hsvg-section":"7.4","description":"Defined in 7.4."},"resources":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"image"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"width":{"type":"number"},"height":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"font"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"family":{"type":"string"},"weight":{"oneOf":[{"type":"number"},{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}]},"style":{"enum":["normal","italic"]}},"required":["kind","file","digest","family"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"sound"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"durationMs":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"icon-set"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"data"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"words"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"}},"required":["kind","file","digest","language"],"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"video"}},"description":"a video resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"},{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}},"description":"a captions resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"}]},"x-hsvg-section":"2.6","description":"Defined in 2.6."},"rule-pack-uses":{"type":"array","items":{"anyOf":[{"type":"string","minLength":1},{"type":"object","required":["use"],"properties":{"use":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*@[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$","maxLength":128},"with":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"additionalProperties":{"type":["string","number","boolean"]}}},"additionalProperties":false}]},"x-hsvg-section":"8.3","description":"Defined in 8.3."},"rules":{"type":"array","items":{"type":"object","required":["id","kind"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep","protected","fonts","colors","readable","contrast","keyboard","hit-target","reduced-motion","focus","captions","timing","answers-spread","feedback","scoring","on-route","solvable","prompt-limit","pause-offscreen","dismissible","budget","no-copy","judgement"],"x-hsvg-code":"E-RULE"},"subject":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]},"strength":{"enum":["must","should","give-way"],"x-hsvg-code":"E-RULE"},"proof":{"type":["string","array"],"if":{"type":"string"},"then":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"},"else":{"minItems":1,"items":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"}}},"when":{"type":["string","number","boolean"]},"layouts":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"waivableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"weight":{"type":"number","minimum":0,"maximum":10},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"],"x-hsvg-code":"E-RULE"}},"priority":{"type":"number","minimum":0,"maximum":1},"floor":{"type":"object","minProperties":1,"properties":{"minTextPx":{"type":"number"},"minShare":{"type":"number"},"keep":{"const":true}},"additionalProperties":false},"reviewBy":{"const":"person"}},"allOf":[{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"inside"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"of":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}},"additionalProperties":false,"required":["of"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"clear"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"of":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fits"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"intrinsic"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"relation"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"is":{"enum":["beside","overlay"]},"to":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false,"required":["is","to"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reading-order"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"order":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}},"additionalProperties":false,"required":["order"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"minLength":{"type":["number","string"]},"maxLength":{"anyOf":[{"type":["number","string"]},{"type":"object","propertyNames":{"type":"string","pattern":"^(default|[a-z]{2,3}(-[a-z0-9]{2,8})*)$"},"additionalProperties":{"type":["number","string"]}}]},"maxLines":{"type":["number","string"]},"case":{"enum":["upper","lower","title"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keep"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["shrink","mark-only","simplify"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"protected"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fonts"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"families":{"type":"array","items":{"type":"string"}}},"additionalProperties":false,"required":["families"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"colors"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"roles":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"array","items":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}}},"exhaustive":{"type":["boolean","string"]}},"additionalProperties":false,"required":["roles"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"readable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minTextPx":{"type":["number","string"]},"byRole":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":["number","string"]}}},"additionalProperties":false,"required":["minTextPx"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"contrast"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ratio":{"type":["number","string"]},"largeRatio":{"type":["number","string"]},"against":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keyboard"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"hit-target"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minPx":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reduced-motion"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"focus"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"timing"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"answers-spread"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"positions":{"type":["number","string"]},"column":{"type":"string"}},"additionalProperties":false,"required":["positions"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"feedback"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"answer":{"type":"string"},"shows":{"type":"string"},"withinMs":{"type":["number","string"]},"minShowMs":{"type":["number","string"]}},"additionalProperties":false,"required":["answer","shows","withinMs","minShowMs"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"scoring"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"once":{"type":["boolean","string"]},"per":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"on-route"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"route":{"type":"string"},"tolerance":{"type":["number","string"]}},"additionalProperties":false,"required":["route"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"solvable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"goal":{"type":"string"},"searchBudget":{"type":["integer","string"],"minimum":1,"maximum":1000000}},"additionalProperties":false,"required":["goal"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"prompt-limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"count":{"type":["number","string"]},"windowMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"pause-offscreen"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"dismissible"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"budget"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"measure":{"enum":["archiveBytes","unpackedBytes","files","fontBytes","soundBytes","videoBytes","lengthMs","tableRows","repeatItems","pathsRewritten","suspendChars"],"x-hsvg-code":"E-RULE"},"maximum":{"type":["number","string"]},"on":{"type":"string"}},"additionalProperties":false,"required":["measure","maximum"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"no-copy"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minBytes":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"judgement"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ask":{"type":"string","minLength":1}},"additionalProperties":false,"required":["ask"]}},{"if":{"type":"object","required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"required":["steps","floor"]},"else":{"not":{"anyOf":[{"required":["steps"]},{"required":["priority"]},{"required":["floor"]}]}}},{"if":{"required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"properties":{"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep"],"x-hsvg-code":"E-RULE"}}}}]},"x-hsvg-section":"8.1","description":"Defined in 8.1."},"trust-record":{"type":"object","properties":{"provenance":{"type":"object","properties":{"madeWith":{"type":"array","items":{"type":"string"}},"madeBy":{"type":"array","items":{"type":"string","pattern":"^(person|agent):.+$"}},"sources":{"type":"array","items":{"type":"string"}},"inferred":{"type":"array","items":{"type":"string"}},"substitutions":{"type":"array","items":{"type":"object","properties":{"resource":{"type":"string"},"with":{"type":"string"},"reason":{"type":"string"}}}},"upgradedFrom":{"type":"object"},"notes":{"type":"string","maxLength":4000}},"additionalProperties":false},"review":{"type":"array","items":{"type":"object","properties":{"status":{"enum":["draft","candidate","accepted","blocked"]},"by":{"type":"string","pattern":"^(person|agent):.+$"},"date":{"type":"string","pattern":"^[0-9]{4}-[0-9]{2}-[0-9]{2}([T ].*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"note":{"type":"string","maxLength":2000},"of":{"type":"string"},"signature":{"type":"object","properties":{"key":{"type":"string"},"alg":{"const":"ed25519"},"value":{"type":"string"}},"required":["key","alg","value"],"additionalProperties":false}},"required":["status","by","date","digest"],"additionalProperties":false,"allOf":[{"if":{"properties":{"status":{"const":"blocked"}},"required":["status"]},"then":{"required":["note"]}},{"if":{"properties":{"status":{"const":"accepted"}},"required":["status"]},"then":{"properties":{"by":{"not":{"pattern":"^agent:"},"x-hsvg-code":"E-TRUST-REVIEW"}}}}]}},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"pins":{"type":"object","propertyNames":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-z0-9]*(-[a-z0-9]+)*@.+$"},"additionalProperties":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"signature":{"type":"object","properties":{"by":{"type":"string"},"key":{"type":"string"},"alg":{"const":"ed25519"},"over":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"value":{"type":"string"}},"required":["by","key","alg","over","value"],"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"A9.3","description":"Defined in A9.3."},"uses":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"use":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"into":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"with":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"additionalProperties":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096},{"type":"object","description":"a tier object or a language object, for a text content field (5.3.1)"},{"type":"array","items":{"type":"object"},"maxItems":1024,"x-hsvg-limit":"dataTableRows","description":"literal rows, for a rows content field (5.6.1)"}]}},"items":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096,"description":"a repeat formula (4.5)"},{"type":"array","maxItems":64,"items":{"type":"string","maxLength":48},"x-hsvg-limit":"formEntries","description":"a declared widget's input names (A6.1)"}]},"key":{"type":["string","number","boolean"],"maxLength":4096},"clock":{"$ref":"#/$defs/clock"},"grants":{"$ref":"#/$defs/grants"},"layout":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"locks":{"type":"array","items":{"type":"string","maxLength":48}},"choices":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"pick":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"}},"required":["id"],"allOf":[{"anyOf":[{"required":["use"]},{"required":["declared"]},{"required":["custom"]}],"x-hsvg-code":"E-KEY-REQUIRED"}],"if":{"anyOf":[{"required":["declared"]},{"required":["custom"]}]},"else":{"propertyNames":{"enum":["id","use","into","with","items","key","clock","grants","layout","locks","choices","pick"],"x-hsvg-code":"E-KEY-UNKNOWN"}}},"x-hsvg-section":"4.3","description":"Defined in 4.3."},"value-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"values":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"initial":{"type":"number"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","minimum","maximum","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"initial":{"type":"boolean"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"initial":{"type":"string"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","maxLength","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"initial":{"type":"array"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","items","maxItems","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"initial":{"type":"object"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","properties","required","additionalProperties","initial"],"additionalProperties":false}]},"x-hsvg-section":"5.1","description":"Defined in 5.1."},"waivers":{"type":"array","items":{"type":"object","required":["rule","by"],"properties":{"rule":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-z0-9]*(-[a-z0-9]+)*$"},"subject":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"theme":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"reason":{"type":"string","minLength":1,"x-hsvg-codes":{"minLength":"E-WAIVER-REASON"}},"by":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"until":{"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}},"additionalProperties":false,"allOf":[{"required":["reason"],"x-hsvg-code":"E-WAIVER-REASON"}]},"x-hsvg-section":"8.5","description":"Defined in 8.5."}}},"component":{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:hsvg:2.0:schema:core:component","title":"HyperSVG 2.0 component document","description":"A reusable block with its own drawing: a component.","$comment":"Generated by docs/spec-2.0-work/tools/schema/make-schemas.mjs from the spec/2.0 machine files. Do not edit.","type":"object","properties":{"format":{"type":"string","const":"hsvg/2.0","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2"},"kind":{"type":"string","const":"component","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2, 2.3"},"id":{"type":"string","x-hsvg-section":"2.2, 2.9"},"$schema":{"type":"string","x-hsvg-section":"2.2"},"about":{"$ref":"#/$defs/about","x-hsvg-section":"2.5, A9.3"},"drawing":{"type":"string","x-hsvg-section":"4.2, 2"},"layouts":{"$ref":"#/$defs/layouts","x-hsvg-section":"7.4"},"places":{"$ref":"#/$defs/places","x-hsvg-section":"4.3"},"inputs":{"$ref":"#/$defs/inputs","x-hsvg-section":"5.3"},"rules":{"$ref":"#/$defs/rules","x-hsvg-section":"8.1"},"waivers":{"$ref":"#/$defs/waivers","x-hsvg-section":"8.5"},"outputs":{"$ref":"#/$defs/outputs","x-hsvg-section":"5.4, 5.12, 5.16"},"values":{"$ref":"#/$defs/values","x-hsvg-section":"5.1"},"computed":{"type":"object","x-hsvg-section":"5.2"},"on":{"$ref":"#/$defs/reactions","x-hsvg-section":"5.13"},"entry":{"$ref":"#/$defs/action-list","x-hsvg-section":"5.13"},"exit":{"$ref":"#/$defs/action-list","x-hsvg-section":"5.13"},"machines":{"$ref":"#/$defs/machines","x-hsvg-section":"5.14"},"clips":{"$ref":"#/$defs/clips","x-hsvg-section":"6.7"},"bindings":{"$ref":"#/$defs/bindings","x-hsvg-section":"6.8"},"mouth":{"$ref":"#/$defs/mouth","x-hsvg-section":"6.11"},"controls":{"$ref":"#/$defs/controls","x-hsvg-section":"5.11"},"uses":{"$ref":"#/$defs/uses","x-hsvg-section":"4.3"},"parts":{"$ref":"#/$defs/parts","x-hsvg-section":"4.4","description":"where a compound member came from (4.4)"},"resize":{"$ref":"#/$defs/resize","x-hsvg-section":"7.4"},"axes":{"$ref":"#/$defs/axes","x-hsvg-section":"7.1"},"seal":{"type":"string","x-hsvg-section":"4.6"},"promote":{"$ref":"#/$defs/promote","x-hsvg-section":"4.7"},"needs":{"type":"array","x-hsvg-section":"10.11"},"addons":{"type":"object","x-hsvg-section":"12","description":"the settings of capabilities, by name: a built-in's under its bare name (physics), checked against the addons schema of its manifest (spec/2.0/capabilities/\u003cname>.json); an outside add-on's under its id (owner.name), checked against the keys its manifest declares (chapter 12)","properties":{"widgets":{"x-hsvg-owner":"widgets","x-hsvg-fill":"widgets:addons:widgets"},"page":{"x-hsvg-owner":"page","x-hsvg-fill":"page:addons:page"},"seats":{"x-hsvg-owner":"seats","x-hsvg-fill":"seats:addons:seats"},"ai":{"x-hsvg-owner":"ai","x-hsvg-fill":"ai:addons:ai"},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:addons:rich-text"},"lines":{"x-hsvg-owner":"lines","x-hsvg-fill":"lines:addons:lines"},"physics":{"x-hsvg-owner":"physics","x-hsvg-fill":"physics:addons:physics"},"synth":{"x-hsvg-owner":"synth","x-hsvg-fill":"synth:addons:synth"},"effects":{"x-hsvg-owner":"effects","x-hsvg-fill":"effects:addons:effects"},"live-data":{"x-hsvg-owner":"live-data","x-hsvg-fill":"live-data:addons:live-data"},"snapshot":{"x-hsvg-owner":"snapshot","x-hsvg-fill":"snapshot:addons:snapshot"}}},"resources":{"$ref":"#/$defs/resources","x-hsvg-section":"2.6"},"language":{"type":"string","x-hsvg-section":"2.7","description":"the default language: of the drawn text, initial content and default words (2.7)"},"data":{"$ref":"#/$defs/data-tables","x-hsvg-section":"2.8"}},"required":["format","kind","id"],"additionalProperties":false,"x-hsvg-idFromFile":"folder","allOf":[{"anyOf":[{"required":["drawing"]},{"required":["layouts"]}],"x-hsvg-code":"E-KEY-REQUIRED","description":"one of drawing, layouts is required (4.2)"}],"$defs":{"about":{"type":"object","properties":{"title":{"type":"string","maxLength":1024},"description":{"type":"string"},"author":{"type":"string"},"credits":{"type":"array","items":{"type":"string"}},"license":{"type":"string","minLength":1},"category":{"type":"string"},"tags":{"type":"array","items":{"type":"string","pattern":"^\\P{Lu}+$"}},"preset":{"enum":["static-banner","animated-ad","interactive-ad","slide-video","interactive-video","data-story","lesson","game","website-mascot","tour"]},"ages":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"integer"}},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"derivedFrom":{"$ref":"#/$defs/derived-from"},"template":{"type":"boolean"},"level":{"enum":["import-ready","library-ready"]},"trust":{"$ref":"#/$defs/trust-record"}},"additionalProperties":false,"x-hsvg-section":"2.5, A9.3","description":"Defined in 2.5, A9.3."},"action":{"type":"object","oneOf":[{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"set":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"to":{"type":["string","number","boolean"],"maxLength":4096}},"required":["set","to"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"if":{"type":["string","number","boolean"],"maxLength":4096},"then":{"$ref":"#/$defs/action-list"},"else":{"$ref":"#/$defs/action-list"}},"required":["if","then"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"emit":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-zA-Z0-9]*$","maxLength":97},"with":{"type":"object","additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"as":{"enum":["event","record","trigger"]},"itemKey":{"type":["string","number","boolean"],"maxLength":4096}},"required":["emit"],"additionalProperties":false,"allOf":[{"if":{"required":["itemKey"]},"then":{"required":["as"],"properties":{"as":{"const":"trigger"}}}}]},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"play":{"type":"string","maxLength":4096},"as":{"enum":["clip","sound"]},"volume":{"type":"number","minimum":0,"maximum":1},"group":{"enum":["sounds","voice"]}},"required":["play"],"additionalProperties":false,"allOf":[{"if":{"not":{"required":["as"],"properties":{"as":{"const":"sound"}}}},"then":{"properties":{"play":{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"volume":false,"group":false}}}]},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"stop":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"keep":{"type":"boolean"}},"required":["stop"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"open":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"required":["open"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"close":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"required":["close"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"call":{"type":"string","minLength":1},"with":{"type":"object","additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"to":{"type":"object","additionalProperties":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}}},"required":["call"],"additionalProperties":false}],"x-hsvg-section":"5.15","description":"Defined in 5.15."},"action-list":{"type":"array","items":{"$ref":"#/$defs/action"},"x-hsvg-section":"5.13","description":"Defined in 5.13."},"axes":{"type":"array","items":{"type":"object","required":["axis"],"properties":{"axis":{"enum":["shape","layout","content","language","look","theme"]},"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"select":{"enum":["space","input","host","person"]},"subject":{"type":"string"},"default":{"type":"string"},"sizes":{"type":"object","propertyNames":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"additionalProperties":{"enum":["must","should"]}},"shapes":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/g3-shape-range"}},"tiers":{"type":"array","items":{"type":"object","required":["tier"],"properties":{"tier":{"enum":["short","medium","rich"]},"shape":{"anyOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"$ref":"#/$defs/g3-shape-range"}]}},"additionalProperties":false}},"options":{"anyOf":[{"type":"array","items":{"type":"string","maxLength":48}},{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"additionalProperties":{"type":"object","properties":{"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false}}]},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"allOf":[{"if":{"required":["select"],"properties":{"select":{"const":"input"}}},"then":{"required":["value"]},"else":{"not":{"required":["value"]}}},{"if":{"required":["axis"],"properties":{"axis":{"const":"content"}}},"then":{"properties":{"select":{"enum":["space","input"],"x-hsvg-code":"E-RANGE"}}}}]},"x-hsvg-section":"7.1","description":"Defined in 7.1."},"bindings":{"type":"array","items":{"type":"object","required":["target"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"text":{"type":"string"},"case":{"enum":["upper","lower"]},"fit":{"anyOf":[{"$ref":"#/$defs/g3-fit"},{"enum":["contain","cover"]}]},"label":{"type":"string"},"visible":{"type":["string","number","boolean"]},"variant":{"type":["string","number","boolean"]},"color":{"type":["string","number","boolean"]},"role":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"move":{"type":["string","number","boolean"]},"rotate":{"type":["string","number","boolean"]},"scale":{"type":["string","number","boolean"],"maxLength":4096},"opacity":{"type":["string","number","boolean"]},"draw":{"type":["string","number","boolean"]},"motion.morph":{"type":["string","number"],"x-hsvg-owner":"motion"},"as":{"enum":["drawn","picture","icon","marked","fill","stroke","spin","lean","stretch","line","box","wipe","points"]},"axis":{"enum":["x","y","route","both"]},"glide":{"type":"object","required":["durationMs"],"properties":{"durationMs":{"type":"number","minimum":1,"maximum":10000},"easing":{"$ref":"#/$defs/g3-easing"}},"additionalProperties":false},"route":{"type":"string","maxLength":48},"to":{"type":"string","maxLength":48,"x-hsvg-owner":"motion"},"start":{"type":["number","string"]},"area":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"range":{"type":"object","properties":{"x":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"y":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false},"anchor":{"type":"array","minItems":2,"maxItems":2,"items":{"enum":["start","middle","end"]}},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:draws:rich-text"},"media":{"x-hsvg-owner":"media","x-hsvg-fill":"media:draws:media"}},"additionalProperties":false,"allOf":[{"oneOf":[{"required":["text"]},{"required":["label"]},{"required":["visible"]},{"required":["variant"]},{"required":["color"]},{"required":["move"]},{"required":["rotate"]},{"required":["scale"]},{"required":["opacity"]},{"required":["draw"]},{"required":["motion.morph"]},{"required":["rich-text"]},{"not":{"propertyNames":{"not":{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$"}}},"description":"a binding an add-on draws (a key that is its owner.name, door 2) or an add-on's channel (\u003cid>.\u003cchannel>, D39)"}]},{"if":{"required":["variant"]},"then":{"properties":{"as":{"enum":["drawn","picture","icon"]}}}},{"if":{"required":["color"]},"then":{"properties":{"as":{"enum":["marked","fill","stroke"]}}}},{"if":{"required":["rotate"]},"then":{"properties":{"as":{"enum":["spin","lean"]}}}},{"if":{"required":["scale"]},"then":{"properties":{"as":{"enum":["stretch","line","box"]}}}},{"if":{"required":["draw"]},"then":{"properties":{"as":{"enum":["line","wipe","points"]}}}},{"if":{"anyOf":[{"required":["text"]},{"required":["label"]},{"required":["visible"]},{"required":["move"]},{"required":["opacity"]},{"required":["motion.morph"]}]},"then":{"not":{"required":["as"]}}},{"if":{"required":["move"]},"then":{"required":["axis"],"properties":{"axis":{"enum":["x","y","route"]}}}},{"if":{"required":["axis"]},"then":{"anyOf":[{"required":["move"]},{"required":["scale"],"not":{"required":["as"],"properties":{"as":{"enum":["line","box"]}}},"properties":{"axis":{"enum":["both","x","y"]}}}]}},{"if":{"required":["role"]},"then":{"required":["color"]}},{"if":{"anyOf":[{"required":["fit"]},{"required":["case"]}]},"then":{"anyOf":[{"required":["text"]},{"required":["rich-text"]}]}},{"if":{"required":["route"]},"then":{"required":["move"],"properties":{"axis":{"const":"route"}}}},{"if":{"required":["draw","as"],"properties":{"as":{"const":"points"}}},"then":{"required":["area"]}},{"if":{"anyOf":[{"required":["area"]},{"required":["range"]}]},"then":{"required":["draw","as"],"properties":{"as":{"const":"points"}}}},{"if":{"required":["anchor"]},"then":{"required":["scale","as"],"properties":{"as":{"const":"box"}}}},{"if":{"required":["to"]},"then":{"required":["motion.morph"]}}],"patternProperties":{"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$":{"type":["object","string","number"],"description":"an add-on's key: an object is a binding the outside add-on owner.name draws (door 2, D31.5; its manifest's draws.binding says what fits); a formula is a built-in add-on's channel \u003cname>.\u003cchannel> (D39; its manifest's paints)"},"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$":{"type":["string","number"],"description":"an outside add-on's channel \u003cowner.name>.\u003cchannel> (D39): a formula inside its manifest's paints.\u003cchannel>.value"}}},"x-hsvg-section":"6.8","description":"Defined in 6.8."},"clips":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","required":["durationMs","tracks"],"properties":{"durationMs":{"type":"number","minimum":1,"maximum":3600000},"loop":{"anyOf":[{"type":"boolean"},{"type":"integer","minimum":1,"maximum":1000000}]},"loopMode":{"enum":["repeat","ping-pong","hold"]},"speed":{"type":["string","number"],"minimum":0.01,"maximum":100},"lane":{"type":"string","minLength":1,"maxLength":48},"reducedMotion":{"enum":["finish","rest","keep"]},"tracks":{"type":"array","minItems":1,"maxItems":1024,"items":{"type":"object","required":["target","channel","keys"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"channel":{"type":"string","allOf":[{"if":{"enum":["motion.morph"]},"then":{"x-hsvg-owner":"motion"}}],"anyOf":[{"enum":["move","rotate","scale","opacity","color","draw","variant","motion.morph"]},{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$","description":"an add-on's channel \u003cid>.\u003cchannel> (D39): its manifest's paints"}]},"keys":{"type":"array","minItems":1,"maxItems":4096,"items":{"type":"array","minItems":2,"maxItems":3,"prefixItems":[{"type":"number","minimum":0},{"type":["string","number","boolean"]},{"$ref":"#/$defs/g3-easing"}]},"x-hsvg-limit":"trackKeys"},"stagger":{"type":"object","required":["targets","eachMs"],"properties":{"targets":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"eachMs":{"type":"number","minimum":0,"maximum":10000}},"additionalProperties":false},"route":{"type":"string","maxLength":48},"to":{"type":"string","maxLength":48,"x-hsvg-owner":"motion"},"start":{"type":["number","string"]},"as":{"enum":["spin","lean","stretch","line","fill","stroke","wipe"]},"axis":{"enum":["x","y","route","both"]}},"additionalProperties":false,"allOf":[{"if":{"properties":{"channel":{"const":"move"}}},"then":{"required":["axis"],"properties":{"axis":{"enum":["x","y","route"]},"as":false}}},{"if":{"properties":{"channel":{"const":"rotate"}}},"then":{"properties":{"as":{"enum":["spin","lean"]},"axis":false}}},{"if":{"properties":{"channel":{"const":"scale"}}},"then":{"properties":{"as":{"enum":["stretch","line"]},"axis":{"enum":["both","x","y"]}}}},{"if":{"properties":{"channel":{"const":"color"}}},"then":{"required":["as"],"properties":{"as":{"enum":["fill","stroke"]},"axis":false}}},{"if":{"properties":{"channel":{"const":"draw"}}},"then":{"properties":{"as":{"enum":["line","wipe"]},"axis":false}}},{"if":{"properties":{"channel":{"enum":["opacity","variant","motion.morph"]}}},"then":{"properties":{"as":false,"axis":false}}},{"if":{"properties":{"channel":{"pattern":"\\."}}},"then":{"properties":{"as":false,"axis":false}}}]},"x-hsvg-limit":"clipTracks"},"markers":{"type":"array","maxItems":256,"items":{"type":"object","required":["id","atMs","event"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"atMs":{"type":"number","minimum":0},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"additionalProperties":false},"x-hsvg-limit":"markers"}},"additionalProperties":false},"x-hsvg-section":"6.7","description":"Defined in 6.7."},"clock":{"type":"object","properties":{"speed":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":0.01,"maximum":100,"x-hsvg-code":"E-CLOCK-SPEED"}},"paused":{"type":["string","boolean"],"maxLength":4096},"source":{"enum":["scroll"]},"spanMs":{"type":"integer","minimum":1,"maximum":3600000}},"required":[],"additionalProperties":false,"x-hsvg-section":"3.10","description":"Defined in 3.10."},"column-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"word":{"type":"boolean"},"text":{"type":"boolean"}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"2.8","description":"Defined in 2.8."},"controls":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"button"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"toggle"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"choice"},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"options":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"value":{"type":["string","number","boolean"],"maxLength":4096},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"label":{"type":"string"},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}}},"required":["target","value"],"additionalProperties":false}}},"required":["kind","options"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"slider"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"axis":{"enum":["x","y"]},"range":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"positions":{"type":["integer","string"],"minimum":2,"maximum":1000,"maxLength":4096},"valueText":{"type":"string"},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"dial"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"range":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"positions":{"type":["integer","string"],"minimum":2,"maximum":1000,"maxLength":4096},"valueText":{"type":"string"},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"drag"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"drops":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"accept":{"type":["string","number","boolean"],"maxLength":4096},"missEvent":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"picked":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"snap":{"type":"boolean"}},"required":["kind","target"],"additionalProperties":false},{"type":"object","description":"an add-on's control kind \u003cid>.\u003cname> (D39): the add-on's manifest declares it under controls","properties":{"kind":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$","not":{"enum":["button","toggle","choice","slider","dial","drag"]}},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false}]},"x-hsvg-section":"5.11","description":"Defined in 5.11."},"data-tables":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","properties":{"resource":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"key":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"columns":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"$ref":"#/$defs/column-type"}},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"}},"required":["key","maxRows"],"additionalProperties":false},"x-hsvg-section":"2.8","description":"Defined in 2.8."},"derived-from":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"required":["id","version","digest"],"additionalProperties":false,"x-hsvg-section":"4.10, 4.4","description":"Defined in 4.10, 4.4."},"g3-easing":{"anyOf":[{"type":"string","pattern":"^(linear|ease|ease-in|ease-out|ease-in-out|hold|theme|cubic-bezier\\(\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*\\))$"},{"type":"array","minItems":4,"maxItems":4,"prefixItems":[{"type":"number","minimum":0,"maximum":1},{"type":"number","minimum":-4,"maximum":4},{"type":"number","minimum":0,"maximum":1},{"type":"number","minimum":-4,"maximum":4}]}],"x-hsvg-section":"6.7","description":"Defined in 6.7."},"g3-fit":{"type":"object","properties":{"box":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"fontPx":{"type":"number","minimum":1,"maximum":1000},"minFontPx":{"type":"number","minimum":1,"maximum":1000},"maxLines":{"type":"integer","minimum":1,"maximum":32},"wrap":{"enum":["words","none"]},"lineHeight":{"type":"number","minimum":0.5,"maximum":4},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"]}}},"if":{"type":"object","required":["box"]},"then":{"required":["minFontPx"]},"additionalProperties":false,"required":["box","minFontPx"],"x-hsvg-section":"7.6","description":"Defined in 7.6."},"g3-layout-plan":{"type":"object","required":["place","kind"],"properties":{"place":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["free","row","column","grid"]},"gap":{"type":["number","string"]},"padding":{"type":["number","string"]},"scale":{"type":"object","required":["reference","minimum","maximum"],"properties":{"reference":{"type":"number","exclusiveMinimum":0},"minimum":{"type":"number"},"maximum":{"type":"number"}},"additionalProperties":false},"columns":{"type":"integer","minimum":1},"children":{"type":"array","items":{"$ref":"#/$defs/g3-plan-child"}},"repeat":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"}},"additionalProperties":false,"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-plan-child":{"type":"object","required":["node"],"properties":{"size":{"type":"number"},"share":{"type":"object","required":["id","minimum","initial","maximum"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}}},"additionalProperties":false},"weight":{"type":"number","exclusiveMinimum":0},"box":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number","minimum":0,"maximum":1}},"node":{"$ref":"#/$defs/g3-plan-node"},"label":{"type":"string"}},"additionalProperties":false,"allOf":[{"not":{"required":["size","share"]}},{"not":{"required":["size","weight"]}},{"not":{"required":["size","box"]}},{"not":{"required":["share","weight"]}},{"not":{"required":["share","box"]}},{"not":{"required":["weight","box"]}}],"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-plan-node":{"oneOf":[{"type":"object","required":["item"],"properties":{"item":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"fit":{"enum":["contain","cover","stretch"]},"align":{"anyOf":[{"enum":["start","middle","end"]},{"type":"array","minItems":2,"maxItems":2,"items":{"enum":["start","middle","end"]}}]},"focal":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}},"maxSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"crop":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}},"label":{"type":"string"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"enum":["free","row","column","grid"]},"gap":{"type":["number","string"]},"padding":{"type":["number","string"]},"columns":{"type":"integer","minimum":1},"children":{"type":"array","items":{"$ref":"#/$defs/g3-plan-child"}},"repeat":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"}},"additionalProperties":false}],"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-shape-range":{"type":"object","properties":{"minAspect":{"type":"number"},"maxAspect":{"type":"number"},"minWidth":{"type":"number"},"maxWidth":{"type":"number"},"minHeight":{"type":"number"},"maxHeight":{"type":"number"},"minPixels":{"type":"number"},"maxPixels":{"type":"number"},"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false,"x-hsvg-section":"7.2","description":"Defined in 7.2."},"grants":{"type":"object","properties":{"storage":{"type":"array","items":{"enum":["session","saved","site"]}},"network":{"type":"array"},"ai":{"type":"object","additionalProperties":{"enum":["none","ask","guided","open"]}},"fillers":{"type":"array","items":{"type":"string"}},"signals":{"type":"array","items":{"type":"string"}},"pageActions":{"type":"array","items":{"type":"string","pattern":"^[^:\\s]+:[^:\\s]+$"}},"hooks":{"type":"array","items":{"type":"string"}},"widgets":{"type":"object","additionalProperties":{"type":"object","properties":{"set":{"type":"array","items":{"type":"string"}},"emit":{"type":"array","items":{"type":"string"}},"read":{"type":"array","items":{"type":"string"}},"listen":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}},"openUrl":{"type":"boolean"},"optional":{"type":"array","items":{"enum":["storage","network","ai","fillers","signals","pageActions","hooks","widgets","openUrl"]}}},"additionalProperties":false,"x-hsvg-section":"10.5","description":"Defined in 10.5."},"inputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$","x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","required":["kind"],"properties":{"kind":{"enum":["content","knob","trigger"]},"type":{"enum":["number","boolean","string","array","object"]},"minimum":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number","exclusiveMinimum":0},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":["boolean","array"]},"additionalProperties":{"const":false},"initial":{},"lifetime":{"enum":["run","session","saved"]},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"contentType":{"anyOf":[{"enum":["text","number","flag","choice","picture","icon","hook","color","time","point","rows","row","line","url","freeText","richText"]},{"type":"string","maxLength":97,"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-zA-Z0-9]*$","description":"an outside add-on's content type, \u003cowner.name>.\u003ctype> (door 2): its manifest's contentTypes declares it"}]},"tier":{"enum":["short","medium","rich"]},"table":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"payload":{"$ref":"#/$defs/object-type"},"styles":{"type":"array","minItems":1,"maxItems":16,"items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"x-hsvg-limit":"fieldStyles"}},"additionalProperties":false,"oneOf":[{"required":["kind","type"],"properties":{"kind":{"const":"content"},"step":false,"lifetime":false,"payload":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":["string","object"]}}}},{"if":{"properties":{"type":{"const":"array"}},"required":["type"]},"then":{"required":["items","maxItems"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"array"}}}},{"if":{"properties":{"type":{"const":"object"}},"required":["type"]},"then":{"required":["properties","required","additionalProperties"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"required":{"type":"array","items":{"type":"string"}},"initial":{"type":"object"}}}},{"if":{"properties":{"contentType":{"const":"text"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"number"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"flag"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"boolean","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"choice"}},"required":["contentType"]},"then":{"required":["type","enum"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"picture"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"icon"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"hook"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"color"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"time"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"point"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"},"initial":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}}}},{"if":{"properties":{"contentType":{"const":"rows"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"line"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"url"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"freeText"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"},"maxLength":{"minimum":1,"maximum":500,"x-hsvg-codes":{"maximum":"E-TYPE"}}}}}]},{"required":["kind","type"],"properties":{"kind":{"const":"knob"},"type":{"enum":["number","boolean","string"]},"contentType":false,"tier":false,"table":false,"payload":false,"required":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength","enum"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"string"}}}}]},{"required":["kind"],"properties":{"kind":{"const":"trigger"},"type":false,"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"required":false,"additionalProperties":false,"initial":false,"lifetime":false,"contentType":false,"tier":false,"table":false,"editableBy":{"not":{},"x-hsvg-code":"E-TYPE"}}}]},"x-hsvg-section":"5.3","description":"Defined in 5.3."},"layouts":{"type":"array","maxItems":12,"items":{"type":"object","required":["id"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"shape":{"anyOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"$ref":"#/$defs/g3-shape-range"}]},"drawing":{"type":"string","minLength":1},"layoutPlan":{"$ref":"#/$defs/g3-layout-plan"},"resize":{"$ref":"#/$defs/resize"},"fit":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/g3-fit"}},"label":{"type":"string"}},"additionalProperties":false,"allOf":[{"not":{"required":["size","shape"]},"x-hsvg-code":"E-KEY-CONFLICT"},{"anyOf":[{"required":["size"]},{"required":["shape"]}],"x-hsvg-code":"E-KEY-REQUIRED"},{"anyOf":[{"required":["drawing"]},{"required":["layoutPlan"]}],"x-hsvg-code":"E-KEY-REQUIRED"}]},"x-hsvg-limit":"layoutsPerBlock","x-hsvg-section":"7.4","description":"Defined in 7.4."},"machine-node":{"type":"object","properties":{"initial":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"states":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/machine-node"}},"on":{"type":"object","additionalProperties":{"type":"array","items":{"$ref":"#/$defs/machine-transition"}}},"after":{"type":"array","items":{"$ref":"#/$defs/machine-timer"}},"entry":{"$ref":"#/$defs/action-list"},"exit":{"$ref":"#/$defs/action-list"}},"additionalProperties":false,"if":{"type":"object","required":["states"]},"then":{"required":["initial"],"x-hsvg-codes":{"required":"E-MACHINE-INITIAL"}},"else":{"not":{"required":["initial"]},"x-hsvg-code":"E-MACHINE-INITIAL"},"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machine-timer":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"delayMs":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":1,"maximum":3600000}},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"actions":{"$ref":"#/$defs/action-list"}},"required":["delayMs"],"additionalProperties":false,"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machine-transition":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"actions":{"$ref":"#/$defs/action-list"}},"required":["id"],"additionalProperties":false,"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machines":{"type":"array","items":{"type":"object","required":["id"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"initial":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"states":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/machine-node"}},"on":{"type":"object","additionalProperties":{"type":"array","items":{"$ref":"#/$defs/machine-transition"}}},"after":{"type":"array","items":{"$ref":"#/$defs/machine-timer"}},"entry":{"$ref":"#/$defs/action-list"},"exit":{"$ref":"#/$defs/action-list"}},"additionalProperties":false},"x-hsvg-section":"5.14","description":"Defined in 5.14."},"mouth":{"type":"object","required":["target"],"properties":{"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"leadMs":{"type":"number","minimum":0,"maximum":1000},"blendMs":{"type":"number","minimum":0,"maximum":1000},"cues":{"type":"object","required":["A","B","C","D","E","F","G","H","X"],"properties":{"A":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"B":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"C":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"D":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"E":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"F":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"G":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"H":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"X":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"6.11","description":"Defined in 6.11."},"object-type":{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false}},"required":["type","properties","required","additionalProperties"],"additionalProperties":false,"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"outputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","minimum","maximum","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","maxLength","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","items","maxItems","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","properties","required","additionalProperties","kind","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"event"},"payload":{"$ref":"#/$defs/object-type"}},"required":["kind"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"record"},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"},"row":{"allOf":[{"$ref":"#/$defs/object-type"},{"properties":{"properties":{"propertyNames":{"not":{"enum":["atMs","seat","filler"]},"x-hsvg-code":"E-NAME-RESERVED"}}}}]}},"required":["kind","maxRows","row"],"additionalProperties":false}]},"x-hsvg-section":"5.4, 5.12, 5.16","description":"Defined in 5.4, 5.12, 5.16."},"parts":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"derivedFrom":{"$ref":"#/$defs/derived-from"}},"required":["derivedFrom"],"additionalProperties":false},"x-hsvg-section":"4.4","description":"Defined in 4.4."},"places":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"kind":{"enum":["slot","fit","repeat","keep","route","part"]}},"required":["kind"],"additionalProperties":false},"x-hsvg-section":"4.3","description":"Defined in 4.3."},"promote":{"type":"array","items":{"type":"object","properties":{"from":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"as":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"initial":{}},"required":["from"],"additionalProperties":false},"x-hsvg-section":"4.7","description":"Defined in 4.7."},"reactions":{"type":"object","additionalProperties":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"actions":{"$ref":"#/$defs/action-list"}},"required":["actions"],"additionalProperties":false}},"x-hsvg-section":"5.13","description":"Defined in 5.13."},"resize":{"oneOf":[{"type":"string","enum":["fixed-aspect","fixed","stretch-x","stretch-y","nine-slice","hug","fill","cover","tile"]},{"oneOf":[{"type":"object","required":["kind"],"properties":{"kind":{"const":"fixed-aspect"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"fixed"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"enum":["stretch-x","stretch-y"]},"ends":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"nine-slice"},"insets":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"hug"},"padding":{"type":["string","number"]}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"fill"},"align":{"enum":["start","middle","end"]}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"cover"},"safe":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}},"focal":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"tile"},"tile":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}]}],"x-hsvg-section":"7.4","description":"Defined in 7.4."},"resources":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"image"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"width":{"type":"number"},"height":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"font"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"family":{"type":"string"},"weight":{"oneOf":[{"type":"number"},{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}]},"style":{"enum":["normal","italic"]}},"required":["kind","file","digest","family"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"sound"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"durationMs":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"icon-set"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"data"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"words"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"}},"required":["kind","file","digest","language"],"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"video"}},"description":"a video resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"},{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}},"description":"a captions resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"}]},"x-hsvg-section":"2.6","description":"Defined in 2.6."},"rules":{"type":"array","items":{"type":"object","required":["id","kind"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep","protected","fonts","colors","readable","contrast","keyboard","hit-target","reduced-motion","focus","captions","timing","answers-spread","feedback","scoring","on-route","solvable","prompt-limit","pause-offscreen","dismissible","budget","no-copy","judgement"],"x-hsvg-code":"E-RULE"},"subject":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]},"strength":{"enum":["must","should","give-way"],"x-hsvg-code":"E-RULE"},"proof":{"type":["string","array"],"if":{"type":"string"},"then":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"},"else":{"minItems":1,"items":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"}}},"when":{"type":["string","number","boolean"]},"layouts":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"waivableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"weight":{"type":"number","minimum":0,"maximum":10},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"],"x-hsvg-code":"E-RULE"}},"priority":{"type":"number","minimum":0,"maximum":1},"floor":{"type":"object","minProperties":1,"properties":{"minTextPx":{"type":"number"},"minShare":{"type":"number"},"keep":{"const":true}},"additionalProperties":false},"reviewBy":{"const":"person"}},"allOf":[{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"inside"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"of":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}},"additionalProperties":false,"required":["of"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"clear"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"of":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fits"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"intrinsic"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"relation"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"is":{"enum":["beside","overlay"]},"to":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false,"required":["is","to"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reading-order"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"order":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}},"additionalProperties":false,"required":["order"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"minLength":{"type":["number","string"]},"maxLength":{"anyOf":[{"type":["number","string"]},{"type":"object","propertyNames":{"type":"string","pattern":"^(default|[a-z]{2,3}(-[a-z0-9]{2,8})*)$"},"additionalProperties":{"type":["number","string"]}}]},"maxLines":{"type":["number","string"]},"case":{"enum":["upper","lower","title"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keep"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["shrink","mark-only","simplify"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"protected"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fonts"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"families":{"type":"array","items":{"type":"string"}}},"additionalProperties":false,"required":["families"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"colors"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"roles":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"array","items":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}}},"exhaustive":{"type":["boolean","string"]}},"additionalProperties":false,"required":["roles"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"readable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minTextPx":{"type":["number","string"]},"byRole":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":["number","string"]}}},"additionalProperties":false,"required":["minTextPx"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"contrast"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ratio":{"type":["number","string"]},"largeRatio":{"type":["number","string"]},"against":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keyboard"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"hit-target"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minPx":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reduced-motion"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"focus"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"timing"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"answers-spread"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"positions":{"type":["number","string"]},"column":{"type":"string"}},"additionalProperties":false,"required":["positions"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"feedback"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"answer":{"type":"string"},"shows":{"type":"string"},"withinMs":{"type":["number","string"]},"minShowMs":{"type":["number","string"]}},"additionalProperties":false,"required":["answer","shows","withinMs","minShowMs"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"scoring"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"once":{"type":["boolean","string"]},"per":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"on-route"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"route":{"type":"string"},"tolerance":{"type":["number","string"]}},"additionalProperties":false,"required":["route"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"solvable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"goal":{"type":"string"},"searchBudget":{"type":["integer","string"],"minimum":1,"maximum":1000000}},"additionalProperties":false,"required":["goal"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"prompt-limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"count":{"type":["number","string"]},"windowMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"pause-offscreen"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"dismissible"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"budget"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"measure":{"enum":["archiveBytes","unpackedBytes","files","fontBytes","soundBytes","videoBytes","lengthMs","tableRows","repeatItems","pathsRewritten","suspendChars"],"x-hsvg-code":"E-RULE"},"maximum":{"type":["number","string"]},"on":{"type":"string"}},"additionalProperties":false,"required":["measure","maximum"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"no-copy"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minBytes":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"judgement"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ask":{"type":"string","minLength":1}},"additionalProperties":false,"required":["ask"]}},{"if":{"type":"object","required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"required":["steps","floor"]},"else":{"not":{"anyOf":[{"required":["steps"]},{"required":["priority"]},{"required":["floor"]}]}}},{"if":{"required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"properties":{"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep"],"x-hsvg-code":"E-RULE"}}}}]},"x-hsvg-section":"8.1","description":"Defined in 8.1."},"trust-record":{"type":"object","properties":{"provenance":{"type":"object","properties":{"madeWith":{"type":"array","items":{"type":"string"}},"madeBy":{"type":"array","items":{"type":"string","pattern":"^(person|agent):.+$"}},"sources":{"type":"array","items":{"type":"string"}},"inferred":{"type":"array","items":{"type":"string"}},"substitutions":{"type":"array","items":{"type":"object","properties":{"resource":{"type":"string"},"with":{"type":"string"},"reason":{"type":"string"}}}},"upgradedFrom":{"type":"object"},"notes":{"type":"string","maxLength":4000}},"additionalProperties":false},"review":{"type":"array","items":{"type":"object","properties":{"status":{"enum":["draft","candidate","accepted","blocked"]},"by":{"type":"string","pattern":"^(person|agent):.+$"},"date":{"type":"string","pattern":"^[0-9]{4}-[0-9]{2}-[0-9]{2}([T ].*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"note":{"type":"string","maxLength":2000},"of":{"type":"string"},"signature":{"type":"object","properties":{"key":{"type":"string"},"alg":{"const":"ed25519"},"value":{"type":"string"}},"required":["key","alg","value"],"additionalProperties":false}},"required":["status","by","date","digest"],"additionalProperties":false,"allOf":[{"if":{"properties":{"status":{"const":"blocked"}},"required":["status"]},"then":{"required":["note"]}},{"if":{"properties":{"status":{"const":"accepted"}},"required":["status"]},"then":{"properties":{"by":{"not":{"pattern":"^agent:"},"x-hsvg-code":"E-TRUST-REVIEW"}}}}]}},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"pins":{"type":"object","propertyNames":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-z0-9]*(-[a-z0-9]+)*@.+$"},"additionalProperties":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"signature":{"type":"object","properties":{"by":{"type":"string"},"key":{"type":"string"},"alg":{"const":"ed25519"},"over":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"value":{"type":"string"}},"required":["by","key","alg","over","value"],"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"A9.3","description":"Defined in A9.3."},"uses":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"use":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"into":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"with":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"additionalProperties":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096},{"type":"object","description":"a tier object or a language object, for a text content field (5.3.1)"},{"type":"array","items":{"type":"object"},"maxItems":1024,"x-hsvg-limit":"dataTableRows","description":"literal rows, for a rows content field (5.6.1)"}]}},"items":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096,"description":"a repeat formula (4.5)"},{"type":"array","maxItems":64,"items":{"type":"string","maxLength":48},"x-hsvg-limit":"formEntries","description":"a declared widget's input names (A6.1)"}]},"key":{"type":["string","number","boolean"],"maxLength":4096},"clock":{"$ref":"#/$defs/clock"},"grants":{"$ref":"#/$defs/grants"},"layout":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"locks":{"type":"array","items":{"type":"string","maxLength":48}},"choices":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"pick":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"}},"required":["id"],"allOf":[{"anyOf":[{"required":["use"]},{"required":["declared"]},{"required":["custom"]}],"x-hsvg-code":"E-KEY-REQUIRED"}],"if":{"anyOf":[{"required":["declared"]},{"required":["custom"]}]},"else":{"propertyNames":{"enum":["id","use","into","with","items","key","clock","grants","layout","locks","choices","pick"],"x-hsvg-code":"E-KEY-UNKNOWN"}}},"x-hsvg-section":"4.3","description":"Defined in 4.3."},"value-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"values":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"initial":{"type":"number"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","minimum","maximum","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"initial":{"type":"boolean"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"initial":{"type":"string"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","maxLength","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"initial":{"type":"array"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","items","maxItems","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"initial":{"type":"object"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","properties","required","additionalProperties","initial"],"additionalProperties":false}]},"x-hsvg-section":"5.1","description":"Defined in 5.1."},"waivers":{"type":"array","items":{"type":"object","required":["rule","by"],"properties":{"rule":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-z0-9]*(-[a-z0-9]+)*$"},"subject":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"theme":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"reason":{"type":"string","minLength":1,"x-hsvg-codes":{"minLength":"E-WAIVER-REASON"}},"by":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"until":{"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}},"additionalProperties":false,"allOf":[{"required":["reason"],"x-hsvg-code":"E-WAIVER-REASON"}]},"x-hsvg-section":"8.5","description":"Defined in 8.5."}}},"shell":{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:hsvg:2.0:schema:core:shell","title":"HyperSVG 2.0 shell document","description":"The screen around scenes: a drawing with slots for stages and widgets.","$comment":"Generated by docs/spec-2.0-work/tools/schema/make-schemas.mjs from the spec/2.0 machine files. Do not edit.","type":"object","properties":{"format":{"type":"string","const":"hsvg/2.0","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2"},"kind":{"type":"string","const":"shell","x-hsvg-code":"E-HEADER","x-hsvg-section":"2.2, 2.3"},"id":{"type":"string","x-hsvg-section":"2.2, 2.9"},"$schema":{"type":"string","x-hsvg-section":"2.2"},"about":{"$ref":"#/$defs/about","x-hsvg-section":"2.5, A9.3"},"drawing":{"type":"string","x-hsvg-section":"4.2, 2"},"layouts":{"$ref":"#/$defs/layouts","x-hsvg-section":"7.4"},"inputs":{"$ref":"#/$defs/inputs","x-hsvg-section":"5.3"},"rules":{"$ref":"#/$defs/rules","x-hsvg-section":"8.1"},"waivers":{"$ref":"#/$defs/waivers","x-hsvg-section":"8.5"},"outputs":{"$ref":"#/$defs/outputs","x-hsvg-section":"5.4, 5.12, 5.16"},"values":{"$ref":"#/$defs/values","x-hsvg-section":"5.1"},"computed":{"type":"object","x-hsvg-section":"5.2"},"on":{"$ref":"#/$defs/reactions","x-hsvg-section":"5.13"},"entry":{"$ref":"#/$defs/action-list","x-hsvg-section":"5.13"},"exit":{"$ref":"#/$defs/action-list","x-hsvg-section":"5.13"},"machines":{"$ref":"#/$defs/machines","x-hsvg-section":"5.14"},"clips":{"$ref":"#/$defs/clips","x-hsvg-section":"6.7"},"bindings":{"$ref":"#/$defs/bindings","x-hsvg-section":"6.8"},"mouth":{"$ref":"#/$defs/mouth","x-hsvg-section":"6.11"},"controls":{"$ref":"#/$defs/controls","x-hsvg-section":"5.11"},"uses":{"$ref":"#/$defs/uses","x-hsvg-section":"4.3"},"slots":{"$ref":"#/$defs/slots","x-hsvg-section":"10.1, A6.1","description":"at least one stage slot (10.1)"},"music":{"$ref":"#/$defs/music","x-hsvg-section":"6.10","description":"the shell music {sound, fadeMs, gain} (6.10)"},"seal":{"type":"string","x-hsvg-section":"4.6"},"promote":{"$ref":"#/$defs/promote","x-hsvg-section":"4.7"},"needs":{"type":"array","x-hsvg-section":"10.11"},"addons":{"type":"object","x-hsvg-section":"12","description":"the settings of capabilities, by name: a built-in's under its bare name (physics), checked against the addons schema of its manifest (spec/2.0/capabilities/\u003cname>.json); an outside add-on's under its id (owner.name), checked against the keys its manifest declares (chapter 12)","properties":{"widgets":{"x-hsvg-owner":"widgets","x-hsvg-fill":"widgets:addons:widgets"},"page":{"x-hsvg-owner":"page","x-hsvg-fill":"page:addons:page"},"seats":{"x-hsvg-owner":"seats","x-hsvg-fill":"seats:addons:seats"},"ai":{"x-hsvg-owner":"ai","x-hsvg-fill":"ai:addons:ai"},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:addons:rich-text"},"lines":{"x-hsvg-owner":"lines","x-hsvg-fill":"lines:addons:lines"},"physics":{"x-hsvg-owner":"physics","x-hsvg-fill":"physics:addons:physics"},"synth":{"x-hsvg-owner":"synth","x-hsvg-fill":"synth:addons:synth"},"effects":{"x-hsvg-owner":"effects","x-hsvg-fill":"effects:addons:effects"},"live-data":{"x-hsvg-owner":"live-data","x-hsvg-fill":"live-data:addons:live-data"},"snapshot":{"x-hsvg-owner":"snapshot","x-hsvg-fill":"snapshot:addons:snapshot"}}},"resources":{"$ref":"#/$defs/resources","x-hsvg-section":"2.6"},"language":{"type":"string","x-hsvg-section":"2.7","description":"the default language: of the drawn text, initial content and default words (2.7)"},"data":{"$ref":"#/$defs/data-tables","x-hsvg-section":"2.8"}},"required":["format","kind","id","slots"],"additionalProperties":false,"x-hsvg-idFromFile":"flat-file","allOf":[{"anyOf":[{"required":["drawing"]},{"required":["layouts"]}],"x-hsvg-code":"E-KEY-REQUIRED","description":"one of drawing, layouts is required (4.2)"}],"$defs":{"about":{"type":"object","properties":{"title":{"type":"string","maxLength":1024},"description":{"type":"string"},"author":{"type":"string"},"credits":{"type":"array","items":{"type":"string"}},"license":{"type":"string","minLength":1},"category":{"type":"string"},"tags":{"type":"array","items":{"type":"string","pattern":"^\\P{Lu}+$"}},"preset":{"enum":["static-banner","animated-ad","interactive-ad","slide-video","interactive-video","data-story","lesson","game","website-mascot","tour"]},"ages":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"integer"}},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"derivedFrom":{"$ref":"#/$defs/derived-from"},"template":{"type":"boolean"},"level":{"enum":["import-ready","library-ready"]},"trust":{"$ref":"#/$defs/trust-record"}},"additionalProperties":false,"x-hsvg-section":"2.5, A9.3","description":"Defined in 2.5, A9.3."},"action":{"type":"object","oneOf":[{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"set":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"to":{"type":["string","number","boolean"],"maxLength":4096}},"required":["set","to"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"if":{"type":["string","number","boolean"],"maxLength":4096},"then":{"$ref":"#/$defs/action-list"},"else":{"$ref":"#/$defs/action-list"}},"required":["if","then"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"emit":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-zA-Z0-9]*$","maxLength":97},"with":{"type":"object","additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"as":{"enum":["event","record","trigger"]},"itemKey":{"type":["string","number","boolean"],"maxLength":4096}},"required":["emit"],"additionalProperties":false,"allOf":[{"if":{"required":["itemKey"]},"then":{"required":["as"],"properties":{"as":{"const":"trigger"}}}}]},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"play":{"type":"string","maxLength":4096},"as":{"enum":["clip","sound"]},"volume":{"type":"number","minimum":0,"maximum":1},"group":{"enum":["sounds","voice"]}},"required":["play"],"additionalProperties":false,"allOf":[{"if":{"not":{"required":["as"],"properties":{"as":{"const":"sound"}}}},"then":{"properties":{"play":{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"volume":false,"group":false}}}]},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"stop":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"keep":{"type":"boolean"}},"required":["stop"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"open":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"required":["open"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"close":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"required":["close"],"additionalProperties":false},{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"call":{"type":"string","minLength":1},"with":{"type":"object","additionalProperties":{"type":["string","number","boolean"],"maxLength":4096}},"to":{"type":"object","additionalProperties":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}}},"required":["call"],"additionalProperties":false}],"x-hsvg-section":"5.15","description":"Defined in 5.15."},"action-list":{"type":"array","items":{"$ref":"#/$defs/action"},"x-hsvg-section":"5.13","description":"Defined in 5.13."},"bindings":{"type":"array","items":{"type":"object","required":["target"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"text":{"type":"string"},"case":{"enum":["upper","lower"]},"fit":{"anyOf":[{"$ref":"#/$defs/g3-fit"},{"enum":["contain","cover"]}]},"label":{"type":"string"},"visible":{"type":["string","number","boolean"]},"variant":{"type":["string","number","boolean"]},"color":{"type":["string","number","boolean"]},"role":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"move":{"type":["string","number","boolean"]},"rotate":{"type":["string","number","boolean"]},"scale":{"type":["string","number","boolean"],"maxLength":4096},"opacity":{"type":["string","number","boolean"]},"draw":{"type":["string","number","boolean"]},"motion.morph":{"type":["string","number"],"x-hsvg-owner":"motion"},"as":{"enum":["drawn","picture","icon","marked","fill","stroke","spin","lean","stretch","line","box","wipe","points"]},"axis":{"enum":["x","y","route","both"]},"glide":{"type":"object","required":["durationMs"],"properties":{"durationMs":{"type":"number","minimum":1,"maximum":10000},"easing":{"$ref":"#/$defs/g3-easing"}},"additionalProperties":false},"route":{"type":"string","maxLength":48},"to":{"type":"string","maxLength":48,"x-hsvg-owner":"motion"},"start":{"type":["number","string"]},"area":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"range":{"type":"object","properties":{"x":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"y":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false},"anchor":{"type":"array","minItems":2,"maxItems":2,"items":{"enum":["start","middle","end"]}},"rich-text":{"x-hsvg-owner":"rich-text","x-hsvg-fill":"rich-text:draws:rich-text"},"media":{"x-hsvg-owner":"media","x-hsvg-fill":"media:draws:media"}},"additionalProperties":false,"allOf":[{"oneOf":[{"required":["text"]},{"required":["label"]},{"required":["visible"]},{"required":["variant"]},{"required":["color"]},{"required":["move"]},{"required":["rotate"]},{"required":["scale"]},{"required":["opacity"]},{"required":["draw"]},{"required":["motion.morph"]},{"required":["rich-text"]},{"not":{"propertyNames":{"not":{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$"}}},"description":"a binding an add-on draws (a key that is its owner.name, door 2) or an add-on's channel (\u003cid>.\u003cchannel>, D39)"}]},{"if":{"required":["variant"]},"then":{"properties":{"as":{"enum":["drawn","picture","icon"]}}}},{"if":{"required":["color"]},"then":{"properties":{"as":{"enum":["marked","fill","stroke"]}}}},{"if":{"required":["rotate"]},"then":{"properties":{"as":{"enum":["spin","lean"]}}}},{"if":{"required":["scale"]},"then":{"properties":{"as":{"enum":["stretch","line","box"]}}}},{"if":{"required":["draw"]},"then":{"properties":{"as":{"enum":["line","wipe","points"]}}}},{"if":{"anyOf":[{"required":["text"]},{"required":["label"]},{"required":["visible"]},{"required":["move"]},{"required":["opacity"]},{"required":["motion.morph"]}]},"then":{"not":{"required":["as"]}}},{"if":{"required":["move"]},"then":{"required":["axis"],"properties":{"axis":{"enum":["x","y","route"]}}}},{"if":{"required":["axis"]},"then":{"anyOf":[{"required":["move"]},{"required":["scale"],"not":{"required":["as"],"properties":{"as":{"enum":["line","box"]}}},"properties":{"axis":{"enum":["both","x","y"]}}}]}},{"if":{"required":["role"]},"then":{"required":["color"]}},{"if":{"anyOf":[{"required":["fit"]},{"required":["case"]}]},"then":{"anyOf":[{"required":["text"]},{"required":["rich-text"]}]}},{"if":{"required":["route"]},"then":{"required":["move"],"properties":{"axis":{"const":"route"}}}},{"if":{"required":["draw","as"],"properties":{"as":{"const":"points"}}},"then":{"required":["area"]}},{"if":{"anyOf":[{"required":["area"]},{"required":["range"]}]},"then":{"required":["draw","as"],"properties":{"as":{"const":"points"}}}},{"if":{"required":["anchor"]},"then":{"required":["scale","as"],"properties":{"as":{"const":"box"}}}},{"if":{"required":["to"]},"then":{"required":["motion.morph"]}}],"patternProperties":{"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$":{"type":["object","string","number"],"description":"an add-on's key: an object is a binding the outside add-on owner.name draws (door 2, D31.5; its manifest's draws.binding says what fits); a formula is a built-in add-on's channel \u003cname>.\u003cchannel> (D39; its manifest's paints)"},"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$":{"type":["string","number"],"description":"an outside add-on's channel \u003cowner.name>.\u003cchannel> (D39): a formula inside its manifest's paints.\u003cchannel>.value"}}},"x-hsvg-section":"6.8","description":"Defined in 6.8."},"clips":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","required":["durationMs","tracks"],"properties":{"durationMs":{"type":"number","minimum":1,"maximum":3600000},"loop":{"anyOf":[{"type":"boolean"},{"type":"integer","minimum":1,"maximum":1000000}]},"loopMode":{"enum":["repeat","ping-pong","hold"]},"speed":{"type":["string","number"],"minimum":0.01,"maximum":100},"lane":{"type":"string","minLength":1,"maxLength":48},"reducedMotion":{"enum":["finish","rest","keep"]},"tracks":{"type":"array","minItems":1,"maxItems":1024,"items":{"type":"object","required":["target","channel","keys"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"channel":{"type":"string","allOf":[{"if":{"enum":["motion.morph"]},"then":{"x-hsvg-owner":"motion"}}],"anyOf":[{"enum":["move","rotate","scale","opacity","color","draw","variant","motion.morph"]},{"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$","description":"an add-on's channel \u003cid>.\u003cchannel> (D39): its manifest's paints"}]},"keys":{"type":"array","minItems":1,"maxItems":4096,"items":{"type":"array","minItems":2,"maxItems":3,"prefixItems":[{"type":"number","minimum":0},{"type":["string","number","boolean"]},{"$ref":"#/$defs/g3-easing"}]},"x-hsvg-limit":"trackKeys"},"stagger":{"type":"object","required":["targets","eachMs"],"properties":{"targets":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"eachMs":{"type":"number","minimum":0,"maximum":10000}},"additionalProperties":false},"route":{"type":"string","maxLength":48},"to":{"type":"string","maxLength":48,"x-hsvg-owner":"motion"},"start":{"type":["number","string"]},"as":{"enum":["spin","lean","stretch","line","fill","stroke","wipe"]},"axis":{"enum":["x","y","route","both"]}},"additionalProperties":false,"allOf":[{"if":{"properties":{"channel":{"const":"move"}}},"then":{"required":["axis"],"properties":{"axis":{"enum":["x","y","route"]},"as":false}}},{"if":{"properties":{"channel":{"const":"rotate"}}},"then":{"properties":{"as":{"enum":["spin","lean"]},"axis":false}}},{"if":{"properties":{"channel":{"const":"scale"}}},"then":{"properties":{"as":{"enum":["stretch","line"]},"axis":{"enum":["both","x","y"]}}}},{"if":{"properties":{"channel":{"const":"color"}}},"then":{"required":["as"],"properties":{"as":{"enum":["fill","stroke"]},"axis":false}}},{"if":{"properties":{"channel":{"const":"draw"}}},"then":{"properties":{"as":{"enum":["line","wipe"]},"axis":false}}},{"if":{"properties":{"channel":{"enum":["opacity","variant","motion.morph"]}}},"then":{"properties":{"as":false,"axis":false}}},{"if":{"properties":{"channel":{"pattern":"\\."}}},"then":{"properties":{"as":false,"axis":false}}}]},"x-hsvg-limit":"clipTracks"},"markers":{"type":"array","maxItems":256,"items":{"type":"object","required":["id","atMs","event"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"atMs":{"type":"number","minimum":0},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"additionalProperties":false},"x-hsvg-limit":"markers"}},"additionalProperties":false},"x-hsvg-section":"6.7","description":"Defined in 6.7."},"clock":{"type":"object","properties":{"speed":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":0.01,"maximum":100,"x-hsvg-code":"E-CLOCK-SPEED"}},"paused":{"type":["string","boolean"],"maxLength":4096},"source":{"enum":["scroll"]},"spanMs":{"type":"integer","minimum":1,"maximum":3600000}},"required":[],"additionalProperties":false,"x-hsvg-section":"3.10","description":"Defined in 3.10."},"column-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"word":{"type":"boolean"},"text":{"type":"boolean"}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"2.8","description":"Defined in 2.8."},"controls":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"button"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"toggle"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"choice"},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"options":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"object","properties":{"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"value":{"type":["string","number","boolean"],"maxLength":4096},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"label":{"type":"string"},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}}},"required":["target","value"],"additionalProperties":false}}},"required":["kind","options"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"slider"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"axis":{"enum":["x","y"]},"range":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"positions":{"type":["integer","string"],"minimum":2,"maximum":1000,"maxLength":4096},"valueText":{"type":"string"},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"dial"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"range":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"positions":{"type":["integer","string"],"minimum":2,"maximum":1000,"maxLength":4096},"valueText":{"type":"string"},"held":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"drag"},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"drops":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"accept":{"type":["string","number","boolean"],"maxLength":4096},"missEvent":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"picked":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"snap":{"type":"boolean"}},"required":["kind","target"],"additionalProperties":false},{"type":"object","description":"an add-on's control kind \u003cid>.\u003cname> (D39): the add-on's manifest declares it under controls","properties":{"kind":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*(\\.[a-z][a-z0-9]*(-[a-z0-9]+)*)?\\.[a-z][a-z0-9]*(-[a-z0-9]+)*$","not":{"enum":["button","toggle","choice","slider","dial","drag"]}},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"},"disabledLabel":{"type":"string"},"enabled":{"type":["string","number","boolean"],"maxLength":4096},"event":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"keys":{"type":"array","items":{"type":"string","pattern":"^(Key[A-Z]|Digit[0-9]|Space|Enter|Arrow(Left|Right|Up|Down)|Shift(Left|Right))$"}},"value":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48}},"required":["kind","target"],"additionalProperties":false}]},"x-hsvg-section":"5.11","description":"Defined in 5.11."},"data-tables":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","properties":{"resource":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"key":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"columns":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"$ref":"#/$defs/column-type"}},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"}},"required":["key","maxRows"],"additionalProperties":false},"x-hsvg-section":"2.8","description":"Defined in 2.8."},"derived-from":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"version":{"type":"string","pattern":"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"required":["id","version","digest"],"additionalProperties":false,"x-hsvg-section":"4.10, 4.4","description":"Defined in 4.10, 4.4."},"g3-easing":{"anyOf":[{"type":"string","pattern":"^(linear|ease|ease-in|ease-out|ease-in-out|hold|theme|cubic-bezier\\(\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*,\\s*-?[0-9]*\\.?[0-9]+\\s*\\))$"},{"type":"array","minItems":4,"maxItems":4,"prefixItems":[{"type":"number","minimum":0,"maximum":1},{"type":"number","minimum":-4,"maximum":4},{"type":"number","minimum":0,"maximum":1},{"type":"number","minimum":-4,"maximum":4}]}],"x-hsvg-section":"6.7","description":"Defined in 6.7."},"g3-fit":{"type":"object","properties":{"box":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"fontPx":{"type":"number","minimum":1,"maximum":1000},"minFontPx":{"type":"number","minimum":1,"maximum":1000},"maxLines":{"type":"integer","minimum":1,"maximum":32},"wrap":{"enum":["words","none"]},"lineHeight":{"type":"number","minimum":0.5,"maximum":4},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"]}}},"if":{"type":"object","required":["box"]},"then":{"required":["minFontPx"]},"additionalProperties":false,"required":["box","minFontPx"],"x-hsvg-section":"7.6","description":"Defined in 7.6."},"g3-layout-plan":{"type":"object","required":["place","kind"],"properties":{"place":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["free","row","column","grid"]},"gap":{"type":["number","string"]},"padding":{"type":["number","string"]},"scale":{"type":"object","required":["reference","minimum","maximum"],"properties":{"reference":{"type":"number","exclusiveMinimum":0},"minimum":{"type":"number"},"maximum":{"type":"number"}},"additionalProperties":false},"columns":{"type":"integer","minimum":1},"children":{"type":"array","items":{"$ref":"#/$defs/g3-plan-child"}},"repeat":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"}},"additionalProperties":false,"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-plan-child":{"type":"object","required":["node"],"properties":{"size":{"type":"number"},"share":{"type":"object","required":["id","minimum","initial","maximum"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"minimum":{"type":"number"},"initial":{"type":"number"},"maximum":{"type":"number"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}}},"additionalProperties":false},"weight":{"type":"number","exclusiveMinimum":0},"box":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number","minimum":0,"maximum":1}},"node":{"$ref":"#/$defs/g3-plan-node"},"label":{"type":"string"}},"additionalProperties":false,"allOf":[{"not":{"required":["size","share"]}},{"not":{"required":["size","weight"]}},{"not":{"required":["size","box"]}},{"not":{"required":["share","weight"]}},{"not":{"required":["share","box"]}},{"not":{"required":["weight","box"]}}],"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-plan-node":{"oneOf":[{"type":"object","required":["item"],"properties":{"item":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"fit":{"enum":["contain","cover","stretch"]},"align":{"anyOf":[{"enum":["start","middle","end"]},{"type":"array","minItems":2,"maxItems":2,"items":{"enum":["start","middle","end"]}}]},"focal":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}},"maxSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}},"crop":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}},"label":{"type":"string"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"enum":["free","row","column","grid"]},"gap":{"type":["number","string"]},"padding":{"type":["number","string"]},"columns":{"type":"integer","minimum":1},"children":{"type":"array","items":{"$ref":"#/$defs/g3-plan-child"}},"repeat":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"label":{"type":"string"}},"additionalProperties":false}],"x-hsvg-section":"7.5","description":"Defined in 7.5."},"g3-shape-range":{"type":"object","properties":{"minAspect":{"type":"number"},"maxAspect":{"type":"number"},"minWidth":{"type":"number"},"maxWidth":{"type":"number"},"minHeight":{"type":"number"},"maxHeight":{"type":"number"},"minPixels":{"type":"number"},"maxPixels":{"type":"number"},"direction":{"enum":["ltr","rtl"]}},"additionalProperties":false,"x-hsvg-section":"7.2","description":"Defined in 7.2."},"grants":{"type":"object","properties":{"storage":{"type":"array","items":{"enum":["session","saved","site"]}},"network":{"type":"array"},"ai":{"type":"object","additionalProperties":{"enum":["none","ask","guided","open"]}},"fillers":{"type":"array","items":{"type":"string"}},"signals":{"type":"array","items":{"type":"string"}},"pageActions":{"type":"array","items":{"type":"string","pattern":"^[^:\\s]+:[^:\\s]+$"}},"hooks":{"type":"array","items":{"type":"string"}},"widgets":{"type":"object","additionalProperties":{"type":"object","properties":{"set":{"type":"array","items":{"type":"string"}},"emit":{"type":"array","items":{"type":"string"}},"read":{"type":"array","items":{"type":"string"}},"listen":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}},"openUrl":{"type":"boolean"},"optional":{"type":"array","items":{"enum":["storage","network","ai","fillers","signals","pageActions","hooks","widgets","openUrl"]}}},"additionalProperties":false,"x-hsvg-section":"10.5","description":"Defined in 10.5."},"inputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$","x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"type":"object","required":["kind"],"properties":{"kind":{"enum":["content","knob","trigger"]},"type":{"enum":["number","boolean","string","array","object"]},"minimum":{"type":"number"},"maximum":{"type":"number"},"step":{"type":"number","exclusiveMinimum":0},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":["boolean","array"]},"additionalProperties":{"const":false},"initial":{},"lifetime":{"enum":["run","session","saved"]},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"contentType":{"anyOf":[{"enum":["text","number","flag","choice","picture","icon","hook","color","time","point","rows","row","line","url","freeText","richText"]},{"type":"string","maxLength":97,"pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-z0-9]*(-[a-z0-9]+)*\\.[a-z][a-zA-Z0-9]*$","description":"an outside add-on's content type, \u003cowner.name>.\u003ctype> (door 2): its manifest's contentTypes declares it"}]},"tier":{"enum":["short","medium","rich"]},"table":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48},"payload":{"$ref":"#/$defs/object-type"},"styles":{"type":"array","minItems":1,"maxItems":16,"items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"x-hsvg-limit":"fieldStyles"}},"additionalProperties":false,"oneOf":[{"required":["kind","type"],"properties":{"kind":{"const":"content"},"step":false,"lifetime":false,"payload":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":["string","object"]}}}},{"if":{"properties":{"type":{"const":"array"}},"required":["type"]},"then":{"required":["items","maxItems"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"properties":false,"additionalProperties":false,"required":{"type":"boolean"},"initial":{"type":"array"}}}},{"if":{"properties":{"type":{"const":"object"}},"required":["type"]},"then":{"required":["properties","required","additionalProperties"],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"required":{"type":"array","items":{"type":"string"}},"initial":{"type":"object"}}}},{"if":{"properties":{"contentType":{"const":"text"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"number"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"flag"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"boolean","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"choice"}},"required":["contentType"]},"then":{"required":["type","enum"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"picture"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"icon"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"hook"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"color"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"time"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"number","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"point"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"},"initial":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}}}},{"if":{"properties":{"contentType":{"const":"rows"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"array","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"line"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"url"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"}}}},{"if":{"properties":{"contentType":{"const":"freeText"}},"required":["contentType"]},"then":{"required":["type"],"properties":{"type":{"const":"string","x-hsvg-code":"E-TYPE"},"maxLength":{"minimum":1,"maximum":500,"x-hsvg-codes":{"maximum":"E-TYPE"}}}}}]},{"required":["kind","type"],"properties":{"kind":{"const":"knob"},"type":{"enum":["number","boolean","string"]},"contentType":false,"tier":false,"table":false,"payload":false,"required":false},"allOf":[{"if":{"properties":{"type":{"const":"number"}},"required":["type"]},"then":{"required":["minimum","maximum"],"properties":{"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"number"}}}},{"if":{"properties":{"type":{"const":"boolean"}},"required":["type"]},"then":{"required":[],"properties":{"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"boolean"}}}},{"if":{"properties":{"type":{"const":"string"}},"required":["type"]},"then":{"required":["maxLength","enum"],"properties":{"minimum":false,"maximum":false,"step":false,"items":false,"maxItems":false,"properties":false,"additionalProperties":false,"initial":{"type":"string"}}}}]},{"required":["kind"],"properties":{"kind":{"const":"trigger"},"type":false,"minimum":false,"maximum":false,"step":false,"maxLength":false,"enum":false,"items":false,"maxItems":false,"properties":false,"required":false,"additionalProperties":false,"initial":false,"lifetime":false,"contentType":false,"tier":false,"table":false,"editableBy":{"not":{},"x-hsvg-code":"E-TYPE"}}}]},"x-hsvg-section":"5.3","description":"Defined in 5.3."},"layouts":{"type":"array","maxItems":12,"items":{"type":"object","required":["id"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"shape":{"anyOf":[{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},{"$ref":"#/$defs/g3-shape-range"}]},"drawing":{"type":"string","minLength":1},"layoutPlan":{"$ref":"#/$defs/g3-layout-plan"},"resize":{"$ref":"#/$defs/resize"},"fit":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/g3-fit"}},"label":{"type":"string"}},"additionalProperties":false,"allOf":[{"not":{"required":["size","shape"]},"x-hsvg-code":"E-KEY-CONFLICT"},{"anyOf":[{"required":["size"]},{"required":["shape"]}],"x-hsvg-code":"E-KEY-REQUIRED"},{"anyOf":[{"required":["drawing"]},{"required":["layoutPlan"]}],"x-hsvg-code":"E-KEY-REQUIRED"}]},"x-hsvg-limit":"layoutsPerBlock","x-hsvg-section":"7.4","description":"Defined in 7.4."},"machine-node":{"type":"object","properties":{"initial":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"states":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/machine-node"}},"on":{"type":"object","additionalProperties":{"type":"array","items":{"$ref":"#/$defs/machine-transition"}}},"after":{"type":"array","items":{"$ref":"#/$defs/machine-timer"}},"entry":{"$ref":"#/$defs/action-list"},"exit":{"$ref":"#/$defs/action-list"}},"additionalProperties":false,"if":{"type":"object","required":["states"]},"then":{"required":["initial"],"x-hsvg-codes":{"required":"E-MACHINE-INITIAL"}},"else":{"not":{"required":["initial"]},"x-hsvg-code":"E-MACHINE-INITIAL"},"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machine-timer":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"delayMs":{"type":["string","number"],"maxLength":4096,"if":{"type":"number"},"then":{"minimum":1,"maximum":3600000}},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"actions":{"$ref":"#/$defs/action-list"}},"required":["delayMs"],"additionalProperties":false,"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machine-transition":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"actions":{"$ref":"#/$defs/action-list"}},"required":["id"],"additionalProperties":false,"x-hsvg-section":"5.14","description":"Defined in 5.14."},"machines":{"type":"array","items":{"type":"object","required":["id"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"initial":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"states":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"$ref":"#/$defs/machine-node"}},"on":{"type":"object","additionalProperties":{"type":"array","items":{"$ref":"#/$defs/machine-transition"}}},"after":{"type":"array","items":{"$ref":"#/$defs/machine-timer"}},"entry":{"$ref":"#/$defs/action-list"},"exit":{"$ref":"#/$defs/action-list"}},"additionalProperties":false},"x-hsvg-section":"5.14","description":"Defined in 5.14."},"mouth":{"type":"object","required":["target"],"properties":{"target":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"leadMs":{"type":"number","minimum":0,"maximum":1000},"blendMs":{"type":"number","minimum":0,"maximum":1000},"cues":{"type":"object","required":["A","B","C","D","E","F","G","H","X"],"properties":{"A":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"B":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"C":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"D":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"E":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"F":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"G":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"H":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"X":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"6.11","description":"Defined in 6.11."},"music":{"type":"object","required":["sound"],"properties":{"sound":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"fadeMs":{"type":"number","minimum":0,"maximum":10000},"gain":{"type":"number","minimum":0,"maximum":1},"whilePaused":{"enum":["play","pause"]}},"additionalProperties":false,"x-hsvg-section":"6.10","description":"Defined in 6.10."},"object-type":{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false}},"required":["type","properties","required","additionalProperties"],"additionalProperties":false,"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"outputs":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","minimum","maximum","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","maxLength","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","items","maxItems","kind","value"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"kind":{"const":"result"},"value":{"type":["string","number","boolean"]}},"required":["type","properties","required","additionalProperties","kind","value"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"event"},"payload":{"$ref":"#/$defs/object-type"}},"required":["kind"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"record"},"maxRows":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"dataTableRows"},"row":{"allOf":[{"$ref":"#/$defs/object-type"},{"properties":{"properties":{"propertyNames":{"not":{"enum":["atMs","seat","filler"]},"x-hsvg-code":"E-NAME-RESERVED"}}}}]}},"required":["kind","maxRows","row"],"additionalProperties":false}]},"x-hsvg-section":"5.4, 5.12, 5.16","description":"Defined in 5.4, 5.12, 5.16."},"promote":{"type":"array","items":{"type":"object","properties":{"from":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"as":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"editableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"initial":{}},"required":["from"],"additionalProperties":false},"x-hsvg-section":"4.7","description":"Defined in 4.7."},"reactions":{"type":"object","additionalProperties":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"guard":{"type":["string","number","boolean"],"maxLength":4096},"actions":{"$ref":"#/$defs/action-list"}},"required":["actions"],"additionalProperties":false}},"x-hsvg-section":"5.13","description":"Defined in 5.13."},"resize":{"oneOf":[{"type":"string","enum":["fixed-aspect","fixed","stretch-x","stretch-y","nine-slice","hug","fill","cover","tile"]},{"oneOf":[{"type":"object","required":["kind"],"properties":{"kind":{"const":"fixed-aspect"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"fixed"}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"enum":["stretch-x","stretch-y"]},"ends":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"nine-slice"},"insets":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"hug"},"padding":{"type":["string","number"]}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"fill"},"align":{"enum":["start","middle","end"]}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"cover"},"safe":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}},"focal":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number","minimum":0,"maximum":1}}},"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"tile"},"tile":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}]}],"x-hsvg-section":"7.4","description":"Defined in 7.4."},"resources":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"oneOf":[{"type":"object","properties":{"kind":{"const":"image"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"width":{"type":"number"},"height":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"font"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"family":{"type":"string"},"weight":{"oneOf":[{"type":"number"},{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}]},"style":{"enum":["normal","italic"]}},"required":["kind","file","digest","family"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"sound"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"durationMs":{"type":"number"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"icon-set"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"data"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"}},"required":["kind","file","digest"],"additionalProperties":false},{"type":"object","properties":{"kind":{"const":"words"},"file":{"type":"string","minLength":1},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"license":{"type":"string"},"source":{"type":"string"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"}},"required":["kind","file","digest","language"],"additionalProperties":false},{"type":"object","required":["kind"],"properties":{"kind":{"const":"video"}},"description":"a video resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"},{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}},"description":"a captions resource (2.6; D31: core, as the video box (`data-hsvg-fit=\"video\"`) describes the drawing); the media checks read its keys"}]},"x-hsvg-section":"2.6","description":"Defined in 2.6."},"rules":{"type":"array","items":{"type":"object","required":["id","kind"],"properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep","protected","fonts","colors","readable","contrast","keyboard","hit-target","reduced-motion","focus","captions","timing","answers-spread","feedback","scoring","on-route","solvable","prompt-limit","pause-offscreen","dismissible","budget","no-copy","judgement"],"x-hsvg-code":"E-RULE"},"subject":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]},"strength":{"enum":["must","should","give-way"],"x-hsvg-code":"E-RULE"},"proof":{"type":["string","array"],"if":{"type":"string"},"then":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"},"else":{"minItems":1,"items":{"enum":["files","playing","review"],"x-hsvg-code":"E-RULE"}}},"when":{"type":["string","number","boolean"]},"layouts":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"waivableBy":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"weight":{"type":"number","minimum":0,"maximum":10},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","column","crop","minimum-share","mark-only","simplify","remove"],"x-hsvg-code":"E-RULE"}},"priority":{"type":"number","minimum":0,"maximum":1},"floor":{"type":"object","minProperties":1,"properties":{"minTextPx":{"type":"number"},"minShare":{"type":"number"},"keep":{"const":true}},"additionalProperties":false},"reviewBy":{"const":"person"}},"allOf":[{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"inside"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"of":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}},"additionalProperties":false,"required":["of"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"clear"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"of":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fits"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"intrinsic"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"relation"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["column","crop","minimum-share","shrink"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"is":{"enum":["beside","overlay"]},"to":{"anyOf":[{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}]}},"additionalProperties":false,"required":["is","to"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reading-order"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","maxItems":0,"x-hsvg-code":"E-RULE"},"priority":{},"floor":{},"reviewBy":{},"order":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"}}},"additionalProperties":false,"required":["order"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["short","wrap","one-line","shrink","ellipsis","remove"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"minLength":{"type":["number","string"]},"maxLength":{"anyOf":[{"type":["number","string"]},{"type":"object","propertyNames":{"type":"string","pattern":"^(default|[a-z]{2,3}(-[a-z0-9]{2,8})*)$"},"additionalProperties":{"type":["number","string"]}}]},"maxLines":{"type":["number","string"]},"case":{"enum":["upper","lower","title"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keep"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{"type":"array","items":{"enum":["shrink","mark-only","simplify"],"x-hsvg-code":"E-RULE"}},"priority":{},"floor":{},"reviewBy":{},"minSize":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"number"}}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"protected"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"fonts"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"families":{"type":"array","items":{"type":"string"}}},"additionalProperties":false,"required":["families"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"colors"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"roles":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"array","items":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}}},"exhaustive":{"type":["boolean","string"]}},"additionalProperties":false,"required":["roles"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"readable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minTextPx":{"type":["number","string"]},"byRole":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":["number","string"]}}},"additionalProperties":false,"required":["minTextPx"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"contrast"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ratio":{"type":["number","string"]},"largeRatio":{"type":["number","string"]},"against":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"keyboard"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"hit-target"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minPx":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"reduced-motion"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"focus"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"captions"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"timing"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"answers-spread"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"positions":{"type":["number","string"]},"column":{"type":"string"}},"additionalProperties":false,"required":["positions"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"feedback"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"answer":{"type":"string"},"shows":{"type":"string"},"withinMs":{"type":["number","string"]},"minShowMs":{"type":["number","string"]}},"additionalProperties":false,"required":["answer","shows","withinMs","minShowMs"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"scoring"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minimum":{"type":["number","string"]},"maximum":{"type":["number","string"]},"once":{"type":["boolean","string"]},"per":{"type":"string"}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"on-route"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"route":{"type":"string"},"tolerance":{"type":["number","string"]}},"additionalProperties":false,"required":["route"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"solvable"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"goal":{"type":"string"},"searchBudget":{"type":["integer","string"],"minimum":1,"maximum":1000000}},"additionalProperties":false,"required":["goal"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"prompt-limit"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"count":{"type":["number","string"]},"windowMs":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"pause-offscreen"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"dismissible"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"budget"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"measure":{"enum":["archiveBytes","unpackedBytes","files","fontBytes","soundBytes","videoBytes","lengthMs","tableRows","repeatItems","pathsRewritten","suspendChars"],"x-hsvg-code":"E-RULE"},"maximum":{"type":["number","string"]},"on":{"type":"string"}},"additionalProperties":false,"required":["measure","maximum"]}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"no-copy"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"minBytes":{"type":["number","string"]}},"additionalProperties":false}},{"if":{"type":"object","required":["kind"],"properties":{"kind":{"const":"judgement"}}},"then":{"properties":{"id":{},"kind":{},"subject":{},"strength":{},"proof":{},"when":{},"layouts":{},"waivableBy":{},"weight":{},"steps":{},"priority":{},"floor":{},"reviewBy":{},"ask":{"type":"string","minLength":1}},"additionalProperties":false,"required":["ask"]}},{"if":{"type":"object","required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"required":["steps","floor"]},"else":{"not":{"anyOf":[{"required":["steps"]},{"required":["priority"]},{"required":["floor"]}]}}},{"if":{"required":["strength"],"properties":{"strength":{"const":"give-way"}}},"then":{"properties":{"kind":{"enum":["inside","clear","fits","intrinsic","relation","reading-order","limit","keep"],"x-hsvg-code":"E-RULE"}}}}]},"x-hsvg-section":"8.1","description":"Defined in 8.1."},"slots":{"type":"object","maxProperties":16,"additionalProperties":{"type":"object","properties":{"kind":{"enum":["stage","widget","overlay","dialog"]},"label":{"type":"string","maxLength":200},"landmark":{"enum":["navigation","complementary","region"]},"hideable":{"type":"boolean"},"passThrough":{"type":"boolean"},"openValue":{"type":"string","maxLength":48},"pauses":{"type":"boolean"},"gate":{"enum":["long-press"]},"clock":{"$ref":"#/$defs/clock"}},"required":["kind"],"additionalProperties":false},"x-hsvg-limit":"shellSlots","x-hsvg-section":"10.1, A6.1","description":"Defined in 10.1, A6.1."},"trust-record":{"type":"object","properties":{"provenance":{"type":"object","properties":{"madeWith":{"type":"array","items":{"type":"string"}},"madeBy":{"type":"array","items":{"type":"string","pattern":"^(person|agent):.+$"}},"sources":{"type":"array","items":{"type":"string"}},"inferred":{"type":"array","items":{"type":"string"}},"substitutions":{"type":"array","items":{"type":"object","properties":{"resource":{"type":"string"},"with":{"type":"string"},"reason":{"type":"string"}}}},"upgradedFrom":{"type":"object"},"notes":{"type":"string","maxLength":4000}},"additionalProperties":false},"review":{"type":"array","items":{"type":"object","properties":{"status":{"enum":["draft","candidate","accepted","blocked"]},"by":{"type":"string","pattern":"^(person|agent):.+$"},"date":{"type":"string","pattern":"^[0-9]{4}-[0-9]{2}-[0-9]{2}([T ].*)?$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"note":{"type":"string","maxLength":2000},"of":{"type":"string"},"signature":{"type":"object","properties":{"key":{"type":"string"},"alg":{"const":"ed25519"},"value":{"type":"string"}},"required":["key","alg","value"],"additionalProperties":false}},"required":["status","by","date","digest"],"additionalProperties":false,"allOf":[{"if":{"properties":{"status":{"const":"blocked"}},"required":["status"]},"then":{"required":["note"]}},{"if":{"properties":{"status":{"const":"accepted"}},"required":["status"]},"then":{"properties":{"by":{"not":{"pattern":"^agent:"},"x-hsvg-code":"E-TRUST-REVIEW"}}}}]}},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"pins":{"type":"object","propertyNames":{"type":"string","pattern":"^([a-z][a-z0-9]*(-[a-z0-9]+)*\\.)?[a-z][a-z0-9]*(-[a-z0-9]+)*@.+$"},"additionalProperties":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}},"signature":{"type":"object","properties":{"by":{"type":"string"},"key":{"type":"string"},"alg":{"const":"ed25519"},"over":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"value":{"type":"string"}},"required":["by","key","alg","over","value"],"additionalProperties":false}},"additionalProperties":false,"x-hsvg-section":"A9.3","description":"Defined in A9.3."},"uses":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"use":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"into":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"with":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"},"additionalProperties":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096},{"type":"object","description":"a tier object or a language object, for a text content field (5.3.1)"},{"type":"array","items":{"type":"object"},"maxItems":1024,"x-hsvg-limit":"dataTableRows","description":"literal rows, for a rows content field (5.6.1)"}]}},"items":{"anyOf":[{"type":["string","number","boolean"],"maxLength":4096,"description":"a repeat formula (4.5)"},{"type":"array","maxItems":64,"items":{"type":"string","maxLength":48},"x-hsvg-limit":"formEntries","description":"a declared widget's input names (A6.1)"}]},"key":{"type":["string","number","boolean"],"maxLength":4096},"clock":{"$ref":"#/$defs/clock"},"grants":{"$ref":"#/$defs/grants"},"layout":{"type":"object","propertyNames":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"additionalProperties":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"locks":{"type":"array","items":{"type":"string","maxLength":48}},"choices":{"type":"array","items":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48}},"pick":{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)?$"}},"required":["id"],"allOf":[{"anyOf":[{"required":["use"]},{"required":["declared"]},{"required":["custom"]}],"x-hsvg-code":"E-KEY-REQUIRED"}],"if":{"anyOf":[{"required":["declared"]},{"required":["custom"]}]},"else":{"propertyNames":{"enum":["id","use","into","with","items","key","clock","grants","layout","locks","choices","pick"],"x-hsvg-code":"E-KEY-UNKNOWN"}}},"x-hsvg-section":"4.3","description":"Defined in 4.3."},"value-type":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"}},"required":["type","minimum","maximum"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"}},"required":["type"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}}},"required":["type","maxLength"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"}},"required":["type","items","maxItems"],"additionalProperties":false},{"$ref":"#/$defs/object-type"}],"x-hsvg-section":"5.1.1","description":"Defined in 5.1.1."},"values":{"type":"object","propertyNames":{"allOf":[{"type":"string","pattern":"^[a-z][a-zA-Z0-9]*$","maxLength":48,"x-hsvg-code":"E-NAME-SHAPE"},{"not":{"enum":["true","false","null","and","or","not","hsvg","data","words","uses","event","entered","ended","openUrl","hookHealth","firstInput","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}]},"additionalProperties":{"oneOf":[{"type":"object","properties":{"type":{"const":"number"},"minimum":{"type":"number"},"maximum":{"type":"number"},"initial":{"type":"number"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","minimum","maximum","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"boolean"},"initial":{"type":"boolean"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"string"},"maxLength":{"type":"integer"},"enum":{"type":"array","items":{"type":"string"}},"initial":{"type":"string"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","maxLength","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"array"},"items":{"$ref":"#/$defs/value-type"},"maxItems":{"type":"integer","minimum":1,"maximum":1024,"x-hsvg-limit":"listItems"},"initial":{"type":"array"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","items","maxItems","initial"],"additionalProperties":false},{"type":"object","properties":{"type":{"const":"object"},"properties":{"type":"object","additionalProperties":{"$ref":"#/$defs/value-type"},"propertyNames":{"not":{"enum":["true","false","null","and","or","not","__proto__","prototype","constructor"]},"x-hsvg-code":"E-NAME-RESERVED"}},"required":{"type":"array","items":{"type":"string"}},"additionalProperties":{"const":false},"initial":{"type":"object"},"lifetime":{"enum":["moment","run","session","saved"]}},"required":["type","properties","required","additionalProperties","initial"],"additionalProperties":false}]},"x-hsvg-section":"5.1","description":"Defined in 5.1."},"waivers":{"type":"array","items":{"type":"object","required":["rule","by"],"properties":{"rule":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*/[a-z][a-z0-9]*(-[a-z0-9]+)*$"},"subject":{"type":"string","pattern":"^((part|place|field|input|value|use|scene|document|role|resource|color|data|play-test):[^\\s]+|controls|graph|resources)$"},"size":{"type":"string","pattern":"^[0-9]+x[0-9]+$"},"language":{"type":"string","pattern":"^[a-z]{2,3}(-[a-z0-9]{2,8})*$"},"theme":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"reason":{"type":"string","minLength":1,"x-hsvg-codes":{"minLength":"E-WAIVER-REASON"}},"by":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48},"until":{"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}},"additionalProperties":false,"allOf":[{"required":["reason"],"x-hsvg-code":"E-WAIVER-REASON"}]},"x-hsvg-section":"8.5","description":"Defined in 8.5."}}}},"document":{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:hsvg:2.0:schema:core:document","title":"HyperSVG 2.0 document","description":"Any 2.0 JSON document: the header, then the schema of its kind (2.2, 2.3).","$comment":"Generated by docs/spec-2.0-work/tools/schema/make-schemas.mjs from the spec/2.0 machine files. Do not edit.","type":"object","required":["format","kind","id"],"x-hsvg-codes":{"required":"E-HEADER"},"properties":{"format":{"const":"hsvg/2.0","x-hsvg-code":"E-HEADER"},"kind":{"enum":["experience","scene","shell","component","kit","rule-pack","receipt","change","play-test","package","host-profile","capability"],"x-hsvg-code":"E-HEADER"},"id":{"type":"string"}},"allOf":[{"if":{"required":["kind"],"properties":{"kind":{"const":"experience"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:experience"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"scene"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:scene"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"shell"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:shell"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"component"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:component"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"kit"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:kit"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"rule-pack"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:rule-pack"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"receipt"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:receipt"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"change"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:change"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"play-test"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:play-test"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"package"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:package"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"host-profile"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:host-profile"}},{"if":{"required":["kind"],"properties":{"kind":{"const":"capability"}}},"then":{"$ref":"urn:hsvg:2.0:schema:core:capability"}}]},"drawing":{"$id":"urn:hsvg:2.0:schema:core:drawing","title":"HyperSVG 2.0 drawing rules","description":"The closed SVG subset (2.11), the marks (6.1), the mark tiers, the id grammar (2.12) and the limits, for drawing-check.mjs. Drawings are XML, so these rules are not JSON Schema.","$comment":"Generated by docs/spec-2.0-work/tools/schema/make-schemas.mjs from the spec/2.0 machine files. Do not edit.","version":["2.0"],"drawingKinds":["part","component","screen"],"elements":{"allowed":["svg","g","defs","symbol","use","title","desc","metadata","path","rect","circle","ellipse","line","polyline","polygon","text","tspan","textPath","image","linearGradient","radialGradient","stop","pattern","marker","clipPath","mask","filter","feBlend","feColorMatrix","feComponentTransfer","feFuncR","feFuncG","feFuncB","feFuncA","feComposite","feDropShadow","feFlood","feGaussianBlur","feMerge","feMergeNode","feMorphology","feOffset","feTurbulence","feDisplacementMap"],"groups":{"structure":["svg","g","defs","symbol","use","title","desc","metadata"],"shapes":["path","rect","circle","ellipse","line","polyline","polygon"],"text":["text","tspan","textPath"],"pictures":["image"],"paint":["linearGradient","radialGradient","stop","pattern","marker"],"clipping":["clipPath","mask"],"filters":["filter","feBlend","feColorMatrix","feComponentTransfer","feFuncR","feFuncG","feFuncB","feFuncA","feComposite","feDropShadow","feFlood","feGaussianBlur","feMerge","feMergeNode","feMorphology","feOffset","feTurbulence","feDisplacementMap"]},"refused":["script","foreignObject","style","a","animate","animateTransform","animateMotion","set","mpath","feImage","switch","view","font","font-face","font-face-format","font-face-name","font-face-src","font-face-uri","glyph","glyphRef","hkern","missing-glyph","vkern"],"rule":"any element not in svgElements.all is refused; HTML elements included"},"attributes":{"common":["id","class","href","style","xmlns","xmlns:xlink"],"aliases":{"xlink:href":"href"},"presentation":["alignment-baseline","baseline-shift","clip-path","clip-rule","color","color-interpolation","color-interpolation-filters","direction","display","dominant-baseline","fill","fill-opacity","fill-rule","filter","flood-color","flood-opacity","font-family","font-size","font-size-adjust","font-stretch","font-style","font-variant","font-weight","image-rendering","letter-spacing","marker-end","marker-mid","marker-start","mask","opacity","overflow","paint-order","pathLength","pointer-events","preserveAspectRatio","shape-rendering","stop-color","stop-opacity","stroke","stroke-dasharray","stroke-dashoffset","stroke-linecap","stroke-linejoin","stroke-miterlimit","stroke-opacity","stroke-width","text-anchor","text-decoration","text-rendering","transform","unicode-bidi","vector-effect","visibility","word-spacing","writing-mode"],"styleOnly":["mix-blend-mode","isolation","touch-action"],"styleRootOnly":["background-color"],"byElement":{"svg":["x","y","width","height","viewBox","preserveAspectRatio"],"g":[],"defs":[],"title":[],"desc":[],"symbol":["viewBox","preserveAspectRatio"],"use":["x","y","width","height"],"path":["d","pathLength"],"rect":["x","y","width","height","rx","ry","pathLength"],"circle":["cx","cy","r","pathLength"],"ellipse":["cx","cy","rx","ry","pathLength"],"line":["x1","y1","x2","y2","pathLength"],"polyline":["points","pathLength"],"polygon":["points","pathLength"],"text":["x","y","dx","dy","rotate","textLength","lengthAdjust"],"tspan":["x","y","dx","dy","rotate","textLength","lengthAdjust"],"textPath":["startOffset","method","spacing","textLength","lengthAdjust"],"image":["x","y","width","height","preserveAspectRatio"],"linearGradient":["x1","y1","x2","y2","gradientUnits","gradientTransform","spreadMethod"],"radialGradient":["cx","cy","r","fx","fy","fr","gradientUnits","gradientTransform","spreadMethod"],"stop":["offset"],"pattern":["x","y","width","height","patternUnits","patternContentUnits","patternTransform","viewBox","preserveAspectRatio"],"marker":["markerWidth","markerHeight","refX","refY","orient","markerUnits","viewBox","preserveAspectRatio"],"clipPath":["clipPathUnits"],"mask":["x","y","width","height","maskUnits","maskContentUnits"],"filter":["x","y","width","height","filterUnits","primitiveUnits"],"feBlend":["x","y","width","height","result","in","in2","mode"],"feColorMatrix":["x","y","width","height","result","in","type","values"],"feComponentTransfer":["x","y","width","height","result","in"],"feFuncR":["type","tableValues","slope","intercept","amplitude","exponent","offset"],"feFuncG":["type","tableValues","slope","intercept","amplitude","exponent","offset"],"feFuncB":["type","tableValues","slope","intercept","amplitude","exponent","offset"],"feFuncA":["type","tableValues","slope","intercept","amplitude","exponent","offset"],"feComposite":["x","y","width","height","result","in","in2","operator","k1","k2","k3","k4"],"feDropShadow":["x","y","width","height","result","in","dx","dy","stdDeviation"],"feFlood":["x","y","width","height","result"],"feGaussianBlur":["x","y","width","height","result","in","stdDeviation","edgeMode"],"feMerge":["x","y","width","height","result"],"feMergeNode":["in"],"feMorphology":["x","y","width","height","result","in","operator","radius"],"feOffset":["x","y","width","height","result","in","dx","dy"],"feTurbulence":["x","y","width","height","result","baseFrequency","numOctaves","seed","stitchTiles","type"],"feDisplacementMap":["x","y","width","height","result","in","in2","scale","xChannelSelector","yChannelSelector"]},"toolData":"^data-(?!hsvg-)[a-z][a-z0-9-]*$","refusedPatterns":{"events":"^on","playerOwned":"^(role|tabindex|aria-.+)$"},"refusedCodes":{"events":"E-SVG-UNSAFE","playerOwned":"E-A11Y-OWNED"},"otherRefused":["DOCTYPE","entity declarations","processing instructions (the XML declaration is allowed)","other XML namespaces"],"rule":"an attribute that is in none of these lists, the marks or toolData is refused (E-SVG-UNSAFE); styleOnly and styleRootOnly name style properties, not attributes: they count only inside a style attribute (styleRootOnly on the root only)"},"marks":{"data-hsvg-version":{"section":"2.10","on":{"kinds":["root"],"elements":["svg"]},"value":{"type":"enum","values":["2.0"]},"codes":["E-SVG-ROOT"]},"data-hsvg-kind":{"section":"4.1","on":{"kinds":["part","component","screen"],"elements":["*"]},"value":{"type":"enum","values":["part","component","screen"]},"placement":{"part":"an element or \u003cg> inside a component or a screen drawing","component":"the top-level \u003cg> of a component drawing, or a \u003cg> in a screen drawing","screen":"the root \u003csvg> of a screen drawing"},"codes":["E-KIND","W-KIND-MISSING"]},"data-hsvg-role":{"section":"6.3","on":{"kinds":["part","component"],"elements":["*"]},"value":{"type":"role-words","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*( [a-z][a-z0-9]*(-[a-z0-9]+)*){0,3}$","maxLength":96,"registry":"roles","sides":["left","right","near","far"],"keeps":["keep-inside","keep-clear","keep-empty"],"keepPairs":["keep-inside keep-clear"],"keepOn":"rect","note":"one role word, then a side (left, right as the viewer sees it; near, far); or protected-area words on an unpainted \u003crect>: keep-inside, keep-clear, keep-empty, or keep-inside with keep-clear; decoration is ornament screen readers skip (D35)"},"codes":["E-MARK-VALUE","W-ROLE-UNKNOWN"]},"data-hsvg-label":{"section":"6.5","on":{"kinds":["part"],"elements":["*"]},"value":{"type":"text","minLength":1,"note":"plain text, the part's name for people"},"codes":["E-MARK-VALUE"]},"data-hsvg-pivot":{"section":"6.2.1","on":{"kinds":["part","component"],"elements":["*"]},"value":{"type":"point","pattern":"^-?(?:[0-9]+\\.?[0-9]*|\\.[0-9]+) -?(?:[0-9]+\\.?[0-9]*|\\.[0-9]+)$","note":"x y, two finite decimal numbers"},"codes":["E-MARK-VALUE","E-PIVOT"]},"data-hsvg-motion":{"section":"6.2.1","on":{"kinds":["part"],"elements":["*"]},"value":{"type":"channel-ranges","separator":"semicolon","atMostOnePerChannel":true,"scaleExcludes":["scale-x","scale-y"],"channels":{"move-x":{"forms":["move-x min..max"],"unit":"drawing coordinates","contains":0},"move-y":{"forms":["move-y min..max"],"unit":"drawing coordinates","contains":0},"rotate":{"forms":["rotate min..max","rotate *"],"unit":"degrees","contains":0,"needsPivot":true,"note":"rotate * turns without limit"},"lean":{"forms":["lean min..max"],"unit":"degrees","minimum":-85,"maximum":85,"contains":0,"needsPivot":true},"scale":{"forms":["scale min..max"],"unit":"factor","contains":1,"needsPivot":true,"minimum":0,"note":"covers both axes"},"scale-x":{"forms":["scale-x min..max"],"unit":"factor","contains":1,"needsPivot":true,"minimum":0},"scale-y":{"forms":["scale-y min..max"],"unit":"factor","contains":1,"needsPivot":true,"minimum":0},"opacity":{"forms":["opacity min..max"],"minimum":0,"maximum":1,"contains":"drawn"},"draw":{"forms":["draw min..max"],"minimum":0,"maximum":1,"requires":"pathLength=\"1\" on the element, a stroked \u003cpath>, \u003ccircle>, \u003cellipse>, \u003cline>, \u003cpolyline>, \u003cpolygon> or \u003crect>","note":"the drawn share of the line's length (the binding word draw, 6.8)"},"line":{"forms":["line min..max"],"unit":"drawing coordinates","minimum":0,"maximum":1000,"contains":"drawn","note":"the line thickness (stroke-width)"},"wipe":{"forms":["wipe min..max"],"minimum":0,"maximum":1,"contains":"drawn","note":"the share of the part shown, from the left (6.7)"}}},"codes":["E-MARK-VALUE","E-PIVOT","E-MOTION-RANGE","E-MOVER-TRANSFORM"]},"data-hsvg-follow":{"section":"6.2.1","on":{"kinds":["part"],"elements":["*"]},"value":{"type":"id","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48,"note":"the local id of its leader part"},"codes":["E-MARK-VALUE","E-FOLLOWS"]},"data-hsvg-color":{"section":"6.2.3","on":{"kinds":["group","shape","text"],"elements":["g","path","rect","circle","ellipse","line","polyline","polygon","text","tspan","use"]},"value":{"type":"color-role","paints":["fill","stroke"],"bareMeans":"fill","eachPaintAtMostOnce":true,"mixBareAndQualified":false,"roles":{"core":"colorRoles.core","kit":"any other id-grammar word a kit theme defines"},"pattern":"^[ \\t\\r\\n]*(?:R|fill:R(?:[ \\t\\r\\n]+stroke:R)?|stroke:R(?:[ \\t\\r\\n]+fill:R)?)[ \\t\\r\\n]*$","patternWhere":{"R":"[a-z][a-z0-9]*(?:-[a-z0-9]+)*"}},"codes":["E-COLOR-ROLE","W-COLOR-ROLE-THEME"]},"data-hsvg-text-style":{"section":"6.2.3","on":{"kinds":["group","text"],"elements":["g","text","tspan"]},"value":{"type":"type-role","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48,"roles":{"core":"typeRoles.core","kit":"any other id-grammar word a kit theme defines"},"note":"a theme text style for a text (heading, body, caption, or a kit's own, D37); a \u003cg> passes it down"},"codes":["E-MARK-VALUE","E-THEME-ROLES","W-COLOR-ROLE-THEME"]},"data-hsvg-slot":{"section":"5.10","on":{"kinds":["part"],"elements":["g","rect"]},"value":{"type":"id","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48,"unique":"in the drawing","note":"the slot's name; an empty \u003cg> or an unpainted \u003crect>"},"codes":["E-PLACE","E-MARK-VALUE"]},"data-hsvg-fit":{"section":"5.10","on":{"kinds":["part"],"elements":["rect"]},"value":{"type":"enum","values":["","text","items","video"],"note":"the box a text stays inside: no value or text; items: a layout plan's box (the layout add-on); video: a video's box. The box may be painted (D38)."},"codes":["E-PLACE","E-MARK-VALUE"]},"data-hsvg-repeat":{"section":"5.10","on":{"kinds":["part"],"elements":["g"]},"value":{"type":"text","note":"any value, or none: a group whose child slots hold one item each"},"codes":["E-PLACE"]},"data-hsvg-route":{"section":"5.10","on":{"kinds":["part"],"elements":["path","line","polyline"]},"value":{"type":"enum","values":["track","surface"]},"codes":["E-PLACE","E-MARK-VALUE"]},"data-hsvg-variant":{"section":"6.2.4","on":{"kinds":["variant-child"],"elements":["g"],"note":"each variant: a direct child \u003cg> of a part with variants"},"value":{"type":"id","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","maxLength":48,"unique":"in the part","note":"the variant name; the rest variant is the one shown (no display=\"none\")"},"codes":["E-LOOK"]},"data-hsvg-layer":{"section":"6.4","on":{"kinds":["group","part","component"],"elements":["*"]},"value":{"type":"enum","values":["content","backdrop","overlay","decoration"]},"default":"content","codes":["E-PAINT","E-MARK-VALUE"]}},"markTiers":{"section":"6.1","rootSvg":{"required":["viewBox","data-hsvg-version"],"recommended":["\u003ctitle>"],"optional":["\u003cdesc>","\u003cmetadata> (the tool record, 6.6)"]},"componentRoot":{"required":["data-hsvg-kind","id (the namespace)"],"recommended":["data-hsvg-role"],"optional":["data-hsvg-pivot","data-hsvg-layer"]},"part":{"required":["data-hsvg-kind=part","id"],"recommended":["data-hsvg-role","data-hsvg-label","data-hsvg-pivot (if it turns or scales)"],"optional":["data-hsvg-motion","data-hsvg-follow","data-hsvg-color","data-hsvg-layer"]},"screenDrawingRoot":{"required":["data-hsvg-kind=screen"],"recommended":["layers (6.4)"],"optional":["width and height for an exact size"]},"place":{"required":["its place mark"],"recommended":["data-hsvg-role on slots"],"optional":[]},"variants":{"required":["data-hsvg-variant on every variant"],"recommended":[],"optional":[]}},"toolRecord":{"section":"6.6","element":"metadata","on":"a direct child of the root \u003csvg>; at most one","value":"one JSON object","keys":{"derived":{"enum":["derived","edited"]},"steps":{"type":"string","pattern":"^[a-z][a-z0-9]*(-[a-z0-9]+)*:[a-z]+(-[a-z]+)*( [a-z][a-z0-9]*(-[a-z0-9]+)*:[a-z]+(-[a-z]+)*)*$","maxLength":4096,"note":"the give-way steps a bake took for this derived frame, in the order taken: \u003crule id>:\u003cstep>, once per time, space-separated; written by the packer"},"asset":{"type":"object","note":"a HyperSVG's record (D45, 2.13, 10.14): format, id, drawing, members and files; written by pack --asset, read by unpack and the asset player, which check it (src/asset.mjs)"}},"codes":["E-MARK-VALUE"]},"colorRoles":{"section":"6.2.3","core":["surface","ink","accent","accent-2","muted","success","warning","danger"],"focus":"accent-2","paints":["fill","stroke"],"bareMeans":"fill","kitRoles":"other roles a kit theme defines (7.7): id grammar, never a core name","contrast":{"section":"7.7","inkOnSurface":4.5,"mutedOnSurface":4.5,"successOnSurface":4.5,"warningOnSurface":4.5,"dangerOnSurface":4.5,"focusOnSurface":3,"kitOnRoleOnRole":4.5}},"typeRoles":{"section":"6.2.3, 7.7","core":["heading","body","caption"],"kitRoles":"other type roles a kit theme defines (7.7): id grammar, never a core name"},"clipChannels":{"section":"6.7","core":["move","rotate","scale","opacity","color","draw","variant"],"addedBy":{"motion":["motion.morph"]}},"limits":{"section":"2.11","elementsPerDrawing":30000,"charactersPerDrawing":4000000,"useNesting":8,"expandedElements":100000,"filterPrimitives":32,"filterOrMaskApplications":64,"stdDeviationRange":[0,32],"morphologyRadiusRange":[0,32],"numOctavesRange":[0,4],"styleUnits":65536,"dataUriDepth":4,"imageDataTypes":["image/png","image/jpeg","image/gif","image/webp","image/svg+xml"],"code":"E-SVG-LIMIT","overLimit":"refused, never clamped","addresses":"href on \u003cuse> and every url(...) is a local #id; href on \u003cimage> is a data: URI of an image type or the relative path of a declared image resource; no other scheme","css":{"only":"style attributes with plain declarations of the presentation properties, svgAttributes.styleOnly and, on the root, svgAttributes.styleRootOnly","refused":["@import","comments","url() except a local url(#id)","position","z-index","inset","top","left","right","bottom","custom properties (--name)"]}},"idGrammar":"^[a-z][a-z0-9]*(-[a-z0-9]+)*$","idMaxLength":48,"namespaceSeparator":"__","pageMarksRefused":["data-hsvg-hook","data-hsvg-target","data-hsvg-spot","data-hsvg-grab","data-hsvg-action"]},"capabilities":{},"addons":{}};
 const ADDONS_BASE = new URL('./addons/', __hsvgHere);
+const FULL_PLAYER = null;
 
-exp.SCHEMAS_BASE = SCHEMAS_BASE; exp.SCHEMAS = SCHEMAS; exp.ADDONS_BASE = ADDONS_BASE;
+exp.SCHEMAS_BASE = SCHEMAS_BASE; exp.SCHEMAS = SCHEMAS; exp.ADDONS_BASE = ADDONS_BASE; exp.FULL_PLAYER = FULL_PLAYER;
 };
-defs[38] = function (exp) { 'use strict'; // engine/v2/src/host-words.mjs
+defs[41] = function (exp) { 'use strict'; // engine/v2/src/host-words.mjs
 exp.applyHostWords = applyHostWords;
 const WORD_MAX = 400;
 const WORD_MIN = 24;
@@ -8070,7 +8312,7 @@ function applyHostWords(experience, hostWords) {
 
 
 };
-defs[39] = function (exp) { 'use strict'; // engine/v2/src/host-colors.mjs
+defs[42] = function (exp) { 'use strict'; // engine/v2/src/host-colors.mjs
 exp.contrast = contrast; exp.themeRoles = themeRoles; exp.hostColors = hostColors;
 const HEX = /^#[0-9a-fA-F]{6}$/;
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -8140,7 +8382,7 @@ function hostColors(exp, colors, theme) {
 
 
 };
-defs[40] = function (exp) { 'use strict'; // engine/v2/src/on-demand.mjs
+defs[43] = function (exp) { 'use strict'; // engine/v2/src/on-demand.mjs
 exp.assetNeeds = assetNeeds; exp.assetAddons = assetAddons; exp.usesSound = usesSound; exp.assetUsesSound = assetUsesSound;
 const ON_DEMAND = Object.freeze(['effects', 'physics']);
 const addonFile = (id, version) => `${id}-${version}.mjs`;
@@ -8190,10 +8432,10 @@ function assetUsesSound(files) {
 
 exp.ON_DEMAND = ON_DEMAND; exp.addonFile = addonFile;
 };
-defs[41] = function (exp) { 'use strict'; // engine/v2/web/on-demand-web.mjs
+defs[44] = function (exp) { 'use strict'; // engine/v2/web/on-demand-web.mjs
 exp.loadAddons = loadAddons;
-const { sha256 } = req(31);
-const { addonFile } = req(40);
+const { sha256 } = req(21);
+const { addonFile } = req(43);
 const fault = (code, message) => Object.assign(new Error(message), { code });
 const loaded = new Map();
 const hex = (buf) => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -8236,10 +8478,10 @@ function loadAddons(list, base) {
 
 
 };
-defs[42] = function (exp) { 'use strict'; // engine/v2/src/repack.mjs
+defs[45] = function (exp) { 'use strict'; // engine/v2/src/repack.mjs
 exp.repack = repack;
-const { makeAsset } = req(30);
-const { FORMAT } = req(7);
+const { makeAsset } = req(22);
+const { FORMAT } = req(9);
 const no = (message) => { const e = new Error(`repack: ${message}`); e.code = 'E-ASSET'; throw e; };
 const normal = (p) => { const out = []; for (const s of p.split('/')) { if (s === '..') out.pop(); else if (s && s !== '.') out.push(s); } return out.join('/'); };
 function repack(files) {
@@ -8264,15 +8506,15 @@ function repack(files) {
 
 
 };
-defs[43] = function (exp) { 'use strict'; // engine/v2/web/mount-checked.mjs
+defs[46] = function (exp) { 'use strict'; // engine/v2/web/mount-checked.mjs
 exp.mountChecked = mountChecked;
-const { play } = req(3);
-const { memberFindings, sha256 } = req(31);
-const { addPlace } = req(35);
-const { applyHostWords } = req(38);
-const { hostColors } = req(39);
+const { play } = req(27);
+const { memberFindings, sha256 } = req(21);
+const { addPlace } = req(39);
+const { applyHostWords } = req(41);
+const { hostColors } = req(42);
 const TEXT = /\.(json|svg|csv|txt|vtt)$/;
-function mountChecked(container, pkg, { partition = 'device', onError = null, test = false, capabilities = {}, widgets = {}, host = null, options = {}, modules = null, schemas = null, timeLimits = null, faultBox = true, nonce = null, hostWords = null, clock = null, onMove = null, theme = null, colors = null } = {}, loadExperience) {
+function mountChecked(container, pkg, { partition = 'device', onError = null, test = false, capabilities = {}, widgets = {}, host = null, options = {}, modules = null, schemas = null, timeLimits = null, faultBox = true, nonce = null, hostWords = null, clock = null, onMove = null, theme = null, colors = null, sleep, muted } = {}, loadExperience) {
   if (!schemas || typeof schemas !== 'object' || !schemas.kinds) throw new TypeError('mount needs options.schemas (spec/2.0/schemas): a mounted package is checked before it plays');
   const descriptor = pkg['package.json'];
   if (!descriptor) { const e = new Error('the package has no package.json'); e.code = 'E-PACKAGE-DESCRIPTOR'; throw e; }
@@ -8299,20 +8541,20 @@ function mountChecked(container, pkg, { partition = 'device', onError = null, te
   const language = applyHostWords(checked.experience, hostWords);
   const assets = (p) => { const b = pkg[root ? `${root}/${p}` : p]; if (!b) throw new Error(`no member ${p}`); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
   const members = Object.fromEntries(Object.entries(pkg).map(([p, b]) => [rel(p), b]));
-  const state = play(container, { files: own, schemas: null, assets, partition, capabilities, onError, test, widgets, host, options, members, modules, load: () => checked, timeLimits, faultBox, nonce, language, clock, onMove, theme, colors, checkColors: hostColors });
+  const state = play(container, { files: own, schemas: null, assets, partition, capabilities, onError, test, widgets, host, options, members, modules, load: () => checked, timeLimits, faultBox, nonce, language, clock, onMove, theme, colors, checkColors: hostColors, sleep, muted });
   if (!state.player) { const e = new Error(state.stopped.message); e.code = state.stopped.code; e.address = state.stopped.address; throw e; }
   return addPlace(state);
 }
 
 
 };
-defs[44] = function (exp) { 'use strict'; // engine/v2/src/load-asset.mjs
+defs[47] = function (exp) { 'use strict'; // engine/v2/src/load-asset.mjs
 exp.loadAsset = loadAsset;
-const { withUsedGrants } = req(32);
-const { parseStrict } = req(6);
-const { raisedLimits } = req(7);
-const { CHECKERS, raiseSchemas, undeclaredImages } = req(45);
-const { readExperience } = req(5);
+const { withUsedGrants } = req(25);
+const { parseStrict } = req(24);
+const { raisedLimits } = req(9);
+const { CHECKERS, raiseSchemas, undeclaredImages } = req(48);
+const { readExperience } = req(23);
 const OUTSIDE_PIN = /^[a-z][a-z0-9]*(-[a-z0-9]+)*\.[a-z][a-z0-9]*(-[a-z0-9]+)*@/;
 function loadAsset(source, schemas) {
   let raised = {};
@@ -8330,13 +8572,13 @@ function loadAsset(source, schemas) {
 
 
 };
-defs[45] = function (exp) { 'use strict'; // engine/v2/src/load-checks.mjs
+defs[48] = function (exp) { 'use strict'; // engine/v2/src/load-checks.mjs
 exp.raiseSchemas = raiseSchemas; exp.undeclaredImages = undeclaredImages; exp.checkCells = checkCells;
-const { makeDocumentChecker } = req(46);
-const { checkDrawing } = req(49);
-const { experienceResources } = req(14);
-const { SVG_LIMIT } = req(7);
-const { checkValue } = req(9);
+const { makeDocumentChecker } = req(49);
+const { checkDrawing } = req(52);
+const { experienceResources } = req(12);
+const { SVG_LIMIT } = req(9);
+const { checkValue } = req(6);
 const CHECKERS = Object.freeze({ makeDocumentChecker, checkDrawing, checkCells });
 const LIMIT_KEYWORDS = ['maxItems', 'maxLength', 'maxProperties', 'maximum'];
 function raiseSchemas(schemas, raised) {
@@ -8393,11 +8635,11 @@ function checkCells(rows, columns, json = true) {
 
 exp.CHECKERS = CHECKERS;
 };
-defs[46] = function (exp) { 'use strict'; // engine/v2/schema/check-document.mjs
+defs[49] = function (exp) { 'use strict'; // engine/v2/schema/check-document.mjs
 exp.makeDocumentChecker = makeDocumentChecker;
-const { parseStrict } = req(6);
-const { Validator } = req(47);
-const { DRAFT_KINDS, draftUses, withoutCovered } = req(48);
+const { parseStrict } = req(24);
+const { Validator } = req(50);
+const { DRAFT_KINDS, draftUses, withoutCovered } = req(51);
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const composed = new WeakMap();
 function presetInNeeds(n, name) {
@@ -8492,7 +8734,7 @@ function makeDocumentChecker(schemas) {
 
 
 };
-defs[47] = function (exp) { 'use strict'; // engine/v2/schema/validate.mjs
+defs[50] = function (exp) { 'use strict'; // engine/v2/schema/validate.mjs
 exp.defaultCode = defaultCode;
 const RANGE = new Set(['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'minLength', 'maxLength',
   'minItems', 'maxItems', 'minProperties', 'maxProperties']);
@@ -8637,7 +8879,7 @@ class Validator {
 
 exp.Validator = Validator;
 };
-defs[48] = function (exp) { 'use strict'; // engine/v2/schema/drafts.mjs
+defs[51] = function (exp) { 'use strict'; // engine/v2/schema/drafts.mjs
 exp.draftUses = draftUses; exp.withoutCovered = withoutCovered;
 const DIR = 'spec/2.0/drafts/';
 const B1C = 'spec/2.0/drafts/';
@@ -8725,10 +8967,10 @@ function withoutCovered(diags, drafts) {
 
 exp.DRAFT_KINDS = DRAFT_KINDS;
 };
-defs[49] = function (exp) { 'use strict'; // engine/v2/schema/drawing-check.mjs
+defs[52] = function (exp) { 'use strict'; // engine/v2/schema/drawing-check.mjs
 exp.checkDrawing = checkDrawing;
-const { parseXml } = req(22);
-const { motionEntries, motionDots } = req(23);
+const { parseXml } = req(29);
+const { motionEntries, motionDots } = req(30);
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const XLINK_NS = 'http://www.w3.org/1999/xlink';
 const NUM = /^[+-]?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?$/;
@@ -9040,10 +9282,10 @@ function ancestorSvg(el, root) { for (let p = el.parent; p && p !== root; p = p.
 
 
 };
-defs[50] = function (exp) { 'use strict'; // engine/v2/web/audio-web.mjs
+defs[53] = function (exp) { 'use strict'; // engine/v2/web/audio-web.mjs
 exp.startSynth = startSynth; exp.synthNode = synthNode; exp.assetsBase = assetsBase; exp.attachAudio = attachAudio;
-const { createMixer } = req(51);
-const { useAudio } = req(3);
+const { createMixer } = req(54);
+const { useAudio } = req(27);
 function startSynth(node, ctx, durationMs) { node.start(); node.stop(ctx.currentTime + durationMs / 1000); return node; }
 function synthNode(ctx, s, env) {
   const now = ctx.currentTime;
@@ -9072,8 +9314,9 @@ function synthNode(ctx, s, env) {
 function assetsBase(assetsUrl, win) {
   try { return new URL(assetsUrl || './', win.location.href); } catch { return null; }
 }
-function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
+function attachAudio(player, win, { assetsUrl, assets = null, onFail = null, muted = false }) {
   let ctx = null;
+  let hostMuted = muted === true;
   let gone = false;
   let out = null;
   let voiceBus = null;
@@ -9155,6 +9398,7 @@ function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
     return handle;
   };
   const mixer = createMixer(start, player.limits);
+  const levels = () => (hostMuted ? { music: 0, sounds: 0, voice: 0 } : player.mix());
   const voiced = new Map();
   const lineLog = [];
   const dropLine = (address, why) => {
@@ -9175,7 +9419,7 @@ function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
     voiced.set(d.address, v);
     if (!ctx || win.document.hidden || !(player.mix().voice > 0)) { dropLine(d.address, 'silent'); return; }
     v.gain = ctx.createGain();
-    v.gain.gain.value = player.mix().voice;
+    v.gain.gain.value = levels().voice;
     v.gain.connect(voiceBus);
     decode(d.source.path).then((buffer) => {
       if (voiced.get(d.address) !== v) return;
@@ -9197,7 +9441,7 @@ function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
       const line = player.state.blocks[address]?.line;
       if (!line || line.run !== v.run) { dropLine(address, 'stopped'); continue; }
       if (!player.state.ambient.voice) { dropLine(address, 'silenced'); continue; }
-      if (v.gain) v.gain.gain.value = player.mix().voice;
+      if (v.gain) v.gain.gain.value = levels().voice;
       const paused = player.clockHeld ? player.clockHeld(address) : !!held && (address === held || address.startsWith(held + '/'));
       if (v.paused) { if (!paused) { v.paused = false; playFrom(address, v, v.offset); } continue; }
       if (!v.node) { v.waited += ms; if (v.waited > 300) dropLine(address, 'late'); continue; }
@@ -9215,7 +9459,7 @@ function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
   };
   const update = () => {
     if (gone) return;
-    mixer.setLevels(player.mix());
+    mixer.setLevels(levels());
     syncHold();
     mixer.prune((owner) => !owner.includes('/') || !!player.state.blocks[owner]);
     if (ctx && !win.document.hidden) mixer.music(player.music());
@@ -9259,10 +9503,11 @@ function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
     await Promise.all(buffers.values());
     return { armed: !!ctx, requests: log.length, started: log.filter(e => e.started).length, decoded: buffers.size - failed.size, failed: [...failed], music: mixer.nowPlaying() };
   };
-  const read = () => { analyser.getFloatTimeDomainData(analyserData); const v = player.mix().voice; return v > 0 ? extras.rms(analyserData) / v : 0; };
-  const heard = () => !!ctx && !!analyser && !win.document.hidden && player.mix().voice > 0 && (mixer.voicePlaying() || [...voiced.values()].some(v => v.node));
+  const read = () => { analyser.getFloatTimeDomainData(analyserData); const v = levels().voice; return v > 0 ? extras.rms(analyserData) / v : 0; };
+  const heard = () => !!ctx && !!analyser && !win.document.hidden && levels().voice > 0 && (mixer.voicePlaying() || [...voiced.values()].some(v => v.node));
   const mouth = extras ? extras.mouths(player, { read, heard }) : null;
   const advance = (ms) => { if (gone) return; syncHold(); mixer.advance(ms); stepLines(ms); mouth?.(ms); };
+  player.hostMute = (on) => { hostMuted = on === true; if (!gone) update(); };
   const destroy = () => {
     if (gone) return;
     gone = true;
@@ -9273,13 +9518,13 @@ function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
     const i = player.listeners.indexOf(delivered); if (i >= 0) player.listeners.splice(i, 1);
     try { ctx?.close?.().catch?.(() => {}); } catch {   }
   };
-  return { mixer, log, update, stats, advance, destroy, lines: lineLog, get armed() { return !!ctx; }, get gone() { return gone; } };
+  return { mixer, log, update, stats, advance, destroy, lines: lineLog, get armed() { return !!ctx; }, get gone() { return gone; }, get hostMuted() { return hostMuted; } };
 }
 useAudio(attachAudio);
 
 
 };
-defs[51] = function (exp) { 'use strict'; // engine/v2/src/mixer.mjs
+defs[54] = function (exp) { 'use strict'; // engine/v2/src/mixer.mjs
 exp.createMixer = createMixer;
 function createMixer(start, limits = { soundCopies: 4, oneShotSounds: 16 }) {
   const levels = { music: 1, sounds: 1, voice: 1 };
@@ -9363,4 +9608,4 @@ function createMixer(start, limits = { soundCopies: 4, oneShotSounds: 16 }) {
 
 };
 const __hsvg = req(0);
-export const { mount, mountAsync, useSchemas, sharedSchemas, HyperSvgAsset, VERSION, elementVersion, repack, readAsset } = __hsvg;
+export const { mount, mountAsync, useSchemas, sharedSchemas, HyperSvgAsset, VERSION, elementVersion, repack, readAsset, checkedParts, logicPort } = __hsvg;

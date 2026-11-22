@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "lamp-host",
  "about": "The host sets the knobs (lit and height); the person flips the switch, and switched is heard each time.",
  "package": {

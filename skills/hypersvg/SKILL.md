@@ -245,7 +245,7 @@ input), `entry` (actions run when the block starts), `machines` (states, `after`
   with each attribute setting the input of the same name:
 
   ```html
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.1/engine/v2/web/asset-web.mjs"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@hypersvg/core@2.0.0-next.2/engine/v2/web/asset-web.mjs"></script>
   <hypersvg-asset src="thermostat.svg" temperature="12"><img src="thermostat.svg" alt="A thermostat"></hypersvg-asset>
   ```
 

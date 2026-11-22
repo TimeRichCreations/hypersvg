@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "doors-wind",
  "about": "The add-on control kind example.steps.stepper (its gestures up, down and press) and a gust clip.",
  "package": {

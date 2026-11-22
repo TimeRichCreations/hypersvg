@@ -28,13 +28,17 @@
 //   load code, so it refuses such a file (E-ASSET).
 // API labels (spec 10.16, D63), as the package's ./asset-lean: mountAsync, HyperSvgAsset, useSchemas, sharedSchemas,
 // VERSION and elementVersion are stable; place, leanLoad and bundleCheck are internal. Options: schemas, partition,
-// onError, timeLimits, integrity, faultBox, nonce, clock and onMove are stable; theme, options, hostWords and
-// addonBase are experimental; test and modules are internal. The element: src, integrity and fault-box, the nonce
+// onError, timeLimits, integrity, faultBox, nonce, clock and onMove are stable; theme, options, hostWords, addonBase,
+// colors, fullPlayer, sleep and muted are experimental; test and modules are internal.
+// - fullPlayer (experimental, added after 2.0.0-next.1): the address of the full one-file player
+//   (engine/v2/web/hypersvg-asset.js). A file placed without integrity is checked by that player's checked mount,
+//   imported once per address per page; its VERSION must be this VERSION. The lean one-file player
+//   (hypersvg-asset-lean.js) uses the full one-file player beside it by default, with its own query string. The element: src, integrity and fault-box, the nonce
 // property, input attributes, ready, host, inputs(), read(), set(), on(), the static version and the events
 // hsvg:changed, hsvg:<output> and hsvg:error are stable; the attributes theme, addon-base and partition are
 // experimental.
 import { play } from './player-web.mjs';
-import { readAsset, assetPackage } from '../src/asset.mjs';
+import { readAsset, readTrustedAsset, assetPackage } from '../src/asset.mjs';
 import { readExperience } from '../src/read.mjs';
 import { withUsedGrants } from '../src/grants-asked.mjs';
 import { checkValue, checkContent } from '../src/runtime.mjs';
@@ -45,6 +49,7 @@ import { VERSION } from '../src/version.mjs';
 import { addPlace } from './place-web.mjs';
 import { errorDetail } from '../src/error-detail.mjs';
 import { SCHEMAS_BASE, SCHEMAS, ADDONS_BASE } from './asset-schemas.mjs';
+import * as where from './asset-schemas.mjs';
 import { applyHostWords } from '../src/host-words.mjs';
 import { hostColors } from '../src/host-colors.mjs';
 import { assetNeeds, assetAddons, assetUsesSound } from '../src/on-demand.mjs';
@@ -64,7 +69,8 @@ const MAX = { maxBytes: FORMAT.dataBytesEach };
 // 9.6); colors (experimental, the host's colours, 7.7.1; mount-web.mjs). Throws {code, message} and
 // plays nothing when the asset is refused. The host API it returns has place(name) too (place-web.mjs).
 // modules (internal): the capability records loaded for the asset's needs (D55); without them a need is refused.
-export function place(element, asset, inputs, { partition = null, onError = null, test = false, timeLimits = null, faultBox = true, nonce = null, theme = null, options = {}, hostWords = null, clock = null, onMove = null, modules = null, colors = null } = {}, mountPackage) {
+// sleep and muted (experimental, added after 2.0.0-next.1) go to play() unchanged (player-web.mjs reads them).
+export function place(element, asset, inputs, { partition = null, onError = null, test = false, timeLimits = null, faultBox = true, nonce = null, theme = null, options = {}, hostWords = null, clock = null, onMove = null, modules = null, colors = null, sleep, muted } = {}, mountPackage) {
   const bad = Object.keys(asset.files).filter(p => !TEXT.test(p));
   if (bad.length) throw fault('E-ASSET', `an asset holds only its documents and drawings, not ${bad.join(', ')}`);
   let doc;
@@ -91,13 +97,16 @@ export function place(element, asset, inputs, { partition = null, onError = null
     throw fault('E-AXIS-INPUT', `theme ${JSON.stringify(theme)} is not one of the HyperSVG's themes (${Object.keys(doc?.themes || {}).join(', ') || 'it declares none'})`);
   }
   const files = { ...asset.files };
+  // The member digests of a file that matched its integrity (readTrustedAsset): not computed again.
+  const digests = asset.digests ? { ...asset.digests } : null;
   if (Object.keys(given).length || theme != null) {
     const copy = structuredClone(doc);
     if (theme != null) copy.theme = theme;
     for (const [name, v] of Object.entries(given)) copy.inputs[name].initial = v;
     files['experience.json'] = JSON.stringify(copy);
+    if (digests) delete digests['experience.json'];
   }
-  const host = mountPackage(element, assetPackage({ id: asset.id, files }), { partition: partition ?? `asset-${asset.id}`, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme, colors });
+  const host = mountPackage(element, assetPackage({ id: asset.id, files, digests }), { partition: partition ?? `asset-${asset.id}`, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme, colors, sleep, muted });
   // A stored knob comes back after its initial (5.3.2); the host's value is the later change.
   for (const [name, v] of Object.entries(given)) if (JSON.stringify(host.read(name)) !== JSON.stringify(v)) host.set(name, v);
   host.inputs = () => Object.entries(decls).map(([name, d]) => ({
@@ -122,27 +131,56 @@ export function leanLoad(source) {
   if (r.experience?.doc) { const g = withUsedGrants(r.experience); r.experience.derivedGrants = g.derived; if (Object.keys(g.derived).length) r.experience.doc.grants = g.grants; }
   return r;
 }
-function leanMount(container, pkg, { partition, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme = null, colors = null }) {
+function leanMount(container, pkg, { partition, onError, test, timeLimits, faultBox, nonce, options, hostWords, clock, onMove, modules, theme = null, colors = null, sleep, muted }) {
   const dec = new TextDecoder();
   const files = {};
   for (const [p, b] of Object.entries(pkg)) if (TEXT.test(p) && p !== 'package.json') files[p] = dec.decode(b);
   const assets = (p) => { const b = pkg[p]; if (!b) throw new Error(`no member ${p}`); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
   const loaded = leanLoad({ read: (rel) => (rel in files ? files[rel] : null) });
   const language = loaded.experience ? applyHostWords(loaded.experience, hostWords) : null; // E-WORDS before anything plays
-  const state = play(container, { files, schemas: null, assets, partition, onError, test, members: pkg, load: () => loaded, timeLimits, faultBox, nonce, options, language, clock, onMove, modules, theme, colors, checkColors: hostColors });
+  const state = play(container, { files, schemas: null, assets, partition, onError, test, members: pkg, load: () => loaded, timeLimits, faultBox, nonce, options, language, clock, onMove, modules, theme, colors, checkColors: hostColors, sleep, muted });
   if (!state.player) throw fault(state.stopped.code, state.stopped.message, { address: state.stopped.address });
   return addPlace(state);
 }
 // The checked mount (mount-checked.mjs with src/load-asset.mjs), loaded only when a file is placed without integrity.
 // It carries the schema checker but no kit or add-on code, which a HyperSVG cannot use (2.13).
 // The one-file player gives both parts at once (asset-bundle-entry.mjs), so it makes no second request.
+// With a full player (fullPlayer, or FULL_PLAYER in the lean one-file player), the parts are that player's checkedParts.
 let bundled = null;
 export function bundleCheck(mountChecked, loadAsset) { bundled = [{ mountChecked }, { loadAsset }]; }
-async function checkedMount(schemas) {
-  const [{ mountChecked }, { loadAsset }] = bundled ?? await Promise.all([import('./mount-checked.mjs'), import('../src/load-asset.mjs')]);
+async function checkedMount(schemas, full = null) {
+  const [{ mountChecked }, { loadAsset }] = bundled ?? (full ? await partsOf(full) : await Promise.all([import('./mount-checked.mjs'), import('../src/load-asset.mjs')]));
   return (element, pkg, options) => mountChecked(element, pkg, { ...options, schemas }, loadAsset);
 }
 const needSchemas = (schemas) => { if (!schemas || typeof schemas !== 'object' || !schemas.kinds) throw new TypeError('mount needs options.schemas (spec/2.0/schemas): an asset is checked before it plays'); };
+
+// ---------- the full one-file player, for a file without integrity ----------
+// FULL_PLAYER (asset-schemas.mjs): null in the module tree and the full build; in the lean one-file build, the full
+// one-file player beside it, with the lean file's own query string, so a versioned lean file never pairs with an old
+// cached full player.
+const FULL_PLAYER = where.FULL_PLAYER ?? null;
+const fulls = new Map(); // address -> the promise of its module: one import per address per page
+// The full player to use for a file without integrity: the fullPlayer option, else FULL_PLAYER; null for the modules.
+// The one-file player that holds the checked mount itself needs none.
+function fullAddress(given) {
+  if (bundled) return null;
+  const a = given ?? FULL_PLAYER;
+  if (a == null) return null;
+  try { return new URL(a, globalThis.document?.baseURI).href; } catch { return String(a); } // a relative address is the page's
+}
+function fullPlayer(address) {
+  let got = fulls.get(address);
+  if (!got) {
+    got = import(address).then((m) => {
+      if (m.VERSION !== VERSION) throw fault('E-ASSET', `the full player ${address} is version ${m.VERSION ?? 'unknown'}, this player is ${VERSION}: serve the full one-file player of version ${VERSION}`);
+      if (!m.checkedParts?.mountChecked || !m.checkedParts?.loadAsset || typeof m.sharedSchemas !== 'function') throw fault('E-ASSET', `${address} is not the full one-file player of version ${VERSION} (it has no checked mount)`);
+      return m;
+    }, (e) => { throw fault('E-ASSET', `cannot load the full player ${address}: ${e?.message || e}`); });
+    fulls.set(address, got);
+  }
+  return got;
+}
+const partsOf = async (address) => { const m = await fullPlayer(address); return [{ mountChecked: m.checkedParts.mountChecked }, { loadAsset: m.checkedParts.loadAsset }]; };
 const textOf = (bytes) => new TextDecoder().decode(bytes);
 
 // Places a HyperSVG and plays it; resolves to the host API, as mount() returns it. asset: the file's text, or its exact
@@ -150,20 +188,25 @@ const textOf = (bytes) => new TextDecoder().decode(bytes);
 // options: integrity, schemas, partition, onError, test, timeLimits, and place()'s options above.
 // - With integrity: the file is hashed and compared; on a match the safety pass runs and the file plays with no schema
 //   check, so schemas are not needed, with or without Web Crypto.
-// - Without integrity: as mount(), with the full check; schemas are needed.
+// - Without integrity: as mount(), with the full check. Without schemas, the page's shared set (sharedSchemas()).
+//   With fullPlayer (or FULL_PLAYER), the full one-file player checks and plays the file; else the modules do.
 // - addonBase (added after 2.0.0-next.0, D55): where the modules of pinned capabilities are served; by default the
 //   package's engine/v2/web/addons/.
-export async function mountAsync(element, asset, inputs = {}, { integrity = null, schemas = null, addonBase = null, ...options } = {}) {
+export async function mountAsync(element, asset, inputs = {}, { integrity = null, schemas = null, addonBase = null, fullPlayer: given = null, ...options } = {}) {
   const bytes = typeof asset === 'string' ? new TextEncoder().encode(asset) : asset instanceof ArrayBuffer ? new Uint8Array(asset) : asset;
   if (!(bytes instanceof Uint8Array)) throw fault('E-ASSET', 'a HyperSVG is text or its bytes');
   const text = typeof asset === 'string' ? asset : textOf(bytes);
   if (integrity == null) {
-    const a = readAsset(text, MAX); needSchemas(schemas);
-    const [modules, s] = await Promise.all([addonsOf(a, addonBase), withCapabilities(schemas, assetNeeds(a.files)), soundFor(a)]);
-    return place(element, a, inputs, { ...options, modules }, await checkedMount(s));
+    const a = readAsset(text, MAX);
+    const full = fullAddress(given);
+    if (full) fullPlayer(full).catch(() => {}); // starts the one request now; the steps below share it
+    const set = schemas ?? await schemasFor(full);
+    needSchemas(set);
+    const [modules, s] = await Promise.all([addonsOf(a, addonBase), withCapabilities(set, assetNeeds(a.files)), full ? null : soundFor(a)]);
+    return place(element, a, inputs, { ...options, modules }, await checkedMount(s, full));
   }
   await verifyIntegrity(bytes, integrity);
-  const a = readAsset(text, MAX);
+  const a = readTrustedAsset(text, MAX);
   const [modules] = await Promise.all([addonsOf(a, addonBase), soundFor(a)]);
   return place(element, a, inputs, { ...options, modules }, leanMount);
 }
@@ -194,12 +237,20 @@ async function withCapabilities(schemas, ids, base = SCHEMAS_BASE) {
 // The checker's schemas for an asset (the core document kinds an asset may hold, the document envelope and the drawing
 // rules), fetched once from the package's own spec/2.0/schemas, or given by the host with useSchemas. A file placed
 // with integrity does not need them.
+// With a full player in use (FULL_PLAYER, or a mount's fullPlayer), the set is that player's (one request, the player
+// itself, which holds them), unless useSchemas gave one.
 let shared = SCHEMAS ? Promise.resolve(SCHEMAS) : null; // the one-file player holds them
 const KINDS = ['experience', 'scene', 'component', 'shell'];
 export function useSchemas(schemas) { shared = Promise.resolve(schemas); }
+const keep = (p) => { shared = p; p.catch(() => { if (shared === p) shared = null; }); return p; }; // a failure is not kept
+function schemasFor(full) {
+  if (shared) return shared;
+  return full ? keep(fullPlayer(full).then(m => m.sharedSchemas())) : sharedSchemas();
+}
 export function sharedSchemas(base = SCHEMAS_BASE) {
+  if (!shared && base === SCHEMAS_BASE && fullAddress(null)) return schemasFor(fullAddress(null));
   const get = (file) => fetch(new URL(file, base)).then((r) => { if (!r.ok) throw fault('E-ASSET', `cannot load the schema ${file} (${r.status})`); return r.json(); });
-  return (shared ??= Promise.all([...KINDS.map(k => get(`${k}.schema.json`)), get('document.schema.json'), get('drawing.rules.json')])
+  return shared ?? keep(Promise.all([...KINDS.map(k => get(`${k}.schema.json`)), get('document.schema.json'), get('drawing.rules.json')])
     .then((all) => ({ kinds: Object.fromEntries(KINDS.map((k, i) => [k, all[i]])), document: all[KINDS.length], drawing: all[KINDS.length + 1], capabilities: {}, addons: {} })));
 }
 
@@ -280,23 +331,25 @@ export class HyperSvgAsset extends Base {
     this.ready = (async () => {
       const src = this.getAttribute('src');
       if (!src) throw fault('E-ASSET', '<hypersvg-asset> needs src, the address of a HyperSVG');
-      let text; let mountPackage; let asset;
+      let text; let mountPackage; let asset; let viaFull = false;
       const addonBase = this.getAttribute('addon-base');
       if (integrity === null) {
         let schemas;
-        [text, schemas] = await Promise.all([load(src).then(r => r.text()), sharedSchemas()]);
+        const full = fullAddress(null);
+        [text, schemas] = await Promise.all([load(src).then(r => r.text()), schemasFor(full)]);
         if (run !== this._run) return null;
         asset = readAsset(text, MAX);
-        mountPackage = await checkedMount(await withCapabilities(schemas, assetNeeds(asset.files)));
+        mountPackage = await checkedMount(await withCapabilities(schemas, assetNeeds(asset.files)), full);
+        viaFull = !!full;
       } else {
         bytes = new Uint8Array(await (await load(src)).arrayBuffer());
         await verifyIntegrity(bytes, integrity);
         matched = true;
         text = textOf(bytes);
-        asset = readAsset(text, MAX);
+        asset = readTrustedAsset(text, MAX);
         mountPackage = leanMount;
       }
-      const [modules] = await Promise.all([addonsOf(asset, addonBase), soundFor(asset)]);
+      const [modules] = await Promise.all([addonsOf(asset, addonBase), viaFull ? null : soundFor(asset)]);
       if (run !== this._run) return null;
       try { this._decls = JSON.parse(asset.files['experience.json'])?.inputs || {}; } catch { this._decls = {}; }
       // A box to play in: a block, and the shown drawing's proportions when the page gives it no height.
@@ -369,3 +422,4 @@ if (typeof customElements !== 'undefined') {
   if (!customElements.get('hypersvg-asset')) customElements.define('hypersvg-asset', HyperSvgAsset);
   else if (elementVersion() !== VERSION) console.warn(`hsvg: <hypersvg-asset> is already defined by player ${elementVersion()}; this copy (${VERSION}) is not used for it`);
 }
+export { logicPort } from './logic-port.mjs'; // internal, added after 2.0.0-next.1: the replay recorder's engine

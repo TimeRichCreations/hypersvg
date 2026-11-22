@@ -1,6 +1,6 @@
 {
   "name": "@hypersvg/core",
-  "version": "2.0.0-next.1",
+  "version": "2.0.0-next.2",
   "description": "Interactive pictures from an SVG drawing and JSON decisions: the player, the checker, the packer and one hypersvg command.",
   "type": "module",
   "license": "Apache-2.0",

@@ -5,7 +5,7 @@ import {constants} from 'node:fs';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {scan, safeName} from './scan.mjs';
-import {protectedPath,policy,lifted,decide} from './policy.mjs';
+import {protectedPath,policy,lifted,decide,OWN_FOLDER} from './policy.mjs';
 
 // An export's own records sit under release/, not at its root (the root is for the people who use it).
 export const POLICY_FILE='release/EXPORT-POLICY.txt', REPORT_FILE='release/EXPORT-REPORT.md';
@@ -16,9 +16,11 @@ export const POLICY_FILE='release/EXPORT-POLICY.txt', REPORT_FILE='release/EXPOR
 export const WORDS_FILE='release/public-words.json';
 // The public decision index: every decision number (D and a number) an exported file cites has an entry there.
 export const DECISION_INDEX='spec/2.0/decision-index.md';
-// The add-ons export carries this notice as its LICENSE until the add-ons' public release (the person's choice): no
-// licence is granted yet. The core and the lists carry the repository's LICENSE (Apache-2.0).
-export const ADDONS_LICENSE='release/addons-LICENSE.txt';
+// The private targets carry a notice as their LICENSE (the person's choice): no licence is granted yet. The add-ons
+// until their public release; the replay add-on and the PHP logic module are private. The core and the lists carry
+// the repository's LICENSE (Apache-2.0).
+export const PRIVATE_LICENSES={'hypersvg-addons':'release/addons-LICENSE.txt','hypersvg-replay':'release/replay-LICENSE.txt','hypersvg-wp-host':'release/wp-host-LICENSE.txt'};
+export const ADDONS_LICENSE=PRIVATE_LICENSES['hypersvg-addons'];
 // The target an export was made for, read from its report (written last); null before the report exists.
 export async function exportTarget(root) {
   try { return /^# (\S+) local export/.exec((await readRegular(path.join(root, ...REPORT_FILE.split('/')))).toString())?.[1] ?? null; }
@@ -94,6 +96,8 @@ export async function verifyExport(root,{policyBytes,words,target}={}) {
   const declared = await readRegular(path.join(root, ...POLICY_FILE.split('/')));
   if (policyBytes && !declared.equals(policyBytes)) throw Error('Export policy changed during checks');
   const rules = policy(declared.toString()), exclusions = rules.filter(r => !r.include), lift = lifted(rules);
+  // The target: given, or read from the report. Only a private module's own target opens its folder (OWN_FOLDER).
+  const kind = target ?? await exportTarget(root), own = OWN_FOLDER[kind] ?? null;
   const fixtures = new Set();
   // The words check runs where the export carries its words file (the hypersvg base), or with the words given.
   let wordRules = words || null;
@@ -111,7 +115,7 @@ export async function verifyExport(root,{policyBytes,words,target}={}) {
       if (prefix === '' && item.name === '.git' && item.isDirectory() && !item.isSymbolicLink()) continue;
       const name = prefix + item.name, file = path.join(dir, item.name);
       if (!safePath(name)) throw Error('Export contains a nonportable path');
-      if (protectedPath(name, lift)) throw Error('Export contains a protected subtree');
+      if (protectedPath(name, lift, own)) throw Error('Export contains a protected subtree');
       if (seen.has(name.toLowerCase())) throw Error('Export contains a case-colliding path');
       seen.add(name.toLowerCase());
       scanBytes(name, '');
@@ -120,7 +124,7 @@ export async function verifyExport(root,{policyBytes,words,target}={}) {
       else {
         if (!item.isFile()) throw Error('Export contains a non-regular entry');
         if (!fixtures.has(name) && exclusions.some(r => r.test.test(name))) throw Error('Export contains an excluded policy path: ' + safeName(name));
-        if (!GENERATED.has(name) && !decide(name, rules).include) throw Error('Export contains a file the policy does not include: ' + safeName(name));
+        if (!GENERATED.has(name) && !decide(name, rules, own).include) throw Error('Export contains a file the policy does not include: ' + safeName(name));
         const bytes = await readRegular(file); scanBytes(name, bytes);
         if (wordRules) refused.push(...refusedWords(name, bytes, wordRules));
         if (decisions) unexplained.push(...unexplainedDecisions(name, bytes, decisions));
@@ -134,12 +138,12 @@ export async function verifyExport(root,{policyBytes,words,target}={}) {
   if (refused.length) throw Error(`Export contains ${refused.length} refused word${refused.length === 1 ? '' : 's'} (${WORDS_FILE}): ` +
     refused.slice(0, 40).map(f => `${safeName(f.file)}:${f.line} ${f.reason}`).join('; ') + (refused.length > 40 ? '; ...' : ''));
   // Every export carries a LICENSE. The core and the lists: the repository's LICENSE (Apache-2.0, the person's choice),
-  // unchanged. The add-ons: the private-preview notice (ADDONS_LICENSE); no licence is granted until their public release.
+  // unchanged. The private targets: their notice (PRIVATE_LICENSES); no licence is granted.
   if (!files.some(f => f.name === 'LICENSE')) throw Error('Missing licence: LICENSE');
   if (files.some(f => f.name === 'LICENSE-TODO.md')) throw Error('Invalid licence: LICENSE-TODO.md is replaced by LICENSE');
   const licence = (await readRegular(path.join(root, 'LICENSE'))).toString();
-  if ((target ?? await exportTarget(root)) === 'hypersvg-addons') {
-    if (!licence.includes('All rights reserved') || licence.includes('Apache License')) throw Error('Invalid licence: the add-ons LICENSE is the private-preview notice (' + ADDONS_LICENSE + ')');
+  if (PRIVATE_LICENSES[kind]) {
+    if (!licence.includes('All rights reserved') || licence.includes('Apache License')) throw Error('Invalid licence: the ' + kind + ' LICENSE is the private-preview notice (' + PRIVATE_LICENSES[kind] + ')');
   } else if (!licence.includes('Apache License') || !licence.includes('Version 2.0, January 2004')) throw Error('Invalid licence: LICENSE is not the Apache-2.0 text');
   // Every export keeps LF line endings on every system (a Windows clone would otherwise get CRLF and other bytes).
   if (!files.some(f => f.name === '.gitattributes')) throw Error('Missing .gitattributes (LF line endings)');

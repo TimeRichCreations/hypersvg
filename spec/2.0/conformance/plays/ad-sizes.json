@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "ad-sizes",
  "about": "The ad in its sizes: the player box changes, and the host sets the headline.",
  "package": {

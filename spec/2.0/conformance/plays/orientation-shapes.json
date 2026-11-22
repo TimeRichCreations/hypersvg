@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "orientation-shapes",
  "about": "One scene in three shapes: taps between size changes.",
  "package": {

@@ -1,0 +1,24 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "scene",
+  "id": "bell",
+  "drawing": "bell.svg",
+  "controls": {"switch": {"kind": "toggle", "target": "switch", "value": "lit", "event": "flip", "label": "Light"}},
+  "on": {
+    "ring": [{"id": "count-ring", "actions": [{"id": "add-ring", "set": "rings", "to": "min(999, rings + 1)"}, {"id": "say-rang", "emit": "rang"}]}]
+  },
+  "machines": [
+    {
+      "id": "chime",
+      "initial": "idle",
+      "states": {
+        "idle": {"on": {"ring": [{"id": "start-chime", "target": "ringing"}]}},
+        "ringing": {"after": [{"id": "chime-done", "delayMs": 1500, "target": "idle", "actions": [{"id": "say-rung", "emit": "rung"}]}]}
+      }
+    }
+  ],
+  "bindings": [
+    {"target": "bulb", "variant": "lit ? 'on' : 'off'"},
+    {"target": "count-words", "text": "Rung {{ rings }}"}
+  ]
+}

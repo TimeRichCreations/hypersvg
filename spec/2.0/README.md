@@ -1,7 +1,7 @@
 # HyperSVG 2.0: the core spec
 
 HyperSVG is interactive SVG: a drawing owns the shapes, and a few JSON documents say what changes, what a person can
-do and how scenes join. Format id `hsvg/2.0`. **Status (November 2026): `2.0.0-next.1`, published as `@hypersvg/core` under the npm tag `next`.** Files
+do and how scenes join. Format id `hsvg/2.0`. **Status (November 2026): `2.0.0-next.2`, published as `@hypersvg/core` under the npm tag `next`.** Files
 made for 2.0 keep working in every 2.x (1.12). This folder is the core spec: what every player runs. Add-ons and
 tools have their own pages (below).
 

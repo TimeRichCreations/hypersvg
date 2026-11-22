@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "infographic-sizes",
  "about": "A data-drawn chart: the start, a size change and time running.",
  "package": {

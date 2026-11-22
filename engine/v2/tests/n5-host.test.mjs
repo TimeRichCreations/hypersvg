@@ -199,7 +199,7 @@ export const tests = {
     const { bundleAsset, assetSchemas } = await import('../tools/bundle-asset.mjs');
     const { text, modules } = bundleAsset();
     ok(modules > 30, `${modules} modules`);
-    ok(/^export const \{ mount, mountAsync, useSchemas, sharedSchemas, HyperSvgAsset, VERSION, elementVersion, repack, readAsset \} = __hsvg;$/m.test(text), 'it exports what asset-web.mjs exports');
+    ok(/^export const \{ mount, mountAsync, useSchemas, sharedSchemas, HyperSvgAsset, VERSION, elementVersion, repack, readAsset, checkedParts, logicPort \} = __hsvg;$/m.test(text), 'it exports what asset-web.mjs exports, and checkedParts');
     ok(!/^\s*import\s/m.test(text), 'it imports nothing');
     ok(text.includes(JSON.stringify(assetSchemas().document).slice(0, 200)), 'it holds the schemas');
     for (const m of ['src/kit.mjs', 'src/addons.mjs', 'src/load.mjs', 'web/mount-web.mjs']) ok(!text.includes(`// engine/v2/${m}\n`), `it carries ${m}`);

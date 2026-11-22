@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "lamp-walk",
  "about": "A seeded random walk of up to 20 steps (seed 7).",
  "package": {

@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "harbour-walk-2",
  "about": "A seeded random walk of up to 40 steps (seed 1913).",
  "package": {

@@ -259,7 +259,15 @@ const __hsvgConfined = (function () {
     ownKeys: () => [], getPrototypeOf: () => null, setPrototypeOf: () => false, preventExtensions: () => false, isExtensible: () => true,
   });
 })();`;
-export function bundle(entryFile, extraFiles = [], { strip = true, confined = [], labels = {}, texts = {} } = {}) {
+// dynamic: {lazy: [files]} also bundles code a module loads on demand (the one-file players, tools/bundle-asset.mjs).
+// Each import call with a relative literal address is rewritten: a target in the build (reached by a static import, or listed in lazy,
+// which adds it with its imports) becomes Promise.resolve().then(() => req(n)), the build's own module instance;
+// any other target becomes a promise rejected with an Error whose code is E-ASSET. A computed import(x) stays as it is.
+// Without dynamic, nothing is rewritten and the output is what it was before the option existed.
+const DYNAMIC_IMPORT_RE = /(^|[^.\w$])import\s*\(\s*(['"])(\.\.?\/[^'"\n]+)\2\s*\)/g;
+const DYNAMIC_MARK = (k) => `__hsvgDynamic${k}__`;
+export function bundle(entryFile, extraFiles = [], { strip = true, confined = [], labels = {}, texts = {}, dynamic = null } = {}) {
+  const loads = []; // dynamic: [{file, spec, target}] in the order met; DYNAMIC_MARK(k) stands in the body for loads[k]
   const shut = new Set(confined.map(f => path.resolve(f)));
   const given = new Map(Object.entries(texts).map(([f, t]) => [path.resolve(f), t]));
   const mods = new Map();
@@ -327,6 +335,12 @@ export function bundle(entryFile, extraFiles = [], { strip = true, confined = []
       }
       return clause ? importLines(clause, `req(${dep.n})`) : `req(${dep.n});`;
     });
+    if (dynamic) {
+      src = src.replace(DYNAMIC_IMPORT_RE, (whole, lead, _q, spec) => {
+        loads.push({ rel, spec, target: path.resolve(path.dirname(file), spec) });
+        return lead + DYNAMIC_MARK(loads.length - 1);
+      });
+    }
     mod.body = src;
     stack.pop();
     mod.done = true;
@@ -334,6 +348,15 @@ export function bundle(entryFile, extraFiles = [], { strip = true, confined = []
   };
   const entry = load(entryFile);
   const extras = extraFiles.map(f => load(f).n);
+  if (dynamic) for (const f of dynamic.lazy || []) load(path.resolve(f));
+  const loaded = (k) => {
+    const { rel, spec, target } = loads[k];
+    const hit = mods.get(target);
+    if (hit) return `Promise.resolve().then(() => req(${hit.n}))`;
+    const message = `${posix(path.relative(repo, target))} (loaded on demand by ${rel}) is not part of this one-file build`;
+    return `Promise.reject(Object.assign(new Error(${JSON.stringify(message)}), { code: 'E-ASSET' }))`;
+  };
+  if (dynamic) for (const m of mods.values()) m.body = m.body.replace(/__hsvgDynamic(\d+)__/g, (w, k) => loaded(Number(k)));
   // The meter's check: moduleTick of src/modules.mjs, read when first called (no module of a page runs without it).
   const port = mods.get(MODULE_PORT)?.n;
   const tickLine = (r) => `const __hsvgTick = () => ${port === undefined ? 'true' : `${r}(${port}).moduleTick()`};`;

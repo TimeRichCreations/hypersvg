@@ -616,6 +616,22 @@ resolve a package name such as `@hypersvg/core/asset`. Use the module's own addr
   `colors` property reads the attribute as an object and sets it from one (`null` removes it). A change places the
   file again. A refused set is heard as `hsvg:error` with its warning code; the HyperSVG plays in its author's
   colours. If the HyperSVG has an input named `colors`, the attribute sets that input instead, as for `theme`.
+- **Experimental**, added in `2.0.0-next.2`: **sleep**. With the mount option `sleep: true`, a HyperSVG with nothing
+  scheduled and nothing moving asks the browser for no frames, and one off the screen draws nothing. Its engine time,
+  deadlines, rules, outputs, moves and diary are the same as without sleep: on waking (input, `set`, `emit`, any
+  host call, a deadline coming due, a size or visibility change, coming back on the screen) it first runs the time it
+  slept through, frame by frame as a page awake would have, then the input. `set` and `emit` on a sleeping or
+  off-screen HyperSVG apply at once and `read` gives the new value; only the drawing waits. Off the screen is not a
+  pause: the piece hears no `paused`. Without `sleep`, or with `sleep: false`, nothing changes. A host that
+  watches the engine's repaints sees fewer of them.
+- **Experimental**, added in `2.0.0-next.2`: **the host's mute**. The option `muted: true` of every mount starts the
+  HyperSVG silent, and `host.mute(on)` changes it while it plays: `true` silences every sound, music and spoken
+  recording at once, those already playing too; `false` lets them sound again. Sound plays only when neither the host
+  nor the person has muted it (6.10): the host's `mute(false)` never unmutes a person who muted the piece with its
+  own control. `mute` takes `true` or `false` (else `E-TYPE`); `mute()` is `mute(true)`. On a HyperSVG without
+  sound, a stopped one or a destroyed one it does nothing and does not throw, so a host may call it on every mount
+  without checking for sound. The host's mute is not a move: it changes no state, nothing in the fingerprint and
+  nothing in a diary.
 - **The latest change wins.** The host (an attribute, `mount`'s inputs, `set`) and a person (a drawn control whose
   `value` names the knob, 5.11) change one knob. Every change takes effect and is heard as `hsvg.changed` (10.6), so a
   host panel stays in step with the drawing.
@@ -651,13 +667,33 @@ const car = await mountAsync(element, svgBytes, { length: 1.4 }, { integrity: 's
   value, so a match skips the schema check there too (D58).
 - `mount()` stays as it is: synchronous, with the full check. `mountAsync(element, asset, inputs, options)` is its
   asynchronous twin: `asset` is the file's bytes or its text (hashed as UTF-8), and `options` adds `integrity`.
-  Without `integrity` it checks as `mount()` does and needs the schemas.
+  Without `integrity` it checks as `mount()` does; without `schemas` it takes the page's shared set (below).
 - `asset-lean.mjs` (the package's `./asset-lean`, D58) is the element and `mountAsync` without the checker. It loads the checker and the schemas only for
   a file placed without integrity. `asset-web.mjs` (the package's `./asset`) has all of it, with `mount()`.
 - A refused element keeps what it holds. A file that does not match shows nothing of itself: the host never approved
   it (D58). A file that matched but is refused later, with nothing held, shows as a still picture: an `<img>` with a
   `blob:` address, which runs no script and loads nothing. Markup from a refused file never enters the page.
 - `integrity` is the element's own attribute, as `src` is: it never sets an input, and a change places the file again.
+
+**A file without integrity, and the lean player.** Added in `2.0.0-next.2`. A file placed without integrity is
+checked in full before it plays. The lean player does not hold the checker. When the host gives `fullPlayer`, the
+address of the full one-file player, or when the lean one-file player is used (it names the full one-file player beside
+it, with its own query string), the lean player imports that player once per address per page and mounts the file
+with that player's checked mount. The full player's `VERSION` must equal the lean player's; otherwise the mount
+refuses with `E-ASSET` and names both versions. A full player that cannot be loaded is `E-ASSET` and names the
+address. Nothing of a refused file shows. Without a full player, the lean player loads the checker modules beside it,
+as before.
+
+- `mountAsync` without integrity and without `schemas` uses the page's shared set (`sharedSchemas()`). When a full
+  player is used, the shared set is the full player's, which it holds, so no schema file is fetched; `useSchemas`
+  still wins.
+- After a file matched its integrity, the player does not compute the members' digests again: the whole-file digest
+  has covered every byte. It still checks the record's shape, member names and paths. The safety pass runs on every
+  mount.
+- Every mount option reaches the mount unchanged, whichever path plays the file.
+- A page that records a play (9.6) can use the player it already loaded. The player exports the logic-only engine it
+  holds, so the recorder needs no engine and no schemas of its own. The recorder checks the file against the same
+  integrity value before it plays it.
 
 **A HyperSVG that pins a capability (D55).** Added after `2.0.0-next.0`. A HyperSVG may name `effects` or `physics` in
 `needs`, pinned by version and digest (2.13). `mountAsync` and the element load the module only when a placed HyperSVG
@@ -697,6 +733,14 @@ const party = await mountAsync(element, svgBytes, {}, { integrity: 'sha256-...',
 **Sound only when used.** Added after `2.0.0-next.0`. `mountAsync` and the element load the audio code only for a
 HyperSVG that declares a sound resource or a made sound, before it plays, so its first sound plays at the first press
 as before. The synchronous `mount()` keeps the audio code with it.
+
+**The one-file players.** Added in `2.0.0-next.2` for the lean one. `engine/v2/web/hypersvg-asset.js` (full) holds
+the whole player, its full check and the core schemas. `engine/v2/web/hypersvg-asset-lean.js` (lean) holds the player
+for a file placed with integrity and no schemas. Each is one ES module. Neither fetches a module of the engine: code
+the player loads on demand is inside the file (the lean file holds the audio code), or refused with `E-ASSET`. The
+first line of each names the engine version (`engine <VERSION>`). A host that serves the module player instead copies
+the files that `node engine/v2/tools/module-list.mjs --core engine/v2/web/asset-web.mjs` lists (engine/v2/README.md
+lists them).
 
 **The safety pass.** It runs before every asset plays, with or without integrity, and needs no schemas. On the full
 path it runs before the schema check, so a file that both refuse reports the safety pass's code. It is a part
@@ -828,22 +872,29 @@ name this section does not list follows the rule: new since `2.0.0-next.0` means
 
 | Entry | Stable | Experimental | Internal |
 |---|---|---|---|
-| `./asset` | `mount`, `mountAsync`, `HyperSvgAsset` (the `<hypersvg-asset>` element), `useSchemas`, `sharedSchemas`, `readAsset`, `VERSION`, `elementVersion` | `repack` | — |
-| `./asset-lean` | `mountAsync`, `HyperSvgAsset`, `useSchemas`, `sharedSchemas`, `VERSION`, `elementVersion` | — | `place`, `leanLoad`, `bundleCheck` |
+| `./asset` | `mount`, `mountAsync`, `HyperSvgAsset` (the `<hypersvg-asset>` element), `useSchemas`, `sharedSchemas`, `readAsset`, `VERSION`, `elementVersion` | `repack` | `logicPort` |
+| `./asset-lean` | `mountAsync`, `HyperSvgAsset`, `useSchemas`, `sharedSchemas`, `VERSION`, `elementVersion` | — | `place`, `leanLoad`, `bundleCheck`, `logicPort` |
 | `./mount` | `mount`, `VERSION` | `aiPort`, `pagePort`, `modulePort` (the host ports, 10.7) | — |
-| `./logic` (D60) | `logic`, `fingerprint`, `fingerprintOf`, `stateDocument`, `canonicalJson` | — | the `player` member of `logic()`'s result |
+| `./logic` (D60) | `logic`, `fingerprint`, `fingerprintOf`, `stateDocument`, `canonicalJson` | `readAsset`, `VERSION` | the `player` member of `logic()`'s result |
 | `./frame-host` | `connectFrame`, `frameToken` | — | — |
 | `./schemas`, `./schemas/*` | `loadSchemas`; the schema files under `core/` | the schema files under `capabilities/` and `addons/` | — |
 | `./pack` (Node) | `pack`, `packAsset`, `PackError` | — | everything else (`bundle`, `engineSizes`, `bakePlans`, `flattenKit`, …) |
 | `./player` | `VERSION` | `play` | `boot`, `useAudio`, `chooseFrame`, `learnFits`, `reducedUnder`, `linkWithoutHostLine` |
-| The one-file player `engine/v2/web/hypersvg-asset.js` | — | the file and its exports (those of `./asset`) | — |
+| The one-file player `engine/v2/web/hypersvg-asset.js` | — | the file and its exports (those of `./asset`) | `checkedParts`, `logicPort` |
+| The lean one-file player `engine/v2/web/hypersvg-asset-lean.js` | — | the file and its exports `mountAsync`, `HyperSvgAsset`, `useSchemas`, `sharedSchemas`, `VERSION`, `elementVersion` | `logicPort` |
+
+`logicPort` (internal) is the logic-only engine of a page player: a frozen object with `VERSION`, `logic`,
+`canonicalJson`, `stateDocument`, `fingerprint`, `fingerprintOf`, `readAsset` and `loadTrusted(files)`. It lets an
+add-on that records a play use the engine the page already loaded. `loadTrusted` reads a package's text members as
+the lean mount reads a file that matched its integrity: no schema check. Code that uses it must check the file's
+integrity itself first.
 
 **Options.**
 
 | Where | Stable | Experimental | Internal |
 |---|---|---|---|
-| `mount()` of a package (10.6) | `schemas`, `host`, `options`, `partition`, `onError`, `timeLimits`, `faultBox`, `nonce`, `clock`, `onMove` | `theme` (D66), `hostWords`, `colors` (D65), `modules`, `capabilities`, `widgets` (a 2.1 draft) | `test` |
-| HyperSVG mounts (`mount`, `mountAsync`, 10.14) | `schemas`, `partition`, `onError`, `timeLimits`, `integrity`, `faultBox`, `nonce`, `clock`, `onMove` | `theme`, `options`, `hostWords`, `addonBase`, `colors` (D65) | `test`, `modules` |
+| `mount()` of a package (10.6) | `schemas`, `host`, `options`, `partition`, `onError`, `timeLimits`, `faultBox`, `nonce`, `clock`, `onMove` | `theme` (D66), `hostWords`, `colors` (D65), `modules`, `capabilities`, `widgets` (a 2.1 draft), `sleep`, `muted` | `test` |
+| HyperSVG mounts (`mount`, `mountAsync`, 10.14) | `schemas`, `partition`, `onError`, `timeLimits`, `integrity`, `faultBox`, `nonce`, `clock`, `onMove` | `theme`, `options`, `hostWords`, `addonBase`, `colors` (D65), `fullPlayer`, `sleep`, `muted` | `test`, `modules` |
 | `logic()` (D60) | `schemas`, `clock`, `epochMs`, `onMove`, `host`, `options`, `storage`, `onError` | `capabilities`, `modules` | — |
 | `connectFrame()` | `channel`, `timeout`, `probe` | — | — |
 | `pack()` | — | `host`, `allow`, `kits`, `test`, `acceptFindings` | `sizes`, `date` |
@@ -852,7 +903,7 @@ name this section does not list follows the rule: new since `2.0.0-next.0` means
 
 | Stable | Experimental | Internal |
 |---|---|---|
-| `on`, `read`, `set`, `emit` (a promise, D59), `picture`, `timeLimits`, `pause`, `resume`, `paused`, `scene`, `restart`, `clearStorage`, `setPartition`, `destroy`; on HyperSVG mounts `inputs()` and `outputs()` | `place(name)`, `seat()` (the `seats` add-on), `ladder()` (the `ladder` add-on) | `internal` (test mode) |
+| `on`, `read`, `set`, `emit` (a promise, D59), `picture`, `timeLimits`, `pause`, `resume`, `paused`, `scene`, `restart`, `clearStorage`, `setPartition`, `destroy`; on HyperSVG mounts `inputs()` and `outputs()` | `place(name)`, `seat()` (the `seats` add-on), `ladder()` (the `ladder` add-on), `mute(on)` (the host's mute, 10.14) | `internal` (test mode) |
 
 The frame link (`connectFrame`, A10.4) carries these calls as stable: `set`, `emit`, `read`, `pause`, `resume`,
 `restart`, `scene`, `clearStorage`, `setPartition`, `on`, `off`, `close` and `ready`.

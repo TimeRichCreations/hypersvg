@@ -226,9 +226,9 @@ export const tests = {
     const kit = { ...a.files, 'experience.json': a.files['experience.json'].replace('"language": "en",', '"language": "en", "kit": {"id": "k", "version": "1.0.0"},') };
     ok(!leanLoad(mapSource(kit)).experience, 'a kit pin is refused by the reader');
   },
-  async 'D56: mountAsync without integrity needs the schemas, as mount does'() {
+  async 'D56: mount without integrity needs the schemas; mountAsync takes the shared set (added after 2.0.0-next.1)'() {
     const svg = await lamp();
-    const e = await refusal(() => mountAsync(null, svg, {}, {}));
+    const e = await refusal(() => mountAsync(null, svg, {}, { schemas: { not: 'schemas' } }));
     ok(e instanceof TypeError && /schemas/.test(e.message), String(e));
     const m = await refusal(() => mount(null, svg, {}, {}));
     ok(m instanceof TypeError && /schemas/.test(m.message), String(m));

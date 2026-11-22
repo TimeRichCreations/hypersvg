@@ -11,15 +11,18 @@ export const GALLERY_IMAGE=/^examples\/gallery\/[a-z0-9]+(?:-[a-z0-9]+)*\.jpg$/;
 // Every other hard exclusion still holds inside them.
 export const LIFT=/^experiences\/2\.0\/[a-z0-9]+(?:-[a-z0-9]+)*\/\*\*$/;
 export function lifted(rules){return rules.filter(r=>r.include&&LIFT.test(r.pattern)).map(r=>r.pattern.slice(0,-3));}
-// Hard exclusions cannot be overridden by a target policy (except lift, above).
-export function protectedPath(name,lift=[]){
+// The two private modules leave only to their own repositories. The target names its folder here, never a policy, so
+// no policy file can open php/ or replay/, and each target opens only its own folder.
+export const OWN_FOLDER={'hypersvg-replay':'replay','hypersvg-wp-host':'php'};
+// Hard exclusions cannot be overridden by a target policy (except lift, above). own: OWN_FOLDER of the target, or null.
+export function protectedPath(name,lift=[],own=null){
  const parts=name.toLowerCase().split('/').map(p=>p.replace(/[ .]+$/g,''));
  // The 2.0 certify tool lives in a folder named proof; it is code, so only that folder is exempt, and never for images.
  const proofTool=/^engine\/v2\/tools\/proof(?:\/|$)/.test(name)&&!RASTER.test(name);
  if(parts.some(p=>['pro','.git','node_modules','private','evidence','sources'].includes(p)||(p==='proof'&&!proofTool)))return true;
  // Two top-level folders are built here and leave only to their own repositories: php/ and replay/. No policy and no
- // lift opens them.
- if(['php','replay'].includes(parts[0]))return true;
+ // lift opens them; only their own target does (OWN_FOLDER), and every other hard exclusion still holds inside.
+ if(['php','replay'].includes(parts[0])&&parts[0]!==own)return true;
  if(/^examples\//i.test(name)&&RASTER.test(name)&&!EXAMPLE_IMAGES.has(name)&&!GALLERY_IMAGE.test(name))return true;
  // A lifted folder, and the folders on the way to it, keep only the private-pack rule.
  if(lift.some(f=>name===f||name.startsWith(f+'/')||f.startsWith(name+'/')))return parts.some(p=>/^(?:private[-_]catalog|ad[-_]catalog|layout[-_]roles?|ad[-_]checkers?|ad[-_]iq)/.test(p));
@@ -28,8 +31,8 @@ export function protectedPath(name,lift=[]){
   /^docs\/(?:briefs|tasks|reports|reviews)(?:\/|$)/i.test(name) ||
   /(?:^|\/)(?:rio[^/]*|percy[^/]*|pelican[^/]*|lighthouse[^/]*)\.(?:svg|png|jpe?g|webp|avif|gif)$/i.test(name);
 }
-export function decide(name,rules){
- if(protectedPath(name,lifted(rules))||/^pieces\//i.test(name))return {include:false,reason:'protected subtree'};
+export function decide(name,rules,own=null){
+ if(protectedPath(name,lifted(rules),own)||/^pieces\//i.test(name))return {include:false,reason:'protected subtree'};
  const matched=rules.filter(r=>r.test.test(name)),exclude=matched.find(r=>!r.include);
  return exclude?{include:false,reason:exclude.pattern}:{include:matched.some(r=>r.include),reason:matched.some(r=>r.include)?'included':'not selected'};
 }

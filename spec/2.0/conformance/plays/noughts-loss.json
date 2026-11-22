@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "noughts-loss",
  "about": "Hard level: X plays badly and Bolt wins. A taken cell is refused by the game's guard. Then Again.",
  "package": {

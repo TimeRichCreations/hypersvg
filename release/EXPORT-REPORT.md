@@ -2,17 +2,17 @@
 
 Not published. Licence: Apache-2.0 (LICENSE).
 
-- Source commit: `d5362a41fa488a746201e556f155053df38427bc`. No Git history exported.
+- Source commit: `23300f96aa093b6607153085423e97c4d101df7f`. No Git history exported.
 - Policy: `release/hypersvg.files.txt`; SHA-256 `55deca458d9029fb25c2e0cde7fdb42c960e15daadc35b572698cb5b7fbe71bf`.
-- Selected committed files: 918; 8353439 bytes.
-- Excluded committed entries: 8809; 285896441 bytes.
-- Export payload before this report: 929 files; 8428299 bytes. This report is an additional generated file.
+- Selected committed files: 935; 8999083 bytes.
+- Excluded committed entries: 9681; 292320546 bytes.
+- Export payload before this report: 946 files; 9073943 bytes. This report is an additional generated file.
 - Names and bytes came from a temporary Git index and commit blobs. Dirty, staged, ignored and untracked worktree files are not inputs.
 - Secret/private-path and licence checks passed before and after target checks. Pattern scanning is not proof against every encoding.
 
 ## Checks
 
-- CHECK PASS: leak check, 929 files
+- CHECK PASS: leak check, 946 files
 - OMITTED: engine/v2/tests/w4u-upgrade.test.mjs (not exported): not exported: it tests the 0.1 upgrade tool (docs/spec-2.0-work), which stays out of the public repository.
 - OMITTED: engine/v2/tests/w5m-upgrade.test.mjs (not exported): not exported: it tests the 0.1 upgrade tool (docs/spec-2.0-work), which stays out of the public repository.
 - OMITTED: engine/v2/tests/x1-security.test.mjs (not exported): not exported: it plants a fake credential literal; the leak check refuses it. The authors' CI still runs it.
@@ -313,7 +313,7 @@ Not published. Licence: Apache-2.0 (LICENSE).
 - OMITTED: engine/v2/tests/y3-fixes.test.mjs :: item 6: openUrl's with carries only ids and numbers: the checker refuses words, the engine never sends them: needs an example the core release does not ship (release/core-examples.json does not list it): examples/2.0-round1. It runs in the authors' repository.
 - OMITTED: engine/v2/tests/y3-fixes.test.mjs :: item 6: hsvg new and hsvg add write the kit's digest into the pin, so a changed kit file is found: in another repository: needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base.
 - OMITTED: engine/v2/tests/y3-fixes.test.mjs :: item 7: START says how to build the kit from the source; the template guide's first edits check clean: in another repository: needs a skill, kit, template, library or showcase example (D41); runs in that repository, laid over the base.
-- CHECK PASS: engine/v2 fast tests (1201 passed, 282 omitted)
+- CHECK PASS: engine/v2 fast tests (1233 passed, 282 omitted)
 - CHECK PASS: release leak tests
 - CHECK PASS: hsvg check docs/one-page/example
 - CHECK PASS: hsvg pack docs/one-page/example
@@ -338,7 +338,7 @@ Not published. Licence: Apache-2.0 (LICENSE).
 
 The lean base (D41). Engine and spec bytes are unchanged, with one exception: `engine/v2/src/capabilities/all.mjs` is an empty module, since the core carries no built-in capability (D30). `README.md`, `GUIDE.md`, `AGENTS.md` and `EXTENDING.md` come from the sources `release/lean.json` names; the README must carry the Apache-2.0 licence line. `CONTRIBUTING.md` is `release/CONTRIBUTING.md`. `package.json` is `release/npm-package.json` (D44), checked. Tests that need left-out material are listed in `release/public-omissions.json`; the checks print each omission and do not claim those tests ran.
 
-Every target receives a README, its verbatim policy, this report and LICENSE: Apache-2.0 for the core and the lists, and for the add-ons a notice that no licence is granted until their public release (the person's choices); the core and the add-ons also a CI entry point. The policy excludes undecided art and provider fixtures; no secret is redacted into an exported file. Art rights, final links/wording and publication remain decisions for the person.
+Every target receives a README, its verbatim policy, this report and LICENSE: Apache-2.0 for the core and the lists, for the add-ons a notice that no licence is granted until their public release, and for the private modules a notice that no licence is granted (the person's choices); the core and the add-ons also a CI entry point. The policy excludes undecided art and provider fixtures; no secret is redacted into an exported file. Art rights, final links/wording and publication remain decisions for the person.
 
 ## Selected Git files
 
@@ -377,7 +377,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | docs/readme/lamp-off.svg | 497 | 234a99f5d5004d7fb63cbadc0062332880354d643bb3c1e4aa9ef2f85b94fdd3 |
 | docs/readme/lamp-on.svg | 497 | 8315c660614b212b4237800d832b1caf407c7efb37fde572b93f51d3bce05123 |
 | docs/readme/lamp-preview.svg | 1824 | 7584d1f851723d3892289b5bb7ede7fcfa25d991798a57f336cb6f5093727318 |
-| engine/v2/README.md | 36972 | 4cdd27d7f2e863278ecb905baeeadd1e62972c72fbe4168991feba6d24db1f2e |
+| engine/v2/README.md | 42140 | 0024921c751019d4bbb5b9c5d00c583625c82966efaa7b068df1ab9ac739e47c |
 | engine/v2/addons/README.md | 4292 | 5bfbb862aa870b832676b1b1ea4e67db0f3eab401ee22ea6d688aa5155b2907e |
 | engine/v2/addons/breathe/manifest.json | 1627 | 18416c0568057a95b9e78ffbce33f0f6a669594b2c524338c3535f9aa3158d51 |
 | engine/v2/addons/examples/addons/example.glow/index.mjs | 2005 | 5503be79d5fffe1e1efde0ffbc30be2e68e1845e202fd8717a40cd7ceb429471 |
@@ -489,7 +489,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/addon-door.mjs | 15363 | c9283ef3bff2b3182d94bb6ad94ea4472a7b9d2b49f859075cf6df7f55e209d9 |
 | engine/v2/src/addons.mjs | 30080 | 66a2f5d32d18d8e017a86ce1c63e3792498adf1c0827f40b2616ef16480f8973 |
 | engine/v2/src/asset-safety.mjs | 6234 | d6b6389842be3951a398f1fd1a26e97b5151d34fc2be38e2a3528f34202d6a1a |
-| engine/v2/src/asset.mjs | 6760 | aece7b113cb775001a341fe42655eb84734ed077866f3c22b1a4ce205224f03c |
+| engine/v2/src/asset.mjs | 7950 | bf1552e5f8ca772b00c8d79a6ccf7b47033086fff1edcc016c5f090045ad07ea |
 | engine/v2/src/binding-words.mjs | 3114 | feab1402e0a316f51bad975913fdc27ac271ce145e6ea92449a9d5af72630b85 |
 | engine/v2/src/capabilities.mjs | 29573 | dc160da0846c03a4777c20c2f144bf23e07440b957e19469e8c83d3e11d4657d |
 | engine/v2/src/capabilities/all.mjs | 203 | 41a697965c3fd3ccae0edbc2bdbd065d4199f83b94b71ff0d9b26bd28fc8a2e8 |
@@ -503,7 +503,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/host-colors.mjs | 6523 | 1a9f7d3dbcda9321f232203eb510265fb22f9a2dcf90ab2ec2cb106bb7c8bc26 |
 | engine/v2/src/host-profile.mjs | 13761 | 091577b0de500b79090f204fe18852f98a7d3144550bfb72fc474a2dfec000f8 |
 | engine/v2/src/host-words.mjs | 3146 | d9e9d966fba95db1cf46fd4e152cfdb344b0d0efaa3c1c554601e4e3b8113c3a |
-| engine/v2/src/host.mjs | 22621 | ccb30ac7b0ba3bb008c1c6b375116f0752762288992a2903acfa2464ee8a1636 |
+| engine/v2/src/host.mjs | 23345 | e7bbc051ead5a66e674523702b452d5c7f8746949d73742032f8d3c26adc4667 |
 | engine/v2/src/integrity.mjs | 2866 | 9cb458d50ead1576970eafdd67421cad3734f074d2cb17c051c912dacfc61f76 |
 | engine/v2/src/kit.mjs | 21657 | 08cfbcb10a91fb5a2ee6a892bd9b71f9525734350f9305a326c4f2651d256bab |
 | engine/v2/src/ladder.mjs | 7772 | 128bec1fa138d48c1813ecc532fc6ba3f2942c782f63f17afb97e5e8fa709785 |
@@ -513,7 +513,8 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/load-asset.mjs | 2028 | fbca528f08d1950414e8c359ad79f53224ced3fbc1db147677b1e2f9d07871f6 |
 | engine/v2/src/load-checks.mjs | 4270 | a8b5d7aaa3cb7710950869c99901ad0d872076e1e476107af7a3a46229aeb43b |
 | engine/v2/src/load.mjs | 12053 | 4d75af62215bbcc37c9b4f5438ae3899ec9120f1e99cefdba5cb4f133c02f02c |
-| engine/v2/src/logic.mjs | 10219 | d3e1d1377d0d9cba2a4826e94d4a0a2eddeabbe243e74549229cd73d0c911b93 |
+| engine/v2/src/logic-core.mjs | 7247 | a5c5ec29c4cb6b91b4a418e24782c2705837c5d6d918925085d5f522dac5dc45 |
+| engine/v2/src/logic.mjs | 5058 | e6461dd411eeeebdead211a4bd5c305f279cf3595ff0c538e9b3687f987e63f1 |
 | engine/v2/src/marks.mjs | 1581 | d8c2c2fcc8069049b5fd9c6498de7fc973362c4868c834d5afb051c9ae04ce9c |
 | engine/v2/src/members.mjs | 3840 | 34c2e80a10c54ad6b9af7d96a2e7f030be69ef8cb7f6e1823d97a1e830dceea0 |
 | engine/v2/src/mixer.mjs | 5499 | c529fcff7b5c3d7ddad323ea0d25225ff73683b22dc23d925995d8b9402637b6 |
@@ -526,11 +527,12 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/repack.mjs | 2694 | 59cec46e7534337bc288ecaa898db0a8ba3ec1de743cb8d75cab11e8c226ecbb |
 | engine/v2/src/route.mjs | 6536 | f285f6e808744fbb0eb397c5030e08e31bbe2213ca4c237a46ae3e4a758b461a |
 | engine/v2/src/runtime.mjs | 122145 | e83d8070b8808a60bc8eea5aed9763689aa75a3bf3f15ab026f81386793b0607 |
+| engine/v2/src/sleep.mjs | 1940 | 659af6707fb221cbc4067561258355e40d2bdc617e67cb0baceffe4e40a08841 |
 | engine/v2/src/storage.mjs | 6226 | e32447e262b969199c73a39aca397df1a797031a5a6c6cbe70a4c2ae9d7fd610 |
 | engine/v2/src/story.mjs | 18879 | 58d37f59b5b1484854ee40eca2e6b4735883fcedef8f9482e109ffd31ffc0fc5 |
 | engine/v2/src/tiers.mjs | 7982 | 5e9f34ea49953b6fde3570a930bfc68f901f4ec0941df5bc6c2d7018a4004cb2 |
 | engine/v2/src/transform.mjs | 1434 | e4139497aff460bfa948be8e47557ff49bf9ca6cddefc031c2ac352a3df085de |
-| engine/v2/src/version.mjs | 374 | aa14d9d07b5578ad5ef85c9d9f743973567e9f01f389f138c191b789386cdf54 |
+| engine/v2/src/version.mjs | 374 | adca7ba283644434b100272796f7b1df40eec80ce75443dcdb18f22e48432ef3 |
 | engine/v2/src/widgets-of.mjs | 1119 | e62c164e20fa9483c96429aa342e3d9c0e088f3799be0e27c82d11f49674cd2c |
 | engine/v2/src/words.mjs | 2399 | f7a42434684597109728c93c3c1616d258a3ec1cd6c2d712440a1cd11dbdaf3d |
 | engine/v2/tests/a1-check.test.mjs | 4198 | d67bda40b043894a33041dfcc002bd6f0de52f45cb294657e095fd19e6572c08 |
@@ -551,8 +553,8 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/ai-fixture/shell/frame.json | 581 | b88071a4d409093e011c95f6a1dc728312a13da775ab1202149cbbb44459e322 |
 | engine/v2/tests/ai-fixture/shell/frame.svg | 446 | 61c926fbd9dcd2b4337bb6a1e344c6bd6a53250f439b0cbc7f0827fabb1d191b |
 | engine/v2/tests/api1-fixes.test.mjs | 7382 | 9373a31dd6a47c4a9a0a1f0794e418613b3d99992aace0c345f5ae30d6b3f5fd |
-| engine/v2/tests/api1-stable.test.mjs | 18568 | 9564bef6fe93cb2de28d856c96484a9d6532be5e326d3a876f522ddcb52b36a1 |
-| engine/v2/tests/asset-integrity.test.mjs | 18826 | 27c4050fa298a20860391ee2303237fd0baa1028c4d8701811ff9bea382d611d |
+| engine/v2/tests/api1-stable.test.mjs | 18672 | 0cc723a106df1bb5e80bd7a460d379436d1333c69c5f9f25a433b4942aaa9c5e |
+| engine/v2/tests/asset-integrity.test.mjs | 18895 | f210246879c262bf1a3076876b5c9e849f009479ac57b28642e3a2d58191d0d7 |
 | engine/v2/tests/b1a-format.test.mjs | 11379 | 5e08d31afc749bb8bb525a14b92bd6bfefb770c2913170c591d2add5b19b10e6 |
 | engine/v2/tests/b1b-door.test.mjs | 23460 | 2a57ca89d0af231ed1ddcc847ddbac6af1e301d04e026cf7d56fd53b17c43112 |
 | engine/v2/tests/b1c-authoring.test.mjs | 23205 | cccb07e5d70bd821b42ee460ab0677fb3e0e24f971164884946c529e3a38017a |
@@ -591,6 +593,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/browser/frame-link-fixture/scenes/hello/hello.svg | 1038 | 3fe7ede2ebdf74070b052e7d53935e01c91c80bdac1b13b5df06d64edba6c59b |
 | engine/v2/tests/browser/frame-link-fixture/scenes/hello/scene.json | 995 | 66ede06bce937e06b0b9306354b533fff8e4c0d5168e4e6206b04367f55f8abb |
 | engine/v2/tests/browser/host-colors-browser.mjs | 14033 | 91d88c627a5f5c49a8f044fa77637b4dfc05c942162d44fdce84bd305237d823 |
+| engine/v2/tests/browser/host-mute-browser.mjs | 15182 | 9a62fa2dcf6ac5aa7698c75f9a02bda2e39f9dffc228872d91949a339f77d23a |
 | engine/v2/tests/browser/host-outputs-browser.mjs | 4373 | 4c9030ea32397abb3feb8720e8e46b8878c90d4e207f132b16b4be59769934e7 |
 | engine/v2/tests/browser/input-browser.mjs | 16432 | bad429be8d7875b0222a6b90758f84da3618b495ef548e4d91a1a0a65253b030 |
 | engine/v2/tests/browser/input-fixture/files.mjs | 4972 | 172468bde930cff8a6d4ec765f887f599f78d881f42904727603dba3fa989097 |
@@ -603,11 +606,17 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/browser/k2g-sound-browser.mjs | 5682 | daee260b6519c76a4a102e99271a5445ae4b03cf103259c092d91d11b644936d |
 | engine/v2/tests/browser/k2h-test-browser.mjs | 6033 | 90d26116a26c675e58e0d4fc326281256ea62afc9bded582d6121be32810ad79 |
 | engine/v2/tests/browser/layout-browser.mjs | 6097 | cf2a01dacc858a45026945529f7d7504d588cfaaf25dfe3e01695da27b1bcde5 |
+| engine/v2/tests/browser/lean-fallback-browser.mjs | 17324 | 2d571f498f3cfacf80e09f1b8fc0a2e56c979afa320461108bdfd7c403769ad6 |
 | engine/v2/tests/browser/motion-fixture/files.mjs | 5520 | 57912f9661c2378fca918e985d9a279486e827ee4a6254a06308e76cbc33257e |
 | engine/v2/tests/browser/mount-browser.mjs | 8159 | d4ce352a1536eb3f0eda11145a0b2eb4fc867fa57199fe7d2f7eaec405b1a82e |
 | engine/v2/tests/browser/n5-host-browser.mjs | 19383 | a9b6ed1dcd3d716bbe9c7ba4b4754a41b4d9597b0ebd542e617128ff6445b25d |
+| engine/v2/tests/browser/onefile-lean-browser.mjs | 8207 | 68019ffb3aa8355922a0b5a5f377b5fb6bd3697de2362d20df4bc7ae5dff062e |
 | engine/v2/tests/browser/r1-replay-browser.mjs | 7553 | 17d531cd89b74c145f6b3eef2b68690a33c3a6ab34231de5c80443750b895ba2 |
 | engine/v2/tests/browser/shell-fixture/files.mjs | 3809 | 2e0adbc1eded5ba6e2fe3db1ce3c38573c6e3e769f01cc37763406d0730f0d52 |
+| engine/v2/tests/browser/sleep-browser.mjs | 23915 | 192b9e6c4b4bebd057f0e7f7d305fc2ba44be29269e124f0064472ebcc6b9831 |
+| engine/v2/tests/browser/sleep-fixture/bell.json | 826 | 0f4b1a432d1f721bef3a05f4e2e3742f8d002043e26455e1e614ac47ba0be90f |
+| engine/v2/tests/browser/sleep-fixture/bell.svg | 841 | 6e08ebb41b5b073ef1448cadb5f3c612b0465689fef32ffc34dc435828689e45 |
+| engine/v2/tests/browser/sleep-fixture/experience.json | 686 | cdd57b09dee19c15ea18dd314001ef21ca72b06df3ee003ab1bd6f0904018b33 |
 | engine/v2/tests/browser/sound-on-demand-browser.mjs | 6827 | 58495c297a1057e203221dbcb8a013562303d820377e4f150a6cf8866b2a351c |
 | engine/v2/tests/browser/stage-browser.mjs | 9189 | ed1d0dd5a5067c4dcb3ada2a22cc7f48c83a89c70e74105b4b98134d2f9e7a57 |
 | engine/v2/tests/browser/stage-fixture/files.mjs | 7020 | 488454ef9f2a43dc762f960177bf1355f354e9a120ea129ff1366e8a9c8499a5 |
@@ -665,6 +674,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/host-fixture/experience.json | 621 | 38de742769534b3a2fb5c074ca23fe5128a7b08e4303e1076a2a4b3cda16e000 |
 | engine/v2/tests/host-fixture/scenes/one/one.svg | 340 | e14f766d447e4bdfab671b84a1d4787eb5806e7d6ad84d092c9df483384e337b |
 | engine/v2/tests/host-fixture/scenes/one/scene.json | 455 | 2332e4cab3d8a41cd599f94ec0b755407c6e74e01e3513589e7aa6ec36b733ba |
+| engine/v2/tests/host-mute.test.mjs | 6277 | 1802fa1311eb1ee751ee4d149382f2aca1cbf380d118bfa947859cd7fea438b0 |
 | engine/v2/tests/host-profile.test.mjs | 10673 | c6f0217239493bb468d00fc672576ab2c3ecb99e617246379d3cd893f811de2b |
 | engine/v2/tests/k1-dial.test.mjs | 17719 | af370e6e80fc87a5e33227a0221b8bbd30c7d85321b45f788112be3b2c5587b4 |
 | engine/v2/tests/k1-fixture/components/knob/component.json | 1378 | 2ed2662a88c89e96f6d70f244e268ef0697f8840d4c9f06a1b7e13a473a8b0b2 |
@@ -742,12 +752,15 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/lines-fixture/words/es.csv | 54 | b332ec4c91bf4c8a33709f4720a55948117576684376625817802fed8727252e |
 | engine/v2/tests/m1-addon-moves.test.mjs | 14374 | b62273744ae7355fe6089175a1c168726d73c028e45201d15e6e595fe651bf4b |
 | engine/v2/tests/math-note.test.mjs | 5050 | 73f2f2185d49aa6667809c6894c7039d3582bd31194b572e175d4d31a43142db |
+| engine/v2/tests/n15a-bundler.test.mjs | 8618 | 857d0b08af7e5d52b282612a212a51260ecca5987905ab04ebbcc372ae2e4b02 |
+| engine/v2/tests/n15c-logic-port.test.mjs | 5359 | 00e89b7d0b56810fdf8706dc1c429f27d5e52c3fe6e4f02b862a0c86baa96f72 |
+| engine/v2/tests/n2b-lean.test.mjs | 12305 | 80bc0cb3e1cdaf838d9d4b8171691c8bce017a4d7a1297f41f6089ea94ba6c45 |
 | engine/v2/tests/n4-conformance.test.mjs | 3354 | 24bf97855c507e885ce4859a6e9aadb45a09a89713d5648168c336c58c45b40f |
 | engine/v2/tests/n4-done-fixture/experience.json | 337 | ccd8c28451e038ef84c736f9e358ecabc1033d85a3bef5e904bfc93fefe278dc |
 | engine/v2/tests/n4-done-fixture/wave.json | 472 | f543032272ef8bd7c639967341cc5c061356f30ad2b313ebdab095abf843be07 |
 | engine/v2/tests/n4-done-fixture/wave.svg | 553 | 346238c63c5273f37a5f29e25cf60ad55a83dcfefeca3251a247fe64bc7bae32 |
 | engine/v2/tests/n4-notes.test.mjs | 4394 | 9f405301586bea6e70143061bfd9e34bfcde78f9ecdd4c7cbb33449f9d8a61c9 |
-| engine/v2/tests/n5-host.test.mjs | 14017 | 075737c6c0df4521f1d0efb9d268f4a51098db3fc285bfd21eaa425c4addbf40 |
+| engine/v2/tests/n5-host.test.mjs | 14060 | d82d5d1085d3f3538d11c2a1a51688bd91717fc24f29fd5a8c8673105e689e22 |
 | engine/v2/tests/p2-focus-ring.test.mjs | 3855 | 1c5a7628a3e26bfaaf2767495fd6e8af7d34a8e8304e9309e4f25966bddffa11 |
 | engine/v2/tests/pack-fixture/experience.json | 441 | cac91602095409245b6c8b7f5ea388a46579cecab631bf5bfcf78dba52d322c3 |
 | engine/v2/tests/pack-fixture/scenes/one/one.svg | 319 | 557148106ef1abc9255092a3e141a5a38e2740fe6fb6e6d969fffabdc0d351f8 |
@@ -776,6 +789,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/schema-words.test.mjs | 1507 | 80cb3289c10ceafa4f5e8f3193c5e814ca900c6595a5ef771a9ef1730378e2d9 |
 | engine/v2/tests/skill-refs.test.mjs | 756 | 2052565cd1f6716853518c06528d92f221c4c0c7e5bb685c3119613eed4e3ee6 |
 | engine/v2/tests/skill.test.mjs | 1485 | a2d3f4a8e1927bd12cb1bd16e42e68f0b7246b44f5337d489707b942c7b67cff |
+| engine/v2/tests/sleep.test.mjs | 5705 | adce982c858b3ccbd539735817948357b1c0f1b22ad0b80cb873f3b3c1d3a575 |
 | engine/v2/tests/sound-fixture/experience.json | 455 | 8be203d43ad8a9d11d283b7ef3934ab39bcdbfa2e339cd8b59cfe33011570abc |
 | engine/v2/tests/sound-fixture/scenes/chime/chime.svg | 445 | b5318c10bd05379fd97d1adbb16ca2f7fac34806ffe3892992e323b10e169f29 |
 | engine/v2/tests/sound-fixture/scenes/chime/scene.json | 309 | 1d29cc6d32cb6c44feeb71c59ad17ffa5dca32e9e3bd131cd1cfaa9e08a20bd3 |
@@ -851,7 +865,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/y3-fixes.test.mjs | 34516 | f56045dbf6906b3394d2f624e30ec992b3916fdbc81cadcfbf7b7a496a1c3674 |
 | engine/v2/tools/addon.mjs | 15454 | cb92ccdcf0db01eeb3e96f9c6f5bc5fba47b67e1c927606e0d2423630c104cc3 |
 | engine/v2/tools/addons.mjs | 17158 | 8794470112befb759f53b3549326a848e7cd0be90c0609323af60101e731f093 |
-| engine/v2/tools/bundle-asset.mjs | 4463 | 562dd0c3005e9ff6a79e2b4c9af6f479214135cf5765207c55370753ca9993b6 |
+| engine/v2/tools/bundle-asset.mjs | 6756 | d88cbbf1b3d110e7369d5608429b3945af9fc535ee28cf1dfadc2a24c87c6d4f |
 | engine/v2/tools/change.mjs | 5076 | 60f30d81aed58174fec85cc4470e09d446713cc1487f0d20a870bb6e73a812c2 |
 | engine/v2/tools/change/apply.mjs | 24559 | 537b7bd52fd73914dce27b37e3d071066f0c2eb5f409d24966b02c49c548c4a7 |
 | engine/v2/tools/change/folder.mjs | 4316 | 28f707f5d6544c1e1b9a76ff4bde12e0d5c7d1342ebf772eb13acd450318d42b |
@@ -871,7 +885,8 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tools/make-renames.mjs | 3546 | 164b313e3283c10b6c0e35140f3be0c548a0781faa5004603b92a867da3f841d |
 | engine/v2/tools/make-state.mjs | 4738 | 089cb3c8ffa3b6d22b961ddedd341404da2671b93b5fe33f8ef3d853c0b6ca34 |
 | engine/v2/tools/meter.mjs | 8724 | a6cf59b5d6d590a02fb046413ef37c50d7ac6588d4dcdc38d1286d4d8a210afe |
-| engine/v2/tools/pack.mjs | 84253 | a5ff23b9ee7a7758fb66861679e967b605b3a87036f86f66ca7c9556bc1d77df |
+| engine/v2/tools/module-list.mjs | 2845 | 656477ece1b99e789b0c56c71436b729cbeecf7fcaa963bf6af759fa0d50e01a |
+| engine/v2/tools/pack.mjs | 85963 | fce400d8b57ecd17cae588719ad6887c28a07ae082c788d7ff8e96d1f234435e |
 | engine/v2/tools/preview.mjs | 9743 | e59bc6d83f3b5794433e428b0b632dbe6e6a34d764a9ff787b0a4fe294467062 |
 | engine/v2/tools/previous-kit.mjs | 1388 | a97d7b896000218e6ee9dc50ec47516cb39f3f8293cd2a6fee8355c4ab0c9693 |
 | engine/v2/tools/proof/FORMAT.md | 3419 | 763aebbf599157137b28324ad6a783a5e95485a83bfd518f21b0fb8162b41c6f |
@@ -892,34 +907,36 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tools/test/page.mjs | 21983 | 5f60e9ee130e30243bf4f2a3ed96927e04d7c22b14614d739be8e201bbc069c8 |
 | engine/v2/tools/test/sweep.mjs | 4469 | 73d9f030d275822923dc5b0cb54861d4b40346313d08bc882fa2896ee43f1d6d |
 | engine/v2/tools/unpack.mjs | 2508 | 0c53118c2d7f07866525d6cec601e02ce5ee33de0edad626e58e5f860aa9d9a6 |
-| engine/v2/web/asset-bundle-entry.mjs | 701 | d27d1dd34e2a06ccaaa0bae9f9ceadc941926521202c9e33e40fdf1896fbd700 |
-| engine/v2/web/asset-lean.mjs | 27201 | 3dec6c5b00abc6ce982cda1bff77e03a5c7c3025acddac7144b8726e2adb5a65 |
-| engine/v2/web/asset-schemas.mjs | 849 | 9583d4d60fd716b5e9a27c1b74bab853182e40fd10e29796696ecee5206570e2 |
-| engine/v2/web/asset-web.mjs | 3486 | 2d25f0f92e7f2f1712dbace141bd1eb972d4e1eacb9934a4d2ac925b3710dc43 |
-| engine/v2/web/audio-web.mjs | 14839 | 776dd399d923c4de7cb3b6954870070c905764ccffb0ec7a30d4c8bfb3e8f4d2 |
+| engine/v2/web/asset-bundle-entry.mjs | 998 | 9acda55552f4b40463896e3e2ba726587f8742f438e97caf24b209328d2e8613 |
+| engine/v2/web/asset-lean.mjs | 31276 | 683e359dfd95b421e884ce20aabb8b42a8529a77b9ea9f4bbfb6d92e15eacaa1 |
+| engine/v2/web/asset-schemas.mjs | 1227 | 35aa00a04cf7349c24686e93360812629834b7445a5345052f122737b548f810 |
+| engine/v2/web/asset-web.mjs | 3600 | e7af6bca140a19d215780b6d859eae8eb075e5839809a72a82e95364d23b9b57 |
+| engine/v2/web/audio-web.mjs | 15879 | df3c9578ea3ca16afed9b1999612f6cc98ac32b1cfff5e847f23a6023108c789 |
 | engine/v2/web/export-web.mjs | 2413 | 519fe528d64dc4ea4d2d3c4b1bf93fe4974d27737e44332b8edcccc72fee26c7 |
 | engine/v2/web/frame-host.mjs | 6874 | fdb49f72f10a14bc84cfac2c5d35252cccf93fce3a42de3926547cd9b037fffd |
 | engine/v2/web/frame-link.mjs | 5482 | 6d7d70f5faef17d7fadf1cf777c32a90b1e919af851ef176b5b359af2b27c767 |
-| engine/v2/web/hypersvg-asset.js | 842978 | 2d76cc3f7dcff132bff48be92e553797e4bf8a0f82b5228106f20c7b3492c26f |
+| engine/v2/web/hypersvg-asset-lean.js | 488312 | cead1ee12a4864ba0d03b0baa9c460e699193ca96282cfc08c76edfc54d4ddf7 |
+| engine/v2/web/hypersvg-asset.js | 857704 | 1ca33383d2a8b3ec921185186f9ecbedaf41109e95a4a7463e07a8cc1764a612 |
 | engine/v2/web/index.html | 1091 | 309cb4d7d7a61c2a79d206929b4c6a7cbf131d34e495eedbc33e45bb66e4c34e |
-| engine/v2/web/input-web.mjs | 66911 | d6d1dd6ed7d2a2b9b78a690f755e59bec06a2813aee63619a2c422283ae77af1 |
-| engine/v2/web/mount-checked.mjs | 3700 | cf41878155f5dc44f822cd5d71089e67fd799b0f017c58b469e3c73fe37f8b72 |
+| engine/v2/web/input-web.mjs | 67439 | 242dfb22b1aa9cfa82fe352c0cbf03305ff7076209c83817325a07494aace7c3 |
+| engine/v2/web/logic-port.mjs | 2926 | 399dfbd1fb1d9df43d798c96f044cb48903d508f508fff7248a5b778f95feef9 |
+| engine/v2/web/mount-checked.mjs | 3812 | 4ab5918620f2f3d7c962663483de724b85796e90cdf98e0af1fb41a15eaaaa0d |
 | engine/v2/web/mount-web.mjs | 3781 | 4e22b42d04917d24e97a0d4dbe1560bed8af6bf2b24535331e70e01ae43c232a |
 | engine/v2/web/on-demand-web.mjs | 4001 | 8dba285103f4a4e2207aa892d903b478b388e8bfd13448b8be752d88de95e87f |
 | engine/v2/web/packed-entry.mjs | 2290 | 867106ceb271fa5cb723088f362d7cc13e209180db163b63e4b7581bb0e20395 |
 | engine/v2/web/place-web.mjs | 1739 | 4f7fc57a62582a6b45bb3277d4e14d1e240d7a3e9068568700aea433bae47aad |
-| engine/v2/web/player-web.mjs | 49626 | 7fc0a5c576a9cfb770d10e537aaa3bcf079c2489c99d24c66ac1e0aab74da10c |
+| engine/v2/web/player-web.mjs | 53578 | 1e102f572dc9c4704d3d4bb6289349d7fd208d9c84022c6fbee6b03f0625468b |
 | llms.txt | 813 | 8e33d3a171b9757706389c2ceb903c05641a911091bffa086973c42ea3eae67d |
 | release/addons-tests.json | 36077 | 1130e619538e9d491782538dd68ff7eeddd3dbb624a91968df775ee2b132091c |
 | release/browser-smoke.mjs | 12713 | 8f38a0fdb690881af18f457d2281289dadcb5fc009e926f2a2b315f250cdf367 |
 | release/checks.mjs | 10259 | b21e70ec6e3f2dfa98e25289f49e83bc41943131ae2719c640b65ed2612449bc |
 | release/leak.test.mjs | 12594 | 765bcf712a483a50fc9e5dd8c685d6cf84c2cc65e43bbe2391b6593d5dc047ac |
 | release/lean-tests.json | 7550 | 422c40da1c8400a078ab9b166db2bf469762f9e0cf38bbae6dad04b1aaef54e2 |
-| release/policy.mjs | 3811 | e0f075a680131a9c0d79a5a47de3f202d242e5aac621f78d6ea25fa07a3c286f |
+| release/policy.mjs | 4265 | ebb1536c2477cff8b56452c61a987f6953d99efbdbafa81934acb660878adf7f |
 | release/public-omissions.json | 2741 | f1e23683c3b4be79241d59bd692bdd605d8950581637370ff7992384b38388aa |
 | release/public-words.json | 2812 | c1912caa7195c0005d93fe7ff8885fe068abe95b74cea535474913691837b02f |
 | release/scan.mjs | 2770 | b75cfe8171f678705fd56b1cc9e4b37ffd25ab2edc44b1b27267d46d5368b303 |
-| release/verify.mjs | 11280 | da75731a53a61d463b677a505091743329fd88251bf32b5196733e48a58bcb9a |
+| release/verify.mjs | 11691 | 442578d89f4f29e71e5659fe54c67f63327b65243dcc923c27af61fb40c9074b |
 | skill/2.0/examples/kinds/infographic/components/bar/bar.svg | 2074 | 377bcbff5ec81430beaacd9577b5c93698e7d415355b02319c2bb0e08b2b6c08 |
 | skill/2.0/examples/kinds/infographic/components/bar/component.json | 548 | c2a35d680b897b29858c0205f44493baf621e92203cb7aa7ceaabbc2282714de |
 | skill/2.0/examples/kinds/infographic/data/fruit.json | 204 | 30cef2cda1b1a57f48d5bb7919e8a656a155f576cff7e8ac7e4b140c5c96af70 |
@@ -933,7 +950,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | skill/2.0/examples/recipes/orientation/scenes/harbour/scene.json | 972 | 6c493be685f9867543b4c83b809d1847ff43a94bd9a7efa5801a84c2a418fbc6 |
 | skill/2.0/examples/recipes/orientation/shell/frame.json | 1723 | f2ae61f2e807acc7353eb19c926f5e687b0a8b123ca9215df01922f699bd6320 |
 | skill/2.0/examples/recipes/orientation/shell/frame.svg | 2286 | 00453eca3babe48ca3417736a33cdaf44c01dfbaf970d4413fe1ded3f838d667 |
-| skills/hypersvg/SKILL.md | 18892 | 3c337ef1f3a650c834f2b76c1aa6a96c28392dbcf15b03bc32be3a5bbf0ef95c |
+| skills/hypersvg/SKILL.md | 18892 | 1c3ae98cc7a3c171050409cbe6edd8b9e1c9400209820dc4151f15fb5f53bb38 |
 | spec/2.0/01-model.md | 16341 | 53a13b37a3d9f680205dde052bfbd74f0bafe565dbe5f34849ba732046a84902 |
 | spec/2.0/02-files-and-names.md | 38945 | 25acd200c4cec12fffb9b12014e7285ff2fbc4cc90e5093294e749f332c3592b |
 | spec/2.0/03-story.md | 32627 | 455b71cd7ae2709e22dda404ded6c1e6309fbd39ad4156bbbd5c9c3d000ee695 |
@@ -943,11 +960,11 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | spec/2.0/07-representations.md | 35158 | 9287cbf6ed1ef2fb407eaccbb8582d0dc49ca7989172161af0001e187fdbc5ef |
 | spec/2.0/08-rules.md | 1246 | d44f3eaf19cff262407789b85840cc577593d818eecdc5422d30504b0aaf13fa |
 | spec/2.0/09-engine.md | 24792 | 46bf32420039af58eb610a323007e638f5386e8ac64ce55a44e0683c37c3cf87 |
-| spec/2.0/10-hosts-and-delivery.md | 69976 | d2bed508d18e3f2817afa61b67dcd90050f3bafbc943c300dbf537479debcb36 |
+| spec/2.0/10-hosts-and-delivery.md | 74878 | f096f6e19d58f38dbff82ba86a55fad3171a81ef6b806a46609e87073a6a5f13 |
 | spec/2.0/11-vocabulary.md | 16978 | 3684f54c96d7ba907fd8cba86bf0210a8fdae549faf8ffb9a70afd09dceac996 |
 | spec/2.0/12-writing-an-addon.md | 54160 | 13b26aa318ef332ef75b48093a57942a4a093e37e76a2bf68e8f263195467789 |
 | spec/2.0/MODEL.md | 20551 | f8c440b218906ec97e7bc2d33492f92952818de4cfd8080feb7416aa16e116ed |
-| spec/2.0/README.md | 15766 | d06a5edf49bd9defcae022fadd162f645d1d9e1bc80b46654e53d4e0446a9f8e |
+| spec/2.0/README.md | 15766 | a7b2d1901e151ff775ef8d7434023a7f592d6fc1c1d7e2f3d6cc65ab617c40bb |
 | spec/2.0/addons/a01-effects.md | 266 | c3c2577e1ea892ae705db386d389159ad8138509b0f1877e732af566c5f4fbc7 |
 | spec/2.0/addons/a02-media.md | 262 | 4304e361dc133030a6857e0c2fce1b971f958d5f22898ada4a37d0f6c7b90268 |
 | spec/2.0/addons/a03-page.md | 278 | 3235a9c10409ffab2e12f0212587dd531fe3c418f8d51e1a4d42c719c2c9458d |
@@ -1010,29 +1027,29 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | spec/2.0/conformance/hypersvg/valid-component.svg | 2679 | c486528fd5474508c5bbd9e541e34d01f88ac148e8f1d0470d18e6eeb6c0572d |
 | spec/2.0/conformance/hypersvg/valid-one-scene.svg | 2065 | 79e4e8a41218d197b4a8a980e4b6095b9fb84c2bbb57f65e30f2636ce6b2972a |
 | spec/2.0/conformance/plays/README.md | 8284 | 14def3cfc5d67d92696dafcf346e29552ae5fcf880769eb8fddf11c1544689ea |
-| spec/2.0/conformance/plays/ad-sizes.json | 3627 | c255ab23f877bf6d8c90a28b3876c85cd09af23561ea878d368965d35043c7b0 |
-| spec/2.0/conformance/plays/addon-lamp-switch.json | 3882 | b0cd5e93f7bfff6136ba89028f7f618133565180a9b5a473e510edcc5abde235 |
-| spec/2.0/conformance/plays/addon-lamp-walk.json | 5538 | c7b3e91c4c28e4ebf5723288a15dd180e6fee8073c3a8a0718c151a09e12b03e |
-| spec/2.0/conformance/plays/doors-walk.json | 8009 | b285c6b5c4b0ecf06231ac1289d5fb3332281d9116b9cc47719f75ce19c15888 |
-| spec/2.0/conformance/plays/doors-wind.json | 4447 | c553070b445eca0f0756418c6f18966012a0379d98c54a8bc992bafe11fdfa53 |
-| spec/2.0/conformance/plays/harbour-ambient.json | 8323 | 88372b970d6346c44da8de4b2d3818ec3cec32dc6b16ab5c35c10233ce70b293 |
-| spec/2.0/conformance/plays/harbour-miss-and-restart.json | 11199 | cecd6c4d7504664889e5364b9970e438f8a018178c7e03574c430431ed0521c8 |
-| spec/2.0/conformance/plays/harbour-saved.json | 7025 | 7648d04927f9e27a388a0d4b0fe809a5f97e53b1429f76b0bdfe249587618087 |
-| spec/2.0/conformance/plays/harbour-walk-2.json | 13148 | e4f16dcd69d49dfdff5568d4f25596fb51b47c4657d469048f97dc9b8ae65070 |
-| spec/2.0/conformance/plays/harbour-walk.json | 13143 | 2c266c3de346d1640da5ca6ee2f59bd93a98428d1c8aae9f272e049ce45e268d |
-| spec/2.0/conformance/plays/harbour-win.json | 9013 | ec39699d09c3fb49cb7fa45fd595c7e98014a651931e470a9323db6d5d166829 |
-| spec/2.0/conformance/plays/infographic-sizes.json | 4727 | e9df728714143187d965433d7258d8a3a8a0b25133c8575cc88396139be8b324 |
-| spec/2.0/conformance/plays/lamp-host.json | 4632 | be1d25ad14837d9a4f740441a129a06d64a839ca9a6f193c73b08c5ca9921146 |
-| spec/2.0/conformance/plays/lamp-walk.json | 9163 | 96904cfea632dcb0c8385fa088db930823e55962f8e392df7dd68ae290baa490 |
-| spec/2.0/conformance/plays/list-to-the-end.json | 5148 | e004fd5bc3535d56988c9b5d6e2d437fa94909faea8ef5c1bc66e6cb419a45d9 |
-| spec/2.0/conformance/plays/list-walk.json | 4867 | 18ffcf0ea1f296f87c8ecebc1cf003c3ab8f4652bbfb4a785f0560c6293d680c |
-| spec/2.0/conformance/plays/noughts-loss.json | 6924 | 8df63d4b8028812cc970f10f5c13978ee70340b76fc90c068323306139a9935a |
-| spec/2.0/conformance/plays/noughts-walk.json | 14143 | 08b42e1604ef9f4876c5a2459c8ecff683ba42c6ca49c759a2b9774c63cd753a |
-| spec/2.0/conformance/plays/noughts-win.json | 6708 | 201d173e3c562ec0e9c087306f44526600281a86c602015ea19dcb67dbf3809b |
-| spec/2.0/conformance/plays/one-page-stars.json | 4486 | 028a6830205dd90394c73fd7033ac086d06cc8723af8c323a7d7b87387a19df4 |
-| spec/2.0/conformance/plays/one-page-walk.json | 6570 | 109e1a4daf26edb430d80be90f70200c0b517792f9733e5c8ee678af2fe908c4 |
-| spec/2.0/conformance/plays/orientation-shapes.json | 5039 | ae4323aaefbf1e10915f39a732e056211fdb5e6376f7a3c92091e240468998b9 |
-| spec/2.0/conformance/plays/orientation-walk.json | 6151 | e118db1ed1f3776a46153d78d3ea23885d1c5c3d7e4dffd77c0d9f0e13ed043f |
+| spec/2.0/conformance/plays/ad-sizes.json | 3627 | 98ef5dab6892915d5b6abbc4b861ac4118d917c7fc7e0df07723691e1bd98e14 |
+| spec/2.0/conformance/plays/addon-lamp-switch.json | 3882 | e8d243a4e1b7b64c8499c7e86ecec927028c3b3a0952927e20bc0ba01689d614 |
+| spec/2.0/conformance/plays/addon-lamp-walk.json | 5538 | 9e245340f31d6223475768f42e034e841150eb80b1e23772ee2bb4b2b61bb8d0 |
+| spec/2.0/conformance/plays/doors-walk.json | 8009 | f7f6158a1f09101f2b2fb80271c4d5e84a1e734123b1bc671ac62997c2316e7e |
+| spec/2.0/conformance/plays/doors-wind.json | 4447 | a7de0bfd098ec5318fcae367e492464a90895e9a0bf39eb78616f3e331a253fd |
+| spec/2.0/conformance/plays/harbour-ambient.json | 8323 | 555b3721075a082c009e717aff525a27cf23b0f5244048953d3a49f6146cf68e |
+| spec/2.0/conformance/plays/harbour-miss-and-restart.json | 11199 | 2c67aa9fcc57c0de92845c10ab992b6c7c3e8d65947f5bc0723db3958e2ac9cc |
+| spec/2.0/conformance/plays/harbour-saved.json | 7025 | 25763438ee1e8b8ccf8b98c3a16a99a42b0cefc02a2add17f8dea18ccdc67cc2 |
+| spec/2.0/conformance/plays/harbour-walk-2.json | 13148 | 2da9886eecf925757e9eea0bfa9440cbc033f4de45571c9c8e8134b3859cedcd |
+| spec/2.0/conformance/plays/harbour-walk.json | 13143 | 16718f992fe39156d3d9b1437a8d0a2bdc9088700903290c5c6f1436d0379fda |
+| spec/2.0/conformance/plays/harbour-win.json | 9013 | a9a3c95edf5fe5856474789180ae45692d68d3ed03d16606899f881f593232b0 |
+| spec/2.0/conformance/plays/infographic-sizes.json | 4727 | 009bb65ae412f77a996b8f8f2caac23a48d449f64733a56650b3ffe2729bbe51 |
+| spec/2.0/conformance/plays/lamp-host.json | 4632 | eeb5ab2bff98b08800474fa6eba5779a79238ba93c3d1552b43f038ff33ebd01 |
+| spec/2.0/conformance/plays/lamp-walk.json | 9163 | 7463ebdcfe4102de2f2263c58f5b97a5afb962668d7a220c2958953d2aa5a719 |
+| spec/2.0/conformance/plays/list-to-the-end.json | 5148 | 7d4d5c8ef017ffb5b73c2d3c7ed0c9071bcd6781ccd42839b5b4d3f1b2d10f0f |
+| spec/2.0/conformance/plays/list-walk.json | 4867 | 9048ea729b3ee6e80b5e62ebfd74b504b7c5c3714f66fe0b3e1009c855077cb6 |
+| spec/2.0/conformance/plays/noughts-loss.json | 6924 | 83f54fae51afb9a167dfb947b39cdb7a69392c047c95ce563630f40e29741313 |
+| spec/2.0/conformance/plays/noughts-walk.json | 14143 | 811297a2531041e36839d6c67f6d010a5f9a93b6fba4b1db0145fde80017caf1 |
+| spec/2.0/conformance/plays/noughts-win.json | 6708 | e77dbdc931a573fb53db769b62ffda8cddb05d35ee95d67484a00ad7c42278d7 |
+| spec/2.0/conformance/plays/one-page-stars.json | 4486 | 16cd3a0423314abec263f6754a7f0a9a0585c725d7104ce07e20e0bb52e56063 |
+| spec/2.0/conformance/plays/one-page-walk.json | 6570 | 8e2107d7513861ea810deef669cf768fd212c41154c5294e9591b1e05e9b08bb |
+| spec/2.0/conformance/plays/orientation-shapes.json | 5039 | 93047277929c93063c6a622f8d095463c5cabeffe60d03d11eac131a7388ebc9 |
+| spec/2.0/conformance/plays/orientation-walk.json | 6151 | 996ae292046ce3dc04ea0176a2cb7ef2d4f84ff6a10dc72a4fe392efe844b82a |
 | spec/2.0/conformance/state/README.md | 1477 | 484ee7190b24d22cf550b849e1aee79af1e02e085c21766d0c2b1b54eb168de2 |
 | spec/2.0/conformance/state/expected.json | 2077 | d5e8342cf8d4fa795588993105159bb0539e586b667bad8b7dbda79c4148ddb9 |
 | spec/2.0/conformance/state/harbour-first-input.json | 3413 | aebe3c6e48fe401ef860815e3fd12beefc6f9b99a0a24045ac73136f9c6a3b3f |
@@ -1275,7 +1292,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | EXTENDING.md | 7026 | becc6a2c976e1c6556cbe2f6f018f7606d87400aba95fef3c8cb3959f2a48f76 |
 | GUIDE.md | 29191 | 601e2b09e9719a57200e5e326487494cee868d45f6bc09ea142fa880b9bbcff6 |
 | LICENSE | 11357 | c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4 |
-| README.md | 5619 | 557cce1e426e43f29fc5ce80c907e7b87e2b64363bf5960f7eca4523eb500735 |
+| README.md | 5619 | a1c936a91ce04208aefa634c8a7de8ce529499ffef8e2a1e21f60df79c3fe5b4 |
 | bin/hypersvg.mjs | 9446 | 5c0d8616883bb44bf93df83b2c2b3116351d6685edcddec0ac01865d90c899f5 |
 | bin/starter/AGENTS.md | 1172 | 176d23e44cc627bc5d1d7ff39551113859cb3f56232650e771448c7b1da9355e |
 | docs/browser-embedding.md | 15556 | 3b1dc07a8178e67816410c6e47c2fc2e714e497b5ae190749e582f14cca04273 |
@@ -1309,7 +1326,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | docs/readme/lamp-off.svg | 497 | 234a99f5d5004d7fb63cbadc0062332880354d643bb3c1e4aa9ef2f85b94fdd3 |
 | docs/readme/lamp-on.svg | 497 | 8315c660614b212b4237800d832b1caf407c7efb37fde572b93f51d3bce05123 |
 | docs/readme/lamp-preview.svg | 1824 | 7584d1f851723d3892289b5bb7ede7fcfa25d991798a57f336cb6f5093727318 |
-| engine/v2/README.md | 36972 | 4cdd27d7f2e863278ecb905baeeadd1e62972c72fbe4168991feba6d24db1f2e |
+| engine/v2/README.md | 42140 | 0024921c751019d4bbb5b9c5d00c583625c82966efaa7b068df1ab9ac739e47c |
 | engine/v2/addons/README.md | 4292 | 5bfbb862aa870b832676b1b1ea4e67db0f3eab401ee22ea6d688aa5155b2907e |
 | engine/v2/addons/breathe/manifest.json | 1627 | 18416c0568057a95b9e78ffbce33f0f6a669594b2c524338c3535f9aa3158d51 |
 | engine/v2/addons/examples/addons/example.glow/index.mjs | 2005 | 5503be79d5fffe1e1efde0ffbc30be2e68e1845e202fd8717a40cd7ceb429471 |
@@ -1421,7 +1438,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/addon-door.mjs | 15363 | c9283ef3bff2b3182d94bb6ad94ea4472a7b9d2b49f859075cf6df7f55e209d9 |
 | engine/v2/src/addons.mjs | 30080 | 66a2f5d32d18d8e017a86ce1c63e3792498adf1c0827f40b2616ef16480f8973 |
 | engine/v2/src/asset-safety.mjs | 6234 | d6b6389842be3951a398f1fd1a26e97b5151d34fc2be38e2a3528f34202d6a1a |
-| engine/v2/src/asset.mjs | 6760 | aece7b113cb775001a341fe42655eb84734ed077866f3c22b1a4ce205224f03c |
+| engine/v2/src/asset.mjs | 7950 | bf1552e5f8ca772b00c8d79a6ccf7b47033086fff1edcc016c5f090045ad07ea |
 | engine/v2/src/binding-words.mjs | 3114 | feab1402e0a316f51bad975913fdc27ac271ce145e6ea92449a9d5af72630b85 |
 | engine/v2/src/capabilities/all.mjs | 203 | 41a697965c3fd3ccae0edbc2bdbd065d4199f83b94b71ff0d9b26bd28fc8a2e8 |
 | engine/v2/src/capabilities.mjs | 29573 | dc160da0846c03a4777c20c2f144bf23e07440b957e19469e8c83d3e11d4657d |
@@ -1435,7 +1452,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/host-colors.mjs | 6523 | 1a9f7d3dbcda9321f232203eb510265fb22f9a2dcf90ab2ec2cb106bb7c8bc26 |
 | engine/v2/src/host-profile.mjs | 13761 | 091577b0de500b79090f204fe18852f98a7d3144550bfb72fc474a2dfec000f8 |
 | engine/v2/src/host-words.mjs | 3146 | d9e9d966fba95db1cf46fd4e152cfdb344b0d0efaa3c1c554601e4e3b8113c3a |
-| engine/v2/src/host.mjs | 22621 | ccb30ac7b0ba3bb008c1c6b375116f0752762288992a2903acfa2464ee8a1636 |
+| engine/v2/src/host.mjs | 23345 | e7bbc051ead5a66e674523702b452d5c7f8746949d73742032f8d3c26adc4667 |
 | engine/v2/src/integrity.mjs | 2866 | 9cb458d50ead1576970eafdd67421cad3734f074d2cb17c051c912dacfc61f76 |
 | engine/v2/src/kit.mjs | 21657 | 08cfbcb10a91fb5a2ee6a892bd9b71f9525734350f9305a326c4f2651d256bab |
 | engine/v2/src/ladder.mjs | 7772 | 128bec1fa138d48c1813ecc532fc6ba3f2942c782f63f17afb97e5e8fa709785 |
@@ -1445,7 +1462,8 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/load-asset.mjs | 2028 | fbca528f08d1950414e8c359ad79f53224ced3fbc1db147677b1e2f9d07871f6 |
 | engine/v2/src/load-checks.mjs | 4270 | a8b5d7aaa3cb7710950869c99901ad0d872076e1e476107af7a3a46229aeb43b |
 | engine/v2/src/load.mjs | 12053 | 4d75af62215bbcc37c9b4f5438ae3899ec9120f1e99cefdba5cb4f133c02f02c |
-| engine/v2/src/logic.mjs | 10219 | d3e1d1377d0d9cba2a4826e94d4a0a2eddeabbe243e74549229cd73d0c911b93 |
+| engine/v2/src/logic-core.mjs | 7247 | a5c5ec29c4cb6b91b4a418e24782c2705837c5d6d918925085d5f522dac5dc45 |
+| engine/v2/src/logic.mjs | 5058 | e6461dd411eeeebdead211a4bd5c305f279cf3595ff0c538e9b3687f987e63f1 |
 | engine/v2/src/marks.mjs | 1581 | d8c2c2fcc8069049b5fd9c6498de7fc973362c4868c834d5afb051c9ae04ce9c |
 | engine/v2/src/members.mjs | 3840 | 34c2e80a10c54ad6b9af7d96a2e7f030be69ef8cb7f6e1823d97a1e830dceea0 |
 | engine/v2/src/mixer.mjs | 5499 | c529fcff7b5c3d7ddad323ea0d25225ff73683b22dc23d925995d8b9402637b6 |
@@ -1458,11 +1476,12 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/src/repack.mjs | 2694 | 59cec46e7534337bc288ecaa898db0a8ba3ec1de743cb8d75cab11e8c226ecbb |
 | engine/v2/src/route.mjs | 6536 | f285f6e808744fbb0eb397c5030e08e31bbe2213ca4c237a46ae3e4a758b461a |
 | engine/v2/src/runtime.mjs | 122145 | e83d8070b8808a60bc8eea5aed9763689aa75a3bf3f15ab026f81386793b0607 |
+| engine/v2/src/sleep.mjs | 1940 | 659af6707fb221cbc4067561258355e40d2bdc617e67cb0baceffe4e40a08841 |
 | engine/v2/src/storage.mjs | 6226 | e32447e262b969199c73a39aca397df1a797031a5a6c6cbe70a4c2ae9d7fd610 |
 | engine/v2/src/story.mjs | 18879 | 58d37f59b5b1484854ee40eca2e6b4735883fcedef8f9482e109ffd31ffc0fc5 |
 | engine/v2/src/tiers.mjs | 7982 | 5e9f34ea49953b6fde3570a930bfc68f901f4ec0941df5bc6c2d7018a4004cb2 |
 | engine/v2/src/transform.mjs | 1434 | e4139497aff460bfa948be8e47557ff49bf9ca6cddefc031c2ac352a3df085de |
-| engine/v2/src/version.mjs | 374 | aa14d9d07b5578ad5ef85c9d9f743973567e9f01f389f138c191b789386cdf54 |
+| engine/v2/src/version.mjs | 374 | adca7ba283644434b100272796f7b1df40eec80ce75443dcdb18f22e48432ef3 |
 | engine/v2/src/widgets-of.mjs | 1119 | e62c164e20fa9483c96429aa342e3d9c0e088f3799be0e27c82d11f49674cd2c |
 | engine/v2/src/words.mjs | 2399 | f7a42434684597109728c93c3c1616d258a3ec1cd6c2d712440a1cd11dbdaf3d |
 | engine/v2/tests/a1-check.test.mjs | 4198 | d67bda40b043894a33041dfcc002bd6f0de52f45cb294657e095fd19e6572c08 |
@@ -1483,8 +1502,8 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/ai-fixture/shell/frame.json | 581 | b88071a4d409093e011c95f6a1dc728312a13da775ab1202149cbbb44459e322 |
 | engine/v2/tests/ai-fixture/shell/frame.svg | 446 | 61c926fbd9dcd2b4337bb6a1e344c6bd6a53250f439b0cbc7f0827fabb1d191b |
 | engine/v2/tests/api1-fixes.test.mjs | 7382 | 9373a31dd6a47c4a9a0a1f0794e418613b3d99992aace0c345f5ae30d6b3f5fd |
-| engine/v2/tests/api1-stable.test.mjs | 18568 | 9564bef6fe93cb2de28d856c96484a9d6532be5e326d3a876f522ddcb52b36a1 |
-| engine/v2/tests/asset-integrity.test.mjs | 18826 | 27c4050fa298a20860391ee2303237fd0baa1028c4d8701811ff9bea382d611d |
+| engine/v2/tests/api1-stable.test.mjs | 18672 | 0cc723a106df1bb5e80bd7a460d379436d1333c69c5f9f25a433b4942aaa9c5e |
+| engine/v2/tests/asset-integrity.test.mjs | 18895 | f210246879c262bf1a3076876b5c9e849f009479ac57b28642e3a2d58191d0d7 |
 | engine/v2/tests/b1a-format.test.mjs | 11379 | 5e08d31afc749bb8bb525a14b92bd6bfefb770c2913170c591d2add5b19b10e6 |
 | engine/v2/tests/b1b-door.test.mjs | 23460 | 2a57ca89d0af231ed1ddcc847ddbac6af1e301d04e026cf7d56fd53b17c43112 |
 | engine/v2/tests/b1c-authoring.test.mjs | 23205 | cccb07e5d70bd821b42ee460ab0677fb3e0e24f971164884946c529e3a38017a |
@@ -1523,6 +1542,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/browser/frame-link-fixture/scenes/hello/hello.svg | 1038 | 3fe7ede2ebdf74070b052e7d53935e01c91c80bdac1b13b5df06d64edba6c59b |
 | engine/v2/tests/browser/frame-link-fixture/scenes/hello/scene.json | 995 | 66ede06bce937e06b0b9306354b533fff8e4c0d5168e4e6206b04367f55f8abb |
 | engine/v2/tests/browser/host-colors-browser.mjs | 14033 | 91d88c627a5f5c49a8f044fa77637b4dfc05c942162d44fdce84bd305237d823 |
+| engine/v2/tests/browser/host-mute-browser.mjs | 15182 | 9a62fa2dcf6ac5aa7698c75f9a02bda2e39f9dffc228872d91949a339f77d23a |
 | engine/v2/tests/browser/host-outputs-browser.mjs | 4373 | 4c9030ea32397abb3feb8720e8e46b8878c90d4e207f132b16b4be59769934e7 |
 | engine/v2/tests/browser/input-browser.mjs | 16432 | bad429be8d7875b0222a6b90758f84da3618b495ef548e4d91a1a0a65253b030 |
 | engine/v2/tests/browser/input-fixture/files.mjs | 4972 | 172468bde930cff8a6d4ec765f887f599f78d881f42904727603dba3fa989097 |
@@ -1535,11 +1555,17 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/browser/k2g-sound-browser.mjs | 5682 | daee260b6519c76a4a102e99271a5445ae4b03cf103259c092d91d11b644936d |
 | engine/v2/tests/browser/k2h-test-browser.mjs | 6033 | 90d26116a26c675e58e0d4fc326281256ea62afc9bded582d6121be32810ad79 |
 | engine/v2/tests/browser/layout-browser.mjs | 6097 | cf2a01dacc858a45026945529f7d7504d588cfaaf25dfe3e01695da27b1bcde5 |
+| engine/v2/tests/browser/lean-fallback-browser.mjs | 17324 | 2d571f498f3cfacf80e09f1b8fc0a2e56c979afa320461108bdfd7c403769ad6 |
 | engine/v2/tests/browser/motion-fixture/files.mjs | 5520 | 57912f9661c2378fca918e985d9a279486e827ee4a6254a06308e76cbc33257e |
 | engine/v2/tests/browser/mount-browser.mjs | 8159 | d4ce352a1536eb3f0eda11145a0b2eb4fc867fa57199fe7d2f7eaec405b1a82e |
 | engine/v2/tests/browser/n5-host-browser.mjs | 19383 | a9b6ed1dcd3d716bbe9c7ba4b4754a41b4d9597b0ebd542e617128ff6445b25d |
+| engine/v2/tests/browser/onefile-lean-browser.mjs | 8207 | 68019ffb3aa8355922a0b5a5f377b5fb6bd3697de2362d20df4bc7ae5dff062e |
 | engine/v2/tests/browser/r1-replay-browser.mjs | 7553 | 17d531cd89b74c145f6b3eef2b68690a33c3a6ab34231de5c80443750b895ba2 |
 | engine/v2/tests/browser/shell-fixture/files.mjs | 3809 | 2e0adbc1eded5ba6e2fe3db1ce3c38573c6e3e769f01cc37763406d0730f0d52 |
+| engine/v2/tests/browser/sleep-browser.mjs | 23915 | 192b9e6c4b4bebd057f0e7f7d305fc2ba44be29269e124f0064472ebcc6b9831 |
+| engine/v2/tests/browser/sleep-fixture/bell.json | 826 | 0f4b1a432d1f721bef3a05f4e2e3742f8d002043e26455e1e614ac47ba0be90f |
+| engine/v2/tests/browser/sleep-fixture/bell.svg | 841 | 6e08ebb41b5b073ef1448cadb5f3c612b0465689fef32ffc34dc435828689e45 |
+| engine/v2/tests/browser/sleep-fixture/experience.json | 686 | cdd57b09dee19c15ea18dd314001ef21ca72b06df3ee003ab1bd6f0904018b33 |
 | engine/v2/tests/browser/sound-on-demand-browser.mjs | 6827 | 58495c297a1057e203221dbcb8a013562303d820377e4f150a6cf8866b2a351c |
 | engine/v2/tests/browser/stage-browser.mjs | 9189 | ed1d0dd5a5067c4dcb3ada2a22cc7f48c83a89c70e74105b4b98134d2f9e7a57 |
 | engine/v2/tests/browser/stage-fixture/files.mjs | 7020 | 488454ef9f2a43dc762f960177bf1355f354e9a120ea129ff1366e8a9c8499a5 |
@@ -1597,6 +1623,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/host-fixture/experience.json | 621 | 38de742769534b3a2fb5c074ca23fe5128a7b08e4303e1076a2a4b3cda16e000 |
 | engine/v2/tests/host-fixture/scenes/one/one.svg | 340 | e14f766d447e4bdfab671b84a1d4787eb5806e7d6ad84d092c9df483384e337b |
 | engine/v2/tests/host-fixture/scenes/one/scene.json | 455 | 2332e4cab3d8a41cd599f94ec0b755407c6e74e01e3513589e7aa6ec36b733ba |
+| engine/v2/tests/host-mute.test.mjs | 6277 | 1802fa1311eb1ee751ee4d149382f2aca1cbf380d118bfa947859cd7fea438b0 |
 | engine/v2/tests/host-profile.test.mjs | 10673 | c6f0217239493bb468d00fc672576ab2c3ecb99e617246379d3cd893f811de2b |
 | engine/v2/tests/k1-dial.test.mjs | 17719 | af370e6e80fc87a5e33227a0221b8bbd30c7d85321b45f788112be3b2c5587b4 |
 | engine/v2/tests/k1-fixture/components/knob/component.json | 1378 | 2ed2662a88c89e96f6d70f244e268ef0697f8840d4c9f06a1b7e13a473a8b0b2 |
@@ -1674,12 +1701,15 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/lines-fixture/words/es.csv | 54 | b332ec4c91bf4c8a33709f4720a55948117576684376625817802fed8727252e |
 | engine/v2/tests/m1-addon-moves.test.mjs | 14374 | b62273744ae7355fe6089175a1c168726d73c028e45201d15e6e595fe651bf4b |
 | engine/v2/tests/math-note.test.mjs | 5050 | 73f2f2185d49aa6667809c6894c7039d3582bd31194b572e175d4d31a43142db |
+| engine/v2/tests/n15a-bundler.test.mjs | 8618 | 857d0b08af7e5d52b282612a212a51260ecca5987905ab04ebbcc372ae2e4b02 |
+| engine/v2/tests/n15c-logic-port.test.mjs | 5359 | 00e89b7d0b56810fdf8706dc1c429f27d5e52c3fe6e4f02b862a0c86baa96f72 |
+| engine/v2/tests/n2b-lean.test.mjs | 12305 | 80bc0cb3e1cdaf838d9d4b8171691c8bce017a4d7a1297f41f6089ea94ba6c45 |
 | engine/v2/tests/n4-conformance.test.mjs | 3354 | 24bf97855c507e885ce4859a6e9aadb45a09a89713d5648168c336c58c45b40f |
 | engine/v2/tests/n4-done-fixture/experience.json | 337 | ccd8c28451e038ef84c736f9e358ecabc1033d85a3bef5e904bfc93fefe278dc |
 | engine/v2/tests/n4-done-fixture/wave.json | 472 | f543032272ef8bd7c639967341cc5c061356f30ad2b313ebdab095abf843be07 |
 | engine/v2/tests/n4-done-fixture/wave.svg | 553 | 346238c63c5273f37a5f29e25cf60ad55a83dcfefeca3251a247fe64bc7bae32 |
 | engine/v2/tests/n4-notes.test.mjs | 4394 | 9f405301586bea6e70143061bfd9e34bfcde78f9ecdd4c7cbb33449f9d8a61c9 |
-| engine/v2/tests/n5-host.test.mjs | 14017 | 075737c6c0df4521f1d0efb9d268f4a51098db3fc285bfd21eaa425c4addbf40 |
+| engine/v2/tests/n5-host.test.mjs | 14060 | d82d5d1085d3f3538d11c2a1a51688bd91717fc24f29fd5a8c8673105e689e22 |
 | engine/v2/tests/p2-focus-ring.test.mjs | 3855 | 1c5a7628a3e26bfaaf2767495fd6e8af7d34a8e8304e9309e4f25966bddffa11 |
 | engine/v2/tests/pack-fixture/experience.json | 441 | cac91602095409245b6c8b7f5ea388a46579cecab631bf5bfcf78dba52d322c3 |
 | engine/v2/tests/pack-fixture/scenes/one/one.svg | 319 | 557148106ef1abc9255092a3e141a5a38e2740fe6fb6e6d969fffabdc0d351f8 |
@@ -1708,6 +1738,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/schema-words.test.mjs | 1507 | 80cb3289c10ceafa4f5e8f3193c5e814ca900c6595a5ef771a9ef1730378e2d9 |
 | engine/v2/tests/skill-refs.test.mjs | 756 | 2052565cd1f6716853518c06528d92f221c4c0c7e5bb685c3119613eed4e3ee6 |
 | engine/v2/tests/skill.test.mjs | 1485 | a2d3f4a8e1927bd12cb1bd16e42e68f0b7246b44f5337d489707b942c7b67cff |
+| engine/v2/tests/sleep.test.mjs | 5705 | adce982c858b3ccbd539735817948357b1c0f1b22ad0b80cb873f3b3c1d3a575 |
 | engine/v2/tests/sound-fixture/experience.json | 455 | 8be203d43ad8a9d11d283b7ef3934ab39bcdbfa2e339cd8b59cfe33011570abc |
 | engine/v2/tests/sound-fixture/scenes/chime/chime.svg | 445 | b5318c10bd05379fd97d1adbb16ca2f7fac34806ffe3892992e323b10e169f29 |
 | engine/v2/tests/sound-fixture/scenes/chime/scene.json | 309 | 1d29cc6d32cb6c44feeb71c59ad17ffa5dca32e9e3bd131cd1cfaa9e08a20bd3 |
@@ -1783,7 +1814,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tests/y3-fixes.test.mjs | 34516 | f56045dbf6906b3394d2f624e30ec992b3916fdbc81cadcfbf7b7a496a1c3674 |
 | engine/v2/tools/addon.mjs | 15454 | cb92ccdcf0db01eeb3e96f9c6f5bc5fba47b67e1c927606e0d2423630c104cc3 |
 | engine/v2/tools/addons.mjs | 17158 | 8794470112befb759f53b3549326a848e7cd0be90c0609323af60101e731f093 |
-| engine/v2/tools/bundle-asset.mjs | 4463 | 562dd0c3005e9ff6a79e2b4c9af6f479214135cf5765207c55370753ca9993b6 |
+| engine/v2/tools/bundle-asset.mjs | 6756 | d88cbbf1b3d110e7369d5608429b3945af9fc535ee28cf1dfadc2a24c87c6d4f |
 | engine/v2/tools/change/apply.mjs | 24559 | 537b7bd52fd73914dce27b37e3d071066f0c2eb5f409d24966b02c49c548c4a7 |
 | engine/v2/tools/change/folder.mjs | 4316 | 28f707f5d6544c1e1b9a76ff4bde12e0d5c7d1342ebf772eb13acd450318d42b |
 | engine/v2/tools/change/make.mjs | 3764 | 4b6a5c91bd86d7e9d5c517eccc112e06c4e911a9c92b2aee90931249d6591f15 |
@@ -1803,7 +1834,8 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tools/make-renames.mjs | 3546 | 164b313e3283c10b6c0e35140f3be0c548a0781faa5004603b92a867da3f841d |
 | engine/v2/tools/make-state.mjs | 4738 | 089cb3c8ffa3b6d22b961ddedd341404da2671b93b5fe33f8ef3d853c0b6ca34 |
 | engine/v2/tools/meter.mjs | 8724 | a6cf59b5d6d590a02fb046413ef37c50d7ac6588d4dcdc38d1286d4d8a210afe |
-| engine/v2/tools/pack.mjs | 84253 | a5ff23b9ee7a7758fb66861679e967b605b3a87036f86f66ca7c9556bc1d77df |
+| engine/v2/tools/module-list.mjs | 2845 | 656477ece1b99e789b0c56c71436b729cbeecf7fcaa963bf6af759fa0d50e01a |
+| engine/v2/tools/pack.mjs | 85963 | fce400d8b57ecd17cae588719ad6887c28a07ae082c788d7ff8e96d1f234435e |
 | engine/v2/tools/preview.mjs | 9743 | e59bc6d83f3b5794433e428b0b632dbe6e6a34d764a9ff787b0a4fe294467062 |
 | engine/v2/tools/previous-kit.mjs | 1388 | a97d7b896000218e6ee9dc50ec47516cb39f3f8293cd2a6fee8355c4ab0c9693 |
 | engine/v2/tools/proof/FORMAT.md | 3419 | 763aebbf599157137b28324ad6a783a5e95485a83bfd518f21b0fb8162b41c6f |
@@ -1824,36 +1856,38 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | engine/v2/tools/test/sweep.mjs | 4469 | 73d9f030d275822923dc5b0cb54861d4b40346313d08bc882fa2896ee43f1d6d |
 | engine/v2/tools/test.mjs | 20529 | c47ce727906201a466c11cabc6a25d85f2ca3010029488154817e88e612746cc |
 | engine/v2/tools/unpack.mjs | 2508 | 0c53118c2d7f07866525d6cec601e02ce5ee33de0edad626e58e5f860aa9d9a6 |
-| engine/v2/web/asset-bundle-entry.mjs | 701 | d27d1dd34e2a06ccaaa0bae9f9ceadc941926521202c9e33e40fdf1896fbd700 |
-| engine/v2/web/asset-lean.mjs | 27201 | 3dec6c5b00abc6ce982cda1bff77e03a5c7c3025acddac7144b8726e2adb5a65 |
-| engine/v2/web/asset-schemas.mjs | 849 | 9583d4d60fd716b5e9a27c1b74bab853182e40fd10e29796696ecee5206570e2 |
-| engine/v2/web/asset-web.mjs | 3486 | 2d25f0f92e7f2f1712dbace141bd1eb972d4e1eacb9934a4d2ac925b3710dc43 |
-| engine/v2/web/audio-web.mjs | 14839 | 776dd399d923c4de7cb3b6954870070c905764ccffb0ec7a30d4c8bfb3e8f4d2 |
+| engine/v2/web/asset-bundle-entry.mjs | 998 | 9acda55552f4b40463896e3e2ba726587f8742f438e97caf24b209328d2e8613 |
+| engine/v2/web/asset-lean.mjs | 31276 | 683e359dfd95b421e884ce20aabb8b42a8529a77b9ea9f4bbfb6d92e15eacaa1 |
+| engine/v2/web/asset-schemas.mjs | 1227 | 35aa00a04cf7349c24686e93360812629834b7445a5345052f122737b548f810 |
+| engine/v2/web/asset-web.mjs | 3600 | e7af6bca140a19d215780b6d859eae8eb075e5839809a72a82e95364d23b9b57 |
+| engine/v2/web/audio-web.mjs | 15879 | df3c9578ea3ca16afed9b1999612f6cc98ac32b1cfff5e847f23a6023108c789 |
 | engine/v2/web/export-web.mjs | 2413 | 519fe528d64dc4ea4d2d3c4b1bf93fe4974d27737e44332b8edcccc72fee26c7 |
 | engine/v2/web/frame-host.mjs | 6874 | fdb49f72f10a14bc84cfac2c5d35252cccf93fce3a42de3926547cd9b037fffd |
 | engine/v2/web/frame-link.mjs | 5482 | 6d7d70f5faef17d7fadf1cf777c32a90b1e919af851ef176b5b359af2b27c767 |
-| engine/v2/web/hypersvg-asset.js | 842978 | 2d76cc3f7dcff132bff48be92e553797e4bf8a0f82b5228106f20c7b3492c26f |
+| engine/v2/web/hypersvg-asset-lean.js | 488312 | cead1ee12a4864ba0d03b0baa9c460e699193ca96282cfc08c76edfc54d4ddf7 |
+| engine/v2/web/hypersvg-asset.js | 857704 | 1ca33383d2a8b3ec921185186f9ecbedaf41109e95a4a7463e07a8cc1764a612 |
 | engine/v2/web/index.html | 1091 | 309cb4d7d7a61c2a79d206929b4c6a7cbf131d34e495eedbc33e45bb66e4c34e |
-| engine/v2/web/input-web.mjs | 66911 | d6d1dd6ed7d2a2b9b78a690f755e59bec06a2813aee63619a2c422283ae77af1 |
-| engine/v2/web/mount-checked.mjs | 3700 | cf41878155f5dc44f822cd5d71089e67fd799b0f017c58b469e3c73fe37f8b72 |
+| engine/v2/web/input-web.mjs | 67439 | 242dfb22b1aa9cfa82fe352c0cbf03305ff7076209c83817325a07494aace7c3 |
+| engine/v2/web/logic-port.mjs | 2926 | 399dfbd1fb1d9df43d798c96f044cb48903d508f508fff7248a5b778f95feef9 |
+| engine/v2/web/mount-checked.mjs | 3812 | 4ab5918620f2f3d7c962663483de724b85796e90cdf98e0af1fb41a15eaaaa0d |
 | engine/v2/web/mount-web.mjs | 3781 | 4e22b42d04917d24e97a0d4dbe1560bed8af6bf2b24535331e70e01ae43c232a |
 | engine/v2/web/on-demand-web.mjs | 4001 | 8dba285103f4a4e2207aa892d903b478b388e8bfd13448b8be752d88de95e87f |
 | engine/v2/web/packed-entry.mjs | 2290 | 867106ceb271fa5cb723088f362d7cc13e209180db163b63e4b7581bb0e20395 |
 | engine/v2/web/place-web.mjs | 1739 | 4f7fc57a62582a6b45bb3277d4e14d1e240d7a3e9068568700aea433bae47aad |
-| engine/v2/web/player-web.mjs | 49626 | 7fc0a5c576a9cfb770d10e537aaa3bcf079c2489c99d24c66ac1e0aab74da10c |
+| engine/v2/web/player-web.mjs | 53578 | 1e102f572dc9c4704d3d4bb6289349d7fd208d9c84022c6fbee6b03f0625468b |
 | llms.txt | 813 | 8e33d3a171b9757706389c2ceb903c05641a911091bffa086973c42ea3eae67d |
-| package.json | 1878 | d5559962d0133998f2105e13790ae67bb1061f42bcb406e25e3bf9ed49a4c8c0 |
+| package.json | 1878 | 17988fcf83ef3dff64586bbe48c51c082763e2b1bd73d0345e5d5366ae1db664 |
 | release/EXPORT-POLICY.txt | 11402 | 55deca458d9029fb25c2e0cde7fdb42c960e15daadc35b572698cb5b7fbe71bf |
 | release/addons-tests.json | 36077 | 1130e619538e9d491782538dd68ff7eeddd3dbb624a91968df775ee2b132091c |
 | release/browser-smoke.mjs | 12713 | 8f38a0fdb690881af18f457d2281289dadcb5fc009e926f2a2b315f250cdf367 |
 | release/checks.mjs | 10259 | b21e70ec6e3f2dfa98e25289f49e83bc41943131ae2719c640b65ed2612449bc |
 | release/leak.test.mjs | 12594 | 765bcf712a483a50fc9e5dd8c685d6cf84c2cc65e43bbe2391b6593d5dc047ac |
 | release/lean-tests.json | 7550 | 422c40da1c8400a078ab9b166db2bf469762f9e0cf38bbae6dad04b1aaef54e2 |
-| release/policy.mjs | 3811 | e0f075a680131a9c0d79a5a47de3f202d242e5aac621f78d6ea25fa07a3c286f |
+| release/policy.mjs | 4265 | ebb1536c2477cff8b56452c61a987f6953d99efbdbafa81934acb660878adf7f |
 | release/public-omissions.json | 2741 | f1e23683c3b4be79241d59bd692bdd605d8950581637370ff7992384b38388aa |
 | release/public-words.json | 2812 | c1912caa7195c0005d93fe7ff8885fe068abe95b74cea535474913691837b02f |
 | release/scan.mjs | 2770 | b75cfe8171f678705fd56b1cc9e4b37ffd25ab2edc44b1b27267d46d5368b303 |
-| release/verify.mjs | 11280 | da75731a53a61d463b677a505091743329fd88251bf32b5196733e48a58bcb9a |
+| release/verify.mjs | 11691 | 442578d89f4f29e71e5659fe54c67f63327b65243dcc923c27af61fb40c9074b |
 | skill/2.0/examples/kinds/infographic/components/bar/bar.svg | 2074 | 377bcbff5ec81430beaacd9577b5c93698e7d415355b02319c2bb0e08b2b6c08 |
 | skill/2.0/examples/kinds/infographic/components/bar/component.json | 548 | c2a35d680b897b29858c0205f44493baf621e92203cb7aa7ceaabbc2282714de |
 | skill/2.0/examples/kinds/infographic/data/fruit.json | 204 | 30cef2cda1b1a57f48d5bb7919e8a656a155f576cff7e8ac7e4b140c5c96af70 |
@@ -1867,7 +1901,7 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | skill/2.0/examples/recipes/orientation/scenes/harbour/scene.json | 972 | 6c493be685f9867543b4c83b809d1847ff43a94bd9a7efa5801a84c2a418fbc6 |
 | skill/2.0/examples/recipes/orientation/shell/frame.json | 1723 | f2ae61f2e807acc7353eb19c926f5e687b0a8b123ca9215df01922f699bd6320 |
 | skill/2.0/examples/recipes/orientation/shell/frame.svg | 2286 | 00453eca3babe48ca3417736a33cdaf44c01dfbaf970d4413fe1ded3f838d667 |
-| skills/hypersvg/SKILL.md | 18892 | 3c337ef1f3a650c834f2b76c1aa6a96c28392dbcf15b03bc32be3a5bbf0ef95c |
+| skills/hypersvg/SKILL.md | 18892 | 1c3ae98cc7a3c171050409cbe6edd8b9e1c9400209820dc4151f15fb5f53bb38 |
 | spec/2.0/01-model.md | 16341 | 53a13b37a3d9f680205dde052bfbd74f0bafe565dbe5f34849ba732046a84902 |
 | spec/2.0/02-files-and-names.md | 38945 | 25acd200c4cec12fffb9b12014e7285ff2fbc4cc90e5093294e749f332c3592b |
 | spec/2.0/03-story.md | 32627 | 455b71cd7ae2709e22dda404ded6c1e6309fbd39ad4156bbbd5c9c3d000ee695 |
@@ -1877,11 +1911,11 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | spec/2.0/07-representations.md | 35158 | 9287cbf6ed1ef2fb407eaccbb8582d0dc49ca7989172161af0001e187fdbc5ef |
 | spec/2.0/08-rules.md | 1246 | d44f3eaf19cff262407789b85840cc577593d818eecdc5422d30504b0aaf13fa |
 | spec/2.0/09-engine.md | 24792 | 46bf32420039af58eb610a323007e638f5386e8ac64ce55a44e0683c37c3cf87 |
-| spec/2.0/10-hosts-and-delivery.md | 69976 | d2bed508d18e3f2817afa61b67dcd90050f3bafbc943c300dbf537479debcb36 |
+| spec/2.0/10-hosts-and-delivery.md | 74878 | f096f6e19d58f38dbff82ba86a55fad3171a81ef6b806a46609e87073a6a5f13 |
 | spec/2.0/11-vocabulary.md | 16978 | 3684f54c96d7ba907fd8cba86bf0210a8fdae549faf8ffb9a70afd09dceac996 |
 | spec/2.0/12-writing-an-addon.md | 54160 | 13b26aa318ef332ef75b48093a57942a4a093e37e76a2bf68e8f263195467789 |
 | spec/2.0/MODEL.md | 20551 | f8c440b218906ec97e7bc2d33492f92952818de4cfd8080feb7416aa16e116ed |
-| spec/2.0/README.md | 15766 | d06a5edf49bd9defcae022fadd162f645d1d9e1bc80b46654e53d4e0446a9f8e |
+| spec/2.0/README.md | 15766 | a7b2d1901e151ff775ef8d7434023a7f592d6fc1c1d7e2f3d6cc65ab617c40bb |
 | spec/2.0/addons/a01-effects.md | 266 | c3c2577e1ea892ae705db386d389159ad8138509b0f1877e732af566c5f4fbc7 |
 | spec/2.0/addons/a02-media.md | 262 | 4304e361dc133030a6857e0c2fce1b971f958d5f22898ada4a37d0f6c7b90268 |
 | spec/2.0/addons/a03-page.md | 278 | 3235a9c10409ffab2e12f0212587dd531fe3c418f8d51e1a4d42c719c2c9458d |
@@ -1944,29 +1978,29 @@ Every target receives a README, its verbatim policy, this report and LICENSE: Ap
 | spec/2.0/conformance/hypersvg/valid-component.svg | 2679 | c486528fd5474508c5bbd9e541e34d01f88ac148e8f1d0470d18e6eeb6c0572d |
 | spec/2.0/conformance/hypersvg/valid-one-scene.svg | 2065 | 79e4e8a41218d197b4a8a980e4b6095b9fb84c2bbb57f65e30f2636ce6b2972a |
 | spec/2.0/conformance/plays/README.md | 8284 | 14def3cfc5d67d92696dafcf346e29552ae5fcf880769eb8fddf11c1544689ea |
-| spec/2.0/conformance/plays/ad-sizes.json | 3627 | c255ab23f877bf6d8c90a28b3876c85cd09af23561ea878d368965d35043c7b0 |
-| spec/2.0/conformance/plays/addon-lamp-switch.json | 3882 | b0cd5e93f7bfff6136ba89028f7f618133565180a9b5a473e510edcc5abde235 |
-| spec/2.0/conformance/plays/addon-lamp-walk.json | 5538 | c7b3e91c4c28e4ebf5723288a15dd180e6fee8073c3a8a0718c151a09e12b03e |
-| spec/2.0/conformance/plays/doors-walk.json | 8009 | b285c6b5c4b0ecf06231ac1289d5fb3332281d9116b9cc47719f75ce19c15888 |
-| spec/2.0/conformance/plays/doors-wind.json | 4447 | c553070b445eca0f0756418c6f18966012a0379d98c54a8bc992bafe11fdfa53 |
-| spec/2.0/conformance/plays/harbour-ambient.json | 8323 | 88372b970d6346c44da8de4b2d3818ec3cec32dc6b16ab5c35c10233ce70b293 |
-| spec/2.0/conformance/plays/harbour-miss-and-restart.json | 11199 | cecd6c4d7504664889e5364b9970e438f8a018178c7e03574c430431ed0521c8 |
-| spec/2.0/conformance/plays/harbour-saved.json | 7025 | 7648d04927f9e27a388a0d4b0fe809a5f97e53b1429f76b0bdfe249587618087 |
-| spec/2.0/conformance/plays/harbour-walk-2.json | 13148 | e4f16dcd69d49dfdff5568d4f25596fb51b47c4657d469048f97dc9b8ae65070 |
-| spec/2.0/conformance/plays/harbour-walk.json | 13143 | 2c266c3de346d1640da5ca6ee2f59bd93a98428d1c8aae9f272e049ce45e268d |
-| spec/2.0/conformance/plays/harbour-win.json | 9013 | ec39699d09c3fb49cb7fa45fd595c7e98014a651931e470a9323db6d5d166829 |
-| spec/2.0/conformance/plays/infographic-sizes.json | 4727 | e9df728714143187d965433d7258d8a3a8a0b25133c8575cc88396139be8b324 |
-| spec/2.0/conformance/plays/lamp-host.json | 4632 | be1d25ad14837d9a4f740441a129a06d64a839ca9a6f193c73b08c5ca9921146 |
-| spec/2.0/conformance/plays/lamp-walk.json | 9163 | 96904cfea632dcb0c8385fa088db930823e55962f8e392df7dd68ae290baa490 |
-| spec/2.0/conformance/plays/list-to-the-end.json | 5148 | e004fd5bc3535d56988c9b5d6e2d437fa94909faea8ef5c1bc66e6cb419a45d9 |
-| spec/2.0/conformance/plays/list-walk.json | 4867 | 18ffcf0ea1f296f87c8ecebc1cf003c3ab8f4652bbfb4a785f0560c6293d680c |
-| spec/2.0/conformance/plays/noughts-loss.json | 6924 | 8df63d4b8028812cc970f10f5c13978ee70340b76fc90c068323306139a9935a |
-| spec/2.0/conformance/plays/noughts-walk.json | 14143 | 08b42e1604ef9f4876c5a2459c8ecff683ba42c6ca49c759a2b9774c63cd753a |
-| spec/2.0/conformance/plays/noughts-win.json | 6708 | 201d173e3c562ec0e9c087306f44526600281a86c602015ea19dcb67dbf3809b |
-| spec/2.0/conformance/plays/one-page-stars.json | 4486 | 028a6830205dd90394c73fd7033ac086d06cc8723af8c323a7d7b87387a19df4 |
-| spec/2.0/conformance/plays/one-page-walk.json | 6570 | 109e1a4daf26edb430d80be90f70200c0b517792f9733e5c8ee678af2fe908c4 |
-| spec/2.0/conformance/plays/orientation-shapes.json | 5039 | ae4323aaefbf1e10915f39a732e056211fdb5e6376f7a3c92091e240468998b9 |
-| spec/2.0/conformance/plays/orientation-walk.json | 6151 | e118db1ed1f3776a46153d78d3ea23885d1c5c3d7e4dffd77c0d9f0e13ed043f |
+| spec/2.0/conformance/plays/ad-sizes.json | 3627 | 98ef5dab6892915d5b6abbc4b861ac4118d917c7fc7e0df07723691e1bd98e14 |
+| spec/2.0/conformance/plays/addon-lamp-switch.json | 3882 | e8d243a4e1b7b64c8499c7e86ecec927028c3b3a0952927e20bc0ba01689d614 |
+| spec/2.0/conformance/plays/addon-lamp-walk.json | 5538 | 9e245340f31d6223475768f42e034e841150eb80b1e23772ee2bb4b2b61bb8d0 |
+| spec/2.0/conformance/plays/doors-walk.json | 8009 | f7f6158a1f09101f2b2fb80271c4d5e84a1e734123b1bc671ac62997c2316e7e |
+| spec/2.0/conformance/plays/doors-wind.json | 4447 | a7de0bfd098ec5318fcae367e492464a90895e9a0bf39eb78616f3e331a253fd |
+| spec/2.0/conformance/plays/harbour-ambient.json | 8323 | 555b3721075a082c009e717aff525a27cf23b0f5244048953d3a49f6146cf68e |
+| spec/2.0/conformance/plays/harbour-miss-and-restart.json | 11199 | 2c67aa9fcc57c0de92845c10ab992b6c7c3e8d65947f5bc0723db3958e2ac9cc |
+| spec/2.0/conformance/plays/harbour-saved.json | 7025 | 25763438ee1e8b8ccf8b98c3a16a99a42b0cefc02a2add17f8dea18ccdc67cc2 |
+| spec/2.0/conformance/plays/harbour-walk-2.json | 13148 | 2da9886eecf925757e9eea0bfa9440cbc033f4de45571c9c8e8134b3859cedcd |
+| spec/2.0/conformance/plays/harbour-walk.json | 13143 | 16718f992fe39156d3d9b1437a8d0a2bdc9088700903290c5c6f1436d0379fda |
+| spec/2.0/conformance/plays/harbour-win.json | 9013 | a9a3c95edf5fe5856474789180ae45692d68d3ed03d16606899f881f593232b0 |
+| spec/2.0/conformance/plays/infographic-sizes.json | 4727 | 009bb65ae412f77a996b8f8f2caac23a48d449f64733a56650b3ffe2729bbe51 |
+| spec/2.0/conformance/plays/lamp-host.json | 4632 | eeb5ab2bff98b08800474fa6eba5779a79238ba93c3d1552b43f038ff33ebd01 |
+| spec/2.0/conformance/plays/lamp-walk.json | 9163 | 7463ebdcfe4102de2f2263c58f5b97a5afb962668d7a220c2958953d2aa5a719 |
+| spec/2.0/conformance/plays/list-to-the-end.json | 5148 | 7d4d5c8ef017ffb5b73c2d3c7ed0c9071bcd6781ccd42839b5b4d3f1b2d10f0f |
+| spec/2.0/conformance/plays/list-walk.json | 4867 | 9048ea729b3ee6e80b5e62ebfd74b504b7c5c3714f66fe0b3e1009c855077cb6 |
+| spec/2.0/conformance/plays/noughts-loss.json | 6924 | 83f54fae51afb9a167dfb947b39cdb7a69392c047c95ce563630f40e29741313 |
+| spec/2.0/conformance/plays/noughts-walk.json | 14143 | 811297a2531041e36839d6c67f6d010a5f9a93b6fba4b1db0145fde80017caf1 |
+| spec/2.0/conformance/plays/noughts-win.json | 6708 | e77dbdc931a573fb53db769b62ffda8cddb05d35ee95d67484a00ad7c42278d7 |
+| spec/2.0/conformance/plays/one-page-stars.json | 4486 | 16cd3a0423314abec263f6754a7f0a9a0585c725d7104ce07e20e0bb52e56063 |
+| spec/2.0/conformance/plays/one-page-walk.json | 6570 | 8e2107d7513861ea810deef669cf768fd212c41154c5294e9591b1e05e9b08bb |
+| spec/2.0/conformance/plays/orientation-shapes.json | 5039 | 93047277929c93063c6a622f8d095463c5cabeffe60d03d11eac131a7388ebc9 |
+| spec/2.0/conformance/plays/orientation-walk.json | 6151 | 996ae292046ce3dc04ea0176a2cb7ef2d4f84ff6a10dc72a4fe392efe844b82a |
 | spec/2.0/conformance/state/README.md | 1477 | 484ee7190b24d22cf550b849e1aee79af1e02e085c21766d0c2b1b54eb168de2 |
 | spec/2.0/conformance/state/expected.json | 2077 | d5e8342cf8d4fa795588993105159bb0539e586b667bad8b7dbda79c4148ddb9 |
 | spec/2.0/conformance/state/harbour-first-input.json | 3413 | aebe3c6e48fe401ef860815e3fd12beefc6f9b99a0a24045ac73136f9c6a3b3f |

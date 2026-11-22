@@ -20,10 +20,10 @@ const web = (f) => read('engine', 'v2', 'web', f);
 // ---------- the list (spec 10.16) ----------
 // Each entry: the module the package's export map names, and its exports by label.
 export const ENTRIES = {
-  './asset': { file: 'engine/v2/web/asset-web.mjs', stable: ['mount', 'mountAsync', 'HyperSvgAsset', 'useSchemas', 'sharedSchemas', 'readAsset', 'VERSION', 'elementVersion'], experimental: ['repack'], internal: [] },
-  './asset-lean': { file: 'engine/v2/web/asset-lean.mjs', stable: ['mountAsync', 'HyperSvgAsset', 'useSchemas', 'sharedSchemas', 'VERSION', 'elementVersion'], experimental: [], internal: ['place', 'leanLoad', 'bundleCheck'] },
+  './asset': { file: 'engine/v2/web/asset-web.mjs', stable: ['mount', 'mountAsync', 'HyperSvgAsset', 'useSchemas', 'sharedSchemas', 'readAsset', 'VERSION', 'elementVersion'], experimental: ['repack'], internal: ['logicPort'] },
+  './asset-lean': { file: 'engine/v2/web/asset-lean.mjs', stable: ['mountAsync', 'HyperSvgAsset', 'useSchemas', 'sharedSchemas', 'VERSION', 'elementVersion'], experimental: [], internal: ['place', 'leanLoad', 'bundleCheck', 'logicPort'] },
   './mount': { file: 'engine/v2/web/mount-web.mjs', stable: ['mount', 'VERSION'], experimental: ['aiPort', 'pagePort', 'modulePort'], internal: [] },
-  './logic': { file: 'engine/v2/src/logic.mjs', stable: ['logic', 'fingerprint', 'fingerprintOf', 'stateDocument', 'canonicalJson'], experimental: [], internal: [] },
+  './logic': { file: 'engine/v2/src/logic.mjs', stable: ['logic', 'fingerprint', 'fingerprintOf', 'stateDocument', 'canonicalJson'], experimental: ['readAsset', 'VERSION'], internal: [] },
   './frame-host': { file: 'engine/v2/web/frame-host.mjs', stable: ['connectFrame', 'frameToken'], experimental: [], internal: [] },
   './schemas': { file: 'engine/v2/schema/load.mjs', stable: ['loadSchemas'], experimental: [], internal: [] },
   './pack': { file: 'engine/v2/tools/pack.mjs', stable: ['pack', 'packAsset', 'PackError'], experimental: [],
@@ -37,8 +37,8 @@ export const SCHEMA_FILES = {
 };
 // The options of each call: [file, function name, which parameter], and the names by label.
 export const OPTIONS = {
-  'mount() of a package': { at: ['engine/v2/web/mount-checked.mjs', 'mountChecked', 2], stable: ['schemas', 'host', 'options', 'partition', 'onError', 'timeLimits', 'faultBox', 'nonce', 'clock', 'onMove'], experimental: ['theme', 'hostWords', 'colors', 'modules', 'capabilities', 'widgets'], internal: ['test'] },
-  'HyperSVG mounts': { at: ['engine/v2/web/asset-lean.mjs', 'place', 3], also: [['engine/v2/web/asset-lean.mjs', 'mountAsync', 3]], stable: ['schemas', 'partition', 'onError', 'timeLimits', 'integrity', 'faultBox', 'nonce', 'clock', 'onMove'], experimental: ['theme', 'options', 'hostWords', 'addonBase', 'colors'], internal: ['test', 'modules'] },
+  'mount() of a package': { at: ['engine/v2/web/mount-checked.mjs', 'mountChecked', 2], stable: ['schemas', 'host', 'options', 'partition', 'onError', 'timeLimits', 'faultBox', 'nonce', 'clock', 'onMove'], experimental: ['theme', 'hostWords', 'colors', 'modules', 'capabilities', 'widgets', 'sleep', 'muted'], internal: ['test'] },
+  'HyperSVG mounts': { at: ['engine/v2/web/asset-lean.mjs', 'place', 3], also: [['engine/v2/web/asset-lean.mjs', 'mountAsync', 3]], stable: ['schemas', 'partition', 'onError', 'timeLimits', 'integrity', 'faultBox', 'nonce', 'clock', 'onMove'], experimental: ['theme', 'options', 'hostWords', 'addonBase', 'colors', 'fullPlayer', 'sleep', 'muted'], internal: ['test', 'modules'] },
   'logic()': { at: ['engine/v2/src/logic.mjs', 'logic', 1], stable: ['schemas', 'clock', 'epochMs', 'onMove', 'host', 'options', 'storage', 'onError'], experimental: ['capabilities', 'modules'], internal: [] },
   'connectFrame()': { at: ['engine/v2/web/frame-host.mjs', 'connectFrame', 1], stable: ['channel', 'timeout', 'probe'], experimental: [], internal: [] },
   'pack()': { at: ['engine/v2/tools/pack.mjs', 'pack', 2], stable: [], experimental: ['host', 'allow', 'kits', 'test', 'acceptFindings'], internal: ['sizes', 'date'] },
@@ -46,7 +46,7 @@ export const OPTIONS = {
 export const HOST_API = {
   stable: ['on', 'read', 'set', 'emit', 'picture', 'timeLimits', 'pause', 'resume', 'paused', 'scene', 'restart', 'clearStorage', 'setPartition', 'destroy'],
   stableAsset: ['inputs', 'outputs'], // on HyperSVG mounts
-  experimental: ['place', 'seat', 'ladder'],
+  experimental: ['place', 'seat', 'ladder', 'mute'],
   internal: ['internal'],
 };
 export const FRAME_LINK = {

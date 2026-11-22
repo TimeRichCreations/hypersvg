@@ -1,6 +1,6 @@
 {
  "format": "hsvg-play/1",
- "engine": "2.0.0-next.1",
+ "engine": "2.0.0-next.2",
  "name": "one-page-walk",
  "about": "A seeded random walk of up to 15 steps (seed 11).",
  "package": {

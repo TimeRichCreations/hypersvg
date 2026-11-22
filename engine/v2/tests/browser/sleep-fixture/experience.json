@@ -1,0 +1,14 @@
+{
+  "format": "hsvg/2.0",
+  "kind": "experience",
+  "id": "bell",
+  "language": "en",
+  "about": {"title": "Bell", "description": "A bell for the sleep tests. ring starts a 1500 ms chime that sends rung; a lit knob shows on the bulb."},
+  "inputs": {
+    "lit": {"kind": "knob", "type": "boolean", "initial": false},
+    "ring": {"kind": "trigger"}
+  },
+  "outputs": {"rang": {"kind": "event"}, "rung": {"kind": "event"}, "count": {"kind": "result", "type": "number", "minimum": 0, "maximum": 999, "value": "rings"}},
+  "values": {"rings": {"type": "number", "initial": 0, "minimum": 0, "maximum": 999}},
+  "story": {"start": "bell", "scenes": {"bell": "bell.json"}, "endless": true}
+}
