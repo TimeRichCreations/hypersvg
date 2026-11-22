@@ -7,3 +7,7 @@ export const SCHEMAS = null;
 // Where the page finds the modules of the capabilities a HyperSVG pins (D55, added after 2.0.0-next.0):
 // engine/v2/web/addons/, beside this module. A host gives another with addonBase or addon-base.
 export const ADDONS_BASE = new URL('./addons/', import.meta.url);
+// The full one-file player (engine/v2/web/hypersvg-asset.js), which the lean player borrows its checked mount from
+// (asset-lean.mjs mountAsync). null here and in the full build: the modules check a file themselves. The lean one-file
+// build (hypersvg-asset-lean.js) sets it to the full file beside it, with the lean file's own query string.
+export const FULL_PLAYER = null;

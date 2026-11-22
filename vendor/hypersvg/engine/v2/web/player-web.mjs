@@ -11,10 +11,11 @@
 // chooseFrame, learnFits, reducedUnder and linkWithoutHostLine are internal.
 import { readExperience } from '../src/read.mjs';
 import { Player } from '../src/story.mjs';
-import { checkSetting } from '../src/runtime.mjs';
+import { checkSetting, MOVES } from '../src/runtime.mjs';
 import { Drawing, narrowLayouts } from '../src/drawing.mjs';
 import { hostApi } from '../src/host.mjs';
 import { attachInput } from './input-web.mjs';
+import { nextDue, framesSince } from '../src/sleep.mjs';
 import { packageMeasures, experienceResources } from '../src/host-profile.mjs';
 export { VERSION } from '../src/version.mjs';
 import { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } from '../src/layout.mjs';
@@ -184,7 +185,7 @@ function linkWithoutHost(state, container, host) {
   return (f) => { if (f?.code === 'E-GRANT' && /openUrl/.test(String(f?.message ?? ''))) tell(linkWithoutHostLine(state.player)); };
 }
 
-export function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null }) {
+export function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null, sleep = false, muted = false }) {
   // The host's error callback always hears {code, message} and what else is known (D63): every call below gives a
   // message; a failure with no code of its own is E-HOST-ERROR (src/error-detail.mjs says the same).
   const onError = givenOnError && ((d) => givenOnError({ ...d, code: d.code || 'E-HOST-ERROR' }));
@@ -267,7 +268,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     if (!soundWarned) { soundWarned = true; console.warn(`hsvg: ${d.message}`); }
     onError?.(d);
   };
-  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed }) : SILENT;
+  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed, muted }) : SILENT;
   // Reduced motion (5.5, 6.7): the person's prefers-reduced-motion is the ambient reducedMotion from the start.
   const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   if (motionQuery) { player.state.ambient.motionSystem = motionQuery.matches === true; player.state.ambient.reducedMotion = motionQuery.matches === true || player.state.ambient.motionChosen === true; }
@@ -625,8 +626,11 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     if (focused) document.getElementById(focused)?.focus({ preventScroll: true });
   };
   state.lists = player.state.lists || 0;
+  // sleep's state (see the frame loop below).
+  let offscreen = false; let asleep = false; let queued = true; let wakeTimer = null; let period = 1000 / 60; let fresh = false; let measured = false;
   const after = () => {
     if (state.destroyed || state.stopped) return; // a stopped page is never drawn again (9.2)
+    if (offscreen) return; // sleep: a piece off the screen is drawn when it comes back
     const lists = player.state.lists || 0;
     // Paint only when something changed: a committed transaction (also while paused), or engine time moved while a
     // block reads time (a clip, particles, physics, a mouth, `elapsed`). Nothing changed: nothing is painted.
@@ -665,9 +669,66 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     // after() paints only what changed, so it runs every frame: a host change committed while paused or under a
     // manual clock is painted too.
     if (last !== null && running && !state.stopped) after();
+    if (sleep) { frameDone(t); return; }
     last = t;
     requestAnimationFrame(tick);
   };
+  // sleep (experimental, added in 2.0.0-next.2; src/sleep.mjs). Off: the loop above asks for every frame, as before.
+  // On: when nothing is scheduled and nothing moves, no frame is asked for; a deadline coming due (a timer), input,
+  // set, emit, a host call, a size or visibility change wakes it. On waking, the engine first runs the frames it would
+  // have run while asleep (framesSince, one every frame period seen before), so every deadline, rule and output keeps
+  // its engine time. Off the screen (an IntersectionObserver) nothing is drawn; the engine runs on as on the screen,
+  // and the current state is drawn as the piece comes back.
+  const frameDone = (t) => {
+    queued = false;
+    if (fresh && last !== null && t - last > 0) { period = t - last; measured = true; } // a whole frame since the last one
+    last = t; fresh = true;
+    if (!running || state.destroyed) return;
+    const due = measured ? drowsy() : null; // no sleep before the frame period is known
+    if (due === null) { queued = true; requestAnimationFrame(tick); return; }
+    asleep = true;
+    if (Number.isFinite(due) && !manualClock) wakeTimer = setTimeout(wake, Math.max(0, due - player.state.now - (performance.now() - last)));
+  };
+  // The engine time to wake at (Infinity: none), or null while the loop must run: something moves on the screen, a
+  // sound plays, or a step is due within two frames.
+  const drowsy = () => {
+    if (!offscreen && (state.slide || state.drawing?.live?.size || player.mouthLooks?.length || state.drawing?.holds?.size)) return null;
+    if (state.audio !== SILENT && !state.audio.gone && state.audio.mixer?.busy?.()) return null;
+    if (state.host.paused) return Infinity;
+    const due = nextDue(player);
+    if (due === null || (Number.isFinite(due) && !manualClock && due - player.state.now <= 2 * period)) return null;
+    return due;
+  };
+  // Catch up and ask for a frame. Runs before every engine entry while asleep (wakeOn below): an advance(ms) from
+  // outside then moves on from the caught-up time.
+  const wake = () => {
+    if (!asleep || !running) return;
+    asleep = false; fresh = false; clearTimeout(wakeTimer); wakeTimer = null;
+    const f = framesSince(last, performance.now(), period);
+    if (f.frames) {
+      last = f.last;
+      state.audio.advance(f.frames * Math.min(100, period));
+      if (!manualClock && !state.host.paused) for (const r of player.advance(f.ms)) state.fault(r, 'timer');
+    }
+    if (!queued && running) { queued = true; requestAnimationFrame(tick); }
+  };
+  const wakeOn = (o, name) => { const fn = o[name]; o[name] = function (...a) { if (asleep) wake(); return fn.apply(this, a); }; };
+  if (sleep) {
+    for (const name of [...MOVES, 'transaction']) wakeOn(player, name); // every input, before its move is heard
+    for (const name of ['read', 'scene']) wakeOn(state.host, name);
+    state.wake = wake; // a page part that needs frames again asks here
+    if (typeof IntersectionObserver === 'function') {
+      state.seen = new IntersectionObserver((es) => {
+        const off = !es[es.length - 1].isIntersecting;
+        if (off === offscreen || state.destroyed) return;
+        offscreen = off;
+        wake();
+        if (!off && !state.stopped) { after(); if (!queued && !asleep) { queued = true; requestAnimationFrame(tick); } }
+      });
+      state.seen.observe(container);
+    }
+  }
+  state.sleeping = () => ({ asleep, offscreen, period });
   requestAnimationFrame(tick);
   // A resize (or a rotated phone) chooses again (7.3); the current layout stays while it still applies.
   // The ambient size follows (5.5): a new box or shape is one host transaction with changed:size, then a paint.
@@ -679,7 +740,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
     if (!state.stopped) after();
   };
   state.writeSize = writeSize;
-  if (typeof ResizeObserver === 'function') { state.resizer = new ResizeObserver(() => { relayout(); writeSize(); }); state.resizer.observe(container); }
+  if (typeof ResizeObserver === 'function') { state.resizer = new ResizeObserver(() => { if (asleep) wake(); relayout(); writeSize(); }); state.resizer.observe(container); }
   // A change of the person's reduced-motion preference: one transaction, and every block hears changed:reducedMotion.
   const motionChanged = (ev) => {
     if (state.destroyed || state.stopped) return;
@@ -696,6 +757,7 @@ export function play(container, { files, schemas = null, assets = null, assetsUr
   // capabilities' parts: captions, widgets, media, page) gives its own destroy.
   const cleanups = [
     () => state.resizer?.disconnect(),
+    () => { state.seen?.disconnect(); clearTimeout(wakeTimer); },
     () => motionQuery?.removeEventListener?.('change', motionChanged),
     () => document.removeEventListener('visibilitychange', visibility),
     () => state.audio.destroy(),

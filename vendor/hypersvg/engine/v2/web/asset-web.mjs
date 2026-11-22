@@ -43,3 +43,4 @@ export function mount(element, assetSvg, inputs = {}, options = {}) {
   if (!schemas || typeof schemas !== 'object' || !schemas.kinds) throw new TypeError('mount needs options.schemas (spec/2.0/schemas): an asset is checked before it plays');
   return place(element, asset, inputs, rest, (el, pkg, o) => mountChecked(el, pkg, { ...o, schemas }, loadAsset));
 }
+export { logicPort } from './logic-port.mjs'; // internal, added after 2.0.0-next.1: the replay recorder's engine

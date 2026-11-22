@@ -11,8 +11,8 @@
 // - A state-changing call made while listeners run waits until that step is over (9.2).
 // - test mode (A8.5) also gives `internal`, the engine itself, for test tools (internal, spec 10.16).
 // - API labels (spec 10.16, D63): every call above is stable but `internal`; place(name), seat() and ladder() are
-//   experimental. The ports aiPort, pagePort and modulePort are experimental (exported from ./mount); every other
-//   export of this module is internal.
+//   experimental, and so is mute(on) (added for 2.0.0-next.2). The ports aiPort, pagePort and modulePort are
+//   experimental (exported from ./mount); every other export of this module is internal.
 // - aiPort: the host port for AI sources (A5.1, 10.7). A host gives it as the ai capability of mount():
 //   mount(el, pkg, {capabilities: {ai: aiPort({'browser-ai': async (request, signal) => text})}}). The ai grant decides
 //   which sources content may use; the engine checks every answer before any write (src/ai.mjs).
@@ -307,6 +307,15 @@ export function hostApi(player, { onError = null, test = false, onRestart = null
     },
     // A person's time limits (10.13): 1 as written, 2..10 multiplies timed links and machine timers, 0 turns them off.
     timeLimits(factor) { return change(() => check(player.applySettings([['timeLimits', factor]], 'host'))); },
+    // The host's mute (experimental, added for 2.0.0-next.2): on true, the experience's sounds, music and spoken
+    // recordings are silent, at once; false lets them play again unless the person muted them (the ambient muted,
+    // 6.10). It changes no state and nothing in the diary. It is meant to be called on every mount, so it does
+    // nothing (and never throws) for an experience without sound, a stopped player or a destroyed one. mute() is
+    // mute(true); any value other than true or false is E-TYPE.
+    mute(on = true) {
+      if (on !== true && on !== false) refuse('E-TYPE', 'mute takes true or false');
+      if (!destroyed) player.hostMute?.(on);
+    },
     pause(reason) { alive(); pauses.add(String(reason)); change(() => player.setPause('host', true)); },
     resume(reason) { alive(); pauses.delete(String(reason)); if (!pauses.size) change(() => player.setPause('host', false)); },
     get paused() { return pauses.size > 0; },

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QVka9ZgAk/xfKlTvNzZgJMIZ81LPD3S3PCHXth6vB3M='; style-src 'unsafe-inline'; img-src data: blob:; media-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-BFaKNbB+swymlKR2FOB9O/IaeqVeIeS75/ZvzPxMYdw='; style-src 'unsafe-inline'; img-src data: blob:; media-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lamp</title>
 <style>html, body { margin: 0; height: 100%; background: #fff4d8; } #stage { position: fixed; inset: 0; }</style>
@@ -16,7 +16,7 @@ function req(n) { if (n in cache) return cache[n]; const exp = cache[n] = {}; de
 defs[0] = function (exp) { 'use strict'; // engine/v2/web/packed-entry.mjs
 exp.run = run;
 const { boot } = req(1);
-const { frameLink } = req(28);
+const { frameLink } = req(29);
 async function run(pack) {
   const stage = document.getElementById('stage');
   const link = frameLink(window);
@@ -51,10 +51,11 @@ defs[1] = function (exp) { 'use strict'; // engine/v2/web/player-web.mjs
 exp.reducedUnder = reducedUnder; exp.chooseFrame = chooseFrame; exp.learnFits = learnFits; exp.useAudio = useAudio; exp.boot = boot; exp.linkWithoutHostLine = linkWithoutHostLine; exp.play = play;
 const { readExperience } = req(3);
 const { Player } = req(6);
-const { checkSetting } = req(7);
+const { checkSetting, MOVES } = req(7);
 const { Drawing, narrowLayouts } = req(19);
 const { hostApi } = req(26);
 const { attachInput } = req(27);
+const { nextDue, framesSince } = req(28);
 const { packageMeasures, experienceResources } = req(12);
 const __reexport2_0 = req(2);
 const { chooseLayout, shapeMapsOf, aspectsOf, directionOf, inputPicks, picksFor, pickedLayout, trueSizes, nearestSize, activeShape } = req(17);
@@ -175,7 +176,7 @@ function linkWithoutHost(state, container, host) {
   });
   return (f) => { if (f?.code === 'E-GRANT' && /openUrl/.test(String(f?.message ?? ''))) tell(linkWithoutHostLine(state.player)); };
 }
-function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null }) {
+function play(container, { files, schemas = null, assets = null, assetsUrl = './', capabilities = {}, manualClock = false, start = null, partition = 'device', onError: givenOnError = null, test = false, widgets = {}, host = null, options = {}, members = null, modules = null, wholePage = false, load = readExperience, kitted = null, previewHost = false, timeLimits = null, faultBox = true, nonce = null, language = null, clock = null, onMove = null, theme = null, colors = null, checkColors = null, sleep = false, muted = false }) {
   const onError = givenOnError && ((d) => givenOnError({ ...d, code: d.code || 'E-HOST-ERROR' }));
   const sequence = Symbol.for('hypersvg.mountSequence');
   const namespace = `hsvg${globalThis[sequence] = (globalThis[sequence] || 0) + 1}__`;
@@ -234,7 +235,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     if (!soundWarned) { soundWarned = true; console.warn(`hsvg: ${d.message}`); }
     onError?.(d);
   };
-  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed }) : SILENT;
+  state.audio = attachAudio ? attachAudio(player, window, { assetsUrl, assets, onFail: soundFailed, muted }) : SILENT;
   const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   if (motionQuery) { player.state.ambient.motionSystem = motionQuery.matches === true; player.state.ambient.reducedMotion = motionQuery.matches === true || player.state.ambient.motionChosen === true; }
   const sizeNow = () => { const b = container.getBoundingClientRect(); const sp = { width: b.width, height: b.height }; return { ...sp, shape: activeShape({ ...sp, direction: directionOf(player.exp.doc, player.state.ambient?.language) }, shapeMapsOf(null, player.exp.doc)) }; };
@@ -524,8 +525,10 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     if (focused) document.getElementById(focused)?.focus({ preventScroll: true });
   };
   state.lists = player.state.lists || 0;
+  let offscreen = false; let asleep = false; let queued = true; let wakeTimer = null; let period = 1000 / 60; let fresh = false; let measured = false;
   const after = () => {
     if (state.destroyed || state.stopped) return;
+    if (offscreen) return;
     const lists = player.state.lists || 0;
     if (player.scene !== state.scene) { show(); input.sync(true); } else if (lists !== state.lists) redrawLists();
     else if (player.state.revision !== painted.revision || state.slide || (state.drawing?.live?.size && player.state.now !== painted.now) || player.mouthLooks?.length) { paint(true); input.sync(); }
@@ -553,9 +556,56 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
       for (const r of results) state.fault(r, 'timer');
     }
     if (last !== null && running && !state.stopped) after();
+    if (sleep) { frameDone(t); return; }
     last = t;
     requestAnimationFrame(tick);
   };
+  const frameDone = (t) => {
+    queued = false;
+    if (fresh && last !== null && t - last > 0) { period = t - last; measured = true; }
+    last = t; fresh = true;
+    if (!running || state.destroyed) return;
+    const due = measured ? drowsy() : null;
+    if (due === null) { queued = true; requestAnimationFrame(tick); return; }
+    asleep = true;
+    if (Number.isFinite(due) && !manualClock) wakeTimer = setTimeout(wake, Math.max(0, due - player.state.now - (performance.now() - last)));
+  };
+  const drowsy = () => {
+    if (!offscreen && (state.slide || state.drawing?.live?.size || player.mouthLooks?.length || state.drawing?.holds?.size)) return null;
+    if (state.audio !== SILENT && !state.audio.gone && state.audio.mixer?.busy?.()) return null;
+    if (state.host.paused) return Infinity;
+    const due = nextDue(player);
+    if (due === null || (Number.isFinite(due) && !manualClock && due - player.state.now <= 2 * period)) return null;
+    return due;
+  };
+  const wake = () => {
+    if (!asleep || !running) return;
+    asleep = false; fresh = false; clearTimeout(wakeTimer); wakeTimer = null;
+    const f = framesSince(last, performance.now(), period);
+    if (f.frames) {
+      last = f.last;
+      state.audio.advance(f.frames * Math.min(100, period));
+      if (!manualClock && !state.host.paused) for (const r of player.advance(f.ms)) state.fault(r, 'timer');
+    }
+    if (!queued && running) { queued = true; requestAnimationFrame(tick); }
+  };
+  const wakeOn = (o, name) => { const fn = o[name]; o[name] = function (...a) { if (asleep) wake(); return fn.apply(this, a); }; };
+  if (sleep) {
+    for (const name of [...MOVES, 'transaction']) wakeOn(player, name);
+    for (const name of ['read', 'scene']) wakeOn(state.host, name);
+    state.wake = wake;
+    if (typeof IntersectionObserver === 'function') {
+      state.seen = new IntersectionObserver((es) => {
+        const off = !es[es.length - 1].isIntersecting;
+        if (off === offscreen || state.destroyed) return;
+        offscreen = off;
+        wake();
+        if (!off && !state.stopped) { after(); if (!queued && !asleep) { queued = true; requestAnimationFrame(tick); } }
+      });
+      state.seen.observe(container);
+    }
+  }
+  state.sleeping = () => ({ asleep, offscreen, period });
   requestAnimationFrame(tick);
   const writeSize = () => {
     if (state.destroyed || state.stopped) return;
@@ -565,7 +615,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
     if (!state.stopped) after();
   };
   state.writeSize = writeSize;
-  if (typeof ResizeObserver === 'function') { state.resizer = new ResizeObserver(() => { relayout(); writeSize(); }); state.resizer.observe(container); }
+  if (typeof ResizeObserver === 'function') { state.resizer = new ResizeObserver(() => { if (asleep) wake(); relayout(); writeSize(); }); state.resizer.observe(container); }
   const motionChanged = (ev) => {
     if (state.destroyed || state.stopped) return;
     const on = ev.matches === true;
@@ -578,6 +628,7 @@ function play(container, { files, schemas = null, assets = null, assetsUrl = './
   document.addEventListener('visibilitychange', visibility);
   const cleanups = [
     () => state.resizer?.disconnect(),
+    () => { state.seen?.disconnect(); clearTimeout(wakeTimer); },
     () => motionQuery?.removeEventListener?.('change', motionChanged),
     () => document.removeEventListener('visibilitychange', visibility),
     () => state.audio.destroy(),
@@ -618,7 +669,7 @@ exp.VERSION = __reexport2_0.VERSION;
 };
 defs[2] = function (exp) { 'use strict'; // engine/v2/src/version.mjs
 
-const VERSION = '2.0.0-next.1';
+const VERSION = '2.0.0-next.2';
 
 exp.VERSION = VERSION;
 };
@@ -6716,6 +6767,10 @@ function hostApi(player, { onError = null, test = false, onRestart = null } = {}
       return change(() => check(player.hostPicture(name, uri)));
     },
     timeLimits(factor) { return change(() => check(player.applySettings([['timeLimits', factor]], 'host'))); },
+    mute(on = true) {
+      if (on !== true && on !== false) refuse('E-TYPE', 'mute takes true or false');
+      if (!destroyed) player.hostMute?.(on);
+    },
     pause(reason) { alive(); pauses.add(String(reason)); change(() => player.setPause('host', true)); },
     resume(reason) { alive(); pauses.delete(String(reason)); if (!pauses.size) change(() => player.setPause('host', false)); },
     get paused() { return pauses.size > 0; },
@@ -6858,11 +6913,15 @@ function attachInput(player, state, container, win) {
   }
   const build = ([name, attrs, kids = []]) => { const e = doc.createElementNS(SVGNS, name); for (const [k, v] of Object.entries(attrs)) { if (k === 'style') e.style.cssText = v; else e.setAttribute(k, v); } for (const k of kids) e.appendChild(build(k)); return e; };
   listen(win, 'resize', () => { if (!state.destroyed) ring(); });
+  const native = typeof win.Element?.prototype?.checkVisibility === 'function';
+  const SEEN = { visibilityProperty: true };
   const visible = (el) => {
     if (!el || !el.isConnected) return false;
-    for (let n = el; n && n !== container; n = n.parentElement) {
-      const s = win.getComputedStyle(n);
-      if (s.display === 'none' || s.visibility === 'hidden' || s.visibility === 'collapse') return false;
+    if (native) { if (!el.checkVisibility(SEEN)) return false; } else {
+      for (let n = el; n && n !== container; n = n.parentElement) {
+        const s = win.getComputedStyle(n);
+        if (s.display === 'none' || s.visibility === 'hidden' || s.visibility === 'collapse') return false;
+      }
     }
     const b = el.getBoundingClientRect();
     return b.width > 0 && b.height > 0;
@@ -7494,7 +7553,34 @@ function canRing(el, win) {
 
 exp.RING = RING;
 };
-defs[28] = function (exp) { 'use strict'; // engine/v2/web/frame-link.mjs
+defs[28] = function (exp) { 'use strict'; // engine/v2/src/sleep.mjs
+exp.nextDue = nextDue; exp.framesSince = framesSince;
+const { OFF } = req(7);
+function nextDue(player) {
+  if (player.stopped) return Infinity;
+  if (player.clocked) return null;
+  const rates = player.clockRates();
+  if (player.clocked) return null;
+  let due = Infinity;
+  for (const t of player.state.timers) {
+    if ((rates?.get(t.owner) ?? 1) === 0) continue;
+    if (Number.isFinite(t.due) && t.due < OFF && t.due < due) due = t.due;
+  }
+  const cap = player.caps.clockNext(Infinity, player);
+  if (cap && cap.due < due) due = cap.due;
+  const sec = player.nowTick(Infinity, player.epochBase());
+  if (sec && sec.due < due) due = sec.due;
+  return due;
+}
+function framesSince(last, now, period, cap = 100) {
+  if (!(period > 0) || !(now > last)) return { frames: 0, ms: 0, last };
+  const frames = Math.floor((now - last) / period + 1e-9);
+  return { frames, ms: frames * Math.min(cap, Math.round(period)), last: last + frames * period };
+}
+
+
+};
+defs[29] = function (exp) { 'use strict'; // engine/v2/web/frame-link.mjs
 exp.frameLink = frameLink;
 const CALLS = new Set(['set', 'emit', 'read', 'on', 'off', 'pause', 'resume', 'restart', 'scene', 'seat', 'clearStorage', 'setPartition', 'ladder']);
 const VALUED = new Set(['read', 'scene', 'ladder']);

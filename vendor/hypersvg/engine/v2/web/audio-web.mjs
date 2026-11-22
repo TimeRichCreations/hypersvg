@@ -13,6 +13,11 @@
 //   recording that cannot start (no gesture yet, voice silent, a file that fails) or has not started after 300 ms, or
 //   stalls for 1000 ms, is dropped: the line goes on with silent timing (player.lines.silent). Turning voice off
 //   silences it at once; stopLine, a new line of the same block and the line's end stop it.
+// - The host's mute (muted at mount, host.mute(on) later; experimental, added for 2.0.0-next.2) is a layer over the
+//   person's: sound plays only when neither has muted it. The host's switch never unmutes what the person muted, and
+//   a change reaches the sounds already playing at once. It changes nothing in the engine (no state, no diary): only
+//   the levels sent to Web Audio. A spoken line under the host's mute keeps its recording, silent, so unmuting brings
+//   it back.
 // Returns {mixer, log, update(), advance(ms), stats(), lines}; log lists every request with whether it started (for
 // tests); lines lists the line recordings ({address, run, state}).
 // It gives itself to the player when it loads (player-web.mjs useAudio, added after 2.0.0-next.0).
@@ -56,8 +61,10 @@ export function assetsBase(assetsUrl, win) {
   try { return new URL(assetsUrl || './', win.location.href); } catch { return null; }
 }
 
-export function attachAudio(player, win, { assetsUrl, assets = null, onFail = null }) {
+// muted: the host's mute at mount (experimental); player.hostMute(on) changes it later (host.mute, src/host.mjs).
+export function attachAudio(player, win, { assetsUrl, assets = null, onFail = null, muted = false }) {
   let ctx = null;
+  let hostMuted = muted === true;
   let gone = false; // destroyed or stopped
   let out = null;
   let voiceBus = null;
@@ -143,6 +150,8 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
   };
 
   const mixer = createMixer(start, player.limits);
+  // The levels Web Audio gets: the person's mix (master, groups, mutes), all 0 while the host mutes.
+  const levels = () => (hostMuted ? { music: 0, sounds: 0, voice: 0 } : player.mix());
 
   // ---------- spoken lines (6.11) ----------
   const voiced = new Map(); // address -> {run, state: 'waiting'|'playing'|'dropped'|'ended', node, gain, began, at, waited, stalled}
@@ -166,7 +175,7 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
     // Speech is never queued for later: no armed audio, a hidden page or a silent voice group means silent timing.
     if (!ctx || win.document.hidden || !(player.mix().voice > 0)) { dropLine(d.address, 'silent'); return; }
     v.gain = ctx.createGain();
-    v.gain.gain.value = player.mix().voice;
+    v.gain.gain.value = levels().voice;
     v.gain.connect(voiceBus);
     decode(d.source.path).then((buffer) => {
       if (voiced.get(d.address) !== v) return;
@@ -190,7 +199,7 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
       const line = player.state.blocks[address]?.line;
       if (!line || line.run !== v.run) { dropLine(address, 'stopped'); continue; }
       if (!player.state.ambient.voice) { dropLine(address, 'silenced'); continue; }
-      if (v.gain) v.gain.gain.value = player.mix().voice;
+      if (v.gain) v.gain.gain.value = levels().voice;
       const paused = player.clockHeld ? player.clockHeld(address) : !!held && (address === held || address.startsWith(held + '/'));
       if (v.paused) { if (!paused) { v.paused = false; playFrom(address, v, v.offset); } continue; }
       if (!v.node) { v.waited += ms; if (v.waited > 300) dropLine(address, 'late'); continue; }
@@ -211,7 +220,7 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
   };
   const update = () => {
     if (gone) return; // a stopped or destroyed player never sounds again
-    mixer.setLevels(player.mix());
+    mixer.setLevels(levels());
     syncHold();
     // 6.10 "removing a use stops its sounds": uses only (addresses with a '/'); a scene's sound outlives its exit.
     mixer.prune((owner) => !owner.includes('/') || !!player.state.blocks[owner]);
@@ -257,12 +266,14 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
     return { armed: !!ctx, requests: log.length, started: log.filter(e => e.started).length, decoded: buffers.size - failed.size, failed: [...failed], music: mixer.nowPlaying() };
   };
   // Loudness mouths (audioMouth, 6.11), when the audio capability is there: it writes player.mouthLooks.
-  const read = () => { analyser.getFloatTimeDomainData(analyserData); const v = player.mix().voice; return v > 0 ? extras.rms(analyserData) / v : 0; };
-  const heard = () => !!ctx && !!analyser && !win.document.hidden && player.mix().voice > 0 && (mixer.voicePlaying() || [...voiced.values()].some(v => v.node));
+  const read = () => { analyser.getFloatTimeDomainData(analyserData); const v = levels().voice; return v > 0 ? extras.rms(analyserData) / v : 0; };
+  const heard = () => !!ctx && !!analyser && !win.document.hidden && levels().voice > 0 && (mixer.voicePlaying() || [...voiced.values()].some(v => v.node));
   const mouth = extras ? extras.mouths(player, { read, heard }) : null;
   const advance = (ms) => { if (gone) return; syncHold(); mixer.advance(ms); stepLines(ms); mouth?.(ms); };
   // After a fatal stop or destroy (10.6): every sound, music and spoken recording stops, nothing starts again (a shown
   // tab, a press), the listeners go and the audio context closes.
+  // The host's mute (host.mute, src/host.mjs): at once, on every sound playing, and on the next ones.
+  player.hostMute = (on) => { hostMuted = on === true; if (!gone) update(); };
   const destroy = () => {
     if (gone) return;
     gone = true;
@@ -273,6 +284,6 @@ export function attachAudio(player, win, { assetsUrl, assets = null, onFail = nu
     const i = player.listeners.indexOf(delivered); if (i >= 0) player.listeners.splice(i, 1);
     try { ctx?.close?.().catch?.(() => {}); } catch { /* closed */ }
   };
-  return { mixer, log, update, stats, advance, destroy, lines: lineLog, get armed() { return !!ctx; }, get gone() { return gone; } };
+  return { mixer, log, update, stats, advance, destroy, lines: lineLog, get armed() { return !!ctx; }, get gone() { return gone; }, get hostMuted() { return hostMuted; } };
 }
 useAudio(attachAudio);

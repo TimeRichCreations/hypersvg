@@ -10,8 +10,9 @@ import { hostColors } from '../src/host-colors.mjs';
 
 const TEXT = /\.(json|svg|csv|txt|vtt)$/;
 
-// The options and the checks are mount-web.mjs's mount (see its comment).
-export function mountChecked(container, pkg, { partition = 'device', onError = null, test = false, capabilities = {}, widgets = {}, host = null, options = {}, modules = null, schemas = null, timeLimits = null, faultBox = true, nonce = null, hostWords = null, clock = null, onMove = null, theme = null, colors = null } = {}, loadExperience) {
+// The options and the checks are mount-web.mjs's mount (see its comment). sleep and muted (experimental, added after
+// 2.0.0-next.1) go to play() unchanged.
+export function mountChecked(container, pkg, { partition = 'device', onError = null, test = false, capabilities = {}, widgets = {}, host = null, options = {}, modules = null, schemas = null, timeLimits = null, faultBox = true, nonce = null, hostWords = null, clock = null, onMove = null, theme = null, colors = null, sleep, muted } = {}, loadExperience) {
   if (!schemas || typeof schemas !== 'object' || !schemas.kinds) throw new TypeError('mount needs options.schemas (spec/2.0/schemas): a mounted package is checked before it plays');
   const descriptor = pkg['package.json'];
   if (!descriptor) { const e = new Error('the package has no package.json'); e.code = 'E-PACKAGE-DESCRIPTOR'; throw e; }
@@ -40,7 +41,7 @@ export function mountChecked(container, pkg, { partition = 'device', onError = n
   const assets = (p) => { const b = pkg[root ? `${root}/${p}` : p]; if (!b) throw new Error(`no member ${p}`); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
   const members = Object.fromEntries(Object.entries(pkg).map(([p, b]) => [rel(p), b]));
   // The checked definition is ready to instantiate; do not parse every member a second time.
-  const state = play(container, { files: own, schemas: null, assets, partition, capabilities, onError, test, widgets, host, options, members, modules, load: () => checked, timeLimits, faultBox, nonce, language, clock, onMove, theme, colors, checkColors: hostColors });
+  const state = play(container, { files: own, schemas: null, assets, partition, capabilities, onError, test, widgets, host, options, members, modules, load: () => checked, timeLimits, faultBox, nonce, language, clock, onMove, theme, colors, checkColors: hostColors, sleep, muted });
   // The engine could not be made (a module or capability that does not install): throw its fault, with its code.
   if (!state.player) { const e = new Error(state.stopped.message); e.code = state.stopped.code; e.address = state.stopped.address; throw e; }
   return addPlace(state);
